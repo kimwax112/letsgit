@@ -26,3 +26,8 @@ services: API 요청이나 axios 설정 등 외부 연동 로직
 
 3.utils 파일안에 PopupButton 이 버튼 ui 랑 onClick 기능을 따로둬서 다음 버튼을 재사용할수있게 하고싶음
 
+2/21
+1. NextButtonWithPopup 함수 컴포넌트 추가(선택된 항목들을 확인하는 팝업을 띄우고 지정된 경로로 이동하는 컴포넌트)
+2. Popup UI 컴포넌트 추가
+3. FabricItem 컴포넌트화, ColorPicker컴포넌트화
+
