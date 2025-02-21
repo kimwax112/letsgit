@@ -70,7 +70,6 @@ const ItemsContainer = ({ items, activeTab, selectedItem, setSelectedItem, handl
           <ItemText>{item}</ItemText>
         </ItemBox>
       ))}
-      <NextButton onClick={handleNextClick}>다음</NextButton>
     </Container>
   );
 };

@@ -11,3 +11,5 @@ export { default as Header } from './Header/Header';
 export { default as Tabs} from './Tabs/Tabs';
 export { default as ItemsContainer} from './ItemsContainer/ItemsContainer';
 export { default as BreadCrumb} from './BreadCrumb/BreadCrumb';
+export { default as NextButtonWithPopup} from './Popup/NextButtonWithPopup';
+export { default as FabricItem} from './FabfricItem/FabricItem';
