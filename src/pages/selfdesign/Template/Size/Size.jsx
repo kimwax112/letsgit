@@ -44,9 +44,10 @@ const Size = () => {
 
         <Sizespec selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
         <div className="footer button_size">
-          <Sizespecbutton label="초기화" onClick={() => setSelectedSize(null)} />
+          <Sizespecbutton label="초기화" style={{ cursor: "pointer" }} onClick={() => setSelectedSize(null)} />
           <Sizespecbutton label="이전" onClick={() => navigate(-1)} />
           <Sizespecbutton label="저장하기" onClick={handleSave} />
+          
         </div>
       </div>
       </div>

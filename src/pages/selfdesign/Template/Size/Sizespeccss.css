@@ -88,3 +88,8 @@
   background-color: #87CEEB;  /* 하늘색 */
   color: black;
 }
+
+.controller-row {
+  background-color: #cca3a3;
+  max-height: 100px;
+}

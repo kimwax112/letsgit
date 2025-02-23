@@ -1,69 +1,163 @@
-import React, { useState } from "react";
+// Sizespec.jsx
+import React, { useState, useEffect } from "react";
 import "./Sizespeccss.css";
+import { SizeController,SizeControllerRow } from "../../../../components"; // 기존 SizeController (전체 컨트롤러)
+
 
 function Sizespec({ selectedSize, setSelectedSize }) {
-  // 헤더 (사이즈)
+  // 상단 헤더에 표시할 사이즈 배열
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
-  // 행 데이터 (구분 + 항목)
+  // 초기 행 데이터 배열
   const initialRows = [
-    { category: "A", label: "총 기장", values: [20.0, 21.5, 23.0, 24.5, 26.0, 27.5, 29.0], type: "highlight" },
-    { category: "B", label: "가슴 단면", values: [33.0, 35.5, 38.0, 40.5, 43.0, 45.5, 48.0], type: "highlight" },
-    { category: "C", label: "밑단 단면", values: [44.0, 46.5, 49.0, 51.5, 54.0, 56.5, 59.0], type: "highlight" },
-    { category: "D", label: "소매 기장", values: [33.0, 33.5, 34.0, 34.5, 35.0, 35.5, 36.0], type: "highlight" },
-    { category: "E", label: "어깨 단면", values: [27.0, 29.5, 32.0, 34.5, 37.0, 39.5, 42.0], type: "normal" },
-    { category: "F", label: "허리 단면", values: [33.0, 35.5, 38.0, 40.5, 43.0, 45.5, 48.0], type: "normal" },
-    { category: "G", label: "암홀 (직선)", values: [20.2, 20.9, 21.6, 22.3, 23.0, 23.7, 24.4], type: "normal" },
-    { category: "H", label: "소매단 단면", values: [17.7, 18.4, 19.1, 19.8, 20.5, 21.2, 21.9], type: "normal" },
-    { category: "I", label: "소매통 단면", values: [18.7, 19.4, 20.1, 20.8, 21.5, 22.2, 22.9], type: "normal" },
-    { category: "J", label: "목 너비", values: ["디자인 선택 후 산출"], type: "disabled", colspan: 7 },
-    { category: "K", label: "목 파임", values: ["디자인 선택 후 산출"], type: "disabled", colspan: 7 }
+    { category: "A", label: "총 기장", values: [65, 67, 69, 71, 73, 75, 77], type: "highlight" },
+    { category: "B", label: "가슴 단면", values: [82, 86, 90, 94, 98, 102, 106], type: "highlight" },
+    { category: "C", label: "밑단 단면", values: [90, 94, 98, 102, 106, 110, 114], type: "highlight" },
+    { category: "D", label: "소매 기장", values: [20, 21, 22, 23, 24, 25, 26], type: "highlight" },
+    { category: "E", label: "어깨 단면", values: [38, 40, 42, 44, 46, 48, 50], type: "normal" },
+    { category: "F", label: "허리 단면", values: [70, 72, 74, 76, 78, 80, 82], type: "normal" },
+    { category: "G", label: "암홀 (직선)", values: [18, 18.5, 19, 19.5, 20, 20.5, 21], type: "normal" },
+    { category: "H", label: "소매단 단면", values: [12, 12.5, 13, 13.5, 14, 14.5, 15], type: "normal" },
+    { category: "I", label: "소매통 단면", values: [14, 14.5, 15, 15.5, 16, 16.5, 17], type: "normal" },
+    { 
+      category: "J", 
+      label: "목 너비", 
+      values: Array(7).fill("디자인 선택 후 산출"), 
+      type: "disabled", 
+      colspan: 7 
+    },
+    { 
+      category: "K", 
+      label: "목 파임", 
+      values: Array(7).fill("디자인 선택 후 산출"), 
+      type: "disabled", 
+      colspan: 7 
+    }
   ];
 
+  // rows 상태: 입력값 변경 및 증감 기능을 위해 상태 관리
   const [rows, setRows] = useState(initialRows);
+  const [editable, setEditable] = useState({
+    xs: true,
+    s: false,
+    m: false,
+    l: false,
+    xl: false,
+    "2xl": false,
+    "3xl": false,
+  });
 
+  useEffect(() => {
+    // selectedSize가 null일 경우 editable 상태와 테이블 값 초기화
+    if (selectedSize === null) {
+      setEditable({
+        xs: true,
+        s: false,
+        m: false,
+        l: false,
+        xl: false,
+        "2xl": false,
+        "3xl": false,
+      });
+
+      // 테이블의 값도 초기화
+      setRows(initialRows);
+    }
+  }, [selectedSize]);
+
+  const handleCellClick = (size) => {
+    // 클릭한 사이즈를 활성화하고, 나머지 사이즈는 비활성화
+    const newEditable = { ...editable };
+    Object.keys(newEditable).forEach((key) => {
+      newEditable[key] = key === size;
+    });
+    setEditable(newEditable);
+    setSelectedSize(size);  // 선택된 사이즈 상태 업데이트
+  };
   // 텍스트 입력 변경 처리 함수
   const handleInputChange = (rowIndex, event) => {
     const newRows = [...rows];
     const newValue = event.target.value;
 
-    // 공백인 경우 0으로 처리
     const valueToUse = newValue.trim() === '' ? '0' : newValue;
 
     // 값이 숫자일 경우만 처리
     if (!isNaN(valueToUse)) {
       const numericValue = parseFloat(valueToUse);
-      // 첫 번째 값이 변경되면 나머지 값들에 대해 등차수열을 유지
       const diff = numericValue - rows[rowIndex].values[0];
       newRows[rowIndex].values = rows[rowIndex].values.map((value, index) => value + diff * index);
       newRows[rowIndex].values[0] = numericValue; // 첫 번째 값만 변경
       setRows(newRows);
     } else {
-      // 숫자가 아닌 경우 입력을 막음
       event.preventDefault();
     }
   };
 
+  // 특정 행(rowIndex)의 첫번째 값을 증감하는 로직
+  const applyDiffToRow = (rowIndex, diff) => {
+    const newRows = [...rows];
+    const currentValue = newRows[rowIndex].values[0];
+    newRows[rowIndex].values = newRows[rowIndex].values.map((value, idx) =>
+      typeof value === "number" ? value + diff * idx : value
+    );
+    newRows[rowIndex].values[0] = currentValue + diff;
+    setRows(newRows);
+  };
+
+  const handleIncrementRow = (rowIndex) => {
+    applyDiffToRow(rowIndex, 1);
+  };
+
+  const handleDecrementRow = (rowIndex) => {
+    applyDiffToRow(rowIndex, -1);
+  };
+
+  // "총 기장" 행의 인덱스 찾기
+  const totalLengthIndex = rows.findIndex((row) => row.category === "A");
+
   return (
     <div className="table-container">
-        <img style={{width:'600px'}} src="/image/size.png" alt="이미지가 없습니다"></img>
+      <div class="imgContainer">
+      {/* 상단 이미지 */}
+      <img style={{ width: "600px" }} src="/image/size.png" alt="이미지가 없습니다" />
+
+      {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+      {rows.find((row) => row.category === "A") && (
+        <div className="controller-row">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "A")}
+            rowIndex={rows.findIndex((row) => row.category === "A")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+      )}
+      </div>
+      
+  
+
+
+      
+
+      {/* 사이즈 스펙 테이블 */}
       <table className="sizespec-table">
         <thead>
           <tr>
-            <th style={{width:'150px'}} colSpan={2}>(단위 : cm)</th>
+            <th style={{ width: "150px" }} colSpan={2}>(단위 : cm)</th>
             {sizes.map((size, index) => (
-              <th key={index}
-              onClick={() => setSelectedSize(size)}
-              className={selectedSize == size ? "active" : ""}
-              style={{ cursor: "pointer" }}
+              <th
+                key={index}
+                onClick={() => setSelectedSize(size)}
+                className={selectedSize === size ? "active" : ""}
+                style={{ cursor: "pointer" }}
               >
-                {size}
+                {size && size.toLowerCase ? size.toLowerCase() : ""}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {initialRows.map((row, rowIndex) => (
+          {rows.map((row, rowIndex) => (
             <tr key={rowIndex} className={row.type}>
               <td className="category">{row.category}</td>
               <td>{row.label}</td>
@@ -74,7 +168,6 @@ function Sizespec({ selectedSize, setSelectedSize }) {
               ) : (
                 row.values.map((value, colIndex) => (
                   <td key={colIndex}>
-                    {/* 첫 번째 값만 입력창으로 바꾸고 나머지는 자동 계산 */}
                     {colIndex === 0 ? (
                       <input
                         type="text"
@@ -82,10 +175,8 @@ function Sizespec({ selectedSize, setSelectedSize }) {
                         onChange={(event) => handleInputChange(rowIndex, event)}
                         style={{ width: "30px" }}
                       />
-                    ) : typeof value ==="number" ? ( 
-                      value.toFixed(1) // 소수점 한자리까지 출력
                     ) : (
-                      value
+                      typeof value === "number" ? value.toFixed(1) : value
                     )}
                   </td>
                 ))
@@ -94,8 +185,10 @@ function Sizespec({ selectedSize, setSelectedSize }) {
           ))}
         </tbody>
       </table>
+
+      {/* SizeController를 별도로 사용하지 않고, "총 기장" 컨트롤러는 위에서 따로 관리 */}
     </div>
   );
-};
+}
 
 export default Sizespec;
