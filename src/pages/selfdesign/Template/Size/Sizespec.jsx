@@ -120,10 +120,10 @@ function Sizespec({ selectedSize, setSelectedSize }) {
       <div class="imgContainer">
       {/* 상단 이미지 */}
       <img style={{ width: "600px" }} src="/image/size.png" alt="이미지가 없습니다" />
-
+      
       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
       {rows.find((row) => row.category === "A") && (
-        <div className="controller-row">
+        <div className="controller-rowA">
           <SizeControllerRow
             row={rows.find((row) => row.category === "A")}
             rowIndex={rows.findIndex((row) => row.category === "A")}
@@ -131,7 +131,106 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             onDecrement={handleDecrementRow}
           />
         </div>
+        
       )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "B") && (
+        <div className="controller-rowB">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "B")}
+            rowIndex={rows.findIndex((row) => row.category === "B")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "C") && (
+        <div className="controller-rowC">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "C")}
+            rowIndex={rows.findIndex((row) => row.category === "C")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "D") && (
+        <div className="controller-rowD">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "D")}
+            rowIndex={rows.findIndex((row) => row.category === "D")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "E") && (
+        <div className="controller-rowE">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "E")}
+            rowIndex={rows.findIndex((row) => row.category === "E")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       
+       {/* {rows.find((row) => row.category === "F") && ( 허리단면 부분
+        <div className="controller-rowF">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "F")}
+            rowIndex={rows.findIndex((row) => row.category === "F")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )} */}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "G") && (
+        <div className="controller-rowG">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "G")}
+            rowIndex={rows.findIndex((row) => row.category === "G")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "H") && (
+        <div className="controller-rowH">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "H")}
+            rowIndex={rows.findIndex((row) => row.category === "H")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+      )}
+       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
+       {rows.find((row) => row.category === "I") && (
+        <div className="controller-rowI">
+          <SizeControllerRow
+            row={rows.find((row) => row.category === "I")}
+            rowIndex={rows.findIndex((row) => row.category === "I")}
+            onIncrement={handleIncrementRow}
+            onDecrement={handleDecrementRow}
+          />
+        </div>
+        
+        
+      )}
+      
       </div>
       
   
