@@ -36,7 +36,7 @@ const Clothes = () => {
           <Sidebar activePage={1} />
           </aside>
         <div className="content1">
-          <BreadCrumb />
+          <BreadCrumb activePage={1}/>
           <h3>1.의류 선택</h3>
           <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
           <ItemsContainer

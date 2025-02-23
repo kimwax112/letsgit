@@ -13,3 +13,7 @@ export { default as ItemsContainer} from './ItemsContainer/ItemsContainer';
 export { default as BreadCrumb} from './BreadCrumb/BreadCrumb';
 export { default as NextButtonWithPopup} from './Popup/NextButtonWithPopup';
 export { default as FabricItem} from './FabfricItem/FabricItem';
+export { default as ColorPicker} from './ColorPicker/ColorPicker';
+export { default as FixedColorPicker } from './ColorPicker/FixedColorPicker';
+export { default as SizeControllerRow} from './SizeController/SizeControllerRow';
+export { default as  SizeController} from './SizeController/SizeController';

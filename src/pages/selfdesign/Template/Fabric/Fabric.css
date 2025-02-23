@@ -188,7 +188,8 @@
   gap: 20px;
   justify-content: flex-start; /* 왼쪽 정렬 */
   margin: 20px;
-  max-width: 1500px; /* 컨테이너 최대 너비 제한 */
+  margin-left: 50px;
+  max-width: 1000px; /* 컨테이너 최대 너비 제한 */
 }
 
 .fabric-item {
@@ -262,7 +263,33 @@
     padding-right: 30px;
     width: 1220px;
 }
+.item-and-color-container {
+  display: flex;
+  align-items: flex-start; /* FabricItem과 ColorSelect를 수직 정렬 */
+  gap: 20px; /* 양쪽 사이 간격 */
+}
 
-.design-step{
-  
+.ColorSelect {
+  width: 50%;      /* FabricItem과 같은 너비로 */
+  background-color: #f0f0f0; /* 배경색 (원하는 색상으로 변경 가능) */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding : 16px;
+}
+
+.color-select-row {
+  display: flex;
+  align-items: center;   /* 수직 가운데 정렬 */
+  justify-content: space-between;
+  gap: 8px;             /* 텍스트와 컬러피커 사이 간격 */
+  margin-bottom: 10px;  /* 줄 간 간격 */
+}
+
+
+.color-select-row .fabric-name {
+  margin-right: 10px;
+  font-weight: bold;
 }

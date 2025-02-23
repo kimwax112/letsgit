@@ -1,5 +1,5 @@
+// FabricItem 선택 함수 컴포넌트 
 import React from "react";
-import ColorPicker from "../ColorPicker/ColorPicker";
 import "./FabricItem.css";
 
 
@@ -18,12 +18,12 @@ function FabricItem({ fabricItemsData, selectedIds, onClickItem }) {
               <img src="/image/cotton.png" alt="원단 이미지" />
             </div>
             <p className="fabric-name">{item.name}</p>
-            <ColorPicker
+            {/* <ColorPicker
               initialColor={item.initialColor}
               onColorChange={(newColor) =>
                 console.log(`Fabric item ${item.id} 새 색상: ${newColor}`)
               }
-            />
+            /> */}
             <p className="fabric-desc">{item.desc}</p>
           </div>
         );
