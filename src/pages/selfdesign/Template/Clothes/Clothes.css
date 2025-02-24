@@ -80,7 +80,7 @@
   margin-right: auto;
 }
 
-.layout1 .content1 {
+.layout1 .content1 { /*Template 전역스타일*/
   margin-left: 15px;
   margin-right: 15px;
   margin-top: 18px;
@@ -90,14 +90,9 @@
   padding-left: -50px;
   background: #fff;
   border-radius: 10px; /* 모서리 둥글게 */
-  width: 80%;
+  width: 60%;
   max-width: 100%; /* 최대 너비 설정 */
   height: 1000px;
 }
 
-/* 하단 버튼 */
-.footer {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-}
+

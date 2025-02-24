@@ -164,16 +164,7 @@
   padding: 1rem 2rem;
 }
 
-.footer button {
-  padding: 0.7rem 1.5rem;
-  background-color: #74a3c7;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+
 .footer.button_size { /* CosMain/Clothes/Fabric/Size 밑에 세개 버튼 속성*/ 
   justify-content: center;
   align-items: center;      /* 수직 가운데 정렬 */

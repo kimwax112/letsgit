@@ -128,6 +128,10 @@
   justify-content: flex-end;
 }
 
+.closebtn{
+  margin-top: 15px;
+}
+
 .deleteButton, .uploadButton {
   padding: 5px 10px;
   border: none;
@@ -217,4 +221,29 @@
   color: white;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* 그림판 팝업 스타일*/
+.canvasPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.canvasPopupContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%; /* 팝업의 크기 조정 */
+  max-width: 1050px;
+  max-height: 800px;
+  text-align: center;
+  position: relative;
 }

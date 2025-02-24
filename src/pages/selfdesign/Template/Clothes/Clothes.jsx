@@ -35,26 +35,25 @@ const Clothes = () => {
         <aside className="sidebar">
           <Sidebar activePage={1} />
           </aside>
-      <div className="content1">
-      <BreadCrumb />
-      <h3>1.의류 선택</h3>
-      <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ItemsContainer
-        items={items}
-        activeTab={categories[activeTab]}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        
-      />
-      
-      <NextButtonWithPopup selectedItems={selectedItems}
-       nextRoute="/fabric" />
+        <div className="content1">
+          <BreadCrumb />
+          <h3>1.의류 선택</h3>
+          <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
+          <ItemsContainer
+          items={items}
+          activeTab={categories[activeTab]}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}/>
+          <div className="footer">
+          <NextButtonWithPopup selectedItems={selectedItems}
+          nextRoute="/fabric" />
+          </div>      
        
       
-          </div>
+        </div>
           
-        </div>
-        </div>
+       </div>
+    </div>
       
   );
 };
