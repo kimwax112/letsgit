@@ -15,7 +15,7 @@ function FabricItem({ fabricItemsData, selectedIds, onClickItem }) {
             onClick={() => onClickItem(item.id)}
           >
             <div className="fabric-image">
-              <img src={item.imageSrc} alt="원단 이미지" />
+              <img src="/image/cotton.png" alt="원단 이미지" />
             </div>
             <p className="fabric-name">{item.name}</p>
             <ColorPicker
