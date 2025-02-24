@@ -49,21 +49,6 @@ const Fabric = () => {
           <Sidebar activePage={2} />
         </aside>
         <div className="content1">
-<<<<<<< HEAD
-          <BreadCrumb activePage={2}/>
-          <h3>2. 원단 선택</h3>
-          {/* FabricItem 컴포넌트에 상태와 클릭 핸들러 전달 */}
-          <FabricItem
-            fabricItemsData={fabricItemsData}
-            selectedIds={selectedIds}
-            onClickItem={handleClickItem}
-          />
-          <div className="footer">
-          {/* NextButtonWithPopup 컴포넌트를 상위에서 사용 */}
-          <NextButtonWithPopup selectedItems={selectedItems}
-           nextRoute="/Size" />
-           </div>
-=======
           <BreadCrumb activePage={2} />
           <h3>2. 원단 선택</h3>
           <div className="item-and-color-container">
@@ -90,7 +75,6 @@ const Fabric = () => {
           <div className="footer">
             <NextButtonWithPopup selectedItems={selectedNames} nextRoute="/Size" />
           </div>
->>>>>>> 6631404d5dcaf12a8d53cc2b73c93976daea28b3
         </div>
       </div>
     </div>
