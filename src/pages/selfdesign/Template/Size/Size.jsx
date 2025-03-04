@@ -33,10 +33,7 @@ const Size = () => {
             <Sidebar activePage={3} />
           </aside>
        
-
-
       <div className="content1">
-        
           <BreadCrumb activePage={3} />
           <h3>3. 사이즈 스펙 입력</h3>
           <hr />
