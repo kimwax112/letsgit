@@ -29,7 +29,7 @@ const Size = () => {
       
     <div className="layout1">
       <div className="layout1">
-          <aside className="sidebar">
+          <aside>
             <Sidebar activePage={3} />
           </aside>
        
@@ -38,9 +38,9 @@ const Size = () => {
       <div className="content1">
         
           <BreadCrumb activePage={3} />
-          <h3>사이트 제공 템플릿으로 디자인</h3>
-          <h2>3.사이즈 스펙 선택</h2>
-          <br></br>
+          <h3>3. 사이즈 스펙 입력</h3>
+          <hr />
+          <br/><br/>
 
         <Sizespec selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
         <div className="footer button_size">

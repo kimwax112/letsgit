@@ -95,4 +95,13 @@
   height: 1000px;
 }
 
+.content1 h3 {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #799FC4;
+  font-size: 25px;
+}
 
+.content1 hr {
+  border: 0; /* 기본 테두리 제거 */
+  border-top: 0.5px solid #799FC4; /* 상단 테두리만 추가 */
+}

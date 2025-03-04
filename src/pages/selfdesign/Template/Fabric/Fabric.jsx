@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import "./Fabric.css"; // 별도의 CSS 파일
-import { Sidebar, BreadCrumb, FabricItem, ColorPicker, FixedColorPicker } from "../../../../components";
+import "./Fabric.css";
+import { Sidebar, BreadCrumb, FabricItem, FixedColorPicker } from "../../../../components";
 import NextButtonWithPopup from "../../../../components/Popup/NextButtonWithPopup";
 
-
-
-// 예시 원단 데이터 (id 값은 중복되지 않도록 수정)
+// 원단 데이터
 const fabricItemsData = [
   { id: 1, imageSrc: "default-image-path1.jpg", name: "면", desc: "티셔츠, 맨투맨, 후드 집업, 모든 의류에 적합합니다.", initialColor: "#0099ff" },
   { id: 2, imageSrc: "default-image-path2.jpg", name: "폴리에스터", desc: "상의, 내구성이 좋고 관리가 쉽습니다.", initialColor: "#00ccff" },
@@ -22,10 +20,19 @@ const fabricItemsData = [
 ];
 
 const Fabric = () => {
-  // 원단을 클릭해서 선택된 원단 객체들을 배열로 관리 (클릭 순서 유지)
   const [selectedItems, setSelectedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // 아이템 클릭 시 선택/해제 처리 (이미 선택된 경우 제거, 아니면 추가)
+  // 첫 페이지에서는 8개, 두 번째 페이지에서는 4개씩
+  const itemsPerPageFirst = 8;
+  const itemsPerPageSecond = 4;
+
+  // 현재 페이지에 맞는 원단 필터링
+  const filteredItems = currentPage === 1 
+    ? fabricItemsData.slice(0, itemsPerPageFirst) 
+    : fabricItemsData.slice(itemsPerPageFirst, itemsPerPageFirst + itemsPerPageSecond);
+
+  // 아이템 클릭 시 선택/해제
   const handleClickItem = (id) => {
     setSelectedItems((prev) => {
       const isSelected = prev.some((item) => item.id === id);
@@ -38,47 +45,60 @@ const Fabric = () => {
     });
   };
 
-  // 팝업에 전달할 "선택된 원단 이름" 배열
+  // 선택된 원단 이름 배열
   const selectedNames = selectedItems.map((item) => item.name);
 
   return (
     <div className="clothes-container">
       <div className="layout1">
-        <aside className="sidebar">
-          {/* Sidebar는 activePage에 따라 다르게 표시 */}
+        <aside>
           <Sidebar activePage={2} />
         </aside>
         <div className="content1">
           <BreadCrumb activePage={2} />
-          <h3>2. 원단 선택</h3>
-          <div className="item-and-color-container">
-            {/* FabricItem 컴포넌트에 원단 데이터와 선택 상태, 클릭 핸들러 전달 */}
+          <h3>2-1. 원단 선택</h3>
+          <hr />
+  
+          {/* 원단 선택 영역 */}
+          <div className="fabric-select">
             <FabricItem
-              fabricItemsData={fabricItemsData}
+              fabricItemsData={filteredItems}
               selectedIds={selectedItems.map((item) => item.id)}
               onClickItem={handleClickItem}
             />
-            {/* ColorSelect 영역: 선택된 원단들을 한 행씩 표시하고, 각 줄에 ColorPicker 배치 */}
-            <div className="ColorSelect">
-              {selectedItems.length > 0 ? (
-                selectedItems.map((fabricItem) => (
-                  <div key={fabricItem.id} className="color-select-row">
-                    <span className="fabric-name">{fabricItem.name}</span>
-                    <div class="FixedColorPicker"><FixedColorPicker /></div>
-                  </div>
-                ))
-              ) : (
-                <div>아직 선택된 원단이 없습니다.</div>
-              )}
-            </div>
           </div>
+  
+          {/* 페이지 버튼 */}
+          <div className="pagination">
+            <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>[1]</button>
+            <button onClick={() => setCurrentPage(2)} disabled={currentPage === 2}>[2]</button>
+          </div>
+  
+          <h3>2-2. 색상 선택</h3>
+          <hr />
+  
+          {/* Color Picker 영역 */}
+          <div className="ColorSelect">
+            {selectedItems.length > 0 ? (
+              selectedItems.map((fabricItem) => (
+                <div key={fabricItem.id} className="color-select-row">
+                  <span className="fabric-name">{fabricItem.name}</span>
+                  <div className="FixedColorPicker"><FixedColorPicker /></div>
+                </div>
+              ))
+            ) : (
+              <div>아직 선택된 원단이 없습니다.</div>
+            )}
+          </div>
+  
+          {/* 다음 페이지 이동 버튼 */}
           <div className="footer">
             <NextButtonWithPopup selectedItems={selectedNames} nextRoute="/Size" />
           </div>
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default Fabric;

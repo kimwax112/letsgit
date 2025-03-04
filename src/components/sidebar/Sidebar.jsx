@@ -9,10 +9,17 @@ const Sidebar = ({ activePage }) => {
         <h3>사이트 제공 템플릿으로 디자인</h3>
         <hr />
         <ul>
-          <li className={activePage === 1 ? "active" : ""}>1. 의류 종류 선택</li>
-          <li className={activePage === 2 ? "active" : ""}>2. 원단 선택</li>
-          <li className={activePage === 3 ? "active" : ""}>3. 사이즈 스펙 입력</li>
-          <li className={activePage === 4 ? "active" : ""}>4. 최종 확인</li>
+          {[ "의류 종류 선택", "원단 선택", "사이즈 스펙 입력", "최종 확인" ].map((text, index) => {
+            const stepNumber = index + 1;
+            return (
+              <li key={stepNumber} className={activePage === stepNumber ? "active" : ""}>
+                <span className={`step-circle ${activePage === stepNumber ? "filled" : ""}`}>
+                  {stepNumber}
+                </span>
+                {text}
+              </li>
+            );
+          })}
         </ul>
       </aside>
     </div>
