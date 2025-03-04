@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation } from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting} from "./pages";
 
 const RouterComponent = () => {
   return (
@@ -13,6 +13,8 @@ const RouterComponent = () => {
       <Route path="/Size" element={<Size />} />
       <Route path="/Upload" element={<Upload />} />
       <Route path="/FinalConfirmation" element={<FinalConfimation />} />
+      <Route path="/Request" element={<Request />} />
+      <Route path="/RequestWriting" element={<RequestWriting />} /> 
     </Routes>
   );
 };

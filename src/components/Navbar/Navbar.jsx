@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 
+
+
+
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -52,13 +56,10 @@ const Navbar = () => {
           </div>
           <div className="dropdown-section">
             <h3>제작 의뢰 맡기기</h3>
-            <Link to="/request" onClick={() => setIsMenuOpen(false)}>
-              의뢰 등록하기
-            </Link>
             <Link to="/designer" onClick={() => setIsMenuOpen(false)}>
               디자이너 고르기
             </Link>
-            <Link to="/recruit" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/Request" onClick={() => setIsMenuOpen(false)}>
               디자이너 구인 게시판
             </Link>
           </div>

@@ -22,7 +22,7 @@ const Content = () => {
                 디자인 이름<span className="required">*</span>
             </label>
             <br />
-            <input type="text" placeholder="디자인 이름 입력" />
+            <input type="text" placeholder="디자인 이름 입력" className="finalInput" />
 
             <div className="options">
                 <p>원단</p>

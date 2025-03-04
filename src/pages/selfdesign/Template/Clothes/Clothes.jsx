@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Clothes.css";
-import {useNavigate} from "react-router-dom";
 import {Sidebar,Tabs,ItemsContainer,BreadCrumb,NextButtonWithPopup} from '../../../../components'
 
 
@@ -17,7 +16,7 @@ const items = {
 
 
 const Clothes = () => {
-  const navigate = useNavigate();
+  
   const categories = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방"];
   const [activeTab, setActiveTab] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);

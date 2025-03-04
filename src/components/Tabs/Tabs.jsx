@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+//clothes 페이지에 사용한 상의,하의 카테고리 탭 컴포넌트
 const TabsWrapper = styled.ul`
   display: flex;
   width: 1171px;

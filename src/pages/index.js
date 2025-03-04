@@ -7,3 +7,5 @@ export { default as Fabric} from './selfdesign/Template/Fabric/Fabric';
 export { default as Size} from './selfdesign/Template/Size/Size';
 export { default as Upload } from './selfdesign/Upload/Upload';
 export { default as FinalConfimation } from './selfdesign/Template/FinalConfirmation/FinalConfirmation';
+export {default as Request} from './requestproduct/Request/Request';
+export {default as RequestWriting} from './requestproduct/Request/RequestWriting';

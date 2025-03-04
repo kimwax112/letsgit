@@ -2,7 +2,7 @@ export {default as Navbar} from './Navbar/Navbar';
 export { default as Carousel}  from './Carousel/Carousel';
 export { default as Carousel2 } from './Carousel/Carousel2';
 export { default as SideMenu } from './sidebar/SideMenu';
-export { default as SearchBar2 } from './sidebar/SearchBar2'
+export { default as SearchBar2 } from './SearchBar/SearchBar2'
 export { default as BrandDesignSearch} from './BrandDesign/BrandDesignSearch';
 export { default as Content } from  './Content/Content';
 export { default as Sidebar} from './sidebar/Sidebar';
@@ -17,3 +17,12 @@ export { default as ColorPicker} from './ColorPicker/ColorPicker';
 export { default as FixedColorPicker } from './ColorPicker/FixedColorPicker';
 export { default as SizeControllerRow} from './SizeController/SizeControllerRow';
 export { default as  SizeController} from './SizeController/SizeController';
+export { default as ItemBox} from './ItemBox/ItemBox';
+export { default as NextButtonUI} from './NextButton/NextButton';
+export { default as TextInputUI} from './TextInputUI/TextInputUI';
+export { default as DropDown } from './DropDown/DropDown';
+export { default as Tag} from './Tag/Tag';
+export {default as ImageUploader} from './ImageUploader/ImageUploader';
+export { default as MyEditor} from './MyEditor/MyEditor';
+export { default as RequestPopup} from './RequestPopup/RequestPopup';
+export { default as Button} from './Button/Button';

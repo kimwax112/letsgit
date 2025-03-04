@@ -1,8 +1,10 @@
 // NextButtonUI.jsx
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.button`
+  type: "button";
   width: 120px;
   height: 40px;
   margin-top: 20px;
@@ -14,14 +16,21 @@ const Button = styled.button`
   cursor: pointer;
   border-radius: 20px;
   text-align: center;
-
+  color: white;
   &:hover {
     background-color: #bbb;
   }
 `;
 
-const NextButtonUI = ({ onClick }) => {
-  return <Button onClick={onClick}>다음</Button>;
+const NextButtonUI = ({to, onClick, children}) => {
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+    if (onClick) onClick();
+    if (to) navigate(to)
+  }
+
+  return <Button type="button" onClick={handleClick}>{children}</Button>;
 };
 
 export default NextButtonUI;
