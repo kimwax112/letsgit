@@ -3,16 +3,16 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = styled.button`
-  width: 120px;
+  width: 200px;
   height: 40px;
-  margin-top: 20px;
+  margin-top: 5px;
   padding: 10px 20px;
   border: none;
   background-color: #9dbbd5;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: 10px;
   text-align: center;
 
   &:hover {

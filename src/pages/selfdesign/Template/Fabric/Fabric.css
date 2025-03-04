@@ -253,16 +253,19 @@
   max-width: 100%;       /* 내용 텍스트 왼쪽 정렬 */
 }
 
-.content1{
+.content1 {
   flex: 1;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px; /* 모서리 둥글게 */
-    margin: 0 auto;
-    margin-left: 15px;
-    padding-right: 30px;
-    width: 1220px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-left: 15px;
+  padding-right: 30px;
+  width: 1220px;
+  height: 1350px !important; /* 높이를 800px로 설정 */
 }
+
+
 .item-and-color-container {
   display: flex;
   align-items: flex-start; /* FabricItem과 ColorSelect를 수직 정렬 */
@@ -278,6 +281,7 @@
   flex-direction: column;
   gap: 10px;
   padding : 16px;
+  margin-top: 25px;
 }
 
 .color-select-row {
@@ -292,4 +296,8 @@
 .color-select-row .fabric-name {
   margin-right: 10px;
   font-weight: bold;
+}
+
+.pagination {
+  margin-left: 500px;
 }

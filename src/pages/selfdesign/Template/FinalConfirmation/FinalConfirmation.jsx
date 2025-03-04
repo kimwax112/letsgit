@@ -10,13 +10,14 @@ const FinalConfirmation = () => {
     return (
       <div className="clothes-container">
         <div className="layout1">
-          <aside className="sidebar">
+          <aside>
           <Sidebar activePage={4}/>
           </aside>
           <div className="content1">
             <BreadCrumb activePage={4} />
-          <h3>사이트 제공 템플릿으로 디자인</h3>
-          <h2>4.최종확인</h2>
+              <h3>4. 최종 확인</h3>
+              <hr />
+              <br/><br/>
           <Content/>
           </div>  
         </div>

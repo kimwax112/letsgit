@@ -32,12 +32,14 @@ const Clothes = () => {
 
       {/* 디자인 단계 */}
       <div className="layout1">
-        <aside className="sidebar">
-          <Sidebar activePage={1} />
+        <aside>
+          <Sidebar activePage={1} />  
           </aside>
         <div className="content1">
           <BreadCrumb activePage={1}/>
-          <h3>1.의류 선택</h3>
+          <h3>1. 의류 종류 선택</h3>
+          <hr/>
+          <br/>
           <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
           <ItemsContainer
           items={items}
@@ -48,13 +50,9 @@ const Clothes = () => {
           <NextButtonWithPopup selectedItems={selectedItems}
           nextRoute="/fabric" />
           </div>      
-       
-      
-        </div>
-          
+        </div>          
        </div>
-    </div>
-      
+    </div>  
   );
 };
 
