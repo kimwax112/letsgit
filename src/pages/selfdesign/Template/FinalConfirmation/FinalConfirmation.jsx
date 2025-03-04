@@ -3,8 +3,6 @@ import "./FinalConfirmation.css";
 import "../../../CosMain/CosMainCss.css"
 import { Sidebar,Content,BreadCrumb } from '../../../../components'
 
-
-
 const FinalConfirmation = () => {
   
     return (
@@ -18,7 +16,7 @@ const FinalConfirmation = () => {
               <h3>4. 최종 확인</h3>
               <hr />
               <br/><br/>
-          <Content/>
+            <Content/>
           </div>  
         </div>
       </div>
