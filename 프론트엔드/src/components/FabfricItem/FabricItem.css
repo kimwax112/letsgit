@@ -1,0 +1,21 @@
+.fabric-item {
+  background-color: white !important; /* 기본 배경 흰색 강제 적용 */
+  width: 150px;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  transition: background-color 0.3s ease; /* 부드러운 색 변화 */
+}
+
+.fabric-item.selected {
+  background-color: #74a3c7 !important; /* 선택되었을 때 배경색 변경 */
+  color: white; /* 글씨색 변경 (가독성) */
+}
+
+.fabric-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 비율을 유지하며 잘 맞춰줌 */
+}
