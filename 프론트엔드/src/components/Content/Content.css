@@ -87,7 +87,7 @@ input[type="text"] {
 }
 
   th {
-    background-color: #737373; /* 헤더 배경 색상 (파란색으로 설정, 원하는 색으로 변경 가능) */
+    background-color: #9DBBD5; /* 헤더 배경 색상 (파란색으로 설정, 원하는 색으로 변경 가능) */
     color: white; /* 텍스트 색상을 흰색으로 설정 */
     padding: 10px; /* 셀 안쪽 여백 */
     text-align: center; /* 텍스트 가운데 정렬 */
@@ -99,14 +99,14 @@ td {
 }
 
 td:nth-child(1) {
-    background-color: #737373;
+    background-color: #9DBBD5;
     color: white; 
     padding: 10px;
     text-align: center; 
   }
   
   td:nth-child(2) {
-    background-color: #737373;
+    background-color: #9DBBD5;
     color: white; 
     padding: 10px;
     text-align: center; 
