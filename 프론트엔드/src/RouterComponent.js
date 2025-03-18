@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting,RequestPost,Designer} from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer} from "./pages";
 import Home from "./pages/Home";
 const RouterComponent = () => {
   return (
