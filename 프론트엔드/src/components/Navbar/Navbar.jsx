@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FiMenu } from "react-icons/fi"; // 햄버거 아이콘 추가
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -21,9 +22,9 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <nav className="nav-menu">
-        {/* 전체 메뉴 버튼 */}
+        {/* 햄버거 메뉴 아이콘 */}
         <button className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          전체 메뉴
+          <FiMenu size={35} color="white" /> {/* 아이콘 크기와 색상 설정 */}
         </button>
 
         {/* 기본 메뉴 */}
