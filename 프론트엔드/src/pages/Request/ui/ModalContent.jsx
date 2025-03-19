@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import closeIcon from "../../../assets/휴지통.png"; // 버튼에 사용할 이미지
+import closeIcon from "../../../assets/휴지통.png"; // 버튼에 사용할 이미지
 import { Modal } from '../../../utils';
 import deleteIcon from '../../../assets/delete.png';
 const Container = styled.button`

@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting,RequestPost,Designer} from "./pages";
 import Home from "./pages/Home";
+import MyPage from "./pages/MyPage/MyPage";
+
 const RouterComponent = () => {
   return (
     <Routes>
@@ -18,6 +20,7 @@ const RouterComponent = () => {
       <Route path="/RequestPost" element={<RequestPost/>} />
       <Route path="/Designer" element={<Designer/>} />
       <Route path="/Home" element={<Home />} />
+      <Route path="/MyPage" element={<MyPage />} />
     </Routes>
   );
 };
