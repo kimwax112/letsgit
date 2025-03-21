@@ -17,9 +17,9 @@ const ImageUpload = ({ onUploadSuccess }) => {
     try {
       await uploadImage(file);
       alert("이미지 업로드 성공!");
-      onUploadSuccess(); // 업로드 후 목록 갱신
+      {/*onUploadSuccess();*/} // 업로드 후 목록 갱신 이미지업로드 성공 뒤 이미지업로드실패떠서 이거 주석처리해놓음
     } catch (error) {
-      alert("이미지 업로드 실패!");
+      alert("이미지 업로드 실패?");
     }
   };
 

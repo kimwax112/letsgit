@@ -3,8 +3,12 @@ import "../../CosMain/CosMainCss.css";
 import "./Upload.css";
 import { Edit } from "./UploadClick"; // Edit 컴포넌트 불러오기
 import Canvas from "../../../components/Canvas/Canvas";
+import { uploadImage } from "d:/frontclone/letsgit/front/src/services/api";
 
-export default function Upload() {
+
+
+
+export default function Upload({ onUploadSuccess }) {
   const [fileBoxes, setFileBoxes] = useState([
     { id: 1, fileName: "파일을 올려주세요", showEdit: false, image: null }
   ]);
@@ -12,7 +16,31 @@ export default function Upload() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false); // 그림판 팝업 상태 관리
+  const [file, setFile] = useState(null);
+  const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+  const handleImageClick = (file) => {
+    setSelectedImage(file.image); // 선택한 파일의 이미지 데이터를 저장
+  };
+  const handleUpload2 = async () => {
+    if (!file) {
+      alert("파일을 선택하세요!");
+      return;
+    }
+
+    try {
+      await uploadImage(file);
+      alert("이미지 업로드 성공!");
+      {/*onUploadSuccess();*/} // 업로드 후 목록 갱신 이거 실패하는것같아서 주석처리함요
+    } catch (error) {
+      alert("이미지 업로드 실패!");
+    }
+  };
+  
   // FileBox를 최대 3개까지만 생성하도록 제한
   const addFileBox = () => {
     if (fileBoxes.length < 3) {
@@ -50,6 +78,7 @@ export default function Upload() {
               : fileBox
           )
         );
+        setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -118,18 +147,22 @@ export default function Upload() {
                               accept="image/*" 
                               style={{ display: "none" }} 
                               id={`upload-${file.id}`}
-                              onChange={(event) => handleUpload(event, file.id)}
+                              onChange={(event) => {handleUpload(event, file.id); handleFileChange(event);}}
                             />
-                            <button className="uploadButton" onClick={() => document.getElementById(`upload-${file.id}`).click()}>
-                              업로드
+                            <button className="uploadButton" onClick={() => {document.getElementById(`upload-${file.id}`).click(); setSelectedImage(file.image);}}>
+                              선택
                             </button>
+                            <div>
+                              {/*<input type="file" onChange={handleFileChange} />*/}
+                              <button onClick={() => {handleUpload2()}} >이미지 업로드</button>
+                            </div>
                             {/* 그림판 버튼 추가 */}
                             <button className="canvasButton" onClick={() => setShowCanvas(true)}>
                               그림판
                             </button>
                           </div>
                         </div>
-                        <Edit show={file.showEdit} toggleEdit={() => toggleEdit(file.id)} image={file.image} />
+                        <Edit show={file.showEdit} toggleEdit={() => toggleEdit(file.id)} image={file.image}  />
                       </div>
                     ))
                   ) : (
@@ -157,13 +190,13 @@ export default function Upload() {
         
         {/* 그림판 팝업 */}
         {showCanvas && (
-          <div className="canvasPopup">
-            <div className="canvasPopupContent">
-              <Canvas />
-              <button className="closebtn" onClick={() => setShowCanvas(false)}>닫기</button> {/* 닫기 버튼 추가 */}
-            </div>
-          </div>
-        )}
+  <div className="canvasPopup">
+    <div className="canvasPopupContent">
+      <Canvas backgroundImage={selectedImage} /> {/* 선택한 이미지 배경 적용 */}
+      <button className="closebtn" onClick={() => setShowCanvas(false)}>닫기</button>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

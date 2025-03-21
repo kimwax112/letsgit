@@ -44,7 +44,17 @@ const Canvas = ({ backgroundImage,imageSrc }) => {
       };
     }
   }, [imageSrc, context]);
-
+  useEffect(() => {
+    if (backgroundImage && context) {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = backgroundImage;  // 수정: 직접 이미지 URL을 받도록 함
+      img.onload = () => {
+        context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        context.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height);
+      };
+    }
+  }, [backgroundImage, context]);
 
   const startDrawing = (e) => {
     const { left, top } = canvasRef.current.getBoundingClientRect();
