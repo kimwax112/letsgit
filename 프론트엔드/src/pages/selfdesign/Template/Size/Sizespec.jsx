@@ -233,10 +233,6 @@ function Sizespec({ selectedSize, setSelectedSize }) {
       
       </div>
       
-  
-
-
-      
 
       {/* 사이즈 스펙 테이블 */}
       <table className="sizespec-table">

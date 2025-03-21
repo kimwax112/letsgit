@@ -12,10 +12,12 @@ const FinalConfirmation = () => {
           <Sidebar activePage={4}/>
           </aside>
           <div className="content1">
-            <BreadCrumb activePage={4} />
-              <h3>4. 최종 확인</h3>
-              <hr />
-              <br/><br/>
+            <div className="header2-1">
+                <BreadCrumb activePage={4} />
+                <h3>4. 최종 확인</h3>
+                <hr />
+                <br/><br/>
+            </div>
             <Content/>
           </div>  
         </div>
