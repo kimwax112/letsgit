@@ -148,34 +148,74 @@ body{
 }
 
 .DesignerPortfolio-Sell{
-    width: 100%;
-    max-width: 1500px;
+    width: 100%;  /* 전체 페이지 너비로 확장 */
     height: 687px;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
-.DesignerPortfolio-Sell2{
-    margin: 10px auto;
-    border: none; 
+.DesignerPortfolio-Sell2 {
+    margin: 15px auto;
+    border: none;
     text-align: center;
-    display: flex;  
-    flex-wrap: wrap; 
-    justify-content: space-between; 
-    align-items: center; 
+    display: flex;
+    flex-wrap: wrap;  /* 여러 줄로 나눔 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center;
+    gap: 70px;
 }
 
 .RecommendedDesign-Sell{
-    width: 1920px;
-    max-width: 1500px;
+    width: 100%; /* 전체 페이지 너비로 확장 */
     height: 624px;
     background-color: #E4E9EF;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+.RecommendedDesign-Sell2{
+    margin-left: 150px;
 }
 
 .RecommendedDesign-Sell3 {
-    display: flex-end;
-}
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    overflow-y: hidden; /* 세로 스크롤도 숨김 */
+    display: flex;
+    cursor: grab;
+    height: 400px; /* 높이 조정 (원하는 크기로 변경 가능) */
+    align-items: center; /* 아이템을 중앙 정렬 */
+    margin-left: 40px;
+  }
+  
+  .RecommendedDesign-Sell3-Container {
+    display: flex;
+    gap: 20px; /* 카드 간격 */
+    transition: scroll-left 0.3s ease; /* 부드러운 스크롤 */
+  }
+  
+  .RecommendedDesign-Sell3:active {
+    cursor: grabbing;
+  }  
+  
+  .RecommendedDesign-Sell3::-webkit-scrollbar {
+    height: 20px; /* 스크롤바 높이 */
+  }
+  
+  .RecommendedDesign-Sell3::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .RecommendedDesign-Sell3::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  
+  .Recomm-title {
+    color: #727578;
+  }  
 
 .Recomm-title{
     color: #727578;
@@ -183,19 +223,26 @@ body{
 
 
 .Content-Sell h2{
-    font-family: 'DoHyeon';
-    src: url('/src/fonts/DoHyeon/DoHyeon-Regular.ttf') format('truetype');
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Bold.woff2') format('woff2');
+    font-size: 1.8em;
+    margin-bottom: 3px;
 }
+
 .Content-Sell p{
-    font-family: 'Noto Sans KR';
-    src: url('/src/fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Medium.woff2') format('woff2');
+    font-size: 1.125em;
 }
 
 .DesignerPortfolio-Sell h2{
-    font-family: 'DoHyeon';
-    src: url('/src/fonts/DoHyeon/DoHyeon-Regular.ttf') format('truetype');
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Bold.woff2') format('woff2');
+    font-size: 1.8em;
 }
+
 .DesignerPortfolio-Sell p{
-    font-family: 'Noto Sans KR';
-    src: url('/src/fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf') format('truetype');
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Medium.woff2') format('woff2');
+    font-size: 1.125em;
 }

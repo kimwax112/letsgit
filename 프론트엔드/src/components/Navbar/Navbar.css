@@ -1,6 +1,6 @@
 .body{
-  font-family: 'DoHyeon';
-  src: url('/src/fonts/DoHyeon/DoHyeon-Regular.ttf') format('truetype');
+  font-family: 'Pretendard';
+  src: url('/src/fonts/Pretendard/pretendard.css') format('woff2');
 }
 
 .navbar {
@@ -21,8 +21,6 @@
 .menu-btn {
   background: none;
   border: none;
-  font-size: 20px;
-  font-weight: bold;
   color: white;
   cursor: pointer;
   white-space: nowrap;
@@ -38,12 +36,14 @@
 .nav-links {
   display: flex;
   gap: 2rem;
+  letter-spacing: 0.1em;
 }
 
 .nav-links a {
   text-decoration: none;
   color: white;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .nav-links a:hover {

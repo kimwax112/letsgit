@@ -14,14 +14,14 @@ export default function Mainp() {
         <div className='divm-wrapper'>
           <div className='divm'>
             <img src="image/image51.png" alt="이미지가 없습니다"></img>
-            <p style={{top: '20px', position:'relative', fontWeight:"bold", color:"#fff"}}>
+            <p style={{top: '20px', position:'relative', fontWeight:"bold", color:"#fff", fontSize:'25px'}}>
               의뢰인으로 시작하기
             </p>
             <button className='mainbaro' onClick={() => navigate('/Cosmain')}>바로가기</button>
           </div>
           <div className='divm'>
             <img src="image/Group 30.png" alt="이미지가 없습니다"></img>
-            <p style={{top: '40px', position:'relative', fontWeight:"bold", color:"#fff"}}> 
+            <p style={{top: '40px', position:'relative', fontWeight:"bold", color:"#fff", fontSize:'25px'}}> 
               디자이너로 시작하기
             </p>
             <button style = {{marginTop:'60px'}}className='mainbaro'>바로가기</button>
