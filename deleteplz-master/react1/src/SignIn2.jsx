@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import './Signin2css.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function SignIn2() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const userType = location.state?.userType || "client"; // 기본값 설정
+
     const [id, setId] = useState("");
     const [passwd, setPasswd] = useState("");
-    const [message, setMessage] = useState("");
     const [confirmPasswd, setConfirmPasswd] = useState("");
-    const [isidValid, setIsidValid] = useState(false);
-    const [idCheckMessage, setidCheckMessage] = useState("");
     const [email, setEmail] = useState("");
     const [birthdate, setBirthdate] = useState("");
     const [tel, setTel] = useState("");
     const [name, setName] = useState("");
     const [gender, setGender] = useState("");
+    const [message, setMessage] = useState("");
+    const [isidValid, setIsidValid] = useState(false);
+    const [idCheckMessage, setidCheckMessage] = useState("");
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault();
@@ -33,7 +36,8 @@ export default function SignIn2() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id, passwd, email, birthdate, tel, name, gender }),
+            body: JSON.stringify({ id, passwd, email, birthdate, tel, name, gender, userType }),
+            credentials: "include",
             mode: "cors",
         });
 
@@ -41,6 +45,7 @@ export default function SignIn2() {
         if (response.ok && data.message === "회원가입 성공!") {
             localStorage.setItem("signupEmail", email);
             localStorage.setItem("signupid", id);
+            localStorage.setItem("signupName", name);
             setMessage(data.message);
             setTimeout(() => {
                 navigate('/GoodSign');
@@ -56,7 +61,7 @@ export default function SignIn2() {
                 <div className='divm-wrapperr'>
                     <div className='divmmmm'>
                         <div className="login">
-                            <h2>필수정보 입력</h2>
+                            <h2>필수정보 입력 ({userType === "client" ? "의뢰인" : "디자이너"})</h2>
                             <form className="form1" onSubmit={handleSignupSubmit}>
                                 <div className="inputinfo">
                                     <label>아이디</label>
@@ -91,8 +96,8 @@ export default function SignIn2() {
                                     <label>성별</label>
                                     <select className="input-gender" value={gender} onChange={(e) => setGender(e.target.value)}>
                                         <option value="">선택하세요</option>
-                                        <option value="남성">남성</option>
-                                        <option value="여성">여성</option>
+                                        <option value="Male">남성</option>
+                                        <option value="Female">여성</option>
                                     </select>
                                 </div>
                                 {message && <p style={{ color: "red" }}>{message}</p>}

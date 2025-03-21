@@ -4,15 +4,15 @@ import TopCop from './top/TopCop';
 
 
 export default function Daf() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setId] = useState("");
+  const [passwd, setPasswd] = useState("");
   const [message, setMessage] = useState("");
 
  
   const [isSignup, setIsSignup] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
-  const [usernameCheckMessage, setUsernameCheckMessage] = useState("");
+  const [confirmPasswd, setConfirmPasswd] = useState("");
+  const [isidValid, setIsIdValid] = useState(false);
+  const [idCheckMessage, setIdCheckMessage] = useState("");
   const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Daf() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ id, passwd }),
     });
   
     let data;
@@ -44,7 +44,7 @@ export default function Daf() {
     }
 
     console.log(data);
-    localStorage.setItem("username", data.username);
+    localStorage.setItem("name", data.name);
     setMessage("로그인 성공!");
     navigate('/welcome');
 
@@ -53,17 +53,17 @@ export default function Daf() {
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    if (!username.trim() && !password.trim()) {
+    if (!id.trim() && !passwd.trim()) {
       setMessage("회원가입 정보를 입력해 주십시오.");
       return;
     }
 
-    if (!username.trim()) {
+    if (!id.trim()) {
       setMessage("아이디가 입력되지 않았습니다.");
       return;
     }
 
-    if (!password.trim()) {
+    if (!passwd.trim()) {
       setMessage("비밀번호가 입력되지 않았습니다.");
       return;
     }
@@ -72,7 +72,7 @@ export default function Daf() {
       return;
     }*/
 
-    if (password !== confirmPassword) {
+    if (passwd !== confirmPasswd) {
       setMessage("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -82,7 +82,7 @@ export default function Daf() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password, email}),
+      body: JSON.stringify({ id, passwd, email}),
     });
 
     const data = await response.json();
@@ -95,38 +95,38 @@ export default function Daf() {
   };
    // 회원가입 화면으로 이동 시 초기화
    const handleGoToSignup = () => {
-    setUsername("");
-    setPassword("");
+    setId("");
+    setPasswd("");
     setMessage("");
     setIsSignup(true);
   };
 
   // 로그인 화면으로 이동 시 초기화
   const handleGoToLogin = () => {
-    setUsername("");
-    setPassword("");
+    setId("");
+    setPasswd("");
     setMessage("");
-    setConfirmPassword("");
+    setConfirmPasswd("");
     setIsSignup(false);
-    setUsernameCheckMessage("");
+    setIdCheckMessage("");
   };
 
-  const handleCheckUsername = async () => {
+  const handleCheckid = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/check-username/?username=${username}`
+      `${process.env.REACT_APP_API_URL}/api/check-id/?id=${id}`
     );
     const data = await response.json();
-    if (!username.trim()) {
+    if (!id.trim()) {
       setMessage("입력 이후 중복확인을 진행하십시오");
         return;
     } else {
       if(data.exists){ 
        
-        setIsUsernameValid(false);
-        setUsernameCheckMessage("중복 Id입니다!");
+        setIsIdValid(false);
+        setIdCheckMessage("중복 Id입니다!");
       }else{
-      setIsUsernameValid(true);
-      setUsernameCheckMessage("사용 가능한 Id입니다.");
+      setIsIdValid(true);
+      setIdCheckMessage("사용 가능한 Id입니다.");
       }
     }
   };
@@ -139,35 +139,35 @@ export default function Daf() {
           <form className="form1" onSubmit={handleSignupSubmit}>
             <input
               type="text"
-              className={`input-text ${!isUsernameValid ? "invalid" : ""}`}
+              className={`input-text ${!isidValid ? "invalid" : ""}`}
               placeholder="아이디 입력"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={id}
+              onChange={(e) => setId(e.target.value)}
             />
-            {/*<button
+            <button
               type="button"
               className="dupcheck"
-              onClick={handleCheckUsername}
+              onClick={handleCheckid}
             >
               중복 확인
-            </button>*/}
-            <span>{usernameCheckMessage}</span>
+            </button>
+            <span>{idCheckMessage}</span>
             <br />
           
             <input
-              type="password"
-              className="input-password"
+              type="passwd"
+              className="input-passwd"
               placeholder="비밀번호 입력"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={passwd}
+              onChange={(e) => setPasswd(e.target.value)}
             />
             <br />
             <input
-              type="password"
-              className="input-password"
+              type="passwd"
+              className="input-passwd"
               placeholder="비밀번호 확인"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPasswd}
+              onChange={(e) => setConfirmPasswd(e.target.value)}
             />
             <br />
             <input
@@ -195,17 +195,17 @@ export default function Daf() {
             <input
               type="text"
               className="input-text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
             />
             <br />
             <input
-              type="password"
-              className="input-password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="passwd"
+              className="input-passwd"
+              placeholder="Passwd"
+              value={passwd}
+              onChange={(e) => setPasswd(e.target.value)}
             />
             <br />
             <p>성공여부:{message}</p>
