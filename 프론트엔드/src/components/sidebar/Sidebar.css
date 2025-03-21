@@ -30,10 +30,11 @@
   gap: 8px;
   margin: 10px 0;
   font-weight: 400;
-  font-size: 15px;
+  font-size: 20px;
   color: #9DBBD5;
   margin-top: 25px;
   margin-bottom: 30px; /* 항목들 사이 간격 추가 */
+  margin-top: 10px;
 }
 
 .sidebar ul li .step-circle {
@@ -51,6 +52,7 @@
   margin: 0;
   padding: 0;
   flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 .sidebar .active .step-circle {

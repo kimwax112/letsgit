@@ -55,10 +55,12 @@ const Fabric = () => {
           <Sidebar activePage={2} />
         </aside>
         <div className="content1">
-          <BreadCrumb activePage={2} />
-          <h3>2-1. 원단 선택</h3>
-          <hr />
-  
+          <div className="header2-1">
+            <BreadCrumb activePage={2} />
+            <h3>2-1. 원단 선택</h3>
+            <hr />
+          </div>
+
           {/* 원단 선택 영역 */}
           <div className="fabric-select">
             <FabricItem
@@ -73,9 +75,11 @@ const Fabric = () => {
             <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>[1]</button>
             <button onClick={() => setCurrentPage(2)} disabled={currentPage === 2}>[2]</button>
           </div>
-  
-          <h3>2-2. 색상 선택</h3>
-          <hr />
+
+          <div className="header2-1">
+            <h3>2-2. 색상 선택</h3>
+            <hr />
+          </div>
   
           {/* Color Picker 영역 */}
           <div className="ColorSelect">

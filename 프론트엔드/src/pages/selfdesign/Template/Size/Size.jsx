@@ -34,17 +34,20 @@ const Size = () => {
           </aside>
        
       <div className="content1">
+        <div className="header2-1">
           <BreadCrumb activePage={3} />
           <h3>3. 사이즈 스펙 입력</h3>
           <hr />
           <br/><br/>
+        </div>
 
-        <Sizespec selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
-        <div className="footer button_size">
-          <Sizespecbutton label="초기화" style={{ cursor: "pointer" }} onClick={() => setSelectedSize(null)} />
-          <Sizespecbutton label="이전" onClick={() => navigate(-1)} />
-          <Sizespecbutton label="저장하기" onClick={handleSave} />
-          
+        <div className="sizespec-content">
+          <Sizespec selectedSize={selectedSize} setSelectedSize={setSelectedSize} />
+          <div className="footer button_size" style={{marginTop: '100px'}}>
+            <Sizespecbutton label="초기화" style={{ cursor: "pointer" }} onClick={() => setSelectedSize(null)} />
+            <Sizespecbutton label="이전" onClick={() => navigate(-1)} />
+            <Sizespecbutton label="다음" onClick={handleSave} />
+          </div>
         </div>
       </div>
       </div>

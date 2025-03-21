@@ -1,35 +1,41 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Content.css"; // 필요한 스타일링 파일
         
 const Content = () => {
+    const navigate = useNavigate(); // useNavigate 훅을 사용해 navigate 함수 생성
+
     const handleSave = () => {
         console.log("디자인이 저장되었습니다!");
         alert("디자인이 저장되었습니다!");
+        navigate('/Cosmain');  // 저장 후 '/Cosmain' 페이지로 이동
     };
 
     return(
         <div className="Content">
             {/* 본문 영역 */}
             <main className="content">
-            
-
-            
-
             <br />
 
             {/* 디자인 이름 입력 */}
-            <label className="design-name">
-                디자인 이름<span className="required">*</span>
-            </label>
-            <br />
-            <input type="text" placeholder="디자인 이름 입력" />
+            <div className="finalheader" style={{fontSize:'23px', marginBottom:'10px'}}>
+                <label className="design-name" style={{marginRight:'80px', marginBottom:'10px', fontWeight:'bold'}}>
+                    디자인 이름<span className="required">*</span>
+                </label>
+                    <input style={{marginBottom:'10px'}} type="text" placeholder="디자인 이름을 입력해주세요." />
 
-            <div className="options">
-                <p>원단</p>
-                <p className="text1">원단명: 원단1</p>
-                <p className="text1">색상: Red</p>
-                <p>의류 종류</p>
-                <p className="text1">상의</p>
+                <div className="options">
+                    <span style={{marginRight:'125px', fontWeight:'bold'}}>원단명:</span>
+                    <span>원단1</span> 
+                    <br/>
+
+                    <span style={{marginRight:'145px', fontWeight:'bold'}}>색상:</span>
+                    <span>Red</span> 
+                    <br/>
+
+                    <span style={{marginRight:'95px', fontWeight:'bold'}}>의류 종류:</span>
+                    <span>상의</span>
+                </div>
             </div>
 
             {/* 옷 이미지 & 치수 테이블 */}
