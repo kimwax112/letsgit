@@ -1,24 +1,26 @@
 .DesignerPorfol{
-    width: 169px;
-    height: 260px;
+    width: 180px;
+    height: 265px;
     background-color: #fff;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 .DesignerImg{
-    width: 169px;
+    width: 180px;
     height: 183px;
     background-color: #9ABCD4;
+    border-radius: 5px 5px 0px 0px;
 }
 
 .DesignerPorfol-title {
-    font-family: 'DoHyeon';
-    src: url('/src/fonts/DoHyeon/DoHyeon-Regular.ttf') format('truetype');
-    font-size: 0.8rem;
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Bold.woff2') format('woff2');
+    font-size: 1.1em;
 }
 
-.DesignerPorfol-text{
-    font-family: 'Noto Sans KR';
-    src: url('/src/fonts/Noto_Sans_KR/NotoSansKR-VariableFont_wght.ttf') format('truetype');
-    font-size: 0.7rem;
+.DesignerPorfol-text p{
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Medium.woff2') format('woff2');
+    font-size: 0.9em;
 }

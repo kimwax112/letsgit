@@ -1,13 +1,3 @@
-@font-face {
-  font-family: 'Noto Sans KR';
-  src: url('http://localhost:3000/static/media/NotoSansKR-VariableFont_wght.33752a94ca5252213de8.ttf') format('truetype');
-}
-
-* {
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-
 ul, li {
     margin: 0;
     padding: 0;
