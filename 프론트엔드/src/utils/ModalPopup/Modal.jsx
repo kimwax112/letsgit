@@ -18,7 +18,6 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  padding: 20px;
   border-radius: 8px;
   width: 800px;
   height: 1000px;

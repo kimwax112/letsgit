@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-// styled-components로 스타일 정의
 const SearchBarContainer = styled.div`
   
-background-color: white;
+  background-color: white;
   display: flex;
   align-items: center;
   gap: 0;
   border: 2px solid #bfd7ee;
   border-radius: 50px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 700px;
   height: 50px;
   overflow: hidden;
 `;
