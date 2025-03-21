@@ -6,8 +6,9 @@ public class User {
     private String email;
     private String name;
     private String tel;
-    private String birthdate; // 생년월일 추가
-    private String gender;    // 성별 추가
+    private String birthdate;
+    private String gender;   
+    private String userType;
 
     // Getter
     public String getName() {
@@ -31,7 +32,12 @@ public class User {
     public String getGender() {
         return gender;
     }
+    public String getUserType() {
+        return userType;
+    }
 
+    
+    
     // Setter
     public void setName(String name) {
         this.name = name;
@@ -54,6 +60,9 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     @Override
     public String toString() {
@@ -65,6 +74,7 @@ public class User {
                 ", tel='" + tel + '\'' +
                 ", birthdate='" + birthdate + '\'' +
                 ", gender='" + gender + '\'' +
+                ", userType='" + userType + '\'' +
                 '}';
     }
 }
