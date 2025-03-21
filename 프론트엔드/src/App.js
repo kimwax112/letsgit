@@ -3,6 +3,7 @@ import './index.css';
 import { BrowserRouter as Router } from "react-router-dom";
 import { Header, Footer, Navbar } from "./components"
 import RouterComponent from "./RouterComponent"// 라우터 관리 파일 분리
+import ScrollToTopBtn from "./components/ScrollToTopBtn/ScrollToTopBtn";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Header />
         <Navbar />
         <RouterComponent /> {/* 라우팅 담당 컴포넌트 */}
+        <ScrollToTopBtn/>
         <Footer />
       </Router>
     </div>
