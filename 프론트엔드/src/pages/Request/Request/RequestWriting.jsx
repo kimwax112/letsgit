@@ -5,7 +5,9 @@ import { TextInputUIManager, TagManager,Modal } from "../../../utils";
 import dress from "../../../assets/dress.png";
 import MyEditor from "./ui/MyEditor";
 
+const CustomRequestPopup = styled(RequestPopup)`
 
+`;
 const Container = styled.div`
   max-width: 800px;
   width: 100%;
@@ -155,7 +157,7 @@ export default function RequestWriting() {
         </Footer>
       </Wrapper>
 
-      {isModalOpen && <RequestPopup onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <CustomRequestPopup onClose={() => setIsModalOpen(false)} />}
       {MyDesignModal && <Modal onClose={() => setIsModal(false)} />}
     </Container>
   );

@@ -4,11 +4,8 @@ import Search from "./ui/Search";
 import ChatProfile from "./ui/ChatProfile";
 import { Modal } from "../../../utils"; // Modal 경로에 맞게 조정
 import styled from "styled-components";
+import Room from "../Room/Room";
 
-const CustomModal = styled(Modal)`
- background-color : white;
-
-`;
 const ModalTitle = styled.p`
   margin: 0; /* p 태그의 마진 제거 */
   background-color: black;
@@ -83,10 +80,10 @@ function ChatMain() {
         <p>검색 결과가 없습니다.</p>
       )}
       {isModalOpen && (
-        <CustomModal onClose={handleCloseModal}>
-         <ModalTitle><h2>{selectedUser}의 프로필</h2></ModalTitle>
+        <Room onClose={handleCloseModal} showCloseButton={false}>
+       <h2>{selectedUser}의 프로필</h2>
           <p>여기에 사용자 정보를 표시할 수 있습니다.</p>
-        </CustomModal>
+        </Room>
       )}
     </ChatLayout>
   );

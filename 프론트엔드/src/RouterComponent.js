@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting,RequestPost,Designer,ChatMain} from "./pages";
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage/MyPage";
+import Welcome from './pages/Login/Welcome';
 
 const RouterComponent = () => {
   return (
@@ -22,6 +23,7 @@ const RouterComponent = () => {
       <Route path="/Home" element={<Home />} />
       <Route path="/MyPage" element={<MyPage />} />
       <Route path="/ChatMain" element={<ChatMain />} />
+      <Route path="/Welcome" element={<Welcome/>} /> 
     </Routes>
   );
 };
