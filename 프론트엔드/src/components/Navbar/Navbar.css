@@ -1,8 +1,10 @@
-.body{
+/* 기본 폰트 설정 */
+.body {
   font-family: 'Pretendard';
-  src: url('/src/fonts/Pretendard/pretendard.css') format('woff2');
+  src: url('/src/fonts/Pretendard/woff2/Pretendard-ExtraBold.woff2') format('woff2');
 }
 
+/* 네비게이션 바 */
 .navbar {
   background-color: #9dbbd5;
   padding: 1rem;
@@ -15,6 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative; /* 드롭다운 위치를 위해 relative 추가 */
 }
 
 /* 전체 메뉴 버튼 */
@@ -29,7 +32,7 @@
 }
 
 .menu-btn:hover {
-  color: yellow; 
+  color: yellow;
 }
 
 /* 기본 메뉴 */
@@ -42,7 +45,7 @@
 .nav-links a {
   text-decoration: none;
   color: white;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 700;
 }
 
@@ -50,89 +53,26 @@
   color: yellow;
 }
 
-/* 전체 메뉴 클릭 시 나타나는 부분 */
-.dropdown-container {
-  display: flex;
-  justify-content: center; /* 중앙 정렬 */
-  align-items: flex-start;
-  background-color: #9dbbd5;
-  padding: 20px;
-  border-top: 2px solid white;
-  width: 100%;
-  min-height: 250px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0;
-  text-align: center;
-}
-
-/* 펼쳐진 메뉴 안의 개별 섹션 */
-/* 전체 메뉴 클릭 시 나타나는 부분 */
-.dropdown-container {
-  display: flex;
-  justify-content: center; /* 중앙 정렬 */
-  align-items: flex-start; /* 위쪽 정렬 */
-  background-color: #9dbbd5;
-  padding: 20px;
-  margin-top: 0.5rem;
-  border-top: 2px solid white;
-  width: 100%;
-  min-height: 250px; /* 최소 높이 유지 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 0;
-}
-
-/* 펼쳐진 메뉴 안의 개별 섹션 */
-.dropdown-section {
-  flex: 1; /* 자동 너비 조절 */
-  min-width: 200px; /* 최소 너비 */
-  max-width: 250px; /* 최대 너비 */
-  text-align: center; /* 섹션 내부 텍스트 중앙 정렬 */
-  padding-bottom: 20px;
-}
-
-/* 섹션 제목 */
-.dropdown-section h3 {
-  font-size: 1.2rem;
-  color: white;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* 링크 스타일 */
-.dropdown-section a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  display: block; /* 세로 정렬 */
-  padding: 5px 0; /* 링크 간 여백 추가 */
-}
-
-.dropdown-section a:hover {
-  color: yellow;
-}
-
-
-/* 드롭다운 스타일 */
+/* 드롭다운 메뉴 */
 .nav-menu .dropdown {
-  position: relative;
+  position: relative; /* 드롭다운 위치를 위해 relative 추가 */
 }
 
-/* 드롭다운 메뉴가 숨겨진 상태 */
+/* 드롭다운 메뉴가 기본적으로 숨겨진 상태 */
 .nav-menu .dropdown-menu {
-  display: none; /* 기본적으로 숨기기 */
+  display: none; /* 기본적으로 드롭다운 숨김 */
   position: absolute;
   top: 100%; /* 상위 항목 바로 아래에 위치 */
   left: 0;
-  background-color: #9dbbd5; /* 배경색 */
   padding: 0.5rem; /* 내부 여백 */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
   z-index: 1000;
 }
 
-/* hover 시 드롭다운 메뉴 표시 */
-.nav-menu .dropdown:hover .dropdown-menu {
-  display: block; /* hover 시 메뉴 표시 */
+/* 메뉴 항목에 호버 시 드롭다운 메뉴 표시 */
+.nav-links .dropdown:hover .dropdown-menu {
+  display: block; /* 메뉴 항목에 호버 시 드롭다운 메뉴 표시 */
 }
 
 /* 드롭다운 항목 스타일 */
@@ -146,4 +86,87 @@
 
 .dropdown-menu a:hover {
   color: yellow; /* hover 시 색상 변경 */
+}
+
+/* 전체 메뉴 클릭 시 나타나는 부분 */
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #9dbbd5;
+  padding: 20px;
+  border-top: 2px solid white;
+  width: 100%;
+  min-height: 250px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* 드롭다운 항목 섹션 */
+.dropdown-section {
+  flex: 1;
+  min-width: 200px;
+  max-width: 250px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.dropdown-section h3 {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 드롭다운 링크 */
+.dropdown-section a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  display: block;
+  padding: 5px 0;
+}
+
+.dropdown-section a:hover {
+  color: yellow;
+}
+
+/* 드롭다운 메뉴 기본 상태 (숨김) */
+.nav-links .dropdown-menu {
+  display: none; /* 기본적으로 숨김 */
+  position: absolute;
+  top: 150%; /* 상위 항목 바로 아래에 위치 */
+  left: 50%; /* 가운데 정렬 */
+  transform: translateX(-50%); /* 실제로 중앙에 맞추기 위해 이동 */
+  background-color: #9dbbd5;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  width: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 메뉴 항목에 hover 시 드롭다운 표시 */
+.nav-links .dropdown:hover .dropdown-menu {
+  display: flex; /* hover 시 메뉴 보이기 */
+}
+
+/* 드롭다운 메뉴 항목 스타일 */
+.dropdown-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem; /* 좌우 패딩 */
+  display: block;
+  width: 100%; /* 항목들이 세로로 늘어나는 것을 방지 */
+  text-align: center; /* 항목 텍스트 가운데 정렬 */
+  transition: color 0.2s ease-in-out;
+  border-radius: 0; /* 각 항목에 border-radius 없애기 */
+}
+
+.dropdown-menu a:hover {
+  color: yellow;
 }
