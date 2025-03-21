@@ -48,7 +48,7 @@ const CloseButton = styled.button`
   }
 `;
 
-export default function Modal({ onClose, children, className }) {
+export default function Modal({ onClose, children, className, showCloseButton = true }) {
   return (
     <Overlay>
       <ModalContainer className={className}>

@@ -38,6 +38,7 @@ const Content = styled.div`
 export default function Designer() {
   return (
     <>
+    
       <ContentHeader children="디자이너 찾기" />
       <RequestLayOut>
         <MainContainer>
