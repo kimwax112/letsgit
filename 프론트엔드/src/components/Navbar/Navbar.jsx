@@ -126,7 +126,7 @@ const Navbar = () => {
           </div>
           <div className="dropdown-section">
             <h3>대화방</h3>
-            <Link to="/chat" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/ChatMain" onClick={() => setIsMenuOpen(false)}>
               일반 채팅방
             </Link>
             <Link to="/report" onClick={() => setIsMenuOpen(false)}>

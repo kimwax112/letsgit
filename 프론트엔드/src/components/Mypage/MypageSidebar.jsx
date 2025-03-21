@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./MypageSidebar.css";
 
-export default function MypageSidebar() {
+export default function MypageSidebar({}) {
   return (
     <div className="sidebar">
       <h2 style={{color:'#799FC4'}}>마이페이지</h2>
