@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting,RequestPost,Designer} from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation,Request,RequestWriting,RequestPost,Designer,ChatMain} from "./pages";
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage/MyPage";
 
@@ -21,6 +21,7 @@ const RouterComponent = () => {
       <Route path="/Designer" element={<Designer/>} />
       <Route path="/Home" element={<Home />} />
       <Route path="/MyPage" element={<MyPage />} />
+      <Route path="/ChatMain" element={<ChatMain />} />
     </Routes>
   );
 };

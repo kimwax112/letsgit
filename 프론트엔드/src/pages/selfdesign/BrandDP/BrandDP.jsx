@@ -1,5 +1,5 @@
 import React from 'react'
-import {SideMenu,BrandDesignSearch, } from '../../../components'
+import {SideMenu,BrandDesignSearch, SearchBar2, } from '../../../components'
 
 import './BrandDPcss.css';
 
@@ -14,7 +14,7 @@ export default function BrandDP() {
                     <SideMenu/>
                     <div className='SearchandResult'>
                         <h2>브랜드 디자인으로 검색</h2>
-
+                        <SearchBar2/>
                         <div style={{marginTop:'50px'}}>                 
                         <BrandDesignSearch/>
                         <BrandDesignSearch/>
