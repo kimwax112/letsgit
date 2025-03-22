@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Welcome from "./Welcome"
 import SignIn2 from "./SignIn2"
 import Canvas from "./components/Canvas/Canvas";
+import MyPage from "./pages/MyPage/MyPage";
 const RouterComponent = () => {
   return (
     <Routes>
@@ -24,6 +25,7 @@ const RouterComponent = () => {
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/Sign" element={<SignIn2 />} />
       <Route path="/Canvas" element={<Canvas />} />
+      <Route path="/MyPage" element={<MyPage />} />
 
 
     </Routes>
