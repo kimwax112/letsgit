@@ -18,7 +18,7 @@ const Size = () => {
     } else {
       // 선택된 사이즈 알림 후 다음 페이지 이동
       alert(`${selectedSize} 사이즈가 선택되었습니다.`);
-      navigate("/FinalConfirmation");
+      navigate("/client/FinalConfirmation");
     }
   };
 

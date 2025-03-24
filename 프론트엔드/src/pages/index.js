@@ -12,3 +12,4 @@ export {default as RequestWriting} from './Request/Request/RequestWriting';
 export { default as RequestPost} from './Request/Post/RequestPost';
 export { default as Designer} from './Request/Designer/Designer';
 export {default as ChatMain } from './ChatRoom/ChatMain/ChatMain';
+export { default as Welcome} from './Login/Welcome';

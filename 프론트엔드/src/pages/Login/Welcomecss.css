@@ -3,14 +3,15 @@
     background-color: #799FC4;
     border:none;
     padding: 10px 30px;
-    width:250px
-    
-      
+    width: 450px;
+    height: 55px;
   }
+
   .divmm{
     text-align: center;  
 
   }
+
   .divm-wrapperr {
     display: flex; 
     justify-content: center;
@@ -23,18 +24,21 @@
     border:none;
     padding: 5px;
     
-    margin:10px;
-    width:100px;
-    height: 40px;
-    font-size: 18px;
-    box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.7);
-
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffcc00; /* 예시 배경색 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
   }
+
 .MenuBarr{
     align-items: center;
     display: flex;
     justify-content: center;
-    
+    margin-top: 6px;
 }
 .MenuBarr > nav > ul > li{
     /*background-color: red;*/
@@ -60,21 +64,34 @@
 
 }
 .extra-sectionn {
-    width: 500px;
+    width: 600px;
     text-align: center;
     padding: 10px;
-    margin-bottom: 70px;
-    
+    margin-top: 30px;  
 }
+
+.extra-sectionn-btn {
+    display: flex;
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    justify-content: center; /* 가로로 중앙 정렬 */
+    align-items: center; /* 세로로 중앙 정렬 */
+    padding: 20px;
+    gap: 10px; /* 버튼 사이의 간격 */
+  }  
+
 .loginWrapper{
     border-color: black;
-    border: 1px solid #86A8CA;
-    margin-top:10%;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     background-color: white;
-
+    margin-top: 50px;
+    width: 600px;
+    height: 600px;
 }
 .loginput{
-    width:250px;
-    height:25px;
+    width:450px;
+    height:50px;
     margin: 3px;
+    border-radius: 10px;
+    border: 1px solid #535353;
 }
