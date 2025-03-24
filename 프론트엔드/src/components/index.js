@@ -26,3 +26,4 @@ export { default as RequestPopup} from '../pages/Request/Request/ui/RequestPopup
 export { default as Button} from './Button/Button';
 export { default as ButtonCategory} from './Button/ButtonCategory';
 export { default as RectButton} from './Button/RectButton';
+export { default as ScrollToTopBtn} from './ScrollToTopBtn/ScrollToTopBtn';
