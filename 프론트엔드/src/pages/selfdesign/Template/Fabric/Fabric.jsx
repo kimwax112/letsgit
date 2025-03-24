@@ -97,7 +97,7 @@ const Fabric = () => {
   
           {/* 다음 페이지 이동 버튼 */}
           <div className="footer">
-            <NextButtonWithPopup selectedItems={selectedNames} nextRoute="/Size" />
+            <NextButtonWithPopup selectedItems={selectedNames} nextRoute="/client/Size" />
           </div>
         </div>
       </div>

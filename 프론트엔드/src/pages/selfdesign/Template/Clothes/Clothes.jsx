@@ -48,7 +48,7 @@ const Clothes = () => {
           setSelectedItem={setSelectedItem}/>
           <div className="footer">
           <NextButtonWithPopup selectedItems={selectedItems}
-          nextRoute="/fabric" />
+          nextRoute="/client/fabric" />
           </div>      
         </div>          
        </div>

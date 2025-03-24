@@ -100,7 +100,7 @@ export default function ItemBox({children}) {
 
   const handleClick = () => {
 
-    navigate('/RequestPost');
+    navigate('/client/RequestPost');
   }
   return (
     <ItemBoxContainer style={{ cursor: "pointer"  }}onClick={handleClick}> 

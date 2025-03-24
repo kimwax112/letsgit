@@ -47,7 +47,7 @@ export default function Welcome() {
     localStorage.setItem("id", data.id);
     setMessage("로그인 성공!");
     setTimeout(() => {
-      navigate('/CosMain');  // 회원가입 성공 시 Hello 컴포넌트로 이동
+      navigate('/client/CosMain');  // 회원가입 성공 시 Hello 컴포넌트로 이동
     }, 1000);
 
     

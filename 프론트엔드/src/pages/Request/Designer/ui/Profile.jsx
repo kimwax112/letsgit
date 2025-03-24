@@ -150,7 +150,7 @@ export default function Profile() {
 
   const ChatEvent = () => {
     alert("대화방으로 이동합니다");
-    navigate("/ChatMain");
+    navigate("/client/ChatMain");
   };
 
   return (

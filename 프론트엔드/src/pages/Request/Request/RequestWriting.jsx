@@ -152,7 +152,7 @@ export default function RequestWriting() {
         <ImageUploader />
         <Footer>
           <NextButtonUI onClick={() => setIsModalOpen(true)}>의뢰 등록</NextButtonUI>
-          <NextButtonUI to="/Request">취소</NextButtonUI>
+          <NextButtonUI to="/client/Request">취소</NextButtonUI>
           <NextButtonUI>임시 저장</NextButtonUI>
         </Footer>
       </Wrapper>

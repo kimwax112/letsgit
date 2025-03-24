@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import "./CosMainCss.css";
 import { MainBanner } from "../index"; // MainBanner 컴포넌트 임포트 (배너 랜덤 선택 처리)
-import { Navbar, Footer, Header } from "../../components";
 import OngoingContract from '../../components/OngoingContract/OngoingContract';
 import DesignerPortfolio from '../../components/DesignerPortfolio/DesignerPortfolio';
 import RecommendedDesign from '../../components/RecommendedDesign/RecommendedDesign';
