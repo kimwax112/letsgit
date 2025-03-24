@@ -8,7 +8,7 @@ const Content = () => {
     const handleSave = () => {
         console.log("디자인이 저장되었습니다!");
         alert("디자인이 저장되었습니다!");
-        navigate('/Cosmain');  // 저장 후 '/Cosmain' 페이지로 이동
+        navigate('/client/Cosmain');  // 저장 후 '/Cosmain' 페이지로 이동
     };
 
     return(

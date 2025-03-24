@@ -54,7 +54,7 @@ export default function ContentHeader ({children}) {
               {/* '임시저장함' 버튼 → /SavedRequests 페이지로 이동 */}
               <NextButtonUI  onClick={() => setModalOpen(true)}>임시저장함</NextButtonUI>
               {/* '글쓰기' 버튼 → /RequestWriting 페이지로 이동 */}
-              <NextButtonUI to="/RequestWriting">글쓰기</NextButtonUI>
+              <NextButtonUI to="/client/RequestWriting">글쓰기</NextButtonUI>
             </ButtonContainer>
           </SearchButtonWrapper>
         </ContentHeader1>

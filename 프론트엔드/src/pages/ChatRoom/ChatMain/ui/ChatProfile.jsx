@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import profile from "../../../../assets/profile.png";
-import { Modal } from "../../../../utils";
 
 const ProfileContainer = styled.button`
   width: 100%;

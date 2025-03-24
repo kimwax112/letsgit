@@ -5,7 +5,9 @@ import { TextInputUIManager, TagManager,Modal } from "../../../utils";
 import dress from "../../../assets/dress.png";
 import MyEditor from "./ui/MyEditor";
 
+const CustomRequestPopup = styled(RequestPopup)`
 
+`;
 const Container = styled.div`
   max-width: 800px;
   width: 100%;
@@ -150,12 +152,12 @@ export default function RequestWriting() {
         <ImageUploader />
         <Footer>
           <NextButtonUI onClick={() => setIsModalOpen(true)}>의뢰 등록</NextButtonUI>
-          <NextButtonUI to="/Request">취소</NextButtonUI>
+          <NextButtonUI to="/client/Request">취소</NextButtonUI>
           <NextButtonUI>임시 저장</NextButtonUI>
         </Footer>
       </Wrapper>
 
-      {isModalOpen && <RequestPopup onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <CustomRequestPopup onClose={() => setIsModalOpen(false)} />}
       {MyDesignModal && <Modal onClose={() => setIsModal(false)} />}
     </Container>
   );
