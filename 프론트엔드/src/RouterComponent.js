@@ -2,12 +2,14 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
 import DesignerLayout from "./DesignerLayout";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain } from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain,ChoseDesigner } from "./pages";
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage/MyPage";
 import Welcome from './pages/Login/Welcome';
 import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
+import Dmypage from "./pages2/Mypage/Dmypage";
+import Portfolio from './pages2/Mypage/Portfolio';
 
 const RouterComponent = () => {
   return (
@@ -36,6 +38,7 @@ const RouterComponent = () => {
               <Route path="MyPage" element={<MyPage />} />
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="Welcome" element={<Welcome />} />
+              <Route path="ChoseDesigner" element={<ChoseDesigner />} />
             </Routes>
           </ClientLayout>
         }
@@ -48,6 +51,8 @@ const RouterComponent = () => {
             <Routes>
               <Route path="DesignerCosMain" element={<DesignerCosMain />} /> {/* 수정된 부분 */}
               <Route path="Back" element={<Back />} />  
+              <Route path="Dmypage" element={<Dmypage />} />
+              <Route path="Portfolio" element={<Portfolio /> }/>
             </Routes>
           </DesignerLayout>
         }
