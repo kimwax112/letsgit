@@ -41,8 +41,6 @@ const RequiredLabel = styled.label`
   width: 150px; /* 레이블 너비 고정 */
   flex-shrink: 0; /* 레이블이 줄어들지 않도록 */
   white-space: nowrap; /* 텍스트가 다음 줄로 넘어가지 않도록 */
-  
-  
   &::after {
     content: ${props => (props.required ? '"*"' : '""')};
     color: red;
@@ -86,14 +84,33 @@ const Footer = styled.div`
   justify-content: flex-end;
 `;
 
+const CustomUpload = styled(ImageUploader)`
+  width: 150px; 
+  height: 150px;
+
+`;
+
+const UploadContainer = styled.div`
+  background-color : white;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  padding: 20px;
+  width: 600px; /* 필요에 따라 조정 */
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-left: 22%;
+`;
+
+
 export default function RequestWriting() {
   const [enteredTags, setEnteredTags] = useState([]);
   const options = ["옵션 1", "옵션 2", "옵션 3"];
   const options2 = ["옵션 1", "옵션 2", "옵션 3"];
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [MyDesignModal , setIsModal] = useState(false); 
+  const [MyDesignModal, setIsModal] = useState(false);
+  const [files, setFiles] = useState({}); // 개별 파일 저장
 
-  
   return (
     <Container>
       <Wrapper>
@@ -112,7 +129,7 @@ export default function RequestWriting() {
           <TagManager
             placeholder="카테고리 "
             onTagsUpdate={(tags) => setEnteredTags(tags)}
-            />
+          />
         </Content>
 
         <Content>
@@ -132,12 +149,13 @@ export default function RequestWriting() {
 
         <Content>
           <RequiredLabel>내가 제작한 스타일</RequiredLabel>
-          <button onClick={() => setIsModal(true)}>선택하세요 
-
-          </button>
+          <button onClick={() => setIsModal(true)}>선택하세요</button>
         </Content>
+
         <Detail>
-          <div><h2>상세설명</h2></div>
+          <div>
+            <h2>상세설명</h2>
+          </div>
           <TagList>
             {enteredTags.length === 0 ? (
               <span></span>
@@ -148,8 +166,16 @@ export default function RequestWriting() {
             )}
           </TagList>
         </Detail>
+
         <MyEditor />
-        <ImageUploader />
+
+        {/* 이미지 업로드 3개 */}
+        <UploadContainer>
+          <CustomUpload id="upload1" files={files} setFiles={setFiles} />
+          <CustomUpload id="upload2" files={files} setFiles={setFiles} />
+          <CustomUpload id="upload3" files={files} setFiles={setFiles} />
+        </UploadContainer>
+
         <Footer>
           <NextButtonUI onClick={() => setIsModalOpen(true)}>의뢰 등록</NextButtonUI>
           <NextButtonUI to="/client/Request">취소</NextButtonUI>
