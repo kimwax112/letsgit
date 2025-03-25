@@ -1,6 +1,7 @@
 import React from "react";
 import './index.css';
 import { BrowserRouter as Router } from "react-router-dom";
+
 import RouterComponent from "./RouterComponent"// 라우터 관리 파일 분리
 
 function App() {

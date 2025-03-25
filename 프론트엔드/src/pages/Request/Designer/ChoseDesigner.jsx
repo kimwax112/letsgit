@@ -35,7 +35,7 @@ const Content = styled.div`
   padding: 20px;
 `;
 
-export default function Designer() {
+export default function ChoseDesigner() {
   return (
     <>
     
