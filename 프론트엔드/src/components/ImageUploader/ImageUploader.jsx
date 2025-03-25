@@ -1,24 +1,19 @@
-// ImageUploader.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
 
+// 스타일 정의
 const UploadContainer = styled.div`
-
-  background-color : white;
-  border: 1px dashed #ccc;
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
   display: flex;
-  padding: 20px;
-  width: 600px; /* 필요에 따라 조정 */
-  justify-content: space-between;
-  margin-top: 20px;
-  margin-left: 22%;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DropArea = styled.div`
-  width: 150px;
-  height: 150px;
-  background-color:rgb(235, 235, 235);
+  width: 100%;
+  height: 100%;
+  background-color: rgb(235, 235, 235);
   border: 1px solid #eee;
   border-radius: 5px;
   display: flex;
@@ -26,100 +21,82 @@ const DropArea = styled.div`
   justify-content: center;
   cursor: pointer;
   font-size: 40px; /* '+' 기호가 크게 보이도록 */
+  position: relative;
 `;
 
-const FileList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 150px; /* 스크롤이 필요한 경우 */
-  overflow-y: auto;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const FileItem = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fafafa;
-  padding: 5px 10px;
-  border-radius: 4px;
-`;
-
-const FileName = styled.span`
-  flex: 1;
-`;
-
-const FileSize = styled.span`
-  color: #999;
-  margin: 0 10px;
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 `;
 
 const RemoveButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 0, 0, 0.7);
+  color: white;
   border: none;
-  background: none;
-  color: red;
-  font-size: 16px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  font-size: 14px;
 `;
 
-const ImageUploader = () => {
-  const [files, setFiles] = useState([]);
-
+const ImageUploader = ({ className, id, files, setFiles }) => {
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    // 파일 정보를 간단히 { name, size } 형태로 변환
-    const newFiles = selectedFiles.map((file) => ({
-      name: file.name,
-      size: file.size,
-    }));
-    setFiles([...files, ...newFiles]);
+    const selectedFile = e.target.files[0]; // 단일 파일만 처리
+    if (selectedFile) {
+      const newFile = {
+        id,
+        file: selectedFile,
+        preview: URL.createObjectURL(selectedFile), // 미리보기 URL 생성
+      };
+      setFiles((prevFiles) => ({ ...prevFiles, [id]: newFile })); // 해당 id의 파일만 업데이트
+    }
   };
 
-  const removeFile = (index) => {
-    const updated = [...files];
-    updated.splice(index, 1);
-    setFiles(updated);
+  // 파일 삭제 처리
+  const removeFile = () => {
+    if (files[id]) {
+      URL.revokeObjectURL(files[id].preview); // 메모리 해제
+      setFiles((prevFiles) => {
+        const updatedFiles = { ...prevFiles };
+        delete updatedFiles[id];
+        return updatedFiles;
+      });
+    }
   };
 
-  // KB로 단순 변환 (1 KB = 1024 바이트)
-  const formatSize = (size) => {
-    const kb = Math.round(size / 1024);
-    return `${kb} KB`;
-  };
-
-  // 숨겨진 input에 접근하기 위한 ref or id
+  // DropArea 클릭 시 파일 입력 열기
   const handleClickDropArea = () => {
-    document.getElementById("fileInput").click();
+    document.getElementById(`fileInput-${id}`).click();
   };
 
   return (
-    <UploadContainer>
-      {/* 왼쪽 영역: 이미지 업로드 박스 */}
+    <UploadContainer className={className}>
       <DropArea onClick={handleClickDropArea}>
-        +
+        {files[id] ? (
+          <>
+            <PreviewImage src={files[id].preview} alt="Preview" />
+            <RemoveButton onClick={removeFile}>×</RemoveButton>
+          </>
+        ) : (
+          "+"
+        )}
       </DropArea>
       <input
-        id="fileInput"
+        id={`fileInput-${id}`}
         type="file"
-        multiple
+        accept="image/*"
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
-
-      {/* 오른쪽 영역: 업로드된 파일 목록 */}
-      <FileList>
-        {files.map((file, idx) => (
-          <FileItem key={idx}>
-            <FileName>{file.name}</FileName>
-            <FileSize>{formatSize(file.size)}</FileSize>
-            <RemoveButton onClick={() => removeFile(idx)}>x</RemoveButton>
-          </FileItem>
-        ))}
-      </FileList>
     </UploadContainer>
   );
 };

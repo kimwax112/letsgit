@@ -49,7 +49,7 @@ const Navbar = () => {
               <Link to="/client/request" onClick={() => setIsMenuOpen(false)}>
                 의뢰 등록하기
               </Link>
-              <Link to="/client/designer" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/client/ChoseDesigner" onClick={() => setIsMenuOpen(false)}>
                 디자이너 고르기
               </Link>
             </div>
