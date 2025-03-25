@@ -32,24 +32,18 @@ const DesignerNavbar = () => {
           <div className="dropdown">
             <a href="#">의뢰 찾기</a>
             <div className="dropdown-menu">
-              <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 의뢰 검색
-              </Link>
-              <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
-                디자인 파일 업로드
-              </Link>
-              <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
-                브랜드 디자인 검색
               </Link>
             </div>
           </div>
           <div className="dropdown">
             <a href="#">제작 관리</a>
             <div className="dropdown-menu">
-              <Link to="/client/request" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 의뢰 등록하기
               </Link>
-              <Link to="/client/designer" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 디자이너 고르기
               </Link>
             </div>
@@ -57,16 +51,16 @@ const DesignerNavbar = () => {
           <div className="dropdown">
             <a href="#">계약 관리</a>
             <div className="dropdown-menu">
-              <Link to="/client/contract" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 작성
               </Link>
-              <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
               </Link>
-              <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약 해지 요청
               </Link>
-              <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 환불 요청
               </Link>
             </div>
@@ -74,10 +68,10 @@ const DesignerNavbar = () => {
           <div className="dropdown">
             <a href="#">대화방</a>
             <div className="dropdown-menu">
-              <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 일반 채팅방
               </Link>
-              <Link to="/client/report" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 사용자 신고/차단
               </Link>
             </div>
@@ -90,46 +84,46 @@ const DesignerNavbar = () => {
         <div className="dropdown-container">
           <div className="dropdown-section">
             <h3>의뢰 찾기</h3>
-            <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               사이트 제공 템플릿
             </Link>
-            <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드
             </Link>
-            <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               브랜드 디자인 검색
             </Link>
           </div>
           <div className="dropdown-section">
             <h3>제작 관리</h3>
-            <Link to="/client/request" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               의뢰 등록하기
             </Link>
-            <Link to="/client/designer" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               디자이너 고르기
             </Link>
           </div>
           <div className="dropdown-section">
             <h3>계약 관리</h3>
-            <Link to="/client/contract" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 작성
               </Link>
-              <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
               </Link>
-              <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약 해지 요청
               </Link>
-              <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 환불 요청
               </Link>
           </div>
           <div className="dropdown-section">
             <h3>대화방</h3>
-            <Link to="/client/ChatMain" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               일반 채팅방
             </Link>
-            <Link to="/client/report" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>
               사용자 신고/차단
             </Link>
           </div>

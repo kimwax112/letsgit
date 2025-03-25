@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <div className="LogoStuff" style={{ fontFamily: "'Pretendard', sans-serif" }}>
       <Link to="/client/Cosmain">  
-        <img src="image/image.png" alt="이미지없음" />
+        <img src="/image/image.png" alt="이미지없음" />
       </Link>
       <div className="Buttons1" style={{ marginLeft: 'auto', fontWeight: 400, fontSize: '16px' }}>
         Sample 님, 환영합니다!
