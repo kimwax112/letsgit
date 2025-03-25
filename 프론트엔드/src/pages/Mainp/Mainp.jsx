@@ -24,7 +24,7 @@ export default function Mainp() {
             <p style={{top: '40px', position:'relative', fontWeight:"bold", color:"#fff", fontSize:'25px'}}> 
               디자이너로 시작하기
             </p>
-            <button onClick={() => navigate('/designer')} style = {{marginTop:'60px'}}className='mainbaro'>바로가기</button>
+            <button onClick={() => navigate('/designer/DesignerCosMain')} style = {{marginTop:'60px'}}className='mainbaro'>바로가기</button>
           </div>
         </div>
 

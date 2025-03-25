@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import MyPage from "./pages/MyPage/MyPage";
 import Welcome from './pages/Login/Welcome';
 import Back from './Back';
+import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
+
 const RouterComponent = () => {
   return (
     <Routes>
@@ -44,9 +46,8 @@ const RouterComponent = () => {
         element={
           <DesignerLayout>
             <Routes>
-              <Route path="/" element={<Designer />} />
+              <Route path="DesignerCosMain" element={<DesignerCosMain />} /> {/* 수정된 부분 */}
               <Route path="Back" element={<Back />} />  
-
             </Routes>
           </DesignerLayout>
         }
