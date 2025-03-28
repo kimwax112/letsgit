@@ -73,7 +73,7 @@
   }
   
   /* 버튼 기본 스타일 */
-  button {
+  .CanvasButton {
     background: #799FC4;
     color: white;
     border: none;
@@ -83,17 +83,17 @@
     border-radius: 5px;
   }
   
-  button.active {
+  .CanvasButton button.active {
     background: #0056b3; /* 활성화된 버튼 색상 */
   }
   
-  button:disabled {
+  .CanvasButton button:disabled {
     background: #ccc;
     cursor: not-allowed;
   }
   
   /* 입력 필드 스타일 */
-  input[type="text"] {
+  /* input[type="text"] {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -106,4 +106,4 @@
     height: 30px;
     cursor: pointer;
   }
-  
+   */

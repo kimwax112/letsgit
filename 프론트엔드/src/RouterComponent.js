@@ -47,14 +47,14 @@ const RouterComponent = () => {
       <Route
         path="/designer/*"
         element={
-          <DesignerLayout>
+          
             <Routes>
               <Route path="DesignerCosMain" element={<DesignerCosMain />} /> {/* 수정된 부분 */}
               <Route path="Back" element={<Back />} />  
               <Route path="Dmypage" element={<Dmypage />} />
               <Route path="Portfolio" element={<Portfolio /> }/>
             </Routes>
-          </DesignerLayout>
+          
         }
       />
     </Routes>

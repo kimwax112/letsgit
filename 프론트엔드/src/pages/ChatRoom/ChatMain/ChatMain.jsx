@@ -1,22 +1,101 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import ChatLayout from "./ui/ChatLayout";
 import Search from "./ui/Search";
 import ChatProfile from "./ui/ChatProfile";
-import { Modal } from "../../../utils"; // Modal 경로에 맞게 조정
-import styled from "styled-components";
-import Room from "../Room/Room";
+import { Modal } from "../../../utils";
+import SideMenu from "./ui/SideMenu";
+import backArrow from "../../../assets/화살표.png";
 
-const ModalTitle = styled.p`
-  margin: 0; /* p 태그의 마진 제거 */
-  background-color: black;
-  h2 {
-    margin: 0; /* h2 태그의 기본 마진 제거 */
-    color: white; /* 가독성을 위해 텍스트 색상 변경 */
+// 모달 스타일
+const Room = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 600px;
+  height: 700px;
+`;
+
+const RoomHeader = styled.div`
+  width: 100%;
+  display: flex;
+  background-color : #799FC4;
+`;
+const RoomFooter = styled.div`
+  width: 100%;
+  height: 7vh;
+  display:flex;
+  justify-content: fles-start;
+  align-items : center;
+  padding: 10px;
+  border: none;
+  
+  background-color: #F8F8F8;
+  z-index: ; /* 위에 위치 */
+`
+const RoomInput = styled.input`
+  width: 70%;
+  height: 70%;
+  border: none;
+  background-color : #EBEBEB;
+  border-radius : 20px;
+  padding : 10px;
+
+`
+
+const Content = styled.div`
+  width: 100;
+  height: 100%;
+  background-color: #FFFFFF;
+`
+
+
+
+const BackButton = styled.button`
+  all: unset;
+  width: 40px;
+  height: 40px;
+  background-image: url(${backArrow}); /* 이미지 적용 */
+  
+  background-size: 2vh;
+  background-repeat: no-repeat; /* 반복 방지 */
+  background-position: center; /* 가운데 정렬 */
+  margin: 10px;
+  cursor: pointer; /* 클릭 가능 커서 */
+  &:hover {
+    opacity: 0.8; /* 호버 시 투명도 변경 */
+  }
+`;
+const Title = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+`;
+
+const Title1 = styled.div`
+  display: flex;
+  gap: 10px;
+  color : white;
+`;
+
+// 메뉴 버튼 스타일
+const MenuButton = styled.button`
+  all: unset;
+  width: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  &:hover {
+    background-color: rgb(209, 209, 209);
   }
 `;
 
 
 
+
+// 예시 데이터
 const chatData = [
   { name: "Cody Fisher", message: "how it going?", time: "12:00 p.m." },
   { name: "Jane Cooper", message: "What the latest news?", time: "10:53 a.m." },
@@ -28,6 +107,7 @@ function ChatMain() {
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   const handleSearch = (term) => {
     if (term) {
@@ -53,6 +133,15 @@ function ChatMain() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
+    setIsSideMenuOpen(false);
+  };
+
+  const handleMenuClick = () => {
+    setIsSideMenuOpen(true);
+  };
+
+  const handleCloseSideMenu = () => {
+    setIsSideMenuOpen(false);
   };
 
   return (
@@ -73,7 +162,7 @@ function ChatMain() {
             name={chat.name}
             message={chat.message}
             time={chat.time}
-            onClick={handleProfileClick} // 클릭 시 모달 열기
+            onClick={() => handleProfileClick(chat.name)}
           />
         ))
       ) : (
@@ -81,9 +170,27 @@ function ChatMain() {
       )}
       {isModalOpen && (
         <Room onClose={handleCloseModal} showCloseButton={false}>
-       <h2>{selectedUser}의 프로필</h2>
-          <p>여기에 사용자 정보를 표시할 수 있습니다.</p>
+          <RoomHeader>
+            <BackButton onClick={handleCloseModal} /> {/* 이미지 버튼 */}
+            <Title>
+              <Title1>
+                <h2 >{selectedUser}</h2>
+                <MenuButton onClick={handleMenuClick}>
+                  <h2>☰</h2>
+                </MenuButton>
+              </Title1>
+            </Title>
+          </RoomHeader>
+          <Content></Content>
+          <SideMenu isOpen={isSideMenuOpen} onClose={handleCloseSideMenu} />
+          <RoomFooter>
+            <RoomInput 
+              type="text"
+              placeholder="여기에 입력해주세요"
+
+          ></RoomInput></RoomFooter>
         </Room>
+        
       )}
     </ChatLayout>
   );

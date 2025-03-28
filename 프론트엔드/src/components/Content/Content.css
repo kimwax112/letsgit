@@ -39,13 +39,7 @@ body {
 text-indent: 30px; /* 들여쓰기 */
 font-weight: 200; /* 기본보다 얇게 */
 }
-
-input[type="text"] {
-  width: 300px; 
-  border-radius: 5px; /* 모서리 */
-  padding: 5px; 
-  border: 1px solid #ccc;
-}   
+  
 
 .options p {
   margin: 0; 

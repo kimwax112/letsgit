@@ -169,8 +169,8 @@ const Canvas = ({ backgroundImage,imageSrc }) => {
           <input type="color" value={color} onChange={(e) => changeColor(e.target.value)} />
 
           {/* 그리기 & 지우개 버튼 */}
-          <button onClick={enableDrawing} disabled={isErasing}>✏️ 그리기</button>
-          <button onClick={enableEraser} disabled={!isErasing}>🧼 지우개</button>
+          <button className='CanvasButton' onClick={enableDrawing} disabled={isErasing}>✏️ 그리기</button>
+          <button className="CanvasButton" onClick={enableEraser} disabled={!isErasing}>🧼 지우개</button>
 
 
           {/* 초기화 버튼 (전체 지우기) */}
@@ -197,7 +197,7 @@ const Canvas = ({ backgroundImage,imageSrc }) => {
           />
 
           {/* 저장 버튼 */}
-          <button onClick={saveImage}>저장</button>
+          <button className='CanvasButton' onClick={saveImage}>저장</button>
         </div>
         
         <div className="toolbar-line-width">
