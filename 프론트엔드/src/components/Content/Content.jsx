@@ -22,7 +22,7 @@ const Content = () => {
                 <label className="design-name" style={{marginRight:'80px', marginBottom:'10px', fontWeight:'bold'}}>
                     디자인 이름<span className="required">*</span>
                 </label>
-                    <input style={{marginBottom:'10px'}} type="text" placeholder="디자인 이름을 입력해주세요." />
+                    <input style={{marginBottom:'10px', width:'300px', borderRadius: '5px', border: '1px solid #ccc', padding: '10px'}} type="text" placeholder="디자인 이름을 입력해주세요." />
 
                 <div className="options">
                     <span style={{marginRight:'125px', fontWeight:'bold'}}>원단명:</span>
