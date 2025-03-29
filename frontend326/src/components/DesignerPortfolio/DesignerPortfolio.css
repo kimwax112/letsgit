@@ -1,0 +1,26 @@
+.DesignerPorfol{
+    width: 180px;
+    height: 265px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.DesignerImg{
+    width: 180px;
+    height: 183px;
+    background-color: #9ABCD4;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.DesignerPorfol-title {
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Bold.woff2') format('woff2');
+    font-size: 1.1em;
+}
+
+.DesignerPorfol-text p{
+    font-family: 'Pretendard';
+    src: url('/src/fonts/Pretendard/woff2/Pretendard-Medium.woff2') format('woff2');
+    font-size: 0.9em;
+}
