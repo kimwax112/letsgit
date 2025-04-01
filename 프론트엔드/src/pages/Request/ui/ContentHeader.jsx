@@ -7,6 +7,7 @@ import ModalContent from "./ModalContent";
 const CustomModal = styled(Modal)`
 padding : 20px;
 width: 800px;
+height: 800px;
   background-color : white;
 
 `
