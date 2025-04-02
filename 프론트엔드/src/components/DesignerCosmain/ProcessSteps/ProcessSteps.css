@@ -1,8 +1,9 @@
 .process-steps {
     display: flex;
     justify-content: space-between;
-    margin: 50px auto;
     max-width: 900px;
+    width: 100%;
+    height: 250px;
     background-color: #fff;
   }
   

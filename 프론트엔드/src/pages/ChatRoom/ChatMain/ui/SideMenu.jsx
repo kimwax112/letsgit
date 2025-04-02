@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import close from "../../../../assets/닫기.png";
+import close from "../../../../assets/닫기.png";
 
 
 // 사이드 메뉴 컨테이너 스타일
