@@ -9,15 +9,24 @@ const steps = [
 ];
 
 export default function ProcessSteps() {
+  const baseColor = "157, 187, 213"; // #9DBBD5의 RGB 값
+  const opacities = [0.3, 0.5, 0.8, 1]; // 원하는 투명도
+
   return (
-    <div className="process-steps">
-      {steps.map((step, index) => (
-        <div key={index} className="step">
-          <div className="circle">{index + 1}</div>
-          <h3>{step.title}</h3>
-          <p>{step.description}</p>
-        </div>
-      ))}
+    <div className="process-steps-container">
+      <div className="process-steps">
+        {steps.map((step, index) => (
+          <div key={index} className="step">
+            <div
+              className="circle"
+              style={{ backgroundColor: `rgba(${baseColor}, ${opacities[index]})` }}>
+              {index + 1}
+            </div>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
