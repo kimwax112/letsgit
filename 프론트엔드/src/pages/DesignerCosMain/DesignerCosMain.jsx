@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./DesignerCosMain.css";
 import DesignerLayout from "../../DesignerLayout";
 import { MainBanner } from "../index"; 
+import DesignerBanner from "../../components/DesignerCosmain/DesignerBanner/DesignerBanner";
 import ProcessSteps from "../../components/DesignerCosmain/ProcessSteps/ProcessSteps";
 import PortfolioList from "../../components/DesignerCosmain/PortfolioList/PortfolioList";
 
@@ -31,7 +32,7 @@ const DesignerMain = () => {
   return (
     <DesignerLayout>
       <div className="WholeWrapper">
-        <MainBanner />
+        <DesignerBanner />
         <ProcessSteps />
         <div className="porfollist" style={{marginTop:'50px', marginBottom:'50px'}}>
           <h3>My PORTFOLIO</h3>
