@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Loginpj.mapper.ChatRoomMapper">
+    <resultMap id="ChatRoomResultMap" type="com.example.Loginpj.model.ChatRoom">
+        <result property="roomId" column="room_id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="ChatRoomResultMap">
+        SELECT room_id, room_name, creator_id, created_at FROM chat_room
+    </select>
+
+    <insert id="insertChatRoom" parameterType="com.example.Loginpj.model.ChatRoom">
+        INSERT INTO chat_room (room_id, room_name, creator_id, created_at)
+        VALUES (#{roomId}, #{roomName}, #{creatorId}, SYSDATE)
+    </insert>
+</mapper>
