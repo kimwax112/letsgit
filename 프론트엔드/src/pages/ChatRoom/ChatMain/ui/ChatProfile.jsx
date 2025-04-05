@@ -20,7 +20,7 @@ const ProfileContainer = styled.button`
     background-color: #f5f5f5;
   }
   &:focus {
-    border-color: #799FC4;
+    border-color: #799fc4;
   }
 `;
 
@@ -65,11 +65,14 @@ const ChatTime = styled.p`
   align-self: center;
 `;
 
-export default function ChatProfile({ name, message, time, onClick }) {
+const ExtraContentWrapper = styled.div`
+  margin-left: 10px;
+  align-self: center;
+`;
+
+export default function ChatProfile({ name, message, time, onClick, extraContent }) {
   return (
-    <ProfileContainer
-      onClick={() => onClick(name)} // name을 전달
-    >
+    <ProfileContainer onClick={() => onClick(name)}>
       <ProfileWrapper>
         <Profile src={profile} alt="프로필" />
         <TextWrapper>
@@ -78,6 +81,7 @@ export default function ChatProfile({ name, message, time, onClick }) {
         </TextWrapper>
       </ProfileWrapper>
       <ChatTime>{time}</ChatTime>
+      {extraContent && <ExtraContentWrapper>{extraContent}</ExtraContentWrapper>}
     </ProfileContainer>
   );
 }
