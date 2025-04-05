@@ -16,7 +16,7 @@ const Sidebar = styled.div`
 `;
 
 const SideBarH2 = styled.h2`
-  color: #799FC4;
+  color: #799fc4;
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 20px;
@@ -44,15 +44,15 @@ const SidebarUlLiA = styled.a`
   display: block;
   padding: 10px;
   border-radius: 4px;
+  cursor: pointer;
   &:hover {
-    color: #799FC4;
+    color: #799fc4;
   }
 `;
 
 const Body = styled.div`
   background-color: white;
   width: 100%;
-  
 `;
 
 const BodyH2 = styled.h1`
@@ -62,14 +62,12 @@ const BodyH2 = styled.h1`
 
 const Content = styled.div`
   margin: 0 auto;
-  width: 70%; /* 기존 너비 유지 */
-  
-  
+  width: 70%;
   display: flex;
-  flex-direction: column; /* 수직 배치 유지 */
-  justify-content: flex-start; /* 상단부터 정렬 */
-  align-items: center; /* 가로 중앙 정렬 */
-  padding: 20px; /* 적절한 패딩으로 변경 */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
 `;
 
 export function ChatSidebar({ title, links }) {
@@ -80,7 +78,12 @@ export function ChatSidebar({ title, links }) {
       <SideBarUL>
         {links.map((link, index) => (
           <SidebarUlLi key={index}>
-            <SidebarUlLiA href={link.path}>{link.text}</SidebarUlLiA>
+            <SidebarUlLiA href={link.path} onClick={(e) => {
+              e.preventDefault(); // 기본 링크 동작 방지
+              if (link.onClick) link.onClick(); // onClick 호출
+            }}>
+              {link.text}
+            </SidebarUlLiA>
           </SidebarUlLi>
         ))}
       </SideBarUL>
@@ -92,7 +95,6 @@ export function ChatBody({ Header, children }) {
   return (
     <Body>
       <BodyH2 style={{ color: "#799FC4" }}>{Header}</BodyH2>
-
       <Content>{children}</Content>
     </Body>
   );

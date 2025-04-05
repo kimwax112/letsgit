@@ -99,14 +99,7 @@ const Profile2 = styled.button`
   }
 `;
 
-function SideMenu({ isOpen, onClose, setModalOpen }) {
-  const blockEvent = () => {
-    alert("사용자가 차단되었습니다.");
-  };
-  const reportEvent = () => {
-    alert("사용자가 신고되었습니다.");
-  };
-
+function SideMenu({ isOpen, onClose, setModalOpen, setModalOpen2, selectedUser, onBlock, onReport }) {
   return (
     <SideMenuContainer isOpen={isOpen}>
       <CloseButton onClick={onClose}></CloseButton>
@@ -125,10 +118,10 @@ function SideMenu({ isOpen, onClose, setModalOpen }) {
         <ProfileImg src={warn} alt="sample" />사용자
       </Title>
       <ProfileContainer>
-        <Profile2 onClick={blockEvent}>
+        <Profile2 onClick={onBlock}>
           <ProfileImg src={userblock} />사용자 차단
         </Profile2>
-        <Profile2 onClick={reportEvent}>
+        <Profile2 onClick={onReport}>
           <ProfileImg src={userreport} />사용자 신고
         </Profile2>
       </ProfileContainer>
@@ -136,8 +129,8 @@ function SideMenu({ isOpen, onClose, setModalOpen }) {
         <ProfileImg src={cloud} alt="sample" />불러오기
       </Title>
       <ProfileContainer>
-        <Profile2 onClick={() => setModalOpen(true)}>의뢰 불러오기</Profile2>
-        <Profile2>디자인 불러오기</Profile2>
+        <Profile2 onClick={() => setModalOpen2(true)}>의뢰 불러오기</Profile2>
+        <Profile2 onClick={() => setModalOpen(true)}>디자인 불러오기</Profile2>
       </ProfileContainer>
     </SideMenuContainer>
   );

@@ -14,6 +14,7 @@ const Container = styled.button`
   border-radius: 10px;
   border: 1px solid;
   padding: 10px;
+  background-color: white;
 `;
 
 const Text1 = styled.p`
@@ -50,7 +51,7 @@ const CustomModal = styled(Modal)`
   width: 500px;
   height: 400px;
   text-align: center;
-  height: max-400px;
+  max-height: 400px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -68,6 +69,7 @@ const CancelButton = styled.button`
   padding: 10px 20px;
   background: black;
   cursor: pointer;
+  color: white;
 `;
 
 const ConfirmButton = styled.button`
@@ -80,12 +82,11 @@ const ConfirmButton = styled.button`
 `;
 
 const CloseIcon = styled.img`
-  display; flex;
+  display: flex;
   justify-content:center;
-  algin-items: center;
+  align-items: center;
   width: 30px; /* 원하는 크기로 설정 */
   height: 50px;
-  
 
 `;
 
@@ -95,7 +96,6 @@ const DeleteIcon = styled.img`
   algin-items: center;
   width: 200px; /* 원하는 크기로 설정 */
   height: 170px;
-  
 `
 
 
@@ -120,7 +120,7 @@ export default function ModalContent() {
 
       {/* 삭제 확인 모달 */}
       {isModalOpen && (
-        <CustomModal>
+        <CustomModal onClose={() => setIsModalOpen(false)}>
 
           <DeleteIcon src={deleteIcon} alt="닫기" />
           <h2>글을 삭제하시겠습니까?</h2>
