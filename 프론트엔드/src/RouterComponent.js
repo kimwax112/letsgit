@@ -10,6 +10,7 @@ import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
 import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
+import FavoriteDesigners from "./pages/MyPage/FavoriteDesigners/FavoriteDesigners";
 
 const RouterComponent = () => {
   return (
@@ -39,6 +40,7 @@ const RouterComponent = () => {
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
+              <Route path="FavoriteDesigners" element={<FavoriteDesigners />} />
             </Routes>
           </ClientLayout>
         }
