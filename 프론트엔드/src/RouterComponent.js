@@ -10,7 +10,8 @@ import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
 import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
-import FavoriteDesigners from "./pages/MyPage/FavoriteDesigners/FavoriteDesigners";
+import FavoriteDesigners from "./components/Mypage/FavoriteDesigners/FavoriteDesigners";
+import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
 
 const RouterComponent = () => {
   return (
@@ -41,6 +42,7 @@ const RouterComponent = () => {
               <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesigners />} />
+              <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
             </Routes>
           </ClientLayout>
         }

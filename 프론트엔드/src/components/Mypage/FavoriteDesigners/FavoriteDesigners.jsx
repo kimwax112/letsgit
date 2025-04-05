@@ -1,24 +1,26 @@
 import React, { useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa"; // 하트 아이콘 import
 import "./FavoriteDesigners.css";
+import designerimg from "../../../assets/desiner.png";
 
 const dummyDesigners = [
   {
     id: 1,
     name: "홍길동",
     intro: "감각적인 브랜드 디자이너입니다.",
-    image: "https://via.placeholder.com/80"
+    image: designerimg,
   },
   {
     id: 2,
     name: "김디자인",
     intro: "UI/UX 전문 디자이너예요!",
-    image: "https://via.placeholder.com/80"
+    image: designerimg,
   },
   {
     id: 3,
     name: "박크리에이티브",
     intro: "다양한 일러스트와 캐릭터 제작 가능해요.",
-    image: "https://via.placeholder.com/80"
+    image: designerimg,
   }
   // 더미 데이터 추가 가능
 ];
@@ -96,11 +98,16 @@ export default function FavoriteDesigners() {
         ) : (
           filteredDesigners.map((designer) => (
             <div key={designer.id} className="designer-card">
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(designer.id)}
-                onChange={() => handleSelect(designer.id)}
-              />
+              <span
+                className="heart-checkbox"
+                onClick={() => handleSelect(designer.id)}
+              >
+                {selectedIds.includes(designer.id) ? (
+                  <FaHeart color="#ff5b5b" />
+                ) : (
+                  <FaRegHeart color="#aaa" />
+                )}
+              </span>
               <img src={designer.image} alt={designer.name} />
               <div className="info">
                 <h4>{designer.name}</h4>
