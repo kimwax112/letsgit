@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import ChatLayout from "./ui/ChatLayout";
 import Search from "./ui/Search";
@@ -6,7 +6,10 @@ import ChatProfile from "./ui/ChatProfile";
 import { Modal } from "../../../utils";
 import SideMenu from "./ui/SideMenu";
 import backArrow from "../../../assets/화살표.png";
-import ItemBox from './ui/ItemBox';
+import ItemBox from "./ui/ItemBox";
+import ModalContent from "../../Request/ui/ModalContent";
+import { useChat } from "./ui/useChat";
+
 const Room = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -92,34 +95,132 @@ const MenuButton = styled.button`
     background-color: rgb(209, 209, 209);
   }
 `;
+
 const CustomModal = styled(Modal)`
   display: flex;
-  flex-direction: column; /* 세로 방향으로 요소 배치 */
+  flex-direction: column;
   width: 700px;
   height: 800px;
+`;
 
-`;
 const CustomModalHeader = styled.div`
-  background-color : #F2EEEE;
-  font-size : 30px;
-  font-weight :bold;
-  text-align : center;
-  padding : 15px;
-  margin-bottom : 20px;
+  background-color: #f2eeee;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 20px;
 `;
+
 const ItemBoxContainer = styled.div`
   width: 90%;
-  margin : 0 auto;
-  background-color : white;
+  margin: 0 auto;
+  background-color: white;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: flex-start; /* 가로 가운데 정렬 */
+  justify-content: flex-start;
   gap: 10px;
-  padding-left : 20px;
-
+  padding-left: 20px;
 `;
 
+const ReportButton = styled.button`
+  padding: 10px;
+  background-color: #799fc4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #cc0000;
+  }
+`;
+
+const BlockButton = styled.button`
+  padding: 10px;
+  background-color: #9dbdd5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  &:hover {
+    background-color: #444;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ConfirmModal = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const ConfirmMessage = styled.p`
+  font-size: 16px;
+  text-align: center;
+`;
+
+const ConfirmButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`;
+
+const ConfirmButton = styled.button`
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+`;
+
+const YesButton = styled(ConfirmButton)`
+  background-color: #799fc4;
+  &:hover {
+    background-color: #cc0000;
+  }
+`;
+
+const NoButton = styled(ConfirmButton)`
+  background-color: #9dbdd5;
+  &:hover {
+    background-color: #444;
+  }
+`;
+
+const SuccessPopup = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  text-align: center;
+`;
+
+const SuccessPopupMessage = styled.p`
+  color: green;
+  font-weight: bold;
+  font-size: 16px;
+`;
 
 const chatData = [
   { name: "Cody Fisher", message: "how it going?", time: "12:00 p.m." },
@@ -128,81 +229,50 @@ const chatData = [
 ];
 
 function ChatMain() {
-  const [filteredChats, setFilteredChats] = useState(chatData);
-  const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [isComposing, setIsComposing] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); // 모달 상태 추가
-  const bottomRef = useRef(null);
-
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
-
-  const handleSearch = (term) => {
-    if (term) {
-      const filtered = chatData.filter((chat) =>
-        chat.name.toLowerCase().includes(term.toLowerCase())
-      );
-      setFilteredChats(filtered);
-    } else {
-      setFilteredChats(chatData);
-    }
-  };
-
-  const handleRecentSearchClick = (search) => {
-    handleSearch(search);
-    setRecentSearches((prev) => [search, ...prev.filter((item) => item !== search)].slice(0, 5));
-  };
-
-  const handleProfileClick = (name) => {
-    setSelectedUser(name);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedUser(null);
-    setIsSideMenuOpen(false);
-  };
-
-  const handleMenuClick = () => {
-    setIsSideMenuOpen(true);
-  };
-
-  const handleCloseSideMenu = () => {
-    setIsSideMenuOpen(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !isComposing && e.target.value.trim()) {
-      setMessages([
-        ...messages,
-        { text: e.target.value.trim(), time: new Date().toLocaleTimeString() },
-      ]);
-      e.target.value = "";
-    }
-  };
-
-  const handleCompositionStart = () => {
-    setIsComposing(true);
-  };
-
-  const handleCompositionEnd = () => {
-    setIsComposing(false);
-  };
+  const {
+    filteredChats,
+    recentSearches,
+    isModalOpen,
+    selectedUser,
+    isSideMenuOpen,
+    messages,
+    modalOpen,
+    modalOpen2,
+    currentView,
+    isConfirmOpen,
+    confirmMessage,
+    isSuccessPopupOpen,
+    popupMessage,
+    bottomRef,
+    handleSearch,
+    handleRecentSearchClick,
+    handleProfileClick,
+    handleCloseModal,
+    handleMenuClick,
+    handleCloseSideMenu,
+    handleKeyDown,
+    handleCompositionStart,
+    handleCompositionEnd,
+    handleSidebarLinkClick,
+    handleBlockClick,
+    handleReportClick,
+    handleSideMenuBlock,
+    handleSideMenuReport,
+    handleConfirmYes,
+    handleConfirmNo,
+    setModalOpen,
+    setModalOpen2,
+  } = useChat(chatData);
 
   return (
     <>
       <StyleSheet />
       <ChatLayout
         sidebarTitle="대화방"
-        sidebarLinks={[{ path: "#", text: "일반 채팅방" }, { path: "#", text: "사용자 신고, 차단" }]}
+        sidebarLinks={[
+          { path: "chatmain", text: "일반 채팅방", onClick: () => handleSidebarLinkClick("chatmain") },
+          { path: "report", text: "사용자 신고, 차단", onClick: () => handleSidebarLinkClick("report") },
+        ]}
         Header="일반 채팅방"
       >
         <Search
@@ -217,7 +287,29 @@ function ChatMain() {
               name={chat.name}
               message={chat.message}
               time={chat.time}
-              onClick={() => handleProfileClick(chat.name)}
+              onClick={handleProfileClick}
+              extraContent={
+                currentView === "report" ? (
+                  <ButtonWrapper>
+                    <BlockButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBlockClick(chat.name);
+                      }}
+                    >
+                      차단
+                    </BlockButton>
+                    <ReportButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleReportClick(chat.name);
+                      }}
+                    >
+                      신고
+                    </ReportButton>
+                  </ButtonWrapper>
+                ) : null
+              }
             />
           ))
         ) : (
@@ -250,7 +342,11 @@ function ChatMain() {
             <SideMenu
               isOpen={isSideMenuOpen}
               onClose={handleCloseSideMenu}
-              setModalOpen={setModalOpen} // props로 전달
+              setModalOpen={setModalOpen}
+              setModalOpen2={setModalOpen2}
+              selectedUser={selectedUser}
+              onBlock={handleSideMenuBlock}
+              onReport={handleSideMenuReport}
             />
             <RoomFooter>
               <RoomInput
@@ -261,23 +357,40 @@ function ChatMain() {
                 onCompositionEnd={handleCompositionEnd}
               />
             </RoomFooter>
+            {isConfirmOpen && (
+              <ConfirmModal>
+                <ConfirmMessage>{confirmMessage}</ConfirmMessage>
+                <ConfirmButtonWrapper>
+                  <YesButton onClick={handleConfirmYes}>예</YesButton>
+                  <NoButton onClick={handleConfirmNo}>아니요</NoButton>
+                </ConfirmButtonWrapper>
+              </ConfirmModal>
+            )}
+            {isSuccessPopupOpen && (
+              <SuccessPopup>
+                <SuccessPopupMessage>{popupMessage}</SuccessPopupMessage>
+              </SuccessPopup>
+            )}
           </Room>
         )}
         {modalOpen && (
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
-           
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox>
-            <var> <ItemBox text1='맨투맨' text2='(Sweatshirt)'></ItemBox></var>
-
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
             </ItemBoxContainer>
+          </CustomModal>
+        )}
+        {modalOpen2 && (
+          <CustomModal onClose={() => setModalOpen2(false)}>
+            <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
+            <ModalContent />
           </CustomModal>
         )}
       </ChatLayout>
