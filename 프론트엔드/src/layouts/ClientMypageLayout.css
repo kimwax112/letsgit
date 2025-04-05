@@ -1,0 +1,11 @@
+.mypage-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .mypage-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f7f8fa;
+  }
+  
