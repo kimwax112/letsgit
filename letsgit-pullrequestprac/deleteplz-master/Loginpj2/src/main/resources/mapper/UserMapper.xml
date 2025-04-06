@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Loginpj.mapper.UserMapper">
+
+    <!-- 아이디 중복 체크 -->
+    <select id="countById" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user_info WHERE id = #{id, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 특정 ID로 사용자 조회 -->
+    <select id="findById" parameterType="String" resultType="com.example.Loginpj.model.User">
+        SELECT * FROM user_info WHERE id = #{id, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 회원가입 (INSERT) -->
+    <insert id="insertUser" parameterType="com.example.Loginpj.model.User">
+        INSERT INTO user_info (id, passwd, email, birthdate, tel, name, gender, userType) 
+        VALUES (#{id, jdbcType=VARCHAR}, #{passwd, jdbcType=VARCHAR}, 
+        #{email, jdbcType=VARCHAR}, #{birthdate, jdbcType=DATE}, 
+        #{tel, jdbcType=VARCHAR}, #{name, jdbcType=VARCHAR}, 
+        #{gender, jdbcType=VARCHAR}, #{userType, jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>

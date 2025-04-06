@@ -1,0 +1,28 @@
+시퀀스를 사용하여 자동 증가 컬럼생성
+
+CREATE SEQUENCE user_design_seq
+START WITH 1        -- 1부터 시작
+INCREMENT BY 1      -- 1씩 증가
+NOCACHE;            -- 캐싱 안 함 (즉시 반영)
+
+
+
+테이블 생성
+
+CREATE TABLE user_designs (
+    design_id NUMBER PRIMARY KEY,
+    user_id VARCHAR2(50) NOT NULL,
+    clothing_type VARCHAR2(100) NOT NULL,
+    fabric VARCHAR2(100) NOT NULL,
+    size VARCHAR2(50) NOT NULL,
+    design_name VARCHAR2(100) NOT NULL,
+    colors CLOB,
+    created_at DATE DEFAULT SYSDATE
+);
+
+
+
+
+
+
+
