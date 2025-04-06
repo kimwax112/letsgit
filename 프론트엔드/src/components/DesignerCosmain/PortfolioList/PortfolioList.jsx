@@ -5,9 +5,6 @@ const portfolioData = [
   { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" },
   { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" },
   { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" },
-  { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" },
-  { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" },
-  { title: "포트폴리오 제목", description: "나의 특성을 살린 작업입니다.", date: "2025-03-18" }
 ];
 
 export default function PortfolioList() {
