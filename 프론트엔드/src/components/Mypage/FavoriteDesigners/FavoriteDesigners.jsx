@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa"; // 하트 아이콘 import
+import { FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
 import "./FavoriteDesigners.css";
 import designerimg from "../../../assets/desiner.png";
 
@@ -13,22 +13,46 @@ const dummyDesigners = [
   {
     id: 2,
     name: "김디자인",
-    intro: "UI/UX 전문 디자이너예요!",
+    intro: "상의 전문 디자이너예요!",
     image: designerimg,
   },
   {
     id: 3,
-    name: "박크리에이티브",
-    intro: "다양한 일러스트와 캐릭터 제작 가능해요.",
+    name: "박디자이너",
+    intro: "다양한 디자인과 질 좋은 제작 가능해요.",
+    image: designerimg,
+  },
+  {
+    id: 4,
+    name: "유디자인",
+    intro: "바지 전문 디자이너예요!",
+    image: designerimg,
+  },
+  {
+    id: 5,
+    name: "막디자인",
+    intro: "자켓 전문 디자이너예요!",
+    image: designerimg,
+  },
+  {
+    id: 6,
+    name: "막디자인2",
+    intro: "자켓 전문 디자이너예요!",
+    image: designerimg,
+  },
+  {
+    id: 7,
+    name: "막디자인3",
+    intro: "자켓 전문 디자이너예요!",
     image: designerimg,
   }
-  // 더미 데이터 추가 가능
 ];
 
 export default function FavoriteDesigners() {
   const [designers, setDesigners] = useState(dummyDesigners);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
+  const [sortOrder, setSortOrder] = useState("recent");
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -37,6 +61,14 @@ export default function FavoriteDesigners() {
   const filteredDesigners = designers.filter((designer) =>
     designer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const sortedDesigners = [...filteredDesigners].sort((a, b) => {
+    if (sortOrder === "name") {
+      return a.name.localeCompare(b.name, "ko");
+    } else {
+      return b.id - a.id; // id 기준으로 최근순
+    }
+  });
 
   const handleSelect = (id) => {
     setSelectedIds((prev) =>
@@ -73,30 +105,45 @@ export default function FavoriteDesigners() {
     <div className="favorites-container">
       <h2>찜한 디자이너</h2>
       <div className="top-bar">
-        <input
-          type="text"
-          placeholder="디자이너 이름 검색"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <div className="checkbox-all">
+        {/* 1줄: 검색, 정렬, 삭제 버튼들 */}
+        <div className="top-row">
+        <div className="search-input">
+          <FaSearch className="search-icon" />
           <input
-            type="checkbox"
-            checked={isAllVisibleSelected}
-            onChange={handleSelectAll}
+            type="text"
+            placeholder="디자이너 이름 검색"
+            value={searchTerm}
+            onChange={handleSearch}
           />
-          <label>전체 선택</label>
         </div>
-        <span className="count">선택됨: {selectedIds.length}명</span>
-        <button onClick={handleDeleteSelected}>선택 삭제</button>
-        <button onClick={handleDeleteAll}>전체 삭제</button>
+          <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
+            <option value="recent">최근 찜한 순</option>
+            <option value="name">이름순</option>
+          </select>
+          <button onClick={handleDeleteSelected}>선택 삭제</button>
+          <button onClick={handleDeleteAll}>전체 삭제</button>
+        </div>
+
+        {/* 2줄: 전체 선택 체크박스 + 선택 수 */}
+        <div className="bottom-row">
+          <div className="checkbox-all">
+            <input
+              type="checkbox"
+              checked={isAllVisibleSelected}
+              onChange={handleSelectAll}
+            />
+            <label>전체 선택</label>
+          </div>
+          <span className="count">선택됨: {selectedIds.length}명</span>
+        </div>
       </div>
 
+
       <div className="designer-list">
-        {filteredDesigners.length === 0 ? (
+        {sortedDesigners.length === 0 ? (
           <p>검색 결과가 없습니다.</p>
         ) : (
-          filteredDesigners.map((designer) => (
+          sortedDesigners.map((designer) => (
             <div key={designer.id} className="designer-card">
               <span
                 className="heart-checkbox"

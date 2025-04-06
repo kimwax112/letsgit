@@ -42,8 +42,8 @@ const RouterComponent = () => {
               <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
               <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
-              <Route path="FavoriteDesigners" element={<FavoriteDesigners />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
+              <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
             </Routes>
           </ClientLayout>
         }
