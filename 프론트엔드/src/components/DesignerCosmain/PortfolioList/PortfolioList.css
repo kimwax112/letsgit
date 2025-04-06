@@ -1,5 +1,5 @@
 .portfolio-list {
-    display: flex;             /* flexbox 사용 */
+    display: flex;  /* flexbox 사용 */
     flex-wrap: wrap;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -10,26 +10,54 @@
   }
   
   .portfolio-item {
-    width: 20.33%;
+    position: relative; /*  오버레이를 위한 relative 설정 */
+    width: 100%;
+    height: 250px;
     background-image: url('/public/image/feltimg.png');
-    background-size: contain; /* 또는 cover, 50% 등의 다른 옵션 */
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     padding: 15px;
     border-radius: 10px;
-    height: 200px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    overflow: hidden; /*  넘치는 부분 숨기기 */
+  }
+
+  .portfolio-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 검정색 + 투명도 50% */
+    border-radius: 10px; /* 둥글기 유지 */
   }
   
   .portfolio-content {
-    text-align: center;
+    text-align: left;
+    padding-left: 10px; /* 왼쪽 여백 추가 */
+    color: white; /* 글씨 색상 대비 */
   }
-  
+ 
+  .portfolio-content,
   .date {
-    font-size: 0.8rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .date {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.0rem;
+    color: rgba(255, 255, 255, 0.8); /* 살짝 투명한 흰색 */
   }
 
   .portfolio-image img {
-    width: 100%;               /* 이미지가 container를 꽉 채우도록 */
-    height: auto;              /* 비율에 맞춰 높이 자동 조정 */
+    width: 100%;   /* 이미지가 container를 꽉 채우도록 */
+    height: auto;  /* 비율에 맞춰 높이 자동 조정 */
   }

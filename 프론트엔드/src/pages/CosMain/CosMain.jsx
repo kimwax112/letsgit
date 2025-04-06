@@ -43,7 +43,7 @@ export default function CosMain() {
             <p>현재 진행중인 계약을 살펴보세요.</p>
             <div className="Content-Sell2">
               <OngoingContract />
-              <OngoingContract />
+              <OngoingContract />  
               <OngoingContract />
             </div>
           </div>
