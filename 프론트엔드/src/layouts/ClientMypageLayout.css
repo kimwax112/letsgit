@@ -8,4 +8,23 @@
     padding: 2rem;
     background-color: #f7f8fa;
   }
+
+  .mypage-sidebar {
+    width: 240px;
+    min-width: 200px;
+  }
+  
+  .flex {
+    display: flex;
+    flex-direction: row; /* ← 명시적으로 설정 */
+  }
+
+  .flex-1 {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0.7rem 0.7rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 살짝 그림자 주면 더 이쁨 */
+  }
   
