@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import profile from "../../../../assets/profile.png";
+import profile from "../../../assets/profile.png";
 
 const ProfileContainer = styled.button`
   width: 100%;
