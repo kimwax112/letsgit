@@ -9,7 +9,7 @@ import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
 import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
-import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
+import ReportPage from './pages/ChatMain/ReportPage';
 
 const RouterComponent = () => {
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import search2 from "../../../../assets/search2.png";
+import search2 from "../../../assets/search2.png";
 
 // 검색창 컨테이너 스타일
 const SearchContainer = styled.div`

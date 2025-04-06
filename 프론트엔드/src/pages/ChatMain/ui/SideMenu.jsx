@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import close from "../../../../assets/닫기.png";
-import partner from "../../../../assets/partner.png";
-import warn from "../../../../assets/warn.png";
-import cloud from "../../../../assets/cloud.png";
-import profile from "../../../../assets/profile.png";
-import userblock from "../../../../assets/userblock.png";
-import userreport from "../../../../assets/userreport.png";
+import close from "../../../assets/닫기.png";
+import partner from "../../../assets/partner.png";
+import warn from "../../../assets/warn.png";
+import cloud from "../../../assets/cloud.png";
+import profile from "../../../assets/profile.png";
+import userblock from "../../../assets/userblock.png";
+import userreport from "../../../assets/userreport.png";
 
 const SideMenuContainer = styled.div`
   display: flex;
