@@ -1,10 +1,10 @@
 // MyPage.jsx
 import React, { useState } from "react";
-import MypageSidebar from "../../components/Mypage/MypageSidebar";   
-import MypageContent from "../../components/Mypage/MypageContent";
-import './MyPage.css'
+import MypageSidebar from "../../../components/Mypage/MypageSidebar/MypageSidebar";   
+import MypageContent from "../../../components/Mypage/MypageContent/MypageContent";
+import './MyDesignsRequests.css'
 
-const MyPage = () => {
+const MyDesignsRequests = () => {
 
   return (
     <div className="mypage-container">
@@ -23,4 +23,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default MyDesignsRequests;

@@ -9,7 +9,7 @@ export default function MypageSidebar({}) {
       <hr/>
       <ul>
         <li>
-          <Link to="/client/MyPage">내 정보</Link>
+          <Link to="/client/MyInfo">내 정보</Link>
         </li>
         <li>
           <Link to="/client/design-request">디자인&의뢰</Link>
