@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
 import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain, ChoseDesigner } from "./pages";
 import Home from "./pages/Home";
-import MyPage from "./pages/MyPage/MyPage";
+import MyDesignsRequests from "./pages/MyPage/MyDesignsRequests/MyDesignsRequests";
 import Welcome from './pages/Login/Welcome';
 import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
@@ -37,7 +37,7 @@ const RouterComponent = () => {
               <Route path="RequestWriting" element={<RequestWriting />} />
               <Route path="RequestPost" element={<RequestPost />} />
               <Route path="Home" element={<Home />} />
-              <Route path="MyPage" element={<MyPage />} />
+              <Route path="MyDesignsRequests" element={<MyDesignsRequests />} />
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
               <Route path="Welcome" element={<Welcome />} />

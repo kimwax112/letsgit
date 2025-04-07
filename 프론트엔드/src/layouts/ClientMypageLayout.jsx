@@ -1,5 +1,5 @@
 import React from "react";
-import MypageSidebar from "../components/Mypage/MypageSidebar"
+import MypageSidebar from "../components/Mypage/MypageSidebar/MypageSidebar"
 import "./ClientMypageLayout.css";
 
 const ClientMypageLayout = ({ children }) => {
