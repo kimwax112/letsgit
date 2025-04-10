@@ -12,7 +12,7 @@ export default function MypageSidebar({}) {
           <Link to="/client/MyInfo">내 정보</Link>
         </li>
         <li>
-          <Link to="/client/design-request">디자인&의뢰</Link>
+          <Link to="/client/MyDesignsRequests">디자인&의뢰</Link>
         </li>
         <li>
           <Link to="/client/progress-history">진행내역 조회</Link>

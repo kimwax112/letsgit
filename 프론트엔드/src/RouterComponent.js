@@ -12,6 +12,7 @@ import Portfolio from './pages2/Mypage/Portfolio';
 import FavoriteDesigners from "./components/Mypage/FavoriteDesigners/FavoriteDesigners";
 import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
 import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
+import MyInfo from "./components/Mypage/MyInfo/MyInfo";
 
 const RouterComponent = () => {
   return (
@@ -44,6 +45,7 @@ const RouterComponent = () => {
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
+              <Route path="MyInfo" element={<MyInfo />} />
             </Routes>
           </ClientLayout>
         }

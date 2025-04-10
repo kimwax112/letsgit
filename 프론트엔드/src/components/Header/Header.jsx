@@ -16,7 +16,7 @@ export default function Header() {
         <button className="ButtonAtLogo" style={{ backgroundColor: '#4A6171', fontWeight: 400, fontSize: '16px' }}>
           고객센터
         </button>
-        <Link to="/client/MyPage">
+        <Link to="/client/MyInfo">
           <button className="ButtonAtLogo" style={{ backgroundColor: '#80A1BE', fontWeight: 400, fontSize: '16px' }}>
             마이페이지
           </button>

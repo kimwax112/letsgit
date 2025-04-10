@@ -135,10 +135,10 @@ const Navbar = () => {
           </div>
           <div className="dropdown-section">
             <h3>마이페이지</h3>
-            <Link to="" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/MyInfo" onClick={() => setIsMenuOpen(false)}>
               내 정보
             </Link>
-            <Link to="" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/MyDesignsRequests" onClick={() => setIsMenuOpen(false)}>
               디자인&의뢰
             </Link>
             <Link to="" onClick={() => setIsMenuOpen(false)}>
@@ -147,7 +147,7 @@ const Navbar = () => {
             <Link to="" onClick={() => setIsMenuOpen(false)}>
               작성한 후기
             </Link>
-            <Link to="" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/FavoriteDesigners" onClick={() => setIsMenuOpen(false)}>
               찜한 디자이너
             </Link>
           </div>
