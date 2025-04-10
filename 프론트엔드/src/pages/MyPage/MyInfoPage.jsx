@@ -1,6 +1,7 @@
 import React from "react";
 import ClientMypageLayout from "../../../layouts/ClientMypageLayout";
-import FavoriteDesigners from "../../../components/Mypage/MyInfo/MyInfo";
+import MyInfo from "../../components/Mypage/MyInfo/MyInfo";
+
 
 const MyInfoPage = () => {
     return (
