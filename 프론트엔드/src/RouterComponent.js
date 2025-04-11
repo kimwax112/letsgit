@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
 import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain, ChoseDesigner } from "./pages";
 import Home from "./pages/Home";
-import MyDesignsRequests from "./pages/MyPage/MyDesignsRequests/MyDesignsRequests";
 import Welcome from './pages/Login/Welcome';
 import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
@@ -12,7 +11,8 @@ import Portfolio from './pages2/Mypage/Portfolio';
 import FavoriteDesigners from "./components/Mypage/FavoriteDesigners/FavoriteDesigners";
 import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
 import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
-import MyInfo from "./components/Mypage/MyInfo/MyInfo";
+import MyInfoPage from "./pages/MyPage/MyInfoPage";
+import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsRequestsPage";
 
 const RouterComponent = () => {
   return (
@@ -38,14 +38,14 @@ const RouterComponent = () => {
               <Route path="RequestWriting" element={<RequestWriting />} />
               <Route path="RequestPost" element={<RequestPost />} />
               <Route path="Home" element={<Home />} />
-              <Route path="MyDesignsRequests" element={<MyDesignsRequests />} />
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
               <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
-              <Route path="MyInfo" element={<MyInfo />} />
+              <Route path="MyInfo" element={<MyInfoPage />} />
+              <Route path="MyDesignsRequests" element={<MyDesignsRequestsPage />} />
             </Routes>
           </ClientLayout>
         }

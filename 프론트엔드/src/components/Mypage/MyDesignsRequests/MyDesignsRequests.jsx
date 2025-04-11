@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import './MypageContent.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './MyDesignsRequests.css';
 
-const MypageContent = () => {
+const MyDesignsRequests = () => {
   const [activeTab, setActiveTab] = useState('design');
   const [selectedCategory, setSelectedCategory] = useState('template');
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
-  const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [orderItems, setOrderItems] = useState([
+    { id: 1, name: '의뢰서 1', date: '2025-04-01' },
+    { id: 2, name: '의뢰서 2', date: '2025-04-03' },
+    { id: 3, name: '의뢰서 3', date: '2025-04-05' },
+    { id: 4, name: '의뢰서 4', date: '2025-04-07' },
+    { id: 5, name: '의뢰서 5', date: '2025-04-09' },
+    { id: 6, name: '의뢰서 6', date: '2025-04-10' }
+  ]);
 
-  // 디자인 항목 데이터
   const designItems = {
     template: [
       { id: 1, name: '맨투맨1', description: '맨투맨1 설명', image: '/images/맨투맨1.jpg' },
@@ -26,32 +34,32 @@ const MypageContent = () => {
     ],
   };
 
-  // 탭 변경 핸들러
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
-  // 드롭다운 변경 핸들러
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  // 카드 클릭 핸들러
+  const handleTabClick = (tab) => setActiveTab(tab);
+  const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
   const handleCardClick = (item) => {
-    setSelectedItem(item); // 클릭한 항목을 저장
-    setIsModalOpen(true); // 모달 열기
+    setSelectedItem(item);
+    setIsModalOpen(true);
   };
-
-  // 모달 닫기 핸들러
-  const closeModal = () => {
-    setIsModalOpen(false); // 모달 닫기
+  const closeModal = () => setIsModalOpen(false);
+  const handleDeleteOrder = (id) => {
+    setOrderItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
     <div>
-      <div>
-        <button onClick={() => handleTabClick('design')}>디자인</button>
-        <button onClick={() => handleTabClick('order')}>의뢰</button>
+      <div className="tabs">
+        <button
+          className={`tab-button ${activeTab === 'design' ? 'active' : ''}`}
+          onClick={() => handleTabClick('design')}
+        >
+          디자인
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'order' ? 'active' : ''}`}
+          onClick={() => handleTabClick('order')}
+        >
+          의뢰
+        </button>
       </div>
 
       <div className="tab-content">
@@ -66,12 +74,8 @@ const MypageContent = () => {
             </div>
             <div className="card-container">
               {designItems[selectedCategory].map((item) => (
-                <div
-                  key={item.id}
-                  className="card"
-                  onClick={() => handleCardClick(item)}
-                >
-                  <img src={item.image} alt={item.name} className="card-image" />
+                <div key={item.id} className="card" onClick={() => handleCardClick(item)}>
+                  <img src={item.image} alt={item.name} className="card-image-top" />
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                 </div>
@@ -79,15 +83,24 @@ const MypageContent = () => {
             </div>
           </div>
         )}
+
         {activeTab === 'order' && (
           <div className="tab">
-            <p>의뢰 탭 내용</p>
-            {/* 의뢰 탭 내용 구현 */}
+            <div className="card-container">
+              {orderItems.map((item) => (
+                <div key={item.id} className="order-card">
+                  <span className="delete-btn" onClick={() => handleDeleteOrder(item.id)}>
+                    <i className="fas fa-trash-alt"></i>
+                  </span>
+                  <h3>{item.name}</h3>
+                  <p>{item.date}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
-      {/* 모달 팝업 */}
       {isModalOpen && selectedItem && (
         <div className="modal">
           <div className="modal-content">
@@ -102,4 +115,4 @@ const MypageContent = () => {
   );
 };
 
-export default MypageContent;
+export default MyDesignsRequests;

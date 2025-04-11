@@ -103,7 +103,6 @@ export default function FavoriteDesigners() {
 
   return (
     <div className="favorites-container">
-      <h2>찜한 디자이너</h2>
       <div className="top-bar">
         {/* 1줄: 검색, 정렬, 삭제 버튼들 */}
         <div className="top-row">

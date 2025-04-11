@@ -40,7 +40,6 @@ export default function MyInfo() {
 
   return (
     <div className="myinfo-container">
-      <h2 className="myinfo-title">내 정보</h2>
       <div className="info-content">
         {/* 왼쪽 프로필 섹션 */}
         <div className="profile-section">
