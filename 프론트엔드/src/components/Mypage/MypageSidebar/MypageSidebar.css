@@ -43,3 +43,21 @@ body{
 .sidebar ul li a:hover {
   color: #799FC4;
 }
+
+.sidebar ul li.active a {
+  color: #799FC4;
+  font-weight: bold;
+  position: relative;
+}
+
+.sidebar ul li.active a::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #799FC4;
+  border-radius: 50%;
+}
