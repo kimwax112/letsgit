@@ -1,0 +1,77 @@
+.sidebar {
+  width: 16rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-right: 1px solid #e5e7eb;
+  height: 100vh;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 0.75rem;
+}
+
+.sidebar li a {
+  display: flex;
+  align-items: center;
+  color: #4b5563; /* text-gray-700 */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.sidebar li a:hover {
+  color: black;
+}
+
+.sidebar li.active a {
+  color: #1f2937; /* text-gray-900 */
+  font-weight: bold;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 아이콘과 텍스트 간 간격을 넓힘 */
+  flex-grow: 1; /* 텍스트가 가능한 공간을 채우도록 */
+}
+
+/* 사이드바 아이콘 공통 */
+.sidebar-icon {
+  font-size: 1.25rem;
+  color: #6b7280; /* text-gray-500 */
+  line-height: 1; /* 아이콘의 수직 정렬을 맞춰줌 */
+}
+
+/* 뱃지 스타일 */
+.badge {
+  background-color: #3b82f6;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  position: absolute;  /* 뱃지를 고정 위치에 */
+  top: 0;              /* 상단에 고정 */
+  right: 0;            /* 오른쪽에 고정 */
+}
+
+/* 수정된 부분: flexbox로 배치 */
+.sidebar-link-with-badge {
+  position: relative;   /* 뱃지를 고정할 수 있게 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

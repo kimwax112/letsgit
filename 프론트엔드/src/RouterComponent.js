@@ -13,6 +13,7 @@ import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesi
 import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
 import MyInfoPage from "./pages/MyPage/MyInfoPage";
 import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsRequestsPage";
+import ContractPage from "./pages/contract/ContractPage";
 
 const RouterComponent = () => {
   return (
@@ -46,6 +47,7 @@ const RouterComponent = () => {
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
               <Route path="MyInfo" element={<MyInfoPage />} />
               <Route path="MyDesignsRequests" element={<MyDesignsRequestsPage />} />
+              <Route path="contract" element={<ContractPage />} />
             </Routes>
           </ClientLayout>
         }
