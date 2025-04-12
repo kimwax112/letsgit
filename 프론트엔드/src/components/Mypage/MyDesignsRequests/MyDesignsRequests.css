@@ -136,7 +136,6 @@ select:focus {
 }
 
 
-
 /* 모달 */
 .modal {
   position: fixed;
@@ -157,14 +156,30 @@ select:focus {
   border-radius: 10px;
   max-width: 600px;
   width: 80%;
-  text-align: center;
+  text-align: left;
   position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
 }
 
 .modal-image {
   width: 100%;
   height: auto;
   margin-bottom: 10px;
+}
+
+.modal-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.modal-details p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
 .close-btn {
