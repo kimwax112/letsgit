@@ -14,6 +14,7 @@ import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
 import MyInfoPage from "./pages/MyPage/MyInfoPage";
 import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsRequestsPage";
 import ContractPage from "./pages/contract/ContractPage";
+import StarredPage from "./pages/contract/StarredPage";
 
 const RouterComponent = () => {
   return (
@@ -48,6 +49,7 @@ const RouterComponent = () => {
               <Route path="MyInfo" element={<MyInfoPage />} />
               <Route path="MyDesignsRequests" element={<MyDesignsRequestsPage />} />
               <Route path="contract" element={<ContractPage />} />
+              <Route path="starred" element={<StarredPage />} />
             </Routes>
           </ClientLayout>
         }
