@@ -24,7 +24,7 @@ export default function ContractSidebar({ unreadCount, starredCount, sentCount }
           <Link to="/client/unread" className="sidebar-link-with-badge">
             <div className="icon-text">
               <FaEnvelope className="sidebar-icon" />
-              <span>안읽음</span>
+              <span>안 읽음</span>
             </div>
             {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
           </Link>
