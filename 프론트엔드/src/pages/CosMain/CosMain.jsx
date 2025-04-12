@@ -4,6 +4,7 @@ import { MainBanner } from "../index"; // MainBanner 컴포넌트 임포트 (배
 import OngoingContract from '../../components/OngoingContract/OngoingContract';
 import DesignerPortfolio from '../../components/DesignerPortfolio/DesignerPortfolio';
 import RecommendedDesign from '../../components/RecommendedDesign/RecommendedDesign';
+import ClientProcessStep from '../../components/ClientProcessStep/ClientProcessStep';
 
 export default function CosMain() {
   // useRef로 scrollContainerRef 정의
@@ -37,7 +38,7 @@ export default function CosMain() {
       <div className="WholeWrapper">
         <div className="ContentsWrapper">
           <MainBanner />
-
+          <ClientProcessStep/>
           <div className="Content-Sell">
             <h2>진행중인 <span style={{ color: '#9ABCD4' }}>계약</span></h2>
             <p>현재 진행중인 계약을 살펴보세요.</p>
