@@ -1,0 +1,87 @@
+.contract-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb; /* gray-200 */
+    background-color: #fff;
+    transition: background-color 0.2s ease;
+  }
+  
+  .contract-item:hover {
+    background-color: #f9fafb; /* gray-50 */
+  }
+  
+  .contract-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .contract-star {
+    margin-top: 2px;
+  }
+  
+  .star-icon {
+    color: #d1d5db; /* gray-300 */
+  }
+  
+  .star-icon.active {
+    color: #facc15; /* yellow-400 */
+  }
+  
+  .contract-text {
+    line-height: 1.4;
+  }
+  
+  .contract-title {
+    font-size: 16px; /* 기존 14px → 16px */
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+  
+  .contract-preview {
+    font-size: 14px; /* 기존 12px → 14px */
+    color: #6b7280;
+    margin: 2px 0 0;
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .contract-right {
+    text-align: right;
+    min-width: 90px;
+  }
+  
+  .contract-status {
+    font-size: 13px; /* 기존 11px → 13px */
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+  
+  .contract-status.진행중 {
+    background-color: #dbeafe; /* blue-100 */
+    color: #2563eb; /* blue-600 */
+  }
+  
+  .contract-status.완료 {
+    background-color: #d1fae5; /* green-100 */
+    color: #10b981; /* green-600 */
+  }
+  
+  .contract-status.해지 {
+    background-color: #fee2e2; /* red-100 */
+    color: #ef4444; /* red-600 */
+  }
+  
+  .contract-date {
+    font-size: 12px; /* 기존 11px → 12px */
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+  
