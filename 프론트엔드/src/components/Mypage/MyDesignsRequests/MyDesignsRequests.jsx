@@ -116,6 +116,30 @@ const MyDesignsRequests = () => {
         fabric: '면 60%, 폴리 40%',
         color: '아이보리',
         clothingType: '맨투맨'
+      },,
+      {
+        id: 7,
+        name: '스커트',
+        description: '가벼운 느낌의 롱 스커트',
+        image: '/images/스커트.jpg',
+        date: '2025-03-18',
+        size: 'L',
+        designName: '플레어 롱 스커트',
+        fabric: '폴리에스터 80%, 스판덱스 20%',
+        color: '블랙',
+        clothingType: '스커트'
+      },
+      {
+        id: 8,
+        name: '니트',
+        description: '부드럽고 따뜻한 니트',
+        image: '/images/니트.jpg',
+        date: '2025-02-22',
+        size: 'M',
+        designName: '터틀넥 니트',
+        fabric: '울 60%, 나일론 40%',
+        color: '그레이',
+        clothingType: '니트'
       },
     ],
     pattern: [
@@ -155,6 +179,30 @@ const MyDesignsRequests = () => {
         color: '아이보리',
         clothingType: '스커트'
       },
+      {
+        id: 9,
+        name: '재킷',
+        description: '봄에 입기 좋은 재킷',
+        image: '/images/재킷.jpg',
+        date: '2025-04-05',
+        size: 'S',
+        designName: '카멜 재킷',
+        fabric: '폴리에스터 100%',
+        color: '카멜',
+        clothingType: '자켓'
+      },
+      {
+        id: 10,
+        name: '블라우스',
+        description: '여성스러운 디자인의 블라우스',
+        image: '/images/블라우스.jpg',
+        date: '2025-03-12',
+        size: 'M',
+        designName: '레이스 블라우스',
+        fabric: '면 100%',
+        color: '화이트',
+        clothingType: '블라우스'
+      },
     ],
     brand: [
       {
@@ -193,6 +241,42 @@ const MyDesignsRequests = () => {
         color: '베이지',
         clothingType: '원피스'
       },
+      {
+        id: 4,
+        name: '청바지',
+        description: '편안한 착용감의 청바지',
+        image: '/images/청바지.jpg',
+        date: '2025-03-20',
+        size: 'M',
+        designName: '슬림핏 청바지',
+        fabric: '면 100%',
+        color: '진청',
+        clothingType: '바지'
+      },
+      {
+        id: 5,
+        name: '레더 재킷',
+        description: '스타일리시한 레더 재킷',
+        image: '/images/레더재킷.jpg',
+        date: '2025-02-15',
+        size: 'L',
+        designName: '모던 레더 재킷',
+        fabric: '소가죽 100%',
+        color: '검정',
+        clothingType: '자켓'
+      },
+      {
+        id: 6,
+        name: '원피스2',
+        description: '원피스2 설명',
+        image: '/images/원피스2.jpg',
+        date: '2025-04-01',
+        size: 'S',
+        designName: '레이스 원피스',
+        fabric: '면 70%, 폴리 30%',
+        color: '베이지',
+        clothingType: '원피스'
+      },ㅇ
     ],
   };
 
