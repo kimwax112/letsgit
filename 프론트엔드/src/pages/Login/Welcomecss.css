@@ -55,11 +55,11 @@
     border-right: 2px solid black;
 }
 .MenuBarr > nav > ul > li > a{
-    width: 50px;
+    width: 100px;
     text-decoration: none;
     display: block;
     color: black;
-    font-size:8px;
+    font-size:10px;
     font-weight:bold;
 
 }
@@ -84,9 +84,12 @@
     border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     background-color: white;
-    margin-top: 50px;
+    
     width: 600px;
-    height: 600px;
+    height: auto;
+    min-height: 600px;
+    margin : 0 auto;
+    margin-top: 100px;
 }
 .loginput{
     width:450px;

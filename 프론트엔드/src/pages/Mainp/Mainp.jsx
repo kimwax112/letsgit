@@ -32,11 +32,11 @@ export default function Mainp() {
         <div className='extra-section'>
           <button className='mainbaro2' 
             style={{backgroundColor:'#9DBBD5'}}
-            onClick={() => navigate('/welcome')}>
+            onClick={() => navigate('/Welcome')}>
             로그인 바로가기
           </button>      
           <button className='mainbaro2' style={{backgroundColor:'#E6E6E6'}}  
-            onClick={() => navigate('/Sign')}>
+            onClick={() => navigate('/SignIn')}>
             회원가입 바로가기
           </button>
           <button className='mainbaro2' style={{backgroundColor:'#D4DAE6'}}>
