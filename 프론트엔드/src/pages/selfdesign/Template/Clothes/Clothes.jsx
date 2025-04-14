@@ -39,7 +39,7 @@ const Clothes = () => {
           <BreadCrumb activePage={1}/>
           <h3>1. 의류 종류 선택</h3>
           <hr/>
-          <br/>
+      
           <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
           <ItemsContainer
           items={items}
@@ -47,8 +47,7 @@ const Clothes = () => {
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}/>
           <div className="footer">
-          <NextButtonWithPopup selectedItems={selectedItems}
-          nextRoute="/client/fabric" />
+          <NextButtonWithPopup selectedItems={selectedItems} nextRoute="/client/fabric" />
           </div>      
         </div>          
        </div>

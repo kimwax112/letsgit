@@ -24,6 +24,20 @@ const PopupContainer = styled.div`
   text-align: center;
   font-size: 18px;
   font-weight: bold;
+
+  p {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none; 
+  }
+
+  li {
+   font-weight: bold;
+    margin: 5px 0;
+  }
 `;
 
 // 팝업 하단 버튼 영역

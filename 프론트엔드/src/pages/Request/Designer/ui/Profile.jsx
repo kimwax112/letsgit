@@ -1,5 +1,4 @@
 //디자이너 프로필 목록들 나오는 ui
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import cart2 from "../../../../assets/cart2.png";
@@ -15,19 +14,22 @@ import RequestPopup from "../../Request/ui/RequestPopup";
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
   flex-direction: row;
+  max-height: 600px; /* 팝업창 최대 높이 설정 */
+  overflow-y: auto;
 `;
 
 const ModalContent = styled.div`
   display: flex;
   flex: 1;
-  border: 0.5px solid #799fc4;
-  border-radius: 10px;
-  margin: 20px;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-start;
-  padding: 10px;
+  border: 2px solid #799fc4;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 20px;
   max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 `;
 
 const DesignerImage = styled.img`
@@ -36,20 +38,21 @@ const DesignerImage = styled.img`
   max-width: 150px;
   height: auto;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-top: 10px; 
 `;
 
 const ModalContent2 = styled.img`
   width: 500px;
-  height: 500px;
+  height: 535x;
   display: flex;
   flex: 1;
-  border: 0.5px solid #799fc4;
-  border-radius: 10px;
+  border: 2px solid #799fc4;
+  border-radius: 15px;
   margin: 20px;
   justify-content: center;
   align-items: center;
-  object-fit: contain;
+  object-fit: contain; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 `;
 
 const ImgaeContainer = styled.img`
@@ -71,6 +74,7 @@ const PeriodContainer = styled.div`
 
 const PeriodText = styled.p`
   margin: 0;
+  color: #333;
 `;
 
 const ModalButton2 = styled.button`
