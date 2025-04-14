@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import RequestBar from "../../../components/RequestBar/RequestBar";
+import ItemBox from "./ItemBox";
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
@@ -147,6 +148,44 @@ export function useChat(initialChats) {
   const handleConfirmNo = () => {
     setIsConfirmOpen(false);
   };
+  const handleRequestSelect = (request) => {
+    const requestComponent = (
+      <div className="message sent">
+        <RequestBar
+          title={request.title}
+          date={request.date}
+          onClick={() => console.log("RequestBar clicked in chat")}
+          showClose={false}
+          className="chat-request-bar" // 채팅방에서만 적용될 클래스 추가
+        />
+        <span className="time">{new Date().toLocaleTimeString()}</span>
+      </div>
+    );
+    setMessages([
+      ...messages,
+      { component: requestComponent, type: "request" },
+    ]);
+    setModalOpen2(false);
+  };
+  const handleItemSelect = (item) => {
+    const itemComponent = (
+      <div className="message sent">
+        <ItemBox
+          text1={item.text1}
+          text2={item.text2}
+          onClick={() => console.log("ItemBox clicked in chat")}
+          className="chat-item-box" // 채팅방에서만 적용될 클래스 추가
+        />
+        <span className="time">{new Date().toLocaleTimeString()}</span>
+      </div>
+    );
+    setMessages([
+      ...messages,
+      { component: itemComponent, type: "item" },
+    ]);
+    setModalOpen(false); // 디자인 불러오기 모달 닫기
+  };
+ 
 
   return {
     filteredChats, // 현재 표시되는 채팅몰고, 검색 필터링 결과에 따라 변경됨 초기값: initialChats 관련함수 handleSerch, handleBlockClick, handleSideMenuBlock
@@ -182,5 +221,8 @@ export function useChat(initialChats) {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
+    handleRequestSelect, // 추가
+    handleItemSelect, // 새로운 핸들러 추가
+    
   };
 }

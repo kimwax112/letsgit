@@ -6,8 +6,8 @@ import ChatProfile from "./ui/ChatProfile";
 import { Modal } from "../../utils";
 import Room from "./ui/Room";
 import ItemBox from "./ui/ItemBox";
-import ModalContent from "../Request/ui/ModalContent";
 import { useChat } from "./ui/useChat";
+import RequestBar from "../../components/RequestBar/RequestBar";
 
 const CustomModal = styled(Modal)`
   display: flex;
@@ -32,9 +32,9 @@ const ItemBoxContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: flex-start;
-  gap: 10px;
-  padding-left: 20px;
+  justify-content : center;
+  gap: 20px;
+  
 `;
 
 const ReportButton = styled.button`
@@ -69,9 +69,33 @@ const ButtonWrapper = styled.div`
 `;
 
 const chatData = [
-  { name: "Cody Fisher", message: "how it going?", time: "12:00 p.m." },
-  { name: "Jane Cooper", message: "What the latest news?", time: "10:53 a.m." },
-  { name: "Annette Black", message: "I dont eat, so I dont have a favorite food.", time: "2023-11-09" },
+  {
+    name: "Cody Fisher",
+    message: "how it going?",
+    time: "12:00 p.m.",
+    requests: [
+      { title: "맨투맨 디자인", date: "2025-01-01 (월)" },
+      { title: "후드티 제작", date: "2025-01-02 (화)" },
+    ],
+  },
+  {
+    name: "Jane Cooper",
+    message: "What the latest news?",
+    time: "10:53 a.m.",
+    requests: [
+      { title: "후드티 제작", date: "2025-01-03 (수)" },
+      { title: "티셔츠 디자인", date: "2025-01-04 (목)" },
+    ],
+  },
+  {
+    name: "Annette Black",
+    message: "I dont eat, so I dont have a favorite food.",
+    time: "2023-11-09",
+    requests: [
+      { title: "티셔츠 디자인", date: "2025-01-05 (금)" },
+      { title: "맨투맨 제작", date: "2025-01-06 (토)" },
+    ],
+  },
 ];
 
 function ChatMain() {
@@ -106,9 +130,13 @@ function ChatMain() {
     handleSideMenuReport,
     handleConfirmYes,
     handleConfirmNo,
+    handleRequestSelect,
+    handleItemSelect, // 새로운 핸들러 추가
     setModalOpen,
     setModalOpen2,
   } = useChat(chatData);
+
+  const selectedUserRequests = filteredChats.find((chat) => chat.name === selectedUser)?.requests || [];
 
   return (
     <>
@@ -176,10 +204,10 @@ function ChatMain() {
             setModalOpen2={setModalOpen2}
             onBlock={handleSideMenuBlock}
             onReport={handleSideMenuReport}
-            isConfirmOpen={isConfirmOpen}
-            confirmMessage={confirmMessage}
             onConfirmYes={handleConfirmYes}
             onConfirmNo={handleConfirmNo}
+            isConfirmOpen={isConfirmOpen}
+            confirmMessage={confirmMessage}
             isSuccessPopupOpen={isSuccessPopupOpen}
             popupMessage={popupMessage}
             bottomRef={bottomRef}
@@ -189,20 +217,61 @@ function ChatMain() {
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)} // 클릭 시 handleItemSelect 호출
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
+              <ItemBox
+                text1="맨투맨"
+                text2="(Sweatshirt)"
+                onClick={(item) => handleItemSelect(item)}
+              />
             </ItemBoxContainer>
           </CustomModal>
         )}
         {modalOpen2 && (
           <CustomModal onClose={() => setModalOpen2(false)}>
-            <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
-            <ModalContent />
+            <CustomModalHeader>의뢰 불러오기</CustomModalHeader>
+            {selectedUserRequests.length > 0 ? (
+              selectedUserRequests.map((request, index) => (
+                <RequestBar
+                  key={index}
+                  title={request.title}
+                  date={request.date}
+                  onClick={() => handleRequestSelect(request)}
+                  onCloseClick={() => console.log("Close clicked")}
+                  showClose={true}
+                />
+              ))
+            ) : (
+              <p>의뢰가 없습니다.</p>
+            )}
           </CustomModal>
         )}
       </ChatLayout>
@@ -218,6 +287,7 @@ const styles = `
     margin: 5px;
     max-width: 70%;
     position: relative;
+    display: inline-block;
   }
 
   .message.sent::after {
@@ -230,10 +300,43 @@ const styles = `
     border-top-color: #dcf8c6;
   }
 
+  .message.request {
+    margin: 5px;
+    max-width: 70%;
+    position: relative;
+  }
+
+  .chat-request-bar {
+    width: 100%;
+    max-width: 250px !important;
+    padding: 3px !important;
+  }
+
+  .chat-request-bar h2 {
+    font-size: 12px !important;
+  }
+
+  .chat-request-bar p {
+    font-size: 10px !important;
+  }
+
+  .chat-item-box {
+    width: 100%;
+    max-width: 500px !important; /* 채팅방에서 ItemBox 크기 조정 */
+    height: 200px !important; /* 높이 조정 */
+    padding: 5px !important; /* 패딩 조정 */
+    font-size: 12px !important; /* 텍스트 크기 조정 */
+  }
+
+  .chat-item-box p {
+    font-size: 10px !important; /* 텍스트 크기 조정 */
+  }
+
   .time {
     font-size: 0.8em;
     color: #666;
     margin-left: 10px;
+    display: block;
   }
 `;
 

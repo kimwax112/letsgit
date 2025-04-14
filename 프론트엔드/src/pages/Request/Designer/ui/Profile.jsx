@@ -1,3 +1,5 @@
+//디자이너 프로필 목록들 나오는 ui
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import cart2 from "../../../../assets/cart2.png";

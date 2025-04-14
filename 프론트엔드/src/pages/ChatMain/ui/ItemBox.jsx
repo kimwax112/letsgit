@@ -3,8 +3,8 @@ import styled from "styled-components"
 
 const ItemBoxContainer = styled.div`
   border: 0.5px solid;
-  width: 280px;
-  height: 260px;
+  width: 150px;
+  height: 170px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,9 +30,9 @@ const ItemText = styled.div`
   height: 35px;
 `;
 
-export default function ItemBox ({text1, text2}) {
+export default function ItemBox ({text1, text2, onClick}) {
   return (
-<ItemBoxContainer>
+<ItemBoxContainer onClick={() => onClick?.({ text1, text2 })}>
 <InnerBox/>
 <ItemText>
 {text1}

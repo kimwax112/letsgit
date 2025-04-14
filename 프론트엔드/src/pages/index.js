@@ -13,3 +13,5 @@ export { default as RequestPost} from './Request/Post/RequestPost';
 export { default as ChoseDesigner} from './Request/Designer/ChoseDesigner';
 export {default as ChatMain } from './ChatMain/ChatMain';
 export { default as Welcome} from './Login/Welcome';
+export { default as SignIn2} from './Login/SignIn2';
+export { default as SignIn} from './Login/SignIn';
