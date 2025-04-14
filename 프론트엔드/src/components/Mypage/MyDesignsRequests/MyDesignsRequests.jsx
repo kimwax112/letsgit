@@ -276,7 +276,7 @@ const MyDesignsRequests = () => {
         fabric: '면 70%, 폴리 30%',
         color: '베이지',
         clothingType: '원피스'
-      },ㅇ
+      },
     ],
   };
 

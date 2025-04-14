@@ -10,7 +10,6 @@ import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
 import ReportPage from './pages/ChatMain/ReportPage';
 import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
-import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
 import MyInfoPage from "./pages/MyPage/MyInfoPage";
 import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsRequestsPage";
 import ContractPage from "./pages/contract/ContractPage";
