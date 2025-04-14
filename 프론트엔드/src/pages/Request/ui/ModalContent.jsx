@@ -1,34 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import closeIcon from "../../../assets/휴지통.png"; // 버튼에 사용할 이미지
+
 import { Modal } from '../../../utils';
 import deleteIcon from '../../../assets/delete.png';
-const Container = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 auto;
-  width: 600px;
-  height: 55px;
-  margin-top: 40px;
-  border-radius: 10px;
-  border: 1px solid;
-  padding: 10px;
-  background-color: white;
-`;
+import RequestBar from "../../../components/RequestBar/RequestBar";
 
-const Text1 = styled.p`
-  flex: 0.6;
-  margin: 0;
-`;
-
-const Text2 = styled.p`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1.4;
-  margin: 0;
-`;
 
 const CloseButton = styled.button`
   background: none;
@@ -81,14 +57,7 @@ const ConfirmButton = styled.button`
   cursor: pointer;
 `;
 
-const CloseIcon = styled.img`
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  width: 30px; /* 원하는 크기로 설정 */
-  height: 50px;
 
-`;
 
 const DeleteIcon = styled.img`
   display:flex;
@@ -102,21 +71,17 @@ const DeleteIcon = styled.img`
 export default function ModalContent() {
   const [isVisible, setIsVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const requestTitle = "후드티 제작"
+  const requestDate = "2025-01-01";
+  
   if (!isVisible) return null;
 
   return (
     <>
-      <Container>
-        <Text1>
-          <h2>글제목</h2>
-        </Text1>
-        <Text2>2025-01-01 (월)</Text2>
-        <CloseButton onClick={() => setIsModalOpen(true)}>
-  <CloseIcon src={closeIcon} alt="닫기" />
-</CloseButton>
-
-      </Container>
+<RequestBar 
+title={requestTitle}
+date={requestDate}
+onCloseClick={() => setIsModalOpen(true)}/>
 
       {/* 삭제 확인 모달 */}
       {isModalOpen && (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain, ChoseDesigner } from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, ChatMain, ChoseDesigner, SignIn, SignIn2} from "./pages";
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage/MyPage";
 import Welcome from './pages/Login/Welcome';
@@ -10,15 +10,19 @@ import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
 import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
 import ReportPage from './pages/ChatMain/ReportPage';
-import FavoriteDesigners from "./components/Mypage/FavoriteDesigners/FavoriteDesigners";
 import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
-
+import SignSucess from './pages/Login/SignSucess';
+import Contract from './pages/contract/Contract';
 
 const RouterComponent = () => {
   return (
     <Routes>
       {/* 루트 경로 */}
       <Route path="/" element={<Mainp />} />
+      <Route path="Welcome" element={<Welcome />} />
+      <Route path="SignIn" element={<SignIn />} />
+      <Route path="SignIn2" element={<SignIn2 />} />
+      <Route path="SignSucess" element={<SignSucess />} />
 
       {/* 의뢰인 페이지 경로 */}
       <Route
@@ -41,10 +45,10 @@ const RouterComponent = () => {
               <Route path="MyPage" element={<MyPage />} />
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
-              <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
+              <Route path="Contract" element={<Contract />} />
             </Routes>
           </ClientLayout>
         }

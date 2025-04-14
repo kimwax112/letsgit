@@ -140,7 +140,7 @@ export default function Welcome() {
         <div className='divm-wrapperr'>
           <div className='divmm'>
             <br/><br/>
-            <p style={{textAlign:'left', fontSize:'30px'}}>
+            <p style={{textAlign:'left', fontSize:'30px',fontWeight:'bold'}}>
               어서오세요.<br/>
               디자인 사이입니다.
             </p>
@@ -168,7 +168,7 @@ export default function Welcome() {
                     <ul>
                         <li><a href='#'>아이디 찾기</a></li>
                         <li style={{paddingLeft:'5px',paddingRight:'5px'}}><a href='#'>비밀번호 찾기</a></li>
-                        <li><a href='#'>회원가입</a></li>
+                        <li><a href='/SignIn'>회원가입</a></li>
                     </ul>
                 </nav>            
             </div>

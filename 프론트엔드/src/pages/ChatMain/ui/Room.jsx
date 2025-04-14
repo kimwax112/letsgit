@@ -157,6 +157,9 @@ const SuccessPopupMessage = styled.p`
   font-size: 16px;
 `;
 
+
+
+
 function Room({
   selectedUser,
   messages,
@@ -195,9 +198,18 @@ function Room({
       <Content>
         <ChatContainer>
           {messages.map((msg, index) => (
-            <div key={index} className="message sent">
-              {msg.text}
-              <span className="time">{msg.time}</span>
+            <div key={index} className={`message ${msg.type || "sent"}`}>
+              {msg.component ? (
+                <>
+                  {msg.component}
+                  <span className="time">{msg.time}</span>
+                </>
+              ) : (
+                <>
+                  {msg.text}
+                  <span className="time">{msg.time}</span>
+                </>
+              )}
             </div>
           ))}
           <div ref={bottomRef} />
