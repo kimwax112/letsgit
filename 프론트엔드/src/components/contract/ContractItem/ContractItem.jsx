@@ -1,5 +1,5 @@
-import { Star } from "lucide-react";  // 기본 Star 아이콘만 사용
-import "./ContractItem.css";  // CSS 파일 불러오기
+import { Star } from "lucide-react";
+import "./ContractItem.css";
 
 const ContractItem = ({ contract, onToggleStar }) => {
   const { isStarred, title, preview, status, date } = contract;
@@ -9,7 +9,7 @@ const ContractItem = ({ contract, onToggleStar }) => {
       <div className="contract-left">
         <div className="contract-star" onClick={onToggleStar}>
           <Star
-            className={`star-icon ${isStarred ? "active" : ""}`}  // 선택되었을 때 색이 꽉 찬 별
+            className={`star-icon ${isStarred ? "active" : ""}`} // star 아이콘 상태 변경
             size={23}
           />
         </div>

@@ -11,6 +11,11 @@
   .contract-item:hover {
     background-color: #f9fafb; /* gray-50 */
   }
+
+  .contract-item.active {
+    border-left: 4px solid #FFD700; /* 중요한 계약에 대해 왼쪽에 강조선 추가 */
+    background-color: #fef9e9; /* 배경색을 연한 노란색으로 변경 */
+  }
   
   .contract-left {
     display: flex;
@@ -25,12 +30,15 @@
   }
   
   .star-icon {
-    color: #ccc;
+    color: #d3d3d3; /* 연한 회색, startoff 기본 색 */
+    cursor: pointer;
     transition: color 0.2s ease;
   }
   
   .star-icon.active {
-    color: #facc15;
+    color: #FFD700; /* 노란색 별 */
+    transform: scale(1.2); /* 별의 크기 살짝 키우기 */
+    transition: transform 0.3s ease;
   }
   
   .contract-text {
