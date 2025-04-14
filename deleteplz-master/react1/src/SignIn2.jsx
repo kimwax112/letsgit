@@ -48,7 +48,7 @@ export default function SignIn2() {
             localStorage.setItem("signupName", name);
             setMessage(data.message);
             setTimeout(() => {
-                navigate('/GoodSign');
+                navigate('/CosMain');
             }, 1000);
         } else {
             setMessage(data.message);
