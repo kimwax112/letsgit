@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import closeIcon from "../../assets/휴지통.png";
+import closeIcon from "../../assets/휴지통.png";
 
 const Container = styled.button`
   display: flex;
