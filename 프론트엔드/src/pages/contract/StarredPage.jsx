@@ -1,13 +1,17 @@
+import React from "react";
 import ContractLayout from "../../layouts/ContractLayout";
-import ContractSearchAndFilter from "../../components/contract/ContractSearchAndFilter/ContractSearchAndFilter";
 import ContractList from "../../components/contract/ContractList/ContractList";
 
-const StarredPage = () => {
+const StarredPage = ({ contracts, handleToggleStar }) => {
+
   return (
     <ContractLayout>
       <div className="p-6">
-        {/* 중요 계약들만 표시하는 리스트 */}
-        <ContractList />
+        <ContractList
+          mode="중요"
+          contracts={contracts} 
+          handleToggleStar={handleToggleStar}
+        />
       </div>
     </ContractLayout>
   );

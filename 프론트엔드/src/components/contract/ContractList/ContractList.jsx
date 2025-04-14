@@ -3,7 +3,7 @@ import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
 import './ContractList.css'
 
-const ContractList = () => {
+const ContractList = ({ mode = "전체" }) => {
   const [contracts, setContracts] = useState([
     {
       isStarred: true,
@@ -13,14 +13,14 @@ const ContractList = () => {
       date: "2025.04.11",
     },
     {
-      isStarred: true,
+      isStarred: false,
       title: "위탁계약서",
       preview: "초안 전달 / 검토 중",
       status: "완료",
       date: "2025.04.05",
     },
     {
-      isStarred: true,
+      isStarred: false,
       title: "프로젝트 계약서",
       preview: "계약 해지 요청 / 내용 확인 필요",
       status: "해지",
@@ -31,21 +31,22 @@ const ContractList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("전체");
 
-  // 별 클릭 시 상태 토글
   const handleToggleStar = (index) => {
     const updatedContracts = [...contracts];
     updatedContracts[index].isStarred = !updatedContracts[index].isStarred;
     setContracts(updatedContracts);
   };
 
-  // 필터 + 검색된 계약 목록
   const filteredContracts = contracts.filter((contract) => {
     const matchesStatus =
       statusFilter === "전체" || contract.status === statusFilter;
     const matchesSearch =
-      contract.title.includes(searchTerm) ||
-      contract.preview.includes(searchTerm);
-    return contract.isStarred && matchesStatus && matchesSearch;
+      contract.title.includes(searchTerm) || contract.preview.includes(searchTerm);
+
+    const matchesStar =
+      mode === "중요" ? contract.isStarred : true;
+
+    return matchesStar && matchesStatus && matchesSearch;
   });
 
   return (
@@ -56,7 +57,6 @@ const ContractList = () => {
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
       />
-
       {filteredContracts.length > 0 ? (
         filteredContracts.map((contract, index) => (
           <ContractItem
@@ -66,7 +66,7 @@ const ContractList = () => {
           />
         ))
       ) : (
-        <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p> // 여기에서 클래스 추가
+        <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>
       )}
     </div>
   );

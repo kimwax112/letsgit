@@ -1,12 +1,17 @@
+import React, { useState } from "react";
 import ContractLayout from "../../layouts/ContractLayout";
-import ContractSearchAndFilter from "../../components/contract/ContractSearchAndFilter/ContractSearchAndFilter";
 import ContractList from "../../components/contract/ContractList/ContractList";
 
-const ContractPage = () => {
+const ContractPage = ({ contracts, handleToggleStar }) => {
+
   return (
     <ContractLayout>
       <div className="p-6">
-        <ContractList />
+        <ContractList
+          mode="전체"
+          contracts={contracts}
+          handleToggleStar={handleToggleStar}
+      />
       </div>
     </ContractLayout>
   );
