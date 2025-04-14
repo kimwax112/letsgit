@@ -10,15 +10,15 @@ const Button = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
   border: none;
-  background-color: #9dbbd5;
+  background-color: #799FC4;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
   border-radius: 20px;
   text-align: center;
   color: white;
   &:hover {
-    background-color: #bbb;
+    background-color: #9dbbd5;
   }
 `;
 
@@ -30,7 +30,9 @@ const NextButtonUI = ({to, onClick, children, className}) => {
     if (to) navigate(to)
   }
 
-  return <Button className={className} type="button" onClick={handleClick}>{children}</Button>;
+  return <Button className={className} type="button" onClick={handleClick}>
+      {children || "다음"}
+    </Button>
 };
 
 export default NextButtonUI;
