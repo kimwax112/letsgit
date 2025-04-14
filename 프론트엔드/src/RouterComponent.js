@@ -1,26 +1,32 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
-import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, Designer, ChatMain, ChoseDesigner } from "./pages";
+import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, ChatMain, ChoseDesigner, SignIn, SignIn2} from "./pages";
 import Home from "./pages/Home";
 import Welcome from './pages/Login/Welcome';
 import Back from './Back';
 import DesignerCosMain from './pages/DesignerCosMain/DesignerCosMain';
 import Dmypage from "./pages2/Mypage/Dmypage";
 import Portfolio from './pages2/Mypage/Portfolio';
-import FavoriteDesigners from "./components/Mypage/FavoriteDesigners/FavoriteDesigners";
+import ReportPage from './pages/ChatMain/ReportPage';
 import FavoriteDesignersPage from "./pages/MyPage/FavoriteDesigners/FavoriteDesignersPage";
 import ReportPage from './pages/ChatRoom/ChatMain/ReportPage';
 import MyInfoPage from "./pages/MyPage/MyInfoPage";
 import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsRequestsPage";
 import ContractPage from "./pages/contract/ContractPage";
 import StarredPage from "./pages/contract/StarredPage";
+import SignSucess from './pages/Login/SignSucess';
+import Contract from './pages/contract/Contract';
 
 const RouterComponent = () => {
   return (
     <Routes>
       {/* 루트 경로 */}
       <Route path="/" element={<Mainp />} />
+      <Route path="Welcome" element={<Welcome />} />
+      <Route path="SignIn" element={<SignIn />} />
+      <Route path="SignIn2" element={<SignIn2 />} />
+      <Route path="SignSucess" element={<SignSucess />} />
 
       {/* 의뢰인 페이지 경로 */}
       <Route
@@ -42,7 +48,6 @@ const RouterComponent = () => {
               <Route path="Home" element={<Home />} />
               <Route path="ChatMain" element={<ChatMain />} />
               <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
-              <Route path="Welcome" element={<Welcome />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
@@ -50,6 +55,7 @@ const RouterComponent = () => {
               <Route path="MyDesignsRequests" element={<MyDesignsRequestsPage />} />
               <Route path="contract" element={<ContractPage />} />
               <Route path="starred" element={<StarredPage />} />
+              <Route path="Contract" element={<Contract />} />
             </Routes>
           </ClientLayout>
         }
