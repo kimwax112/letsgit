@@ -1,16 +1,24 @@
 import { Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "./ContractItem.css";
 
-const ContractItem = ({ contract, onToggleStar }) => {
+const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
   const { isStarred, title, preview, status, date } = contract;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) onClick();
+    if (to) navigate(to);
+  };
 
   return (
-    <div className="contract-item">
+    <div className="contract-item" onClick={onClick || handleClick}>
       <div className="contract-left">
-        <div className="contract-star" onClick={onToggleStar}>
+        <div className="contract-star" onClick={(e) => e.stopPropagation()}>
           <Star
-            className={`star-icon ${isStarred ? "active" : ""}`} // star 아이콘 상태 변경
+            className={`star-icon ${isStarred ? "active" : ""}`}
             size={23}
+            onClick={onToggleStar}
           />
         </div>
         <div className="contract-text">
