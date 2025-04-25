@@ -1,5 +1,5 @@
 // MyEditor.jsx 텍스트 편집기 
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { EditorState } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
 
@@ -20,7 +20,7 @@ import {
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
 
-const MyEditor = () => {
+const MyEditor = ({children}) => {
   // Draft.js 에디터 상태
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
@@ -35,10 +35,10 @@ const MyEditor = () => {
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px' , width: '800px' }}>
+    <div style={{ border: '1px solid #ccc', padding: '10px' , width: '70em' }}>
       {/* 상단 제목 영역 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-        <h3>상세설명</h3>
+        <h3>{children}</h3>
       </div>
 
       {/* Static Toolbar (플러그인) */}
