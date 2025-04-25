@@ -5,21 +5,19 @@ import { Modal } from "../../../utils";
 import ModalContent from "./ModalContent";
 
 const CustomModal = styled(Modal)`
-padding : 20px;
-width: 800px;
-height: 800px;
-  background-color : white;
-
-`
+  padding: 20px;
+  width: 800px;
+  height: 800px;
+  background-color: #fff; /* 모달 배경색 설정 */
+`;
 
 const ContentHeader1 = styled.div`
-  width: 50%;
+  width: 100%; 
   display: flex;
-  margin: 0 auto;
   justify-content: center;
   align-items: center;
-  gap: 100px;
   padding: 50px;
+  background-color: #fff;
 `;
 
 const SearchButtonWrapper = styled.div`
@@ -31,7 +29,7 @@ const SearchButtonWrapper = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-left: 50%;
+  justify-content: flex-end;
 `;
 const Text1 = styled.div`
   flex: 0 0 max-content;
