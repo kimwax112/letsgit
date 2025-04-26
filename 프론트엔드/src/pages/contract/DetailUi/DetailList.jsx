@@ -49,7 +49,7 @@ export default function DetailList({ contract, onToggleStar }) {
       <div className="DetailContent">
         <div className="left">
           <p style={{ fontSize: '32px', fontWeight: 'bold' }}>{contract.title}</p> {/* contract.title 사용 */}
-          <p><img src={jeans} alt="사진" /></p>
+          <p><img src={contract.image}  style={{width: '100%',height: '300px', objectFit: 'contain',backgroundColor: '#f0f0f0', }} alt="계약 이미지" /></p>
           <p>디자이너: {contract.designer || "미지정"}</p> {/* contract.designer 추가 (데이터에 없으므로 기본값) */}
           <p>의뢰인: {contract.client || "미지정"}</p> {/* contract.client 추가 (데이터에 없으므로 기본값) */}
           <p>원단: {contract.material || "미지정"}</p> {/* contract.material 추가 (데이터에 없으므로 기본값) */}

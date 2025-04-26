@@ -20,7 +20,7 @@ import {
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
 
-const MyEditor = ({children}) => {
+const MyEditor = ({children, onSendMessage}) => {
   // Draft.js 에디터 상태
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
@@ -33,6 +33,8 @@ const MyEditor = ({children}) => {
   const toggleMode = () => {
     setEditMode(!editMode);
   };
+  
+
 
   return (
     <div style={{ border: '1px solid #ccc', padding: '10px' , width: '70em' }}>

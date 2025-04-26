@@ -17,6 +17,10 @@ import StarredPage from "./pages/contract/StarredPage";
 import SignSucess from './pages/Login/SignSucess';
 import ContractDetailPage from "./pages/contract/ContractDetailPage";
 import ContractList from "./components/contract/ContractList/ContractList";
+import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
+import MessageDetail from './pages/contract/MessageDetail';
+
+
 
 const RouterComponent = () => {
   return (
@@ -57,6 +61,10 @@ const RouterComponent = () => {
               <Route path="contract" element={<ContractPage />} />
               <Route path="starred" element={<StarredPage />} />
               <Route path="contract/:id" element={<ContractDetailPage />} /> {/* /client은 제외 */}
+              <Route path="contract/MessageDetail/:id" element={<MessageDetail />} /> {/* MessageDetail 경로 추가 */}
+              <Route path="ContractSendMessagePage" element={<ContractSendMessagePage />} />
+              <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
+              <Route path="ContractDetailPage" element={<ContractDetailPage />} />
             </Routes>
           </ClientLayout>
         }
