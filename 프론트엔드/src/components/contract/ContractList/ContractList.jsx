@@ -1,10 +1,14 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
 import "./ContractList.css";
-
-const ContractList = ({ mode = "전체" }) => {
+import React from "react";
+import jeans from "../../../assets/jeans.png"; // <-- 이미지 추가
+import dress from "../../../assets/dress.png"; // <-- 다른 이미지
+import hood from "../../../assets/후드집업.png"; // <-- 또 다른 이미지
+const ContractList = ({ mode = "전체", onContractsChange }) => {
   const [contracts, setContracts] = useState([
     {
       id: "1",
@@ -13,6 +17,7 @@ const ContractList = ({ mode = "전체" }) => {
       preview: "3페이지 분량 / 클라이언트 서명 완료",
       status: "진행중",
       date: "2025.04.11",
+      image: jeans,  // <-- 이미지 추가
     },
     {
       id: "2",
@@ -21,6 +26,7 @@ const ContractList = ({ mode = "전체" }) => {
       preview: "초안 전달 / 검토 중",
       status: "완료",
       date: "2025.04.05",
+      image: dress, // <-- 다른 이미지
     },
     {
       id: "3",
@@ -29,8 +35,20 @@ const ContractList = ({ mode = "전체" }) => {
       preview: "계약 해지 요청 / 내용 확인 필요",
       status: "해지",
       date: "2025.03.30",
+      image: hood, // <-- 또 다른 이미지
     },
   ]);
+  
+
+  // contracts가 변경될 때마다 부모 컴포넌트에 알림
+  React.useEffect(() => {
+    if (onContractsChange) {
+      onContractsChange(contracts);
+    }
+  }, [contracts, onContractsChange]);
+
+  const contract1 = contracts.find(c => c.id === "1");  // ① 예시로 id==="1"인 계약 하나만 골라내기
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("전체");
@@ -60,6 +78,7 @@ const ContractList = ({ mode = "전체" }) => {
 
   return (
     <div>
+      
       <ContractSearchAndFilter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}

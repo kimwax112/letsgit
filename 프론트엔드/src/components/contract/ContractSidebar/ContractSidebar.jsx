@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaClipboardList, FaEnvelope, FaStar, FaPaperPlane } from "react-icons/fa";
 import "./ContractSidebar.css";
+import ContractSendMessagePage from '../../../pages/contract/ContractSendMessagePage';
 
 export default function ContractSidebar({ unreadCount, starredCount, sentCount }) {
   const location = useLocation();
@@ -41,7 +42,7 @@ export default function ContractSidebar({ unreadCount, starredCount, sentCount }
         </li>
 
         <li className={location.pathname === "/client/sent" ? "active" : ""}>
-          <Link to="/client/sent" className="sidebar-link-with-badge">
+          <Link to="/client/ContractSendMessagePage" className="sidebar-link-with-badge">
             <div className="icon-text">
               <FaPaperPlane className="sidebar-icon" />
               <span>보낸 메세지</span>
