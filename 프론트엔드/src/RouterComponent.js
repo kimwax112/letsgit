@@ -16,7 +16,6 @@ import MyDesignsRequestsPage from "./pages/MyPage/MyDesignsRequests/MyDesignsReq
 import ContractPage from "./pages/contract/ContractPage";
 import StarredPage from "./pages/contract/StarredPage";
 import SignSucess from './pages/Login/SignSucess';
-import Contract from './pages/contract/Contract';
 import DesignerContractManagePage from "./pages/DesignerContract/DesignerContractManagePage";
 import DesignerContractCreatePage from "./pages/DesignerContractCreate/DesignerContractCreatePage";
 import ContractDetailPage from "./pages/contract/ContractDetailPage";

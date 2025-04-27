@@ -1,26 +1,30 @@
-/* DesignerContractManagePage.css */
 .page-wrapper {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .sidebar {
-    width: 240px;
-    min-width: 200px;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 24px;
-    background-color: #fff; /* 흰색 배경 */
-    border-radius: 10px; /* 둥근 모서리 */
-    margin: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-  }
-  
-  .page-header {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #799fc4;
-  }
-  
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  min-width: 200px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  background-color: #fff; /* 흰색 배경 */
+  border-radius: 10px; /* 둥근 모서리 */
+  margin: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
+
+.page-header {
+  font-size: 27px;
+  margin-bottom: 40px; /* 제목과 아래 요소 간격 추가 */
+  color: #799fc4;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #E6E6E6; /* 선 색상 */
+  margin: 30px 0; /* 구분선 위 아래 간격 추가 */
+}
