@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
-import './ContractList.css'
+import "./ContractList.css";
 
 const ContractList = ({ mode = "전체" }) => {
   const [contracts, setContracts] = useState([
     {
+      id: "1",
       isStarred: true,
       title: "디자인 계약서 1",
       preview: "3페이지 분량 / 클라이언트 서명 완료",
@@ -13,6 +15,7 @@ const ContractList = ({ mode = "전체" }) => {
       date: "2025.04.11",
     },
     {
+      id: "2",
       isStarred: false,
       title: "위탁계약서",
       preview: "초안 전달 / 검토 중",
@@ -20,6 +23,7 @@ const ContractList = ({ mode = "전체" }) => {
       date: "2025.04.05",
     },
     {
+      id: "3",
       isStarred: false,
       title: "프로젝트 계약서",
       preview: "계약 해지 요청 / 내용 확인 필요",
@@ -30,6 +34,12 @@ const ContractList = ({ mode = "전체" }) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("전체");
+
+  const navigate = useNavigate();
+
+  const handleClick = (contract) => {
+    navigate(`/client/contract/${contract.id}`, { state: { contract } });
+  };
 
   const handleToggleStar = (index) => {
     const updatedContracts = [...contracts];
@@ -43,8 +53,7 @@ const ContractList = ({ mode = "전체" }) => {
     const matchesSearch =
       contract.title.includes(searchTerm) || contract.preview.includes(searchTerm);
 
-    const matchesStar =
-      mode === "중요" ? contract.isStarred : true;
+    const matchesStar = mode === "중요" ? contract.isStarred : true;
 
     return matchesStar && matchesStatus && matchesSearch;
   });
@@ -63,6 +72,7 @@ const ContractList = ({ mode = "전체" }) => {
             key={index}
             contract={contract}
             onToggleStar={() => handleToggleStar(index)}
+            onClick={() => handleClick(contract)}
           />
         ))
       ) : (

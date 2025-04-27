@@ -10,6 +10,7 @@ const RoomContainer = styled(Modal)`
   position: relative;
   width: 600px;
   height: 700px;
+
 `;
 
 const RoomHeader = styled.div`
