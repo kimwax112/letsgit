@@ -1,0 +1,105 @@
+package com.example.Loginpj.model;
+
+import jakarta.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "user_designs") // 테이블명 지정
+public class UserDesign {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가
+    @Column(name = "design_id")
+    private Long designId;
+
+    @Column(name = "user_id", nullable = false, length = 50)
+    private String userId;
+
+    @Column(name = "clothing_type", nullable = false, length = 100)
+    private String clothingType;
+
+    @Column(name = "fabric", nullable = false, length = 100)
+    private String fabric;
+
+    @Column(name = "size", nullable = false, length = 50)
+    private String size;
+
+    @Column(name = "design_name", nullable = false, length = 100)
+    private String designName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATE DEFAULT SYSDATE")
+    private Date createdAt;
+
+    // 기본 생성자
+    public UserDesign() {
+        this.createdAt = new Date(); // 생성 시 현재 시간 설정
+    }
+
+    // 모든 필드를 받는 생성자
+    public UserDesign(String userId, String clothingType, String fabric, String size, String designName) {
+        this.userId = userId;
+        this.clothingType = clothingType;
+        this.fabric = fabric;
+        this.size = size;
+        this.designName = designName;
+        this.createdAt = new Date(); // 생성 시 현재 시간 설정
+    }
+
+    // Getter & Setter
+    public Long getDesignId() {
+        return designId;
+    }
+
+    public void setDesignId(Long designId) {
+        this.designId = designId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getClothingType() {
+        return clothingType;
+    }
+
+    public void setClothingType(String clothingType) {
+        this.clothingType = clothingType;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getDesignName() {
+        return designName;
+    }
+
+    public void setDesignName(String designName) {
+        this.designName = designName;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+}

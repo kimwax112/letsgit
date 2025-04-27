@@ -1,0 +1,10 @@
+package com.example.Loginpj.mapper;
+
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import com.example.Loginpj.model.Contract;
+
+@Mapper
+public interface ContractMapper {
+    List<Contract> selectAllContracts();
+}

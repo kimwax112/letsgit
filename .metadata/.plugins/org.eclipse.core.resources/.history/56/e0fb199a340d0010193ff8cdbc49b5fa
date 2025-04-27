@@ -1,0 +1,18 @@
+package com.example.Loginpj.mapper;
+
+import com.example.Loginpj.model.UserDesign;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
+@Mapper
+public class UserDesignMapper {
+	// ✅ 데이터 삽입 (INSERT)
+    @Insert("INSERT INTO user_designs (design_id, user_id, clothing_type, fabric, size, design_name, created_at) " +
+            "VALUES (#{designId}, #{userId}, #{clothingType}, #{fabric}, #{size}, #{designName}, SYSDATE)")
+    void insertUserDesign(UserDesign userDesign);
+
+    // ✅ 특정 사용자 디자인 조회 (SELECT)
+    @Select("SELECT * FROM user_designs WHERE user_id = #{userId}")
+    List<UserDesign> findByUserId(String userId);
+}

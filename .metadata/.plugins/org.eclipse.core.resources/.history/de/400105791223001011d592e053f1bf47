@@ -1,0 +1,36 @@
+package com.example.Loginpj.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.Loginpj.model.Contract;
+import com.example.Loginpj.service.ContractService;
+
+@RestController
+@RequestMapping("/client")
+@CrossOrigin(origins = "http://localhost:3000")
+public class ContractController {
+
+	private final ContractService contractService;
+
+    public ContractController(ContractService contractService) {
+        this.contractService = contractService;
+    }
+
+    @GetMapping("/contract")
+    public List<Contract> getContracts() {
+    	List<Contract> contracts = contractService.getAllContracts();
+        System.out.println("받은 계약 데이터: " + contracts);  // 추가된 로그
+        return contracts;
+    }
+    
+    @GetMapping("/contract/{id}")
+    public Contract getContractById(@PathVariable("id") Long id) {
+        Contract contract = contractService.getContractById(id);
+        System.out.println("받은 계약 데이터 (ID: " + id + "): " + contract);  // 추가된 로그
+        return contract;
+}

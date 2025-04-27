@@ -1,0 +1,20 @@
+package com.example.Loginpj.service;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import com.example.Loginpj.mapper.ContractMapper;
+
+//ContractService.java
+@Service
+public class ContractService {
+ private final ContractMapper contractMapper;
+
+ public ContractService(ContractMapper contractMapper) {
+     this.contractMapper = contractMapper;
+ }
+
+ public List<Contract> getAllContracts() {
+     return contractMapper.selectAllContracts();
+ }
+}
+

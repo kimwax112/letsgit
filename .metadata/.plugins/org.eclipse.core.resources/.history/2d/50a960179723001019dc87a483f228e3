@@ -1,0 +1,19 @@
+@RestController
+@RequestMapping("/designer")
+@CrossOrigin(origins = "http://localhost:3000")
+
+public class DesignerContractController {
+
+    private final ContractService contractService;
+
+    public DesignerContractController(ContractService contractService) {
+        this.contractService = contractService;
+    }
+
+    @GetMapping("/contract")
+    public List<Contract> getContractsByDesigner(@RequestParam("designerId") String designerId) {
+        List<Contract> contracts = contractService.getContractsByDesigner(designerId);
+        System.out.println("받은 디자이너 계약 데이터 (designerId: " + designerId + "): " + contracts);
+        return contracts;
+    }
+}
