@@ -82,6 +82,8 @@ const Title1 = styled.div`
   color: white;
 `;
 
+
+
 const MenuButton = styled.button`
   all: unset;
   width: 30px;
@@ -190,7 +192,7 @@ function Room({
         <BackButton onClick={onClose} />
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
           <div style={{ display: "flex", gap: 10, color: "white" }}>
-            <h2>{selectedUser}</h2>
+            <h2 style={{color: 'black'}}>{selectedUser}</h2>
             <button onClick={onMenuClick} style={{ all: "unset", width: 30, cursor: "pointer", fontSize: 16 }}>
               ☰
             </button>
