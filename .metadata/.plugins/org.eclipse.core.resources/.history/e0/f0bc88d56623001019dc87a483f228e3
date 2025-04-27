@@ -1,0 +1,85 @@
+package com.example.Loginpj.model;
+
+public class Contract {
+	private int contractId;
+	private int requestId;
+    private String designerId;
+    private String dueDate;
+    private int requestFee;
+    private String status;
+    private String clientId;
+    private String contractTitle;
+    private Boolean isStarred;
+    
+    public int getContractId() {
+		return contractId;
+	}
+	public void setContractId(int contractId) {
+		this.contractId = contractId;
+	}
+	
+	
+	public int getRequestId() {
+		return requestId;
+	}
+	public void setRequestId(int requestId) {
+		this.requestId = requestId;
+	}
+	
+	
+	public String getDesignerId() {
+		return designerId;
+	}
+	public void setDesignerId(String designerId) {
+		this.designerId = designerId;
+	}
+	
+	
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	
+	
+	public int getRequestFee() {
+		return requestFee;
+	}
+	public void setRequestFee(int requestFee) {
+		this.requestFee = requestFee;
+	}
+	
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
+	public String getClientId() {
+		return clientId;
+	}
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+	
+	
+	public String getContractTitle() {
+	    return contractTitle;
+	}
+
+	public void setContractTitle(String contractTitle) {
+	    this.contractTitle = contractTitle;
+	}
+	
+	public Boolean getIsStarred() {
+	    return isStarred;
+	}
+
+	public void setIsStarred(Boolean isStarred) {
+	    this.isStarred = isStarred;
+	}
+}

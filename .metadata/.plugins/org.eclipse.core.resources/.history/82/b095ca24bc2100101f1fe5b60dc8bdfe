@@ -1,0 +1,11 @@
+package com.example.Loginpj.model;
+
+public class Contract {
+	private int contractId;
+    private int requestId;
+    private String designerId;
+    private String dueDate;
+    private int requestFee;
+    private String status;
+    private String clientId;
+}

@@ -1,0 +1,101 @@
+.Detailcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 20px;
+}
+.HeaderContainer {
+  border-top : solid 2px #ccc;
+  border-bottom : solid 2px #ccc;
+  padding: 20px;
+}
+.Detailtitle {
+  display: flex;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  gap : 20px;
+}
+
+.DetailHeader {
+  
+  
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  gap: 10px;
+  flex: 1;
+}
+
+.SharePrint {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;  /* 높이를 줄여서 이미지가 더 작게 보이도록 */
+  gap: 10px;
+  flex: 1;
+  font-weight: lighter;
+}
+
+.SharePrint img {
+  width: 30px;  /* 이미지 크기 */
+  height: 30px; /* 이미지 크기 */
+}
+
+
+.TitleContent {
+  height: auto;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0;
+  padding: 0;
+  
+  
+}
+
+.DetailContent {
+  display: flex;
+  flex-direction: row;        
+  background-color: #e4e4e4;
+  margin: 30px;
+  padding : 20px;
+  height: auto; 
+  font-size: 17px;
+}
+
+.left {
+  flex:1;
+  
+}
+.right {
+  display: flex;
+  flex:1;
+  justify-content: flex-end
+  
+}
+
+.Editor {
+  display: flex;
+  justify-content: center;
+  border-top : 2px solid #ccc;
+  border-bottom : 2px solid #ccc;
+  padding : 20px;   
+}
+
+.Detailfooter {
+  display:flex;
+  
+  gap : 20px;
+  justify-content: flex-end;
+}
+
+.DetailButton {
+  display: flex;
+  width : 200px;
+  margin : 0 auto;
+  margin-right: 20px;
+}
