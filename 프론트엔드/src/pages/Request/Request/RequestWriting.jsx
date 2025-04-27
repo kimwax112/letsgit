@@ -39,14 +39,6 @@ const HeaderWrapper = styled.div`
   text-align: center;
 `;
 
-const Subtitle = styled.div`
-  font-size: 18px;
-  color: #666; /* 텍스트 색상은 원하는 대로 수정 */
-  font-weight: normal;
-  margin-bottom: 0px; /* "어떠한 옷을 원하세요?"와의 간격 조정 */
-  color: #A19494;
-`;
-
 const DetailAndUploadWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -156,7 +148,6 @@ export default function RequestWriting() {
     <Container>
       <Wrapper>
         <HeaderWrapper>
-          <Subtitle>디자이너 구인 게시글</Subtitle>
           <Header>
             <img src={dress} alt="sample" />
             어떠한 옷을 원하세요?
@@ -225,7 +216,7 @@ export default function RequestWriting() {
         <Footer>
           <NextButtonUI onClick={() => setIsModalOpen(true)}>의뢰 등록</NextButtonUI>
           <NextButtonUI to="/client/Request">취소</NextButtonUI>
-          <NextButtonUI>임시 저장</NextButtonUI>
+          <NextButtonUI onClick={() => alert('임시 저장되었습니다!')}>임시 저장</NextButtonUI>
         </Footer>
       </Wrapper>
 
