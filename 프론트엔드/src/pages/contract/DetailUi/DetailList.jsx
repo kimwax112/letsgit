@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { FaStar, FaRegStar } from "react-icons/fa"; // 별 아이콘
 import share from '../../../assets/share.png';  
 import print from '../../../assets/print.png';
+import { useNavigate } from 'react-router-dom'; // 추가: ChatGPT
+import { useState } from 'react'; // 추가: ChatGPT
 
 const Button = styled(NextButtonUI)`
   background-color: #d5d5d5;
@@ -13,10 +15,18 @@ const Button = styled(NextButtonUI)`
 `;
 
 export default function DetailList({ contract, onToggleStar }) {
-  // contract 데이터가 없을 경우 기본값 설정
+  const navigate = useNavigate(); // 추가: ChatGPT
+  const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
+
   if (!contract) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
+  const handleSendRequest = () => { // 추가: ChatGPT
+    navigate('/client/ChatMain', { state: { messageText: editorContent } });
+  };
+  
+  
+
 
   return (
     <div className="Detailcontainer">
@@ -62,11 +72,11 @@ export default function DetailList({ contract, onToggleStar }) {
       </div>
 
       <div className="Editor">
-        <MyEditor>디자이너에게 요청보내기</MyEditor>
+      <MyEditor onSendMessage={setEditorContent}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
       </div>
 
       <div className="Detailfooter">
-        <div className="DetailButton"><NextButtonUI>요청보내기</NextButtonUI></div>
+        <div className="DetailButton"><NextButtonUI onClick={handleSendRequest}>요청보내기</NextButtonUI></div>
         <Button>작성취소</Button>
         <Button>저장</Button>
       </div>

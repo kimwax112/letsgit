@@ -1,8 +1,10 @@
+// Room.jsx
 import React from "react";
 import styled from "styled-components";
 import { Modal } from "../../../utils";
 import SideMenu from "./SideMenu";
 import backArrow from "../../../assets/화살표.png";
+import Message from '../../../pages/contract/SendMessageUi/Message/Message';
 
 const RoomContainer = styled(Modal)`
   display: flex;
@@ -10,7 +12,6 @@ const RoomContainer = styled(Modal)`
   position: relative;
   width: 600px;
   height: 700px;
-
 `;
 
 const RoomHeader = styled.div`
@@ -158,9 +159,6 @@ const SuccessPopupMessage = styled.p`
   font-size: 16px;
 `;
 
-
-
-
 function Room({
   selectedUser,
   messages,
@@ -183,6 +181,8 @@ function Room({
   popupMessage,
   bottomRef,
 }) {
+  console.log(`Messages in Room for ${selectedUser}:`, messages);
+
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
       <RoomHeader>
@@ -198,21 +198,58 @@ function Room({
       </RoomHeader>
       <Content>
         <ChatContainer>
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.type || "sent"}`}>
-              {msg.component ? (
-                <>
-                  {msg.component}
-                  <span className="time">{msg.time}</span>
-                </>
-              ) : (
-                <>
-                  {msg.text}
-                  <span className="time">{msg.time}</span>
-                </>
-              )}
-            </div>
-          ))}
+        {messages.length > 0 ? (
+    messages.map((msg, index) => (
+      <div key={index} className={`message ${msg.type || "sent"}`}>
+        {msg.component ? (
+          <>
+            <div>{msg.text}</div>
+            {msg.component}
+            <span className="time">{msg.time}</span>
+          </>
+        ) : msg.text ? (
+          <>
+            <Message 
+              contract={{
+                title: msg.text,
+                designer: "요청 메시지",
+                date: new Date().toISOString().split('T')[0],
+              }}
+            />
+            <span className="time">{msg.time}</span>
+          </>
+        ) : (
+          <>
+            <div>{msg.text}</div>
+            <span className="time">{msg.time}</span>
+          </>
+        )}
+      </div>
+    ))
+  ) : (
+    <p>메시지가 없습니다.</p>
+  )}
+          {messages.length > 0 ? (
+            messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.type || "sent"}`}>
+                {msg.component ? (
+                  <>
+                    <div>{msg.text}</div>
+                    {msg.component}
+                    <span className="time">{msg.time}</span>
+                  </>
+                ) : (
+                  <>
+                    <div>{msg.text}</div>
+                    <span className="time">{msg.time}</span>
+                  </>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>메시지가 없습니다.</p>
+          )}
+          
           <div ref={bottomRef} />
         </ChatContainer>
       </Content>

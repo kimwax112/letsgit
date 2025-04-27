@@ -185,6 +185,17 @@ export function useChat(initialChats) {
     ]);
     setModalOpen(false); // 디자인 불러오기 모달 닫기
   };
+
+  const addMessageForUser = (userName, messageText) => { // 추가: ChatGPT
+    const newMessage = {
+      text: messageText,
+      time: new Date().toLocaleTimeString(),
+      type: "sent",
+    };
+    setSelectedUser(userName);
+    setIsModalOpen(true);
+    setMessages((prev) => [...prev, newMessage]);
+  };
  
 
   return {
@@ -223,6 +234,7 @@ export function useChat(initialChats) {
     setModalOpen2,
     handleRequestSelect, // 추가
     handleItemSelect, // 새로운 핸들러 추가
-    
+    addMessageForUser, // 추가: ChatGPT
+
   };
 }
