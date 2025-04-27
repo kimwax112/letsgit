@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import ClientLayout from "./ClientLayout";
+import DesignerLayout from "./DesignerLayout";
 import { Mainp, CosMain, BrandDP, Clothes, Fabric, Size, Upload, FinalConfimation, Request, RequestWriting, RequestPost, ChatMain, ChoseDesigner, SignIn, SignIn2} from "./pages";
 import Home from "./pages/Home";
 import Welcome from './pages/Login/Welcome';
@@ -16,6 +17,7 @@ import ContractPage from "./pages/contract/ContractPage";
 import StarredPage from "./pages/contract/StarredPage";
 import SignSucess from './pages/Login/SignSucess';
 import Contract from './pages/contract/Contract';
+import DesignerContractManagePage from "./pages/DesignerContract/DesignerContractManagePage";
 
 const RouterComponent = () => {
   return (
@@ -61,13 +63,17 @@ const RouterComponent = () => {
       />
 
       {/* 디자이너 페이지 경로 */}
-      <Route path="/designer/*" element={
-        <Routes>
-          <Route path="DesignerCosMain" element={<DesignerCosMain />} />
-          <Route path="Back" element={<Back />} />
-          <Route path="Dmypage" element={<Dmypage />} />
-          <Route path="Portfolio" element={<Portfolio />} />
-        </Routes>
+      <Route path="/designer/*" 
+        element={
+        <DesignerLayout>
+          <Routes>
+            <Route path="DesignerCosMain" element={<DesignerCosMain />} />
+            <Route path="Back" element={<Back />} />
+            <Route path="Dmypage" element={<Dmypage />} />
+            <Route path="Portfolio" element={<Portfolio />} />
+            <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
+          </Routes>
+        </DesignerLayout>
       } />
     </Routes>
   );

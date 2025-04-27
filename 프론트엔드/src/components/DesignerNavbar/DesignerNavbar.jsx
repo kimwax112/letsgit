@@ -54,7 +54,7 @@ const DesignerNavbar = () => {
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 작성
               </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/designer/DesignerContractManage" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
               </Link>
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
@@ -105,10 +105,10 @@ const DesignerNavbar = () => {
           </div>
           <div className="dropdown-section">
             <h3>계약 관리</h3>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약서 작성
               </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/designer/DesignerContractManage" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
               </Link>
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
