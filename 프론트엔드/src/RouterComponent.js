@@ -18,6 +18,7 @@ import StarredPage from "./pages/contract/StarredPage";
 import SignSucess from './pages/Login/SignSucess';
 import Contract from './pages/contract/Contract';
 import DesignerContractManagePage from "./pages/DesignerContract/DesignerContractManagePage";
+import DesignerContractCreatePage from "./pages/DesignerContractCreate/DesignerContractCreatePage";
 
 const RouterComponent = () => {
   return (
@@ -72,7 +73,8 @@ const RouterComponent = () => {
             <Route path="Dmypage" element={<Dmypage />} />
             <Route path="Portfolio" element={<Portfolio />} />
             <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
-          </Routes>
+            <Route path="DesignerContractCreate" element={<DesignerContractCreatePage />}/>
+           </Routes>
         </DesignerLayout>
       } />
     </Routes>

@@ -3,22 +3,23 @@ import DesignerContractSidebar from "../../components/DesignerContract/DesignerC
 import DesignerContractSearchAndFilter from "../../components/DesignerContract/DesignerContractSearchAndFilter/DesignerContractSearchAndFilter";
 import DesignerContractSortAndCreate from "../../components/DesignerContract/DesignerContractSortAndCreate/DesignerContractSortAndCreate";
 import DesignerContractList from "../../components/DesignerContract/DesignerContractList/DesignerContractList";
+import "./DesignerContractManagePage.css";
 
 const DesignerContractManagePage = () => {
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="page-wrapper">
       {/* 왼쪽 사이드바 */}
       <DesignerContractSidebar />
 
       {/* 오른쪽 본문 */}
-      <div style={{ flex: 1, padding: "24px", overflowY: "auto" }}>
+      <div className="main-content">
         {/* 제목 */}
-        <h1 style={{ fontSize: "24px", marginBottom: "20px", color: "#799FC4" }}>계약서 조회</h1>
+        <h1 className="page-header">계약서 조회</h1>
 
         {/* 검색 및 필터 */}
         <DesignerContractSearchAndFilter />
 
-        <hr/>
+        <hr />
 
         {/* 정렬 및 신규 생성 버튼 */}
         <DesignerContractSortAndCreate />
