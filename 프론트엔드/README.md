@@ -29,3 +29,21 @@ DesignerContractCreate
       -  DesignerContractCreate.module.css => 디자이너-계약관리-계약서 작성에서만 사용하는 css파일
   - src\pages\DesignerContractCreate
       -DesignerContractCreatePage.jsx => 계약서 작성 관련 컴포넌트를 아우르는 페이지 파일 
+
+
+src/pages/contract
+1.ContractDetailPage.jsx => 계약관리 누르면 보이는 상세 페이지
+2.ContractSendMessagePage.jsx => 보낸 메시지 목록 보는 페이지 
+3,MessageDetailPage.jsx => 메시지 누르면 보이는 상세페이지
+
+src/pages/contract/Message
+1.Message.jsx => 계약 메시지 컴포넌트
+1.Message.css
+2.MessageHeader.jsx => 메세지 헤더 컴포넌트
+2.MessageHeader.css
+3.MessageList.jsx => 메세지 보이는 리스트 컴포넌트
+3.MessageList.css
+
+src/pages/contract/DetailUI
+1.DetailList.jsx => 계약관리 상세 리스트 컴포넌트
+1.DetailList.css
