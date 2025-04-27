@@ -36,35 +36,34 @@ const Text1 = styled.div`
   align-self: flex-start;
 `;
 
-export default function ContentHeader ({children}) {
+export default function ContentHeader({ children, showButtons = true }) {
   const [modalOpen, setModalOpen] = useState(false);
-  
 
   return (
-    
     <>
-   <ContentHeader1>
-          <Text1>
-            <h1>{children}</h1>
-          </Text1>
-          <SearchButtonWrapper>
-            <SearchBar2 />
-            <ButtonContainer >
+      <ContentHeader1>
+        <Text1>
+          <h1>{children}</h1>
+        </Text1>
+        <SearchButtonWrapper>
+          <SearchBar2 />
+          {showButtons && (
+            <ButtonContainer>
               {/* '임시저장함' 버튼 → /SavedRequests 페이지로 이동 */}
-              <NextButtonUI  onClick={() => setModalOpen(true)}>임시저장함</NextButtonUI>
+              <NextButtonUI onClick={() => setModalOpen(true)}>임시저장함</NextButtonUI>
               {/* '글쓰기' 버튼 → /RequestWriting 페이지로 이동 */}
               <NextButtonUI to="/client/RequestWriting">글쓰기</NextButtonUI>
             </ButtonContainer>
-          </SearchButtonWrapper>
-        </ContentHeader1>
+          )}
+        </SearchButtonWrapper>
+      </ContentHeader1>
 
-    {modalOpen && (
-      <CustomModal onClose={() => setModalOpen(false)}>
-        <h2>임시저장된 글</h2>
-        <ModalContent/>
-      </CustomModal>
-    )}
-
+      {modalOpen && (
+        <CustomModal onClose={() => setModalOpen(false)}>
+          <h2>임시저장된 글</h2>
+          <ModalContent />
+        </CustomModal>
+      )}
     </>
-  )
+  );
 }
