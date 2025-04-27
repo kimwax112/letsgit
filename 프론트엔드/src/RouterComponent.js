@@ -19,6 +19,8 @@ import SignSucess from './pages/Login/SignSucess';
 import Contract from './pages/contract/Contract';
 import DesignerContractManagePage from "./pages/DesignerContract/DesignerContractManagePage";
 import DesignerContractCreatePage from "./pages/DesignerContractCreate/DesignerContractCreatePage";
+import ContractDetailPage from "./pages/contract/ContractDetailPage";
+import ContractList from "./components/contract/ContractList/ContractList";
 
 const RouterComponent = () => {
   return (
@@ -29,6 +31,7 @@ const RouterComponent = () => {
       <Route path="SignIn" element={<SignIn />} />
       <Route path="SignIn2" element={<SignIn2 />} />
       <Route path="SignSucess" element={<SignSucess />} />
+      <Route path="/contracts" element={<ContractList />} /> {/* 최상위 경로로 이동 */}
 
       {/* 의뢰인 페이지 경로 */}
       <Route
@@ -49,7 +52,7 @@ const RouterComponent = () => {
               <Route path="RequestPost" element={<RequestPost />} />
               <Route path="Home" element={<Home />} />
               <Route path="ChatMain" element={<ChatMain />} />
-              <Route path="ReportPage" element={<ReportPage />} /> {/* ReportPage 추가 */}
+              <Route path="ReportPage" element={<ReportPage />} />
               <Route path="ChoseDesigner" element={<ChoseDesigner />} />
               <Route path="FavoriteDesigners" element={<FavoriteDesignersPage />} />
               <Route path="FavoriteDesignersPage" element={<FavoriteDesignersPage />} />
@@ -57,7 +60,7 @@ const RouterComponent = () => {
               <Route path="MyDesignsRequests" element={<MyDesignsRequestsPage />} />
               <Route path="contract" element={<ContractPage />} />
               <Route path="starred" element={<StarredPage />} />
-              <Route path="Contract" element={<Contract />} />
+              <Route path="contract/:id" element={<ContractDetailPage />} /> {/* /client은 제외 */}
             </Routes>
           </ClientLayout>
         }
