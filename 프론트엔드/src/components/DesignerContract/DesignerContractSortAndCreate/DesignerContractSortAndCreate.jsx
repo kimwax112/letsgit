@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Link 컴포넌트 임포트
 import "./DesignerContractSortAndCreate.css";
 
 const DesignerContractSortAndCreate = () => {
@@ -25,7 +26,10 @@ const DesignerContractSortAndCreate = () => {
         </select>
       </div>
 
-      <button className="create-button">신규 계약 생성</button>
+      {/* Link로 버튼을 감싸서 페이지 이동 */}
+      <Link to="/designer/DesignerContractCreate">
+        <button className="create-button">신규 계약 생성</button>
+      </Link>
     </div>
   );
 };
