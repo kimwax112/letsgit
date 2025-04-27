@@ -18,6 +18,7 @@ const RoomHeader = styled.div`
   width: 100%;
   display: flex;
   background-color: #799fc4;
+  
 `;
 
 const RoomFooter = styled.div`
@@ -187,72 +188,38 @@ function Room({
     <RoomContainer onClose={onClose} showCloseButton={false}>
       <RoomHeader>
         <BackButton onClick={onClose} />
-        <Title>
-          <Title1>
+        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 10, color: "white" }}>
             <h2>{selectedUser}</h2>
-            <MenuButton onClick={onMenuClick}>
-              <h2>☰</h2>
-            </MenuButton>
-          </Title1>
-        </Title>
+            <button onClick={onMenuClick} style={{ all: "unset", width: 30, cursor: "pointer", fontSize: 16 }}>
+              ☰
+            </button>
+          </div>
+        </div>
       </RoomHeader>
+
       <Content>
         <ChatContainer>
-        {messages.length > 0 ? (
-    messages.map((msg, index) => (
-      <div key={index} className={`message ${msg.type || "sent"}`}>
-        {msg.component ? (
-          <>
-            <div>{msg.text}</div>
-            {msg.component}
-            <span className="time">{msg.time}</span>
-          </>
-        ) : msg.text ? (
-          <>
-            <Message 
-              contract={{
-                title: msg.text,
-                designer: "요청 메시지",
-                date: new Date().toISOString().split('T')[0],
-              }}
-            />
-            <span className="time">{msg.time}</span>
-          </>
-        ) : (
-          <>
-            <div>{msg.text}</div>
-            <span className="time">{msg.time}</span>
-          </>
-        )}
-      </div>
-    ))
-  ) : (
-    <p>메시지가 없습니다.</p>
-  )}
           {messages.length > 0 ? (
-            messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.type || "sent"}`}>
+            messages.map((msg, idx) => (
+              <div key={idx} className={`message ${msg.type || "sent"}`}>
                 {msg.component ? (
-                  <>
-                    <div>{msg.text}</div>
-                    {msg.component}
-                    <span className="time">{msg.time}</span>
-                  </>
+                  /* 추가: ChatGPT — 컴포넌트가 있으면 그것만 렌더링 */
+                  msg.component
                 ) : (
-                  <>
-                    <div>{msg.text}</div>
-                    <span className="time">{msg.time}</span>
-                  </>
+                  /* 추가: ChatGPT — 컴포넌트 없으면 텍스트만 렌더링 */
+                  <div>{msg.text}</div>
                 )}
+                <span className="time">{msg.time}</span>
               </div>
             ))
           ) : (
             <p>메시지가 없습니다.</p>
           )}
-          
           <div ref={bottomRef} />
         </ChatContainer>
       </Content>
+
       <SideMenu
         isOpen={isSideMenuOpen}
         onClose={onCloseSideMenu}
@@ -262,6 +229,7 @@ function Room({
         onBlock={onBlock}
         onReport={onReport}
       />
+
       <RoomFooter>
         <RoomInput
           type="text"
@@ -271,22 +239,35 @@ function Room({
           onCompositionEnd={onCompositionEnd}
         />
       </RoomFooter>
+
       {isConfirmOpen && (
-        <ConfirmModal>
-          <ConfirmMessage>{confirmMessage}</ConfirmMessage>
-          <ConfirmButtonWrapper>
-            <YesButton onClick={onConfirmYes}>예</YesButton>
-            <NoButton onClick={onConfirmNo}>아니요</NoButton>
-          </ConfirmButtonWrapper>
-        </ConfirmModal>
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)", background: "#fff",
+          padding: 20, borderRadius: 10, boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+          zIndex: 1000, display: "flex", flexDirection: "column", gap: 15
+        }}>
+          <p style={{ fontSize: 16, textAlign: "center" }}>{confirmMessage}</p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
+            <button onClick={onConfirmYes} style={{ padding: "8px 16px", background: "#799fc4", color: "#fff", border: "none", borderRadius: 5 }}>예</button>
+            <button onClick={onConfirmNo} style={{ padding: "8px 16px", background: "#9dbdd5", color: "#fff", border: "none", borderRadius: 5 }}>아니요</button>
+          </div>
+        </div>
       )}
+
       {isSuccessPopupOpen && (
-        <SuccessPopup>
-          <SuccessPopupMessage>{popupMessage}</SuccessPopupMessage>
-        </SuccessPopup>
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)", background: "#fff",
+          padding: 20, borderRadius: 10, boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+          zIndex: 1000, textAlign: "center"
+        }}>
+          <p style={{ color: "green", fontWeight: "bold", fontSize: 16 }}>{popupMessage}</p>
+        </div>
       )}
     </RoomContainer>
   );
 }
+
 
 export default Room;

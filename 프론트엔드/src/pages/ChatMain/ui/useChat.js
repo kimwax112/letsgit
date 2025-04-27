@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import RequestBar from "../../../components/RequestBar/RequestBar";
 import ItemBox from "./ItemBox";
+import Message from '../../../pages/contract/SendMessageUi/Message/Message';
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
@@ -9,6 +10,8 @@ export function useChat(initialChats) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [messages, setMessages] = useState([]);
+
+
   const [isComposing, setIsComposing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
@@ -93,6 +96,8 @@ export function useChat(initialChats) {
       e.target.value = "";
     }
   };
+
+
 
   const handleCompositionStart = () => {
     setIsComposing(true);
@@ -196,6 +201,29 @@ export function useChat(initialChats) {
     setIsModalOpen(true);
     setMessages((prev) => [...prev, newMessage]);
   };
+
+   // **요청보내기**로 받은 텍스트를 Message 컴포넌트로 추가
+   const addRequestMessage = (userName, messageText) => { // 추가
+    const component = (
+      <Message
+        contract={{
+          title: messageText,
+          designer: "요청 메시지",
+          date: new Date().toISOString().split("T")[0],
+        }}
+      />
+    );
+    setSelectedUser(userName);
+    setIsModalOpen(true);
+    setMessages((prev) => [
+      ...prev,
+      {
+        component,
+        type: "sent",
+        time: new Date().toLocaleTimeString(),
+      },
+    ]);
+  };
  
 
   return {
@@ -235,6 +263,7 @@ export function useChat(initialChats) {
     handleRequestSelect, // 추가
     handleItemSelect, // 새로운 핸들러 추가
     addMessageForUser, // 추가: ChatGPT
+    addRequestMessage,  // ✅ 반드시 반환
 
   };
 }

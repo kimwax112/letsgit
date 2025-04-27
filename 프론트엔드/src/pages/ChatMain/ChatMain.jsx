@@ -116,6 +116,7 @@ function ChatMain() {
     isSuccessPopupOpen,
     popupMessage,
     bottomRef,
+    addRequestMessage,
     handleSearch,
     handleRecentSearchClick,
     handleProfileClick,
@@ -136,24 +137,28 @@ function ChatMain() {
     handleItemSelect, // 새로운 핸들러 추가
     setModalOpen,
     setModalOpen2,
-    addMessageForUser, // 추가: ChatGPT
     
-
-
-  } = useChat(chatData);
+    
+  } = useChat([]);
 
   const selectedUserRequests = filteredChats.find((chat) => chat.name === selectedUser)?.requests || [];
-  const location = useLocation(); // 추가: ChatGPT
+
   const navigate = useNavigate(); // 추가: ChatGPT
+  
+  const location = useLocation(); // 추가: ChatGPT
   const hasAddedMessage = useRef(false); // ✅ 최초 1회 실행 여부 체크
+  const hasAddedRequestMessage = useRef(false);
 
 
-  useEffect(() => {
-    if (location.state?.messageText && !hasAddedMessage.current) {
-      addMessageForUser('Cody Fisher', location.state.messageText);
-      hasAddedMessage.current = true; // 메시지 추가했으면 true로 바꿔서 다시 안 실행되게 막음
+
+   useEffect(() => {
+    const text = location.state?.messageText;
+    if (text && !hasAddedRequestMessage.current) {
+      addRequestMessage("Cody Fisher", text);
+      hasAddedRequestMessage.current = true;
     }
-  }, [location.state?.messageText, addMessageForUser]);
+  }, [location.state?.messageText, addRequestMessage]);
+  
   
 
   return (
