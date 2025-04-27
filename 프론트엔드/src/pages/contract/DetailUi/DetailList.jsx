@@ -17,14 +17,27 @@ const Button = styled(NextButtonUI)`
 export default function DetailList({ contract, onToggleStar }) {
   const navigate = useNavigate(); // 추가: ChatGPT
   const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
+  const [isEditorSent, setIsEditorSent] = useState(false);  // 추가: 작성완료 눌렀는지 추적
 
   if (!contract) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
-  const handleSendRequest = () => { // 추가: ChatGPT
+
+  const handleSendRequest = () => {
+    // 작성완료를 누르지 않았거나 내용이 비어 있으면 동작하지 않음
+    if (!isEditorSent || editorContent.trim() === "") {
+      alert("메시지를 작성하고 작성완료를 눌러주세요.");
+      return;
+    }
     navigate('/client/ChatMain', { state: { messageText: editorContent } });
   };
-  
+    // MyEditor에서 작성완료 눌렀을 때만 호출됩니다.
+    const handleEditorSend = (content) => {
+      if (content.trim() !== "") {
+        setEditorContent(content);
+        setIsEditorSent(true);
+      }
+    };
   
 
 
@@ -72,11 +85,11 @@ export default function DetailList({ contract, onToggleStar }) {
       </div>
 
       <div className="Editor">
-      <MyEditor onSendMessage={setEditorContent}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
+      <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
       </div>
 
       <div className="Detailfooter">
-        <div className="DetailButton"><NextButtonUI onClick={handleSendRequest}>요청보내기</NextButtonUI></div>
+        <div className="DetailButton"><NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI></div>
         <Button>작성취소</Button>
         <Button>저장</Button>
       </div>
