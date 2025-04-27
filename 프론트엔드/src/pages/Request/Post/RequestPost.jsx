@@ -25,7 +25,7 @@ const Right = styled.div`
 export default function RequestPost() {
   return (
     <>
-      <ContentHeader />
+
       <PostContent />
 
       <Content>

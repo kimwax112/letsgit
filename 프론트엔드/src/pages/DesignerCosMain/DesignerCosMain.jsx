@@ -30,7 +30,6 @@ const DesignerMain = () => {
   };
 
   return (
-    <DesignerLayout>
       <div className="WholeWrapper">
         <DesignerBanner />
         <ProcessSteps />
@@ -40,7 +39,6 @@ const DesignerMain = () => {
           <PortfolioList />
         </div>
       </div>
-    </DesignerLayout>
   );
 };
 
