@@ -1,4 +1,5 @@
 import React from "react";
+import { MdDescription } from "react-icons/md";  // 아이콘 추가
 import DesignerContractSidebar from "../../components/DesignerContract/DesignerContractSidebar/DesignerContractSidebar";
 import DesignerContractSearchAndFilter from "../../components/DesignerContract/DesignerContractSearchAndFilter/DesignerContractSearchAndFilter";
 import DesignerContractSortAndCreate from "../../components/DesignerContract/DesignerContractSortAndCreate/DesignerContractSortAndCreate";
@@ -14,7 +15,11 @@ const DesignerContractManagePage = () => {
       {/* 오른쪽 본문 */}
       <div className="main-content">
         {/* 제목 */}
-        <h1 className="page-header">계약서 조회</h1>
+        <h1 className="page-header" style={{ fontSize: "27px", display: "flex", alignItems: "center" }}>
+          {/* 아이콘 추가 */}
+          <MdDescription style={{ marginRight: "10px", fontSize: "36px" }} />
+          계약서 조회
+        </h1>
 
         {/* 검색 및 필터 */}
         <DesignerContractSearchAndFilter />
