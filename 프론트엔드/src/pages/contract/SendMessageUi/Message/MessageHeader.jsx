@@ -1,5 +1,5 @@
 import './MessageHeader.css';
-import ContractSearchAndFilter from '../../../components/contract/ContractSearchAndFilter/ContractSearchAndFilter';
+import ContractSearchAndFilter from '../../../../components/contract/ContractSearchAndFilter/ContractSearchAndFilter';
 export default function MessageHeader( ) {
 
   return (

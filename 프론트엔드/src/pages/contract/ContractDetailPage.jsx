@@ -1,7 +1,8 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import ContractLayout from "../../layouts/ContractLayout";
-import DetailList from "./DetailUi/DetailList.jsx";
+import DetailList from './DetailUi/DetailList';
 import { useState } from "react";
+
 
 
 export default function ContractDetailPage() {

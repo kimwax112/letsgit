@@ -1,13 +1,10 @@
-// MyEditor.jsx 텍스트 편집기 
-import React, {  useState } from 'react';
+// MyEditor.jsx
+import React, { useState } from 'react';
 import { EditorState } from 'draft-js';
 import Editor from '@draft-js-plugins/editor';
-
 // 플러그인 관련
 import createToolbarPlugin, { Separator } from '@draft-js-plugins/static-toolbar';
 import '@draft-js-plugins/static-toolbar/lib/plugin.css';
-
-
 import {
   BoldButton,
   ItalicButton,
@@ -20,30 +17,26 @@ import {
 const toolbarPlugin = createToolbarPlugin();
 const { Toolbar } = toolbarPlugin;
 
-const MyEditor = ({children, onSendMessage}) => {
-  // Draft.js 에디터 상태
+const MyEditor = ({ children, onSendMessage }) => {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-
-  // 플러그인 배열
+  const [editMode, setEditMode] = useState(true);
   const plugins = [toolbarPlugin];
 
-  // 임의로 "모드 토글" 버튼 클릭 시 동작하는 예시 (편집/읽기 전환 등)
-  const [editMode, setEditMode] = useState(true);
-
-  const toggleMode = () => {
-    setEditMode(!editMode);
+  const handleSend = () => {
+    if (onSendMessage) {
+      const content = editorState.getCurrentContent().getPlainText(); // 추가: ChatGPT
+      if (content.trim() !== "") {
+        onSendMessage(content); // 추가: ChatGPT
+        setEditorState(EditorState.createEmpty()); // 추가: ChatGPT
+      }
+    }
   };
-  
-
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px' , width: '70em' }}>
-      {/* 상단 제목 영역 */}
+    <div style={{ border: '1px solid #ccc', padding: '10px', width: '70em' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
         <h3>{children}</h3>
       </div>
-
-      {/* Static Toolbar (플러그인) */}
       {editMode && (
         <Toolbar>
           {(externalProps) => (
@@ -59,17 +52,16 @@ const MyEditor = ({children, onSendMessage}) => {
           )}
         </Toolbar>
       )}
-
-      {/* 에디터 영역 */}
-      <div style={{backgroundColor:'#FFFFFF', minHeight: 200, border: '1px solid #eee', padding: '10px', marginTop: 10 }}>
+      <div style={{ backgroundColor: '#FFFFFF', minHeight: 200, border: '1px solid #eee', padding: '10px', marginTop: 10 }}>
         <Editor
           editorState={editorState}
           onChange={setEditorState}
           plugins={plugins}
-          readOnly={!editMode} // 편집 모드가 아닐 때 readOnly
+          readOnly={!editMode}
           placeholder="내용을 입력하세요..."
         />
       </div>
+      <button onClick={handleSend} style={{ marginTop: 10 }}>작성 완료</button> {/* 추가: ChatGPT */}
     </div>
   );
 };

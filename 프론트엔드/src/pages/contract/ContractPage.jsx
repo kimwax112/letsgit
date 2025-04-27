@@ -13,6 +13,7 @@ const ContractPage = ({ contracts, handleToggleStar }) => {
           handleToggleStar={handleToggleStar}
       />
       </div>
+      
     </ContractLayout>
   );
 };

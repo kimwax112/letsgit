@@ -1,8 +1,8 @@
 import { state } from 'react';
 import NextButtonUI from '../../components/NextButton/NextButton';
 import styled from 'styled-components';
-import Message from './SendMessageUi/Message';
-import MessageHeader from './SendMessageUi/MessageHeader';
+import Message from './SendMessageUi/Message/Message';
+import MessageHeader from './SendMessageUi/Message/MessageHeader';
 
 
 const Button = styled(NextButtonUI)`

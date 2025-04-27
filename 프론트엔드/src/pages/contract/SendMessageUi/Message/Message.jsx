@@ -1,6 +1,7 @@
+// Message.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './Message.css';
+import "./Message.css";
 
 export default function Message() {
   const navigate = useNavigate();
@@ -13,26 +14,25 @@ export default function Message() {
       { id: "2", title: "위탁계약서", preview: "초안 전달 / 검토 중", status: "완료", date: "2025.04.05" },
       { id: "3", title: "프로젝트 계약서", preview: "계약 해지 요청 / 내용 확인 필요", status: "해지", date: "2025.03.30" },
     ];
-    const contract1 = contracts.find(c => c.id === "1");
+    const contract1 = contracts.find((c) => c.id === "1");
     setContract(contract1);
   }, []);
 
   if (!contract) return null;
 
   const handleClick = () => {
-    navigate(`/client/contract/MessageDetail/${contract.id}`, {
-      state: { contract }
+    console.log("Message.jsx: Navigating to MessageDetailPage with contract:", contract); // 디버깅 로그
+    navigate(`/client/contract/MessageDetailPage/${contract.id}`, {
+      state: { contract },
     });
   };
 
   return (
-    
     <div className="message-container" onClick={handleClick}>
       <div className="contract-title">{contract.title}</div>
       <div className="design-name">{contract.designer || "디자이너 없음"}</div>
       <div className="contract-detail">보낸 메시지 미리보기</div>
       <div className="contract-date">{contract.date}</div>
     </div>
-    
   );
 }
