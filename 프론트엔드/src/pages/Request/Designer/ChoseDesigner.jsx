@@ -38,8 +38,7 @@ const Content = styled.div`
 export default function ChoseDesigner() {
   return (
     <>
-    
-      <ContentHeader children="디자이너 찾기" />
+      <ContentHeader children="디자이너 찾기" showButtons={false} />
       <RequestLayOut>
         <MainContainer>
           <Sidebar>

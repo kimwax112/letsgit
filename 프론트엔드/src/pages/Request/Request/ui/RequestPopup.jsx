@@ -9,6 +9,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 50px 0; /* 위아래 여백 추가 */
   background-color: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
@@ -66,7 +67,24 @@ const Text = styled.div`
   }
 `;
 
+const StyledButton = styled.button`
+  background-color: #799FC4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(90%);
+  }
+`;
+
 export default function RequestPopup({ onClose }) {
+
+  const handleSave = () => {
+    alert("임시저장이 완료되었습니다.");
+  };
+
   return (
     <Overlay>
       <ModalContainer>
@@ -77,8 +95,8 @@ export default function RequestPopup({ onClose }) {
             <h1 style={{ margin: "20px" }}>의뢰서</h1>
           </div>
           <ButtonContainer>
-            <Button onClick={() => console.log("Clicked!")}>확인</Button>
-            <Button onClick={() => console.log("Clicked!")}>수정하기</Button>
+            <StyledButton onClick={onClose}>취소</StyledButton>
+            <StyledButton onClick={handleSave}>임시저장</StyledButton>
           </ButtonContainer>
         </Header>
         <Text>

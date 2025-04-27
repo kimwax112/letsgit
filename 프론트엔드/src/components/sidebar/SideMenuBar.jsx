@@ -53,16 +53,21 @@ const SubMenu = styled.ul`
   }
 `;
 
+const SubMenuLink = styled(MenuLink)`
+  color: #838383;
+  font-weight: normal;  // 글자 두께를 얇게 설정
+`;
+
 export default function SideMenuBar() {
   const menuItems = [
-    { main: '상의 Top', sub: ['상의 하위메뉴1', '상의 하위메뉴2', '상의 하위메뉴3', '상의 하위메뉴4', '상의 하위메뉴5'] },
-    { main: '아우터 Outer', sub: ['아우터 하위메뉴1', '아우터 하위메뉴2', '아우터 하위메뉴3', '아우터 하위메뉴4', '아우터 하위메뉴5'] },
-    { main: '바지 Pants', sub: ['바지 하위메뉴1', '바지 하위메뉴2', '바지 하위메뉴3', '바지 하위메뉴4', '바지 하위메뉴5'] },
-    { main: '원피스 Onepiece', sub: ['원피스 하위메뉴1', '원피스 하위메뉴2', '원피스 하위메뉴3', '원피스 하위메뉴4', '원피스 하위메뉴5'] },
-    { main: '스커트 Skirt', sub: ['스커트 하위메뉴1', '스커트 하위메뉴2', '스커트 하위메뉴3', '스커트 하위메뉴4', '스커트 하위메뉴5'] },
-    { main: '스니커즈 Sneakers', sub: ['스니커즈 하위메뉴1', '스니커즈 하위메뉴2', '스니커즈 하위메뉴3', '스니커즈 하위메뉴4', '스니커즈 하위메뉴5'] },
-    { main: '신발 Shoes', sub: ['신발 하위메뉴1', '신발 하위메뉴2', '신발 하위메뉴3', '신발 하위메뉴4', '신발 하위메뉴5'] },
-    { main: '가방 Bag', sub: ['가방 하위메뉴1', '가방 하위메뉴2', '가방 하위메뉴3', '가방 하위메뉴4', '가방 하위메뉴5'] },
+    { main: '상의 Top', sub: ['티셔츠', '블라우스', '셔츠', '니트', '탑'] },
+    { main: '아우터 Outer', sub: ['코트', '자켓', '패딩', '트렌치코트', '블루종'] },
+    { main: '바지 Pants', sub: ['청바지', '슬랙스', '조거 팬츠', '레깅스', '반바지'] },
+    { main: '원피스 Onepiece', sub: ['미니 원피스', '맥시 원피스', '셔츠 원피스', '롱 원피스', '튜닉'] },
+    { main: '스커트 Skirt', sub: ['미니스커트', '플리츠 스커트', 'A라인 스커트', '롱 스커트', '펜슬 스커트'] },
+    { main: '스니커즈 Sneakers', sub: ['운동화', '에어맥스', '스케이트보드 슈즈', '런닝화', '슬립온'] },
+    { main: '신발 Shoes', sub: ['힐', '로퍼', '부츠', '샌들', '플랫 슈즈'] },
+    { main: '가방 Bag', sub: ['백팩', '토트백', '크로스백', '클러치백', '숄더백'] },
   ];
 
   return (
@@ -75,7 +80,7 @@ export default function SideMenuBar() {
               <SubMenu>
                 {item.sub.map((subItem, subIndex) => (
                   <MenuItem key={subIndex}>
-                    <MenuLink href="#">{subItem}</MenuLink>
+                    <SubMenuLink href="#">{subItem}</SubMenuLink>
                   </MenuItem>
                 ))}
               </SubMenu>
