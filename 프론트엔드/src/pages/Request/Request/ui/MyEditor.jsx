@@ -35,7 +35,7 @@ const MyEditor = ({children}) => {
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px' , width: '70em' }}>
+    <div style={{ border: '1px solid #ccc', padding: '10px', width: '60em' }}>
       {/* 상단 제목 영역 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
         <h3>{children}</h3>
