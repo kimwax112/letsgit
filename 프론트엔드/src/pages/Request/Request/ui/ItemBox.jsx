@@ -1,120 +1,125 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
-//직접 의뢰 맡기기 / 디자이너 구인게시판 컨텐츠
+import designerImage from '../../../../assets/desiner.png';
+
+// 아이템 박스 컨테이너
 const ItemBoxContainer = styled.div`
   width: 350px;
-  height: 400px;;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;      /* 가로축(교차축) 가운데 정렬 */
+  align-items: center;      
   background-color: white;
-  
   min-height: 300px;
-  border: 0.5px solid;
+  border: 0.5px solid #A5A0A0; 
   border-radius: 20px;
   gap: 10px;
-  /* 기존에 margin이 있거나, padding이 있을 경우 제거/조절 */
-  margin: 20px;     /* 상하좌우 여백을 없앰 */
-  padding: 0;    /* 내부 여백 제거 */
+  margin: 20px;
+  padding: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: border 0.15s, box-shadow 0.15s; 
+  
+  /* 호버 시 테두리 추가 */
+  &:hover {
+    border-color: #BFD7EE; 
+    border-width: 3.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
 `;
-
 
 const InnerBox = styled.div`
   background-color: #F6F2F2;
   width: 87%;
   height: 45%;
   border: 0.5px solid;
-  border-color:#EBE5E5;
+  border-color: #EBE5E5;
   border-radius: 20px;
   margin-top: 10px;
   padding: 5px;
-  
-  
 `;
 
 const DescriptionContainer = styled.div`
-  align-self: flex-start; /* 왼쪽 정렬 */
-  margin: 10px
-  
-  
+  align-self: flex-start;
+  margin: 10px;
 `;
 
 const TagContainer = styled.div`
-display: flex;
+  display: flex;
 `;
 
 const Tag = styled.div`
-  background-color: #bfd7ee; /* 세미콜론 누락 주의! */
+  background-color: #bfd7ee;
   width: 50px;
   height: 20px;
   border: 0.5px solid;
   border-radius: 15px;
-  color : white;
+  color: white;
   padding: 7px;
-  margin : 5px;
+  margin: 5px;
   text-align: center;
-
 `;
 
 const Circle = styled.div`
-width: 20px;
-height: 20px;
-border-radius: 20px;
-border: 1px solid;
-margin : 5px;
+  width: 40px; /* 원 크기 */
+  height: 40px;
+  border-radius: 50%; /* 원형 */
+  overflow: hidden; /* 이미지가 원 넘지 않게 */
+  margin: 5px;
+`;
 
-
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 크기에 맞게 잘라냄 */
 `;
 
 const Profile = styled.div`
-display: flex;
-align-items: center;    
-gap: 5px;
-margin : 5px;
-margin-left: 1px;
-
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
 `;
+
 const Text = styled.div`
   margin: 5px;
   font-weight: 1000;
-  white-space: nowrap;       /* 텍스트를 한 줄로 유지 */
-  overflow: hidden;          /* 넘치는 텍스트를 숨김 */
-  text-overflow: ellipsis;   /* 넘치는 부분 ... 표시 */
-  width: 180px;              /* 고정 너비 설정 (원하는 값으로 조절) */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 180px;
 `;
-
 
 const Text2 = styled.div`
-margin : 5px;
-color: #6B6565;
+  margin: 5px;
+  color: #6B6565;
 `;
 
-
-
-
-export default function ItemBox({children}) {
-
+export default function ItemBox({ children }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-
     navigate('/client/RequestPost');
-  }
+  };
+
   return (
-    <ItemBoxContainer style={{ cursor: "pointer"  }}onClick={handleClick}> 
+    <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
       <InnerBox />
       <DescriptionContainer>
         <TagContainer>
-      <Tag>청바지</Tag><Tag>청바지</Tag>
-      </TagContainer>
-      <Text>청바지 무릎부분 센스있게 작성가능하신분 모십니다</Text>
-      <Profile>
-        <Circle />홍길동
-      </Profile>
-      <Text2>희망금액:10,000 원</Text2>
-      <Text2>희망기한:2주</Text2>
+          <Tag>청바지</Tag>
+          <Tag>청바지</Tag>
+        </TagContainer>
+        <Text>청바지 무릎부분 센스있게 작성가능하신분 모십니다</Text>
+        <Profile>
+          <Circle>
+            <ProfileImage src={designerImage} alt="디자이너 프로필" />
+          </Circle>
+          홍길동
+        </Profile>
+        <Text2>희망금액: 10,000 원</Text2>
+        <Text2>희망기한: 2주</Text2>
       </DescriptionContainer>
     </ItemBoxContainer>
   );
