@@ -1,0 +1,26 @@
+/* DesignerContractManagePage.css */
+.page-wrapper {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 240px;
+    min-width: 200px;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 24px;
+    background-color: #fff; /* 흰색 배경 */
+    border-radius: 10px; /* 둥근 모서리 */
+    margin: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  }
+  
+  .page-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #799fc4;
+  }
+  
