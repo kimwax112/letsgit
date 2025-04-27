@@ -1,7 +1,8 @@
 import ContractLayout from "../../layouts/ContractLayout";
-import SendMessageList from "./SendMessageList.jsx";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
 
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import MessageHeader from "./SendMessageUi/Message/MessageHeader.jsx";
+import Message from './SendMessageUi/Message/Message';
 export default function ContractSendMessagePage() {
   const { state } = useLocation();
   const contract = state?.contract;
@@ -9,9 +10,9 @@ export default function ContractSendMessagePage() {
   return (
     <div>
       <ContractLayout>
-        <SendMessageList contract={contract}> 
-
-          </SendMessageList>
+      <MessageHeader/>
+      <Message contract={contract} /> 
+        
  
       </ContractLayout>
 
