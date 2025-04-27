@@ -139,7 +139,7 @@ function ChatMain() {
     setModalOpen2,
     
     
-  } = useChat([]);
+  } = useChat(chatData);
 
   const selectedUserRequests = filteredChats.find((chat) => chat.name === selectedUser)?.requests || [];
 
