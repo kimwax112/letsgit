@@ -65,11 +65,11 @@ const Header = styled.div`
 const RequiredLabel = styled.label`
   font-size: 20px;
   font-weight: bold;
-  width: 150px; /* 레이블 너비 고정 */
-  flex-shrink: 0; /* 레이블이 줄어들지 않도록 */
-  white-space: nowrap; 
+  width: 150px;
+  flex-shrink: 0;
+  white-space: nowrap;
   &::after {
-    content: ${props => (props.required ? '"*"' : '""')};
+    content: ${(props) => (props.required ? '"*"' : '""')};
     color: red;
     margin-left: 4px;
   }
@@ -84,8 +84,8 @@ const Content = styled.div`
   gap: 20px;
 
   & > *:nth-child(2) {
-    width: 500px; 
-    flex-shrink: 0; /* 입력 요소가 줄어들지 않도록 */
+    width: 500px;
+    flex-shrink: 0;
   }
 `;
 
@@ -97,11 +97,10 @@ const Detail = styled.div`
   gap: 10px;
 
   & > h2 {
-    font-size: 24px; /* h2 텍스트 크기 증가 */
+    font-size: 24px;
     font-weight: bold;
   }
-  `;
-
+`;
 
 const TagList = styled.div`
   display: flex;
@@ -111,12 +110,12 @@ const TagList = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  width: 100%; /* 전체 너비 */
+  justify-content: flex-end;
+  width: 100%;
   margin-top: 10px;
   margin-bottom: 70px;
-  gap: 20px; /* 버튼들 간의 간격 */
-  align-items: center; /* 세로 정렬 */
+  gap: 20px;
+  align-items: center;
 `;
 
 const CustomUpload = styled(ImageUploader)`
@@ -138,11 +137,30 @@ const UploadContainer = styled.div`
 
 export default function RequestWriting() {
   const [enteredTags, setEnteredTags] = useState([]);
-  const options = ["옵션 1", "옵션 2", "옵션 3"];
-  const options2 = ["옵션 1", "옵션 2", "옵션 3"];
+  const options = ["2025-05-01", "2025-06-01", "2025-07-01"];
+  const options2 = ["미니멀", "캐주얼", "포멀"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [MyDesignModal, setIsModal] = useState(false);
-  const [files, setFiles] = useState({}); // 개별 파일 저장
+  const [files, setFiles] = useState({});
+  const [title, setTitle] = useState("");
+  const [categoryTags, setCategoryTags] = useState([]);
+  const [style, setStyle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [description, setDescription] = useState("");
+
+  // 데이터 디버깅 로그
+  const handleOpenModal = () => {
+    console.log("Data before opening modal:", {
+      title,
+      categoryTags,
+      style,
+      amount,
+      deadline,
+      description,
+    });
+    setIsModalOpen(true);
+  };
 
   return (
     <Container>
@@ -155,30 +173,55 @@ export default function RequestWriting() {
 
           <Content>
             <RequiredLabel required>글제목</RequiredLabel>
-            <TextInputUIManager maxLength={20} placeholder="예시) 디자인 사이 " />
+            <TextInputUIManager
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="예시) 디자인 사이"
+            />
           </Content>
 
           <Content>
             <RequiredLabel required>카테고리</RequiredLabel>
             <TagManager
-              placeholder="카테고리 "
-              onTagsUpdate={(tags) => setEnteredTags(tags)}
+              placeholder="카테고리"
+              onTagsUpdate={(tags) => {
+                console.log("Category tags updated:", tags);
+                setCategoryTags(tags);
+              }}
             />
           </Content>
 
           <Content>
             <RequiredLabel required>원하는 스타일</RequiredLabel>
-            <DropDown options={options2} defaultSelected="선택하세요" />
+            <DropDown
+              options={options2}
+              defaultSelected={style || "선택하세요"}
+              onChange={(value) => {
+                console.log("Style selected:", value);
+                setStyle(value);
+              }}
+            />
           </Content>
 
           <Content>
             <RequiredLabel required>원하는 금액</RequiredLabel>
-            <TextInputUIManager maxLength={20} placeholder="₩ 가격" />
+            <TextInputUIManager
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="₩ 가격"
+            />
           </Content>
 
           <Content>
             <RequiredLabel required>희망 마감기한</RequiredLabel>
-            <DropDown options={options} defaultSelected="선택하세요" />
+            <DropDown
+              options={options}
+              defaultSelected={deadline || "선택하세요"}
+              onChange={(value) => {
+                console.log("Deadline selected:", value);
+                setDeadline(value);
+              }}
+            />
           </Content>
 
           <Content>
@@ -203,9 +246,13 @@ export default function RequestWriting() {
             </TagList>
           </Detail>
 
-          <MyEditor />
+          <MyEditor
+            onSendMessage={(text) => {
+              console.log("Description updated:", text);
+              setDescription(text);
+            }}
+          />
 
-          {/* 이미지 업로드 3개 */}
           <UploadContainer>
             <CustomUpload id="upload1" files={files} setFiles={setFiles} />
             <CustomUpload id="upload2" files={files} setFiles={setFiles} />
@@ -214,13 +261,27 @@ export default function RequestWriting() {
         </DetailAndUploadWrapper>
 
         <Footer>
-          <NextButtonUI onClick={() => setIsModalOpen(true)}>의뢰 등록</NextButtonUI>
+          <NextButtonUI onClick={handleOpenModal}>의뢰 등록</NextButtonUI>
           <NextButtonUI to="/client/Request">취소</NextButtonUI>
-          <NextButtonUI onClick={() => alert('임시 저장되었습니다!')}>임시 저장</NextButtonUI>
+          <NextButtonUI onClick={() => alert("임시 저장되었습니다!")}>
+            임시 저장
+          </NextButtonUI>
         </Footer>
       </Wrapper>
 
-      {isModalOpen && <CustomRequestPopup onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <CustomRequestPopup
+          onClose={() => setIsModalOpen(false)}
+          data={{
+            title,
+            categoryTags,
+            style,
+            amount,
+            deadline,
+            description,
+          }}
+        />
+      )}
       {MyDesignModal && <Modal onClose={() => setIsModal(false)} />}
     </Container>
   );
