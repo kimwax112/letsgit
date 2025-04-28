@@ -1,9 +1,7 @@
-// TagManager.jsx
 import React, { useReducer, useState } from "react";
 import { TextInputUI, Tag } from "../../components";
 import styled from "styled-components";
 
-// 태그 추가/삭제를 위한 Reducer 함수
 const tagReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TAG":
@@ -25,17 +23,14 @@ const TagListContainer = styled.div`
 `;
 
 const TagManager = ({ placeholder = "태그 입력", onTagsUpdate }) => {
-  // 태그 목록 관리 (내부 state)
   const [tags, dispatch] = useReducer(tagReducer, []);
-  // 입력 필드 상태
   const [tagInput, setTagInput] = useState("");
-  // 한글 입력 상태 (IME)
   const [isComposing, setIsComposing] = useState(false);
 
-  // 태그 추가 시 부모에 업데이트된 태그 배열 전달
   const handleAddTag = (trimmed) => {
     const updatedTags = [...tags, trimmed];
     dispatch({ type: "ADD_TAG", payload: trimmed });
+    console.log("Tags updated (add):", updatedTags); // 디버깅 로그
     if (onTagsUpdate) onTagsUpdate(updatedTags);
   };
 
@@ -69,6 +64,7 @@ const TagManager = ({ placeholder = "태그 입력", onTagsUpdate }) => {
   const handleRemoveTag = (tagToRemove) => {
     const updatedTags = tags.filter((tag) => tag !== tagToRemove);
     dispatch({ type: "REMOVE_TAG", payload: tagToRemove });
+    console.log("Tags updated (remove):", updatedTags); // 디버깅 로그
     if (onTagsUpdate) onTagsUpdate(updatedTags);
   };
 

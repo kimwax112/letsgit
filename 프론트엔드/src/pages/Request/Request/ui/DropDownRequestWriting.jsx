@@ -4,7 +4,7 @@ import styled from "styled-components";
 const DropdownContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 500px; /* 부모 컴포넌트와 일치 */
+  width: 500px;
   border: 1px solid #ccc;
   padding: 5px;
   border-radius: 10px;
@@ -20,8 +20,8 @@ const DropdownButton = styled.button`
   background: white;
   text-align: left;
   cursor: pointer;
-  color: #000; /* 텍스트 색상 명시 */
-  overflow: visible; /* 텍스트 잘림 방지 */
+  color: #000;
+  overflow: visible;
 `;
 
 const DropdownList = styled.ul`
@@ -36,7 +36,7 @@ const DropdownList = styled.ul`
   border: 1px solid #ccc;
   border-top: none;
   border-radius: 0 0 5px 5px;
-  display: ${(props) => (props.$isOpen ? "block" : "none")}; /* Transient Prop 사용 */
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
   max-height: 200px;
   overflow-y: auto;
 `;
@@ -49,14 +49,16 @@ const DropdownItem = styled.li`
   }
 `;
 
-export default function DropDown({ options, defaultSelected = "선택하세요" }) {
+export default function DropDown({ options, defaultSelected = "선택하세요", onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(defaultSelected);
 
   const handleSelect = (option) => {
-    console.log("Selected option:", option);
     setSelected(option);
     setIsOpen(false);
+    if (onChange) {
+      onChange(option); // 부모 컴포넌트에 선택된 값 전달
+    }
   };
 
   return (
