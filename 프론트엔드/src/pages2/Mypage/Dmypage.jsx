@@ -15,7 +15,7 @@ const Left = styled.div`
   width: 400px; /* 고정 너비 */
   background-color: #f4f4f4; /* 예시 배경색 */
   transition: width 0.3s ease-in-out; /* 부드러운 전환 */
-
+  
 `;
 
 // 콘텐츠 영역 (남은 공간 채움)

@@ -31,11 +31,12 @@ const Title = styled.p`
 `;
 
 const Bar = styled.div`
-  width: 68%;
+  width: 300px;
   background-color: white;
   min-height: 80vh;
   margin: 0; /* 기본 마진 제거 */
   padding: 0;
+  
 
   @media (max-width: 768px) {
     width: 100%; /* 작은 화면에서 너비 조정 */
@@ -46,7 +47,7 @@ const Bar = styled.div`
 const ConText = styled.p`
   font-size: 20px;
   font-weight: bold;
-  margin: 0; /* 기본 마진 제거 */
+  margin: 20px; /* 기본 마진 제거 */
   padding: 10px;
 
   @media (max-width: 768px) {
