@@ -152,7 +152,7 @@ export default function Welcome() {
 
             <input  value={id} className="loginput" type="text" placeholder="   아이디 입력" onChange={(e) => setId(e.target.value)}></input>
             <br/>
-            <input value={passwd} className="loginput" type="text" placeholder="   비밀번호 입력" onChange={(e) => setPasswd(e.target.value)}></input>
+            <input value={passwd} className="loginput" type="password" placeholder="   비밀번호 입력" onChange={(e) => setPasswd(e.target.value)}></input>
             <br/>
             <div style={{ display: 'flex', alignItems: 'center', textAlign:'left', marginTop: '10px'}}>
               <input type="checkbox"></input> <p style={{ marginLeft: '8px', fontSize: '15px'}}>아이디 저장</p>

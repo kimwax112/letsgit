@@ -14,6 +14,10 @@ export default function SignIn2() {
       const [isUsernameValid, setIsUsernameValid] = useState(false);
       const [usernameCheckMessage, setUsernameCheckMessage] = useState("");
       const [email, setEmail] = useState("");
+      const [fullName, setFullName] = useState("");          
+      const [phone, setPhone] = useState("");                
+      const [birthdate, setBirthdate] = useState("");        
+      const [gender, setGender] = useState("");              
     
     
     
@@ -81,7 +85,7 @@ export default function SignIn2() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password, email}),
+          body: JSON.stringify({ username, password, email, fullName, phone, birthdate,gender}),
         });
     
         const data = await response.json();
@@ -198,6 +202,52 @@ export default function SignIn2() {
               onChange={(e) => setEmail(e.target.value)}
             />
                         </div>
+            <div className="inputinfo">
+                <label>이름</label><br/>
+                <input
+                  type="text"
+                  className="input-text"
+                  value={fullName}
+                  onChange={e => setFullName(e.target.value)}
+                />
+            </div>
+
+            <div className="inputinfo">
+                <label>전화번호</label><br/>
+                <input
+                  type="tel"
+                  className="input-text"
+                  placeholder="010-1234-5678"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                />
+              </div>
+
+              <div className="inputinfo">
+                <label>생년월일</label><br/>
+                <input
+                  type="date"
+                  className="input-text"
+                  value={birthdate}
+                  onChange={e => setBirthdate(e.target.value)}
+                />
+              </div>
+
+              <div className="inputinfo">
+                <label>성별</label><br/>
+                <select
+                  className="input-text"
+                  value={gender}
+                  onChange={e => setGender(e.target.value)}
+                >
+                  <option value="">선택하세요</option>
+                  <option value="male">남성</option>
+                  <option value="female">여성</option>
+                  <option value="other">기타</option>
+                </select>
+              </div>
+
+            
 
             {message && <p style={{ color: "red" }}>{message}</p>}
             <button type="submit" className="mpbutton">
