@@ -1,0 +1,24 @@
+.RecommDes{
+    width: 362px;
+    height: 350px;
+    background-color: #9ABCD4;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.RecommDes2{
+    width: 362px;
+    height: 110px;
+    background-color: #fff;
+    margin-top: 230px;
+}
+
+.RecommDes-title{
+    margin-left: 20px;
+    margin-top: 50px; 
+    font-weight: 800;
+}
+
+.RecommDes-text{
+    margin-left: 20px;
+    margin-top: 20px;
+}

@@ -1,0 +1,126 @@
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from 'react-router-dom'
+import designerImage from '../../../../assets/desiner.png';
+
+// 아이템 박스 컨테이너
+const ItemBoxContainer = styled.div`
+  width: 350px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;      
+  background-color: white;
+  min-height: 300px;
+  border: 0.5px solid #A5A0A0; 
+  border-radius: 20px;
+  gap: 10px;
+  margin: 20px;
+  padding: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: border 0.15s, box-shadow 0.15s; 
+  
+  /* 호버 시 테두리 추가 */
+  &:hover {
+    border-color: #BFD7EE; 
+    border-width: 3.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const InnerBox = styled.div`
+  background-color: #F6F2F2;
+  width: 87%;
+  height: 45%;
+  border: 0.5px solid;
+  border-color: #EBE5E5;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 5px;
+`;
+
+const DescriptionContainer = styled.div`
+  align-self: flex-start;
+  margin: 10px;
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+`;
+
+const Tag = styled.div`
+  background-color: #bfd7ee;
+  width: 50px;
+  height: 20px;
+  border: 0.5px solid;
+  border-radius: 15px;
+  color: white;
+  padding: 7px;
+  margin: 5px;
+  text-align: center;
+`;
+
+const Circle = styled.div`
+  width: 40px; /* 원 크기 */
+  height: 40px;
+  border-radius: 50%; /* 원형 */
+  overflow: hidden; /* 이미지가 원 넘지 않게 */
+  margin: 5px;
+`;
+
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 크기에 맞게 잘라냄 */
+`;
+
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+`;
+
+const Text = styled.div`
+  margin: 5px;
+  font-weight: 1000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 180px;
+`;
+
+const Text2 = styled.div`
+  margin: 5px;
+  color: #6B6565;
+`;
+
+export default function ItemBox({ children }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/client/RequestPost');
+  };
+
+  return (
+    <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
+      <InnerBox />
+      <DescriptionContainer>
+        <TagContainer>
+          <Tag>청바지</Tag>
+          <Tag>청바지</Tag>
+        </TagContainer>
+        <Text>청바지 무릎부분 센스있게 작성가능하신분 모십니다</Text>
+        <Profile>
+          <Circle>
+            <ProfileImage src={designerImage} alt="디자이너 프로필" />
+          </Circle>
+          홍길동
+        </Profile>
+        <Text2>희망금액: 10,000 원</Text2>
+        <Text2>희망기한: 2주</Text2>
+      </DescriptionContainer>
+    </ItemBoxContainer>
+  );
+}
