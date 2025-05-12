@@ -3,14 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import Message from '../../contract/SendMessageUi/Message/Message';
 
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedRoomId, setselectedRoomId] = useState('');
-
+  const [selectedRoomId, setSelectedRoomId] = useState('');
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isComposing, setIsComposing] = useState(false);
@@ -22,19 +22,18 @@ export function useChat(initialChats) {
   const [confirmAction, setConfirmAction] = useState(null);
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
-   const [username, setUsername] = useState("");
-    const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
-      const [client, setClient] = useState(null);
-      const [connected, setConnected] = useState(false);
-  const [roomCreator, setselectedRoomCreator] = useState('');
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState(null);// ✅ 방 정보 상태 추가
+  const [client, setClient] = useState(null);
+  const [connected, setConnected] = useState(false);
+  const [roomCreator, setRoomCreator] = useState('');
   const bottomRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-//////////////////////////////////
+  //////////////////////////////////
 
 
-  
-  // URL 파라미터에서 신고 완료 여부 확인
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const reportedName = urlParams.get("reported");
@@ -57,13 +56,13 @@ export function useChat(initialChats) {
   useEffect(() => {
     setFilteredChats(initialChats);
   }, [initialChats]);
-  // 메시지 스크롤 처리
+// 메시지 스크롤 처리
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-  /*const checkSessionAndLoadMessages = async () => {
+   /*const checkSessionAndLoadMessages = async () => {
     try {
       const res = await fetch("http://localhost:8081/api/checkSession", {
         credentials: "include",
@@ -92,6 +91,7 @@ export function useChat(initialChats) {
       navigate("/");
     }
   };*/
+
   const connectWebSocket = (roomId, username) => {
     const socket = new SockJS("http://localhost:8081/ws");
     const stompClient = new Client({
@@ -99,13 +99,16 @@ export function useChat(initialChats) {
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("WebSocket 연결 성공");
-  
+
         // ✅ 채팅방 구독
         stompClient.subscribe(`/topic/chat/${roomId}`, (msg) => {
           const receivedMessage = JSON.parse(msg.body);
-          setMessages((prev) => [...prev, receivedMessage]);
+          setMessages((prev) => {
+            const prevMessages = Array.isArray(prev) ? prev : []; // 항상 배열로 초기화
+            return [...prevMessages, receivedMessage];
+          });
         });
-  
+
         // ✅ 입장 메시지 전송
         stompClient.publish({
           destination: `/app/chat.addUser/${roomId}`,
@@ -115,7 +118,6 @@ export function useChat(initialChats) {
             type: "JOIN",
           }),
         });
-  
         setConnected(true);
       },
       onDisconnect: () => {
@@ -123,43 +125,47 @@ export function useChat(initialChats) {
         setConnected(false);
       },
     });
-  
+
     stompClient.activate();
     setClient(stompClient);
-  
+
     // 나중에 컴포넌트 언마운트 시 연결 해제하도록 리턴
     return stompClient;
   };
-  
+
   const checkSessionAndLoadMessages = async (roomId) => {
     try {
-      console.log("매개변수룸아이디", roomId);
+      console.log("매개변수 roomId:", roomId);
       const res = await fetch("http://localhost:8081/api/checkSession", {
         credentials: "include",
       });
       const data = await res.json();
       if (data.username) {
         setUsername(data.username);
-        setselectedRoomId(roomId);
-        console.log("셀렉티드의 값은?", roomId);
-  
+        setSelectedRoomId(roomId);
+        console.log("설정된 selectedRoomId:", roomId);
+
         const msgRes = await fetch(`http://localhost:8081/api/messages/${roomId}`);
         const msgs = await msgRes.json();
-        setMessages(msgs);
-  
+        setMessages((prev) => { // 이전 메시지 저장
+          const prevMessages = Array.isArray(prev) ? prev : []; // 항상 배열로 초기화
+          const loadedMessages = Array.isArray(msgs) ? msgs : []; // 항상 배열로 초기화
+          return [...prevMessages, ...loadedMessages]; // 이전 메시지와 불러온 메시지 합치기
+        });
+
         const roomRes = await fetch(`http://localhost:8081/api/rooms/${roomId}`);
         const roomData = await roomRes.json();
         setRoom(roomData);
-  
+
         console.log("룸데이터터:", roomData);
-  
+
         // ✅ WebSocket 연결
         const stomp = connectWebSocket(roomId, data.username);
         if (client) {
           client.deactivate();
         }
         setClient(stomp);
-  
+
       } else {
         alert("로그인이 필요합니다.");
         navigate("/");
@@ -170,8 +176,7 @@ export function useChat(initialChats) {
       navigate("/");
     }
   };
-  
-  
+
   const handleSearch = (term) => {
     if (term) {
       const filtered = initialChats.filter((chat) =>
@@ -182,13 +187,12 @@ export function useChat(initialChats) {
       setFilteredChats(initialChats);
     }
   };
-  
+
   const handleRecentSearchClick = (search) => {
     handleSearch(search);
     setRecentSearches((prev) => [search, ...prev.filter((item) => item !== search)].slice(0, 5));
   };
-
-  /*const handleProfileClick = (chat) => {
+    /*const handleProfileClick = (chat) => {
     setSelectedUser(chat.name); // 기존 코드
     console.log("챗아이디디 : ", chat.id);
 
@@ -198,18 +202,15 @@ export function useChat(initialChats) {
     console.log("셀렉티드룸 : ", selectedRoomId);
     checkSessionAndLoadMessages();
   };*/
+
   const handleProfileClick = (chat) => {
     setSelectedUser(chat.name);
-    setselectedRoomId(chat.id);
-    setselectedRoomCreator(chat.creator);
+    setSelectedRoomId(chat.id);
+    setRoomCreator(chat.creator);
     setIsModalOpen(true);
-    
-    console.log("챗아이디디 : ", chat.id);
-  
+    console.log("챗 아이디:", chat.id);
     checkSessionAndLoadMessages(chat.id); // 여기서 chat.id를 직접 넘겨줌
   };
-  
-  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -224,8 +225,7 @@ export function useChat(initialChats) {
   const handleCloseSideMenu = () => {
     setIsSideMenuOpen(false);
   };
-
-  /*const handleKeyDown = (e) => {
+    /*const handleKeyDown = (e) => {
     if (e.key === "Enter" && !isComposing && e.target.value.trim()) {
       setMessages([
         ...messages,
@@ -254,8 +254,6 @@ export function useChat(initialChats) {
       e.target.value = ""; // input 초기화
     }
   };*/
-
- 
 
   const handleCompositionStart = () => {
     setIsComposing(true);
@@ -312,6 +310,54 @@ export function useChat(initialChats) {
     setIsConfirmOpen(false);
   };
 
+  const addRequestMessage = (userName, messageText) => {
+    const component = (
+      <Message
+        contract={{
+          title: messageText,
+          designer: "요청 메시지",
+          date: new Date().toISOString().split("T")[0],
+        }}
+      />
+    );
+    const newMessage = {
+      component,
+      type: "sent",
+      time: new Date().toLocaleTimeString(),
+    };
+
+    // 명시적으로 이전 방 ID를 20으로 설정
+    const targetRoomId = "20"; // 명시적으로 ID 설정
+    setSelectedRoomId(targetRoomId); // ID를 20으로 설정
+    setSelectedUser(userName);
+    setIsModalOpen(true);
+    setMessages((prev) => {
+      const prevMessages = Array.isArray(prev) ? prev : []; // 항상 배열로 초기화
+      return [...prevMessages, newMessage]; // 이전 메시지와 새로운 메시지 합치기
+    });
+
+      //   setMessages((prev) => [
+  //     ...prev,
+  //     {
+  //       component,
+  //       type: "sent",
+  //       time: new Date().toLocaleTimeString(),
+  //     },
+  //   ]);
+  // };
+
+    if (client && connected) {
+      client.publish({
+        destination: `/app/chat.sendMessage/${targetRoomId}`,
+        body: JSON.stringify({
+          sender: userName,
+          content: messageText,
+          type: "CHAT",
+        }),
+      });
+    }
+  };
+
   return {
     filteredChats,
     selectedRoomId, 
@@ -321,6 +367,7 @@ export function useChat(initialChats) {
     selectedUser,// 현재 선택된 채팅 상대의 이름 초기값 : null 관련함수 :handleProfileClick, handleCloseModal
     isSideMenuOpen,// 사이드 메뉴의 열림/닫힘 상태 초기값 : false 관렴함수 : handleMenuClick, handleCloseSideMenu, handleCloseModal
     messages,// 채팅방 내 메시지 목록 초기값 : [] 관련함수 : handleKeyDown
+    setMessages, // 메시지 목록을 업데이트하는 함수 초기값 : [] 관련함수 : handleKeyDown
     isComposing, //사용자가 입력중인지 여부 (IME입력처리용)용도 입력중 Enter키로 메시지가 중복 전송되지 않도록 방지  초기값 : false 관련함수 : handleCompositionStart, handleCompositionEnd, handleKeyDown
     modalOpen,//'디자인 불러오기' 모달ㅇ
     modalOpen2,
@@ -348,5 +395,6 @@ export function useChat(initialChats) {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
+    addRequestMessage,
   };
 }

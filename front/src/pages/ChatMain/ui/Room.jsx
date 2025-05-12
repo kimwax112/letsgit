@@ -170,7 +170,8 @@ const SuccessPopupMessage = styled.p`
 function Room({
   roomId,
   selectedUser,
-  //messages,
+  messages,
+  setMessages,
   isSideMenuOpen,
   onClose,
   onMenuClick,
@@ -190,13 +191,13 @@ function Room({
   popupMessage,
   bottomRef,
 }) {
-  const navigate = useNavigate();
-  const [client, setClient] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [connected, setConnected] = useState(false);
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
+  // const navigate = useNavigate();
+  // const [client, setClient] = useState(null);
+  
+  // const [message, setMessage] = useState("");
+  // const [connected, setConnected] = useState(false);
+  // const [username, setUsername] = useState("");
+  // const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
   
 //////////
 
@@ -240,8 +241,8 @@ useEffect(() => {
         onReport={onReport}
       />
       <RoomFooter>
-        <ChatPage roomId={roomId}/>
-      </RoomFooter>
+        <ChatPage roomId={roomId} messages={messages} setMessages={setMessages} />
+        </RoomFooter>
       {isConfirmOpen && (
         <ConfirmModal>
           <ConfirmMessage>{confirmMessage}</ConfirmMessage>

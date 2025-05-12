@@ -8,8 +8,10 @@ import Room from "./ui/Room";
 import ItemBox from "./ui/ItemBox";
 import ModalContent from "../Request/ui/ModalContent";
 import { useChat } from "./ui/useChat";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+
 const CustomModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -75,30 +77,26 @@ const ButtonWrapper = styled.div`
   { name: "Annette Black", message: "I dont eat, so I dont have a favorite food.", time: "2023-11-09" },
 ];*/
 
-
-
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
-useEffect(() => {
-  axios
-    .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
-    .then((res) => {
-      // 채팅방 목록 데이터 가공해서 setChatData
-      const newData = res.data.map((room) => ({
-        id: room.id, // roomID 추가
-        creator : room.creator,
-        name: room.name,
-        message: room.creator,
-        time: room.createdAt ?? "시간 정보 없음",
-        
-      }));
-      
-      setChatData(newData);
-      console.log("채팅방 리스트:", newData);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
+      .then((res) => {
+        // 채팅방 목록 데이터 가공해서 setChatData
+        const newData = res.data.map((room) => ({
+          id: room.id,
+          creator: room.creator,
+          name: room.name,
+          message: room.creator,
+          time: room.createdAt ?? "시간 정보 없음",
+        }));
+        setChatData(newData);
+        console.log("채팅방 리스트:", newData);
+      })
+      .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
+  }, []);
 
-    })
-    .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
-}, []);
   const {
     filteredChats,
     recentSearches,
@@ -115,6 +113,7 @@ useEffect(() => {
     isSuccessPopupOpen,
     popupMessage,
     bottomRef,
+    setMessages,
     handleSearch,
     handleRecentSearchClick,
     handleProfileClick,
@@ -133,8 +132,28 @@ useEffect(() => {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
+    addRequestMessage,
   } = useChat(chatData);
-  
+
+  const location = useLocation();
+  const hasAddedRequestMessage = useRef(false); // useRef를 사용하여 DetailList 상태를 저장합니다.
+  useEffect(() => {
+    const text = location.state?.messageText;
+    const targetUser = location.state?.targetUser || "ㅁㄴㅇㄹ";
+    if (text && !hasAddedRequestMessage.current) {
+      addRequestMessage(targetUser, text);
+      hasAddedRequestMessage.current = true;
+
+      // 명시적으로 ID 20으로 설정된 방으로 이동
+      const targetRoom = filteredChats.find((chat) => chat.id === "20");
+      if (targetRoom) {
+        handleProfileClick(targetRoom); // ID 20으로 이동
+      } else {
+        console.error("ID 20인 방을 찾을 수 없습니다.");
+      }
+    }
+  }, [location.state?.messageText, addRequestMessage, filteredChats, handleProfileClick]);
+
   return (
     <>
       <StyleSheet />
@@ -152,52 +171,54 @@ useEffect(() => {
           onRecentSearchClick={handleRecentSearchClick}
         />
         {filteredChats.length > 0 ? (
-  filteredChats.map((chat, index) => {
-    console.log("chat 내용 확인:", chat);
-    return (
-      <ChatProfile
-        key={index}
-        chat={chat}
-        id={chat.id}
-        creator={chat.creator}
-        name={chat.name}
-        message={chat.message}
-        time={chat.time}
-        onClick={() => handleProfileClick(chat)}
-        extraContent={
-          currentView === "report" ? (
-            <ButtonWrapper>
-              <BlockButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBlockClick(chat.name);
-                }}
-              >
-                차단
-              </BlockButton>
-              <ReportButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReportClick(chat.name);
-                }}
-              >
-                신고
-              </ReportButton>
-            </ButtonWrapper>
-          ) : null
-        }
-      />
-    );
-  })
-) : (
-  <p>검색 결과가 없습니다.</p>
-)}
+          filteredChats.map((chat, index) => {
+            console.log("chat 내용 확인:", chat);
+            return (
+              <ChatProfile
+                key={index}
+                chat={chat}
+                id={chat.id}
+                creator={chat.creator}
+                name={chat.name}
+                message={chat.message}
+                time={chat.time}
+                onClick={() => handleProfileClick(chat)}
+                extraContent={
+                  currentView === "report" ? (
+                    <ButtonWrapper>
+                      <BlockButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleBlockClick(chat.name);
+                        }}
+                      >
+                        차단
+                      </BlockButton>
+                      <ReportButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReportClick(chat.name);
+                        }}
+                      >
+                       'styles.css'
+                        신고
+                      </ReportButton>
+                    </ButtonWrapper>
+                  ) : null
+                }
+              />
+            );
+          })
+        ) : (
+          <p>검색 결과가 없습니다.</p>
+        )}
 
         {isModalOpen && (
           <Room
             roomId={selectedRoomId}
             selectedUser={selectedUser}
             messages={messages}
+            setMessages={setMessages}
             isSideMenuOpen={isSideMenuOpen}
             onClose={handleCloseModal}
             onMenuClick={handleMenuClick}
@@ -245,7 +266,7 @@ useEffect(() => {
 //아래께 채팅창 말풍선 CSS임 #dcf8c6
 const styles = `
   .message.sent {
-    background-color:#dcf8c6;
+    background-color: #dcf8c6;
     border-radius: 10px;
     padding: 8px 12px;
     margin: 5px;

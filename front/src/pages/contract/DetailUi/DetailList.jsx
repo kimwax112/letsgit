@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // 추가: ChatGPT
 import './DetailList.css';
 import MyEditor from '../../Request/Request/ui/MyEditor';
 import jeans from '../../../assets/jeans.png';
@@ -25,6 +26,9 @@ function formatDate(dateString) {
 
 export default function DetailList({ contractId, contract, onToggleStar }) {
   const [contractData, setContractData] = useState(contract);
+  const navigate = useNavigate(); // 추가: ChatGPT
+  const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
+  const [isEditorSent, setIsEditorSent] = useState(false);  // 추가: 작성완료 눌렀는지 추적
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -82,6 +86,21 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   if (!contractData || !contractData.contractTitle) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
+  const handleSendRequest = () => {
+    // 작성완료를 누르지 않았거나 내용이 비어 있으면 동작하지 않음
+    if (!isEditorSent || editorContent.trim() === "") {
+      alert("메시지를 작성하고 작성완료를 눌러주세요.");
+      return;
+    }
+    navigate('/client/ChatMain', { state: { messageText: editorContent } });
+  };
+      // MyEditor에서 작성완료 눌렀을 때만 호출됩니다.
+      const handleEditorSend = (content) => {
+        if (content.trim() !== "") {
+          setEditorContent(content);
+          setIsEditorSent(true);
+        }
+      };
 
   return (
     <div className="Detailcontainer">
@@ -128,11 +147,11 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
       </div>
 
       <div className="Editor">
-        <MyEditor>디자이너에게 요청보내기</MyEditor>
+      <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
       </div>
 
       <div className="Detailfooter">
-        <div className="DetailButton"><NextButtonUI>요청보내기</NextButtonUI></div>
+      <div className="DetailButton"><NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI></div>
         <Button>작성취소</Button>
         <Button>저장</Button>
       </div>
