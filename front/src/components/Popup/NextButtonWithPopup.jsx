@@ -33,7 +33,9 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
         >
           <ul>
             {selectedItems.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li key={index}>
+                {item.category} - {item.item}
+              </li>
             ))}
           </ul>
         </Popup>
