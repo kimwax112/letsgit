@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import ChatPage from "./ChatRoom";
-
+import Messagealarm from "./Messagealarm"; // Messagealarm 컴포넌트 임포트
 
 
 
@@ -27,6 +27,23 @@ const RoomHeader = styled.div`
   display: flex;
   background-color: #799fc4;
 `;
+const AlarmContainer = styled.div`
+  background-color: #ffeb3b; /* 노란색 배경으로 알림 스타일 */
+  border-radius: 8px;
+  padding: 10px;
+  margin: 5px 10px;
+  cursor: pointer; /* 클릭 가능 표시 */
+  transition: all 0.3s ease; /* 부드러운 애니메이션 */
+  height: 50px;
+`
+const AlarmContent = styled.div`
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #fff9c4; /* 더 밝은 노란색으로 상세 내용 표시 */
+  border-radius: 5px;
+  border: 1px solid #f0e68c;
+`;
+
 
 const RoomFooter = styled.div`
   width: 100%;
@@ -200,11 +217,44 @@ function Room({
   // const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
   
 //////////
-
+const location = useLocation();
+  const { roomId: paramRoomId } = useParams();
+  const [alarmMessage, setAlarmMessage] = useState(null); // Messagealarm 전용 상태
+  const hasAddedAlarm = useRef(false); // Messagealarm 중복 추가 방지
+  const [isAlarmOpen, setIsAlarmOpen] = useState(false); // 열림/닫힘 상태 관리
 useEffect(() => {
   console.log("URL에서 받은 roomId??:", roomId);
 }, [roomId]);
 ///////////////
+
+
+
+useEffect(() => {
+  console.log("URL에서 받은 roomId:", roomId || paramRoomId);
+  const messageText = location.state?.messageText;
+  if (messageText && !hasAddedAlarm.current) {
+    setAlarmMessage({
+      contract: {
+        title: messageText,
+        designer: "요청 메시지",
+        date: new Date().toISOString().split("T")[0],
+      },
+    });
+    hasAddedAlarm.current = true; // 중복 방지 플래그 설정
+  }
+}, [roomId, paramRoomId, location.state?.messageText]);
+
+// messages에는 WebSocket 메시지만 관리
+useEffect(() => {
+  const messageText = location.state?.messageText;
+  if (messageText && messages.length === 0) {
+    // 초기 메시지 로드 방지
+  }
+}, [roomId, paramRoomId, location.state?.messageText, messages.length, setMessages]);
+
+const handleAlarmToggle = () => {
+  setIsAlarmOpen((prev) => !prev); // 상태 토글
+};
 
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
@@ -218,16 +268,26 @@ useEffect(() => {
             </MenuButton>
           </Title1>
         </Title>
+      
       </RoomHeader>
+
+      {alarmMessage && (
+        <AlarmContainer onClick={handleAlarmToggle}>
+          <div>
+            {isAlarmOpen ? "알림 닫기" : "알림 보기"} {/* 열림/닫힘 텍스트 */}
+          </div>
+          {isAlarmOpen && (
+            <AlarmContent> 
+              <Messagealarm contract={alarmMessage.contract} />
+            </AlarmContent>
+          )}
+        </AlarmContainer>
+      )}
+
+      {/* 이곳에 Messagealarm 컴포넌트가 동적으로 생성되야함 */}
       <Content>
         <ChatContainer>
-          {/*{messages.map((msg, index) => (
-            <div key={index} className="message sent">
-              {msg.text}
-              <span className="time">{msg.time}</span>
-            </div>
-          ))}*/}
-            
+    
           <div ref={bottomRef} />
         </ChatContainer>
       </Content>

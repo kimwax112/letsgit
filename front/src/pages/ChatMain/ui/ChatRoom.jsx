@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useNavigate } from "react-router-dom";
-
+import "./ChatRoom.css"; // CSS 파일을 import합니다.
 const ChatPage = ({ roomId, messages, setMessages }) => {
   const [client, setClient] = useState(null);
   const [message, setMessage] = useState("");
