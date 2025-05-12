@@ -18,30 +18,36 @@ const RoomContainer = styled(Modal)`
   flex-direction: column;
   position: relative;
   width: 600px;
-  height: 700px;
+  height: 800px;
   overflow-x : hidden;
+  
 `;
 
 const RoomHeader = styled.div`
   width: 100%;
   display: flex;
   background-color: #799fc4;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(0, 0, 0); 
 `;
 const AlarmContainer = styled.div`
-  background-color: #ffeb3b; /* 노란색 배경으로 알림 스타일 */
+  background-color:rgb(255, 255, 255); /* 노란색 배경으로 알림 스타일 */
   border-radius: 8px;
-  padding: 10px;
-  margin: 5px 10px;
+  border: 2px solid rgb(242, 242, 242); 
+  margin: 10px;
   cursor: pointer; /* 클릭 가능 표시 */
   transition: all 0.3s ease; /* 부드러운 애니메이션 */
-  height: 50px;
+  text-align: center;
+  font-size : 20px;
+  font-weight: bold;
+  
 `
 const AlarmContent = styled.div`
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #fff9c4; /* 더 밝은 노란색으로 상세 내용 표시 */
+  background-color:rgb(243, 242, 240); /* 더 밝은 노란색으로 상세 내용 표시 */
   border-radius: 5px;
   border: 1px solid #f0e68c;
+  
 `;
 
 
@@ -262,31 +268,33 @@ const handleAlarmToggle = () => {
         <BackButton onClick={onClose} />
         <Title>
           <Title1>
-            <h2>{selectedUser}</h2>
+            <h2 style={{color : 'white'}}>{selectedUser}</h2>
             <MenuButton onClick={onMenuClick}>
-              <h2>☰</h2>
+              <h2 style={{color : 'white'}}>☰</h2>
             </MenuButton>
           </Title1>
         </Title>
       
       </RoomHeader>
-
       {alarmMessage && (
         <AlarmContainer onClick={handleAlarmToggle}>
           <div>
-            {isAlarmOpen ? "알림 닫기" : "알림 보기"} {/* 열림/닫힘 텍스트 */}
+            {isAlarmOpen ? "(의뢰인명) 님이 수정요청을 하셨습니다." : "(의뢰인명) 님이 수정요청을 하셨습니다."} {/* 열림/닫힘 텍스트 */}
           </div>
           {isAlarmOpen && (
             <AlarmContent> 
               <Messagealarm contract={alarmMessage.contract} />
+              <button  onClick>수락</button><button onClick>취소</button>
             </AlarmContent>
           )}
         </AlarmContainer>
       )}
+     
 
       {/* 이곳에 Messagealarm 컴포넌트가 동적으로 생성되야함 */}
       <Content>
         <ChatContainer>
+          
     
           <div ref={bottomRef} />
         </ChatContainer>
@@ -301,6 +309,7 @@ const handleAlarmToggle = () => {
         onReport={onReport}
       />
       <RoomFooter>
+        
         <ChatPage roomId={roomId} messages={messages} setMessages={setMessages} />
         </RoomFooter>
       {isConfirmOpen && (

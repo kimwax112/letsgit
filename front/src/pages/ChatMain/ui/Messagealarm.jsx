@@ -7,8 +7,9 @@ export default function Messagealarm() {
 
   return (
     <div>
-      <h3>알림 컴포넌트</h3>
-      <p>받은 메시지: {messageText}</p>
+      <h6>주문자명</h6>
+      <p>주문상품명 : {messageText}</p>
+      <p>총주문금액 / 희망기한</p>
     </div>
   );
 }
