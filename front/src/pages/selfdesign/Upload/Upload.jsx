@@ -39,7 +39,7 @@ export default function Upload({ onUploadSuccess }) {
     try {
       await uploadImage(file);
       alert("이미지 업로드 성공!");
-      {/*onUploadSuccess();*/} // 업로드 후 목록 갱신 이거 실패하는것같아서 주석처리함요
+      // onUploadSuccess(); // 업로드 후 목록 갱신 이거 실패하는것같아서 주석처리함요
     } catch (error) {
       alert("이미지 업로드 실패!");
     }
@@ -141,7 +141,7 @@ export default function Upload({ onUploadSuccess }) {
                     filteredFiles.map((file) => (
                       <div key={file.id} className="FileBoxWrapper">
                         <div className="FileBox">
-                          <div className="fileNameWrapper" style={{ width: "150px" }}> {/* fileNameWrapper의 폭을 줄임 */}
+                          <div className="fileNameWrapper" style={{ width: "9.375rem" }}>  {/* fileNameWrapper의 폭을 줄임 */}
                             <p className="fileName">{file.fileName}</p>
                           </div>
                           <div className="ButtonGroup">
@@ -154,7 +154,7 @@ export default function Upload({ onUploadSuccess }) {
                               onChange={(event) => {handleUpload(event, file.id); handleFileChange(event);}}
                             />
                             <button className="uploadButton" onClick={() => {document.getElementById(`upload-${file.id}`).click(); setSelectedImage(file.image);}}>
-                              선택
+                              파일 선택
                             </button>
                             <div>
                               {/*<input type="file" onChange={handleFileChange} />*/}
