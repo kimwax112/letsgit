@@ -1,36 +1,36 @@
-import React from 'react'
-import "./BrandDesignSearchcss.css"
+// BrandDesignSearch.jsx
+import React from "react";
+import "./BrandDesignSearchcss.css";
 
-export default function BrandDesignSearch() {
+export default function BrandDesignSearch({ title, description, tags, source, thumbnail }) {
   return (
-    <div>
-        <div className="DesignPreview">
-            <div className='LeftPart'>
-                <div className="Lefttop">
-                      
-                </div>
-                <div className="Leftbottom">
-                        <div className="Leftbottomcontents">
-                            <span className='Profile'></span>
-                            기본샘플
-                        </div>
-                        <div className="Leftbottomcontents" style={{color:"#6B6565"}}>by vogue.co.kr </div>
-                </div>
-            </div>
-            <div className='RightPart'>
-                <span style={{fontWeight:'bold'}}>지금 세련된 사람들이 입는 이 코트의 매력!</span>
-                <br/>
-                어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-                어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-                어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-                어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-                어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-                <div className="Rightbottom">
-                    <div className="Rightbottomcontents">#상의</div>
-                    <div className="Rightbottomcontents">#하의</div>
-                </div>
-            </div>
+    <div className="DesignPreview">
+      <div className="LeftPart">
+        <div className="Lefttop">
+          {thumbnail && <img src={thumbnail} alt="디자인 썸네일" className="ThumbnailImage" />}
         </div>
+        <div className="Leftbottom">
+          <div className="Leftbottomcontents">
+            <span className="Profile" />
+            기본샘플
+          </div>
+          <div className="Leftbottomcontents" style={{ color: "#6B6565" }}>
+            by {source}
+          </div>
+        </div>
+      </div>
+      <div className="RightPart">
+        <span style={{ fontWeight: "bold", fontSize: "1.25rem" }}>{title}</span>
+        <br />
+        <div style={{ color: "#444444", fontSize: "1.0rem"  }}>
+            {description}
+        </div>
+        <div className="Rightbottom">
+          {tags.map((tag, idx) => (
+            <div className="Rightbottomcontents" key={idx}>{tag}</div>
+          ))}
+        </div>
+      </div>
     </div>
-  )
+  );
 }

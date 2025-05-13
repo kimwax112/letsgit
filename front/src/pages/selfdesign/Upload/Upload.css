@@ -1,249 +1,212 @@
-/* Container */
+/* 기본 설정 */
+body {
+  font-family: 'Pretendard', sans-serif;
+  background-color: #f4f5f7;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 전체 컨테이너 */
 .Container {
-  max-width: 800px;
-  width: 90%;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
-/* InputWrapper */
-.InputWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5%;
-  width: 100%;
-  max-width: 800px;
-  margin: 20px auto;
-}
-
-/* Title */
+/* 제목 영역 */
 .Title {
-  width: 90%;
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
+  margin-bottom: 20px;
 }
 
 .title {
-  position: relative;
-  left: -15%;
-  font-size: 24px;
-  line-height: 5;
+  font-size: 28px;
+  font-weight: bold;
+  color: #799fc4; 
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.InputWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .title2 {
+  font-size: 16px;
   white-space: nowrap;
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
 }
 
 .title2input {
-  flex-grow: 1;
-  min-width: 200px;
-  padding: 10px;
-  border: 2px solid gray;
-  border-radius: 5px;
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s;
 }
 
-/* 기본 스타일 초기화 */
+.title2input:focus {
+  border-color: #799fc4;
+  outline: none;
+}
 
-
-/* UploadpageWrapper : 반응형 정렬 */
+/* 업로드 페이지 */
 .UploadpageWrapper {
-  width: 100%;
-  max-width: 1200px;
-  margin: 10px auto;
-  padding: 30px;
-  border: 2px solid gray;
+  padding: 20px;
+  border: 2px dashed #ccc;
   border-radius: 8px;
-  text-align: center;
-  height: auto;
+  background-color: #fafafa;
 }
 
-
-
-
-/* FileContainer : 고정 높이(예: 60vh)와 스크롤바 적용 */
 .FileContainer {
-  width: 100%;
-  max-width: 100%;
-  height: 60vh;  /* 화면 높이의 60%로 지정 (필요에 따라 조절) */
-  margin-top: 10px;
-  position: relative;
+  max-height: 60vh;
   overflow-y: auto;
-  overflow-x: hidden;
-  min-height: 1000px;
+  padding-right: 10px;
 }
 
-/* FileUpload 제목 */
 .FileUpload h3 {
-  margin: 0;
-  padding-left: 10px;
-  text-align: left;
-  align-self: flex-start;
+  margin-bottom: 10px;
+  color: #444;
   font-size: 18px;
+  font-weight: 500;
 }
 
-/* FileBoxWrapper */
 .FileBoxWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
 }
 
-/* FileBox : 내부 요소가 부모 너비에 맞춰 정렬 */
 .FileBox {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  
+  flex-wrap: wrap;
   gap: 10px;
-  padding-bottom: 20px;
-  flex-wrap: nowrap;
 }
 
-/* 파일명 Wrapper */
 .fileNameWrapper {
   flex-grow: 1;
-  min-width: 400px;
-  padding: 5px;
-  background-color: #f8f8f8;
-  border-radius: 5px;
-  border: 2px solid gray;
-  text-align: left;
+  min-width: 200px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 14px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* 버튼 그룹 */
+.FileBox img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+/* 버튼 스타일 */
 .ButtonGroup {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.closebtn{
-  margin-top: 15px;
-}
-
-.deleteButton, .uploadButton {
-  padding: 5px 10px;
-  border: none;
-  background-color: #799FC4;
+.ButtonGroup button {
+  background-color: #799fc4;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  line-height: 20px;
-}
-
-/* ButtonContainer : 오른쪽 하단에 위치 */
-.ButtonContainer {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.resetButton, .saveButton {
-  padding: 8px 16px;
   border: none;
-  background-color: #799FC4;
-  color: white;
+  padding: 8px 14px;
+  font-size: 13px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* createFile : 하단 중앙에 위치 */
-.createFile {
-  margin-top: 20px;
-  text-align: center;
+.ButtonGroup button:hover {
+  background-color: #4a6171;
 }
 
-.createButton {
-  padding: 8px 16px;
-  border: none;
-  background-color: #6a8caf;
-  color: white;
-  border-radius: 5px;
-  width: 200px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
+.deleteButton {
+  background-color: #e57373;
 }
 
-/* Edit 컴포넌트 관련 스타일 */
-.EditWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5px;
+.deleteButton:hover {
+  background-color: #d32f2f;
 }
 
-.EditText {
-  cursor: pointer;
-  color: rgb(21, 21, 21);
-  font-weight: bold;
+.canvasButton {
+  background-color: #9dbbd5;
 }
 
-.EditBox {
-  width: 700px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border-radius: 5px;
+.canvasButton:hover {
+  background-color: #799fc4;
 }
 
-.previewImage {
-  width: 100%;
-  max-height: 200px;
-  object-fit: contain;
-  border: 1px solid #ddd;
-  margin-top: 10px;
-}
-
-.closeButton {
-  margin-top: 10px;
-  padding: 5px 10px;
-  border: none;
-  background-color: #799FC4;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* 그림판 팝업 스타일*/
+/* 그림판 팝업 */
 .canvasPopup {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: rgba(0,0,0,0.6);
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .canvasPopupContent {
-  background-color: white;
+  background: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 80%; /* 팝업의 크기 조정 */
-  max-width: 1050px;
-  max-height: 800px;
-  text-align: center;
+  border-radius: 12px;
   position: relative;
+  width: 90%;
+  max-width: 800px;
+}
+
+.closebtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ccc;
+  border: none;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.closebtn:hover {
+  background: #999;
+}
+
+
+.previewImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.EditBox {
+    width: 100%;
+    max-width: 500px; /* 원하는 크기로 조정 가능 */
+    max-height: 80vh;
+    overflow: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
 }
