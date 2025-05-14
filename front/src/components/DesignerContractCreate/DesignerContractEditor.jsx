@@ -1,30 +1,8 @@
-import React, { useRef, useEffect } from "react";
-
+import React, { useRef } from "react";
 import styles from "./DesignerContractCreate.module.css";
 
-const DesignerContractEditor = ({ contractData, setContractData }) => {
+const DesignerContractEditor = () => {
   const editorRef = useRef(null);
-
-  useEffect(() => {
-    const handleInput = () => {
-      const htmlContent = editorRef.current.innerHTML;
-      setContractData(prev => ({
-        ...prev,
-        contractContent: htmlContent,
-      }));
-    };
-
-    const editor = editorRef.current;
-    if (editor) {
-      editor.addEventListener("input", handleInput);
-    }
-
-    return () => {
-      if (editor) {
-        editor.removeEventListener("input", handleInput);
-      }
-    };
-  }, [setContractData]);
 
   // 텍스트 스타일 변경 함수
   const handleStyleChange = (style) => {

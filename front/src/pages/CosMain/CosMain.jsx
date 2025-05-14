@@ -24,7 +24,8 @@ export default function CosMain() {
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const x = e.pageX;
-    const walk = (startX - x) * 1.5; // 드래그 속도 조절
+    const SCROLL_SPEED = 1.5;
+    const walk = (startX - x) * SCROLL_SPEED;
     scrollContainerRef.current.scrollLeft = scrollLeft + walk;
   };
 
@@ -44,46 +45,34 @@ export default function CosMain() {
             <p>현재 진행중인 계약을 살펴보세요.</p>
             <div className="Content-Sell2">
               <OngoingContract />
-              <OngoingContract />  
-              <OngoingContract />
             </div>
           </div>
 
           <div className="DesignerPortfolio-Sell">
             <h2><span style={{ color: '#9ABCD4' }}>추천</span> 디자이너 포트폴리오</h2>
             <p>현재 인기 많은 디자이너들의 포트폴리오를 감상하시고 새로운 디자인을 만들어 보세요!</p>
-            <div className="DesignerPortfolio-Sell2" style={{ marginTop:'40px', marginBottom: "30px" }}>
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-            </div>
-            <div className="DesignerPortfolio-Sell2">
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-              <DesignerPortfolio />
-            </div>
+                <div className="DesignerPortfolio-Sell2">
+                  <DesignerPortfolio />
+                </div>
           </div>
 
           <div className="RecommendedDesign-Sell">
             <div className="RecommendedDesign-Sell2">
-                <h2 className="Recomm-title" style={{fontSize:'40px'}}>
+                <h2 className="Recomm-title" style={{ fontSize: '2.5rem' }}>
                     추천 <br />디자인
                 </h2>
-                <p className="Recomm-text" style={{lineHeight: '1.2'}}>
-                    디자인사이에서 추천하는<br />
-                    디자이너들을 확인하세요!<br />
-                    여러 디자인과 함께 멋진<br />
-                    결과물들을 만들어 행복한<br />
-                    추억을 얻으세요
-                    디자인사이에서 추천하는
-                    디자이너들을 확인하세요!<br />
-                    여러 디자인과 함께 멋진<br />
-                    결과물들을 만들어 행복한<br />
-                    추억을 얻으세요
+                <p className="Recomm-text" style={{ lineHeight: '1.2' }}>
+                  디자인사이에서 추천하는<br />
+                  디자이너들을 확인하세요!<br />
+                  여러 디자인과 함께 멋진<br />
+                  결과물들을 만들어 행복한<br />
+                  추억을 얻으세요
+                  디자인사이에서 추천하는
+                  디자이너들을 확인하세요!<br />
                 </p>
-                <button style={{marginTop:'10px', background:'#9ABCD4', width:'100px', height:'45px'}}>자세히 보기</button>
+                <button className="detail-button">
+                  자세히 보기
+                </button>
             </div>
 
             {/* 드래그 가능한 가로 스크롤 영역 */}
@@ -96,11 +85,6 @@ export default function CosMain() {
               onMouseLeave={handleMouseUp}
             >
               <div className="RecommendedDesign-Sell3-Container">
-                <RecommendedDesign />
-                <RecommendedDesign />
-                <RecommendedDesign />
-                <RecommendedDesign />
-                <RecommendedDesign />
                 <RecommendedDesign />
               </div>
             </div>

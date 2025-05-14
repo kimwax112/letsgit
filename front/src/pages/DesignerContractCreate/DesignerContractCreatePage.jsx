@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MdDescription } from "react-icons/md";
 import DesignerContractInputSection from "../../components/DesignerContractCreate/DesignerContractInputSection";
 import DesignerContractEditor from "../../components/DesignerContractCreate/DesignerContractEditor";
