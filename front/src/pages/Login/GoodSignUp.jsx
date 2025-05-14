@@ -8,32 +8,38 @@ export default function GoodSignUp() {
     
 const [signupEmail, setSignupEmail] = useState("");
   const [signupName, setSignupName] = useState("");
-  const [username, setUserName] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("signupEmail") || "이메일 없음";
-    const storedName = localStorage.getItem("signupName") || "이름 없음";
-    const storedUsername = localStorage.getItem("signupUsername");
-    const storedPass = localStorage.getItem("signupPass");
+    const storedName = localStorage.getItem("name") || "이름 없음";
+    const storedId = localStorage.getItem("id");
+    const storedPass = localStorage.getItem("password");
 
+    setPassword(storedPass);
     setSignupEmail(storedEmail);
     setSignupName(storedName);
-    setUserName(storedUsername);
+    setId(storedId);
     setPassword(storedPass);
-    // ✅ 사용자 이름을 localStorage에 저장 (헤더에서 사용)
-    localStorage.setItem("name", storedName);
 
-    
+    // ✅ 사용 후 세션에서 삭제
+    // sessionStorage.removeItem("signupEmail");
+    // sessionStorage.removeItem("signupName");
+    // sessionStorage.removeItem("signupId");
+    // sessionStorage.removeItem("signupPass");
   }, []);
+
+  
   const redirecToRight = async (e) => {
-    console.log("로그인 시도: ", username, password);
+    console.log("로그인 시도: ", id, password);
+  
     try {
         const response = await fetch(`http://localhost:8081/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({username, password}),
+            body: JSON.stringify({id, passwd: password }),
             credentials: "include", // ✅ 세션 쿠키 포함
         });
 
@@ -42,6 +48,9 @@ const [signupEmail, setSignupEmail] = useState("");
         }
 
         const data = await response.json(); // JSON 데이터 가져오기
+        console.log("로그인 응답 데이터:", data.id);
+        localStorage.setItem("id", data.id);       
+        localStorage.setItem("usertype", data.usertype);
 
         // ✅ usertype에 따라 페이지 이동
         if (data.usertype === "designer") {

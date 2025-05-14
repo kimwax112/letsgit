@@ -40,7 +40,6 @@ export default function CosMain() {
         <div className="ContentsWrapper">
           <MainBanner />
           <ClientProcessStep/>
-
           <div className="Content-Sell">
             <h2>진행중인 <span style={{ color: '#9ABCD4' }}>계약</span></h2>
             <p>현재 진행중인 계약을 살펴보세요.</p>

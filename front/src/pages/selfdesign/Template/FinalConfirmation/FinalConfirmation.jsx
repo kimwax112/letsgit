@@ -4,15 +4,16 @@ import { Sidebar, BreadCrumb } from "../../../../components";
 const getColorName = (hex) => {
   const colorMap = {
     "#ff0000": "빨강",
-  "#00ff00": "초록",
-  "#0000ff": "파랑",
-  "#ff9900": "주황",
-  "#0099ff": "하늘",
+    "#00ff00": "초록",
+    "#0000ff": "파랑",
+    "#ff9900": "주황",
+    "#0099ff": "하늘",
   };
   return colorMap[hex] || "알 수 없음";
 };
 
 const FinalConfirmation = () => {
+  // const [id, setId] = useState("");
   const [selectedClothing, setSelectedClothing] = useState("");
   const [selectedFabric, setSelectedFabric] = useState([]);
   const [selectedColors, setSelectedColors] = useState({});
@@ -20,16 +21,16 @@ const FinalConfirmation = () => {
   const [designName, setDesignName] = useState("");
   const [loading, setLoading] = useState(false); // 중복 방지
 
-  const id = "test33"//sessionStorage.getItem("id") || localStorage.getItem("id"); 하드코딩 고쳐
+  const id = sessionStorage.getItem("id") || localStorage.getItem("id");
   console.log("🛠 가져온 id:", id);
-  
+
   useEffect(() => {
     console.log("🔍 useEffect 실행됨, id:", id);
     if (!id) {
       alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
       window.location.href = "/login";
       return;
-    }
+    } 
 
     const storedClothing = sessionStorage.getItem("selectedClothing") || localStorage.getItem("selectedClothing");
     const storedFabric = sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
@@ -90,6 +91,7 @@ const handleSubmit = async () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(finalData),
+      credentials: "include",
     });
 
     if (response.ok) {

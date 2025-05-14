@@ -12,6 +12,8 @@ const ContractList = ({ mode = "전체" }) => {
 
   const navigate = useNavigate();
 
+  const id = localStorage.getItem("id");
+
   useEffect(() => {
     // 처음 컴포넌트 뜰 때 계약 데이터 가져오기
     axios.get("http://localhost:8081/client/contract")
@@ -23,16 +25,19 @@ const ContractList = ({ mode = "전체" }) => {
           starredStatus: false, // 별표 기본 false
           title: contract.contractTitle, // 계약 제목 바로 넣기
           clientId: contract.clientId,  // client_id → clientId
+          designerId: contract.designerId,
           status: contract.status,
           date: formatDate(contract.dueDate),
           preview: contract.preview || "",  // preview가 없을 경우 빈 문자열로 기본 설정
         }));
-        setContracts(mappedContracts);
+
+        const filteredByLoginId = mappedContracts.filter(c => c.clientId === id);
+        setContracts(filteredByLoginId);
       })
       .catch((error) => {
         console.error("계약 데이터 가져오기 실패:", error);
       });
-  }, []);
+  }, [id]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";

@@ -14,7 +14,7 @@ const MyDesignsRequests = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
   const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
   // 로그인한 사용자 정보 (예: 세션에서 가져온 username)
-  const [username, setUsername] = useState(null);  // 로그인한 사용자 정보
+  const [id, setId] = useState(null);  // 로그인한 사용자 정보
   const [designs, setDesigns] = useState([]);//셀렉티드디자인아이템템
 
   const [userFiles, setUserFiles] = useState([]);  // 사용자 이미지 파일 상태
@@ -304,8 +304,8 @@ const MyDesignsRequests = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data.username);
-          setUsername(data.username);  // 로그인한 사용자 이름을 상태에 저장
+          console.log(data.id);
+          setId(data.id); 
         } else {
           console.error('로그인된 사용자가 없습니다.');
         }
@@ -405,13 +405,13 @@ const MyDesignsRequests = () => {
     setOrderItems((prev) => prev.filter((item) => item.id !== id));
   };
   const fetchUserFiles = async () => {
-    if (!username) {
+    if (!id) {
       console.error('사용자 정보가 없습니다.');
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/files/userimg?username=${username}`);
+      const response = await fetch(`http://localhost:8081/files/userimg?id=${id}`);
       
       if (response.ok) {
         const data = await response.json();
@@ -425,7 +425,7 @@ const MyDesignsRequests = () => {
   };
   
   const fetchMyDesigns = () => {
-    const id = "test33"; // ✅ localStorage에서 ID 가져오기 하드코딩고쳐
+    const userId = localStorage.getItem("id");
     console.log("📦 현재 localStorage ID:", id);
   
     if (!id) return;

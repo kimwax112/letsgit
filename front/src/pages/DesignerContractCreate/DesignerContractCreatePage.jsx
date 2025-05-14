@@ -9,17 +9,33 @@ import { useNavigate } from "react-router-dom";
 const DesignerContractCreatePage = () => {
   const [contractData, setContractData] = useState({
     requestId: "",
-    designerId: "designer001", // 로그인 없이도 이 값으로 설정하여 진행
+    designerId: "", // 로그인한 사용자의 ID로 설정
     startDate: "",
     endDate: "",
     requestFee: "",
-    status: "진행중", // 기본 진행중
+    status: "미수신", // 기본 진행중
     clientId: "",
     contractTitle: "",
     starredStatus: 0,
     contractContent: "", // 에디터 작성 내용
   });
-   const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
+  // 로컬스토리지에서 사용자 ID 가져오기
+  useEffect(() => {
+    const id = localStorage.getItem("id"); // 로컬 스토리지에서 userId 가져오기
+    if (id) {
+      setContractData(prevData => ({
+        ...prevData,
+        designerId: id, // designerId를 로그인한 사용자 ID로 설정
+      }));
+    } else {
+      alert("로그인이 필요합니다.");
+      navigate("/login"); // 로그인 페이지로 리디렉션
+    }
+  }, [navigate]);
+
   // 작성 완료 버튼 클릭 시
   const handleSubmit = async () => {
     if (!contractData.contractTitle || !contractData.startDate || !contractData.requestFee) {
@@ -61,11 +77,11 @@ const DesignerContractCreatePage = () => {
     if (window.confirm("정말 작성 취소하시겠습니까?")) {
       setContractData({
         requestId: "",
-        designerId: "designer001", // 로그인하지 않아도 임시값 사용
+        designerId: "", // 취소 시에도 designerId 초기화
         startDate: "",
         endDate: "",
         requestFee: "",
-        status: "진행중",
+        status: "미수신",
         clientId: "",
         contractTitle: "",
         starredStatus: 0,
