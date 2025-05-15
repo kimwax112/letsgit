@@ -228,6 +228,8 @@ const location = useLocation();
   const [alarmMessage, setAlarmMessage] = useState(null); // Messagealarm 전용 상태
   const hasAddedAlarm = useRef(false); // Messagealarm 중복 추가 방지
   const [isAlarmOpen, setIsAlarmOpen] = useState(false); // 열림/닫힘 상태 관리
+  const [isVisible, setIsVisible] = useState(false);
+
 useEffect(() => {
   console.log("URL에서 받은 roomId??:", roomId);
 }, [roomId]);
@@ -262,6 +264,23 @@ const handleAlarmToggle = () => {
   setIsAlarmOpen((prev) => !prev); // 상태 토글
 };
 
+const handleAccept = () => {
+  setMessages((prev) =>
+    prev.map((msg) =>
+      msg.type === "REQUEST" ? { ...msg, visible: true } : msg
+    )
+  );
+};
+
+const handleCancel = () => {
+  setMessages((prev) =>
+    prev.map((msg) =>
+      msg.type === "REQUEST" ? { ...msg, visible: false } : msg
+    )
+  );
+};
+
+
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
       <RoomHeader>
@@ -277,18 +296,21 @@ const handleAlarmToggle = () => {
       
       </RoomHeader>
       {alarmMessage && (
-        <AlarmContainer onClick={handleAlarmToggle}>
-          <div>
-            {isAlarmOpen ? "(의뢰인명) 님이 수정요청을 하셨습니다." : "(의뢰인명) 님이 수정요청을 하셨습니다."} {/* 열림/닫힘 텍스트 */}
-          </div>
-          {isAlarmOpen && (
-            <AlarmContent> 
-              <Messagealarm contract={alarmMessage.contract} />
-              <button  onClick>수락</button><button onClick>취소</button>
-            </AlarmContent>
-          )}
-        </AlarmContainer>
-      )}
+  <AlarmContainer onClick={handleAlarmToggle}>
+    <div>
+      {isAlarmOpen
+        ? "(의뢰인명) 님이 수정요청을 하셨습니다."
+        : "(의뢰인명) 님이 수정요청을 하셨습니다."}
+    </div>
+    {isAlarmOpen && (
+      <AlarmContent>
+        <Messagealarm contract={alarmMessage.contract} visible={true} />
+        <button onClick={handleAccept}>수락</button>
+        <button onClick={handleCancel}>취소</button>
+      </AlarmContent>
+    )}
+  </AlarmContainer>
+)}
      
 
       {/* 이곳에 Messagealarm 컴포넌트가 동적으로 생성되야함 */}

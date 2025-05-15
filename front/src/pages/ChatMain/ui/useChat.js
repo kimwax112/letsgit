@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import Message from '../../contract/SendMessageUi/Message/Message';
+import Messagealarm from "./Messagealarm"; 
 
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
@@ -311,29 +311,38 @@ export function useChat(initialChats) {
   };
 
   const addRequestMessage = (userName, messageText) => {
+    const targetRoomId = "20"; // 명시적으로 ID 20으로 설정
     const component = (
-      <Message
+      <Messagealarm
         contract={{
           title: messageText,
           designer: "요청 메시지",
           date: new Date().toISOString().split("T")[0],
         }}
+        visible={false} // 초기 숨김
+        setVisible={(isVisible) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === `request-${Date.now()}` ? { ...msg, visible: isVisible } : msg
+            )
+          );
+        }}
       />
     );
     const newMessage = {
+      id: `request-${Date.now()}`, // 고유 식별자
       component,
-      type: "sent",
+      type: "REQUEST",
       time: new Date().toLocaleTimeString(),
+      visible: false, // 초기 상태
     };
 
-    // 명시적으로 이전 방 ID를 20으로 설정
-    const targetRoomId = "20"; // 명시적으로 ID 설정
-    setSelectedRoomId(targetRoomId); // ID를 20으로 설정
+    setSelectedRoomId(targetRoomId);
     setSelectedUser(userName);
     setIsModalOpen(true);
     setMessages((prev) => {
-      const prevMessages = Array.isArray(prev) ? prev : []; // 항상 배열로 초기화
-      return [...prevMessages, newMessage]; // 이전 메시지와 새로운 메시지 합치기
+      const prevMessages = Array.isArray(prev) ? prev : [];
+      return [...prevMessages, newMessage];
     });
 
       //   setMessages((prev) => [

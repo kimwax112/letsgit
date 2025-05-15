@@ -234,6 +234,8 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
     }
   };
 
+  
+
   return (
     <div>
       <style>
@@ -263,7 +265,8 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
               if (msg.type === "IMAGE") {
                 return (
                   <p key={index}>
-                    <strong>{msg.sender}:</strong><br />
+                    <strong>{msg.sender}:</strong>
+                    <br />
                     <img
                       src={`http://localhost:8081/files/view/${msg.fileName}`}
                       alt="업로드 이미지"
@@ -274,7 +277,8 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
               } else if (msg.type === "FILE") {
                 return (
                   <p key={index}>
-                    <strong>{msg.sender}:</strong><br />
+                    <strong>{msg.sender}:</strong>
+                    <br />
                     <a
                       href={`http://localhost:8081/files/view/${msg.fileName}`}
                       target="_blank"
@@ -288,7 +292,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
               } else if (msg.component) {
                 return (
                   <div key={index} style={{ margin: "5px 0" }}>
-                    {msg.component}
+                    {React.cloneElement(msg.component, { visible: msg.visible })}
                     {msg.time && (
                       <span style={{ fontSize: 12, color: "#666", marginLeft: 8 }}>
                         {msg.time}

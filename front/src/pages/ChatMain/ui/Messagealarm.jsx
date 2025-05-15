@@ -1,15 +1,22 @@
 import React from "react";
-import { useLocation } from "react-router-dom"; // react-router-dom에서 useLocation 임포트
+import styled from "styled-components";
 
-export default function Messagealarm() {
-  const location = useLocation();
-  const messageText = location.state?.messageText || "기본메시지"; // messageText 변수로 사용
+const AlarmWrapper = styled.div`
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  display: ${(props) => (props.visible ? "block" : "none")};
+`;
+
+export default function Messagealarm({ contract, visible, setVisible }) {
+  const { title, designer, date } = contract || {};
 
   return (
-    <div>
-      <h6>주문자명</h6>
-      <p>주문상품명 : {messageText}</p>
-      <p>총주문금액 / 희망기한</p>
-    </div>
+    <AlarmWrapper visible={visible}>
+      <h6>{designer}</h6>
+      <p>Message: {title || "기본메시지"}</p>
+      <p>Date: {date || "날짜 없음"}</p>
+    </AlarmWrapper>
   );
 }

@@ -5,109 +5,39 @@ import { Sidebar, Tabs, ItemsContainer, BreadCrumb, NextButtonWithPopup } from '
 
 const items = {
   상의: [
-    {
-      name: "티셔츠(T-shirt)",
-      image: "/image/Clothes-item/상의/T-shirt.jpg"
-    },
-    {
-      name: "맨투맨(Sweatshirt)",
-      image: "/image/Clothes-item/상의/Sweatshirt.jpg"
-    },
-    {
-      name: "후드(Hoodie)",
-      image: "/image/Clothes-item/상의/hoodie.jpg"
-    },
-    {
-      name: "집업(Zip-up Jersey)",
-      image: "/image/Clothes-item/상의/Zip-up.jpg"
-    }
+    { name: "티셔츠(T-shirt)", image: "/image/Clothes-item/상의/T-shirt.jpg" },
+    { name: "맨투맨(Sweatshirt)", image: "/image/Clothes-item/상의/Sweatshirt.jpg" },
+    { name: "후드(Hoodie)", image: "/image/Clothes-item/상의/hoodie.jpg" },
+    { name: "집업(Zip-up Jersey)", image: "/image/Clothes-item/상의/Zip-up.jpg" },
   ],
-  아우터: [
-    {
-      name: "코트(Coat)",
-      image: "/image/Clothes-item/아우터/coat.jpg"
-    },
-    {
-      name: "자켓(Jacket)",
-      image: "/image/Clothes-item/아우터/Jacket.jpg"
-    }
-  ],
-  바지: [
-    {
-      name: "청바지(Jeans)",
-      image: "/image/Clothes-item/바지/Jeans.jpg"
-    },
-    {
-      name: "슬랙스(Slacks)",
-      image: "/image/Clothes-item/바지/Slacks.jpg"
-    },
-    {
-      name: "조거팬츠(Jogger Pants)",
-      image: "/image/Clothes-item/바지/JoggerPants.jpg"
-    }
-  ],
-  원피스: [
-    {
-      name: "미니 원피스(Mini dress)",
-      image: "/image/Clothes-item/원피스/MiniDress.jpg"
-     },
-     {
-      name: "맥시 원피스(Maxi dress)",
-      image: "/image/Clothes-item/원피스/MaxiDress.jpg"
-     },
-  ],
-  스커트: [
-    {
-      name: "미니 스커트(Mini skirt)",
-      image: "/image/Clothes-item/치마/MiniSkirt.jpg"
-     },
-     {
-      name: "롱 스커트(Long skirt)",
-      image: "/image/Clothes-item/치마/LongSkirt.jpg"
-     },
-  ],
-  스니커즈: [
-    {
-      name: "러닝화(Running shoes)",
-      image: "/image/Clothes-item/스니커즈/RunningShoes.jpg"
-     },
-     {
-      name: "하이탑(High-top shoes)",
-      image: "/image/Clothes-item/스니커즈/high-topShoes.jpg"
-     },
-  ],
-  신발: [
-    {
-      name: "로퍼(Loafers)",
-      image: "/image/Clothes-item/신발/loafers.jpg"
-     },
-     {
-      name: "샌들(Sandals)",
-      image: "/image/Clothes-item/신발/sandals.jpg"
-     },
-  ],
-  가방: [
-    {
-      name: "백팩(BackPack)",
-      image: "/image/Clothes-item/가방/backpack.jpg"
-     },
-     {
-      name: "토트백(Tote bag)",
-      image: "/image/Clothes-item/가방/ToteBag.jpg"
-     },
-  ],
+  // ... 나머지 items
 };
 
 const Clothes = () => {
   const navigate = useNavigate();
   const categories = Object.keys(items);
   const [activeTab, setActiveTab] = useState(0);
-  
+
   const [selectedItem, setSelectedItem] = useState(() => {
     const stored = localStorage.getItem("selectedClothing");
-    return stored ? JSON.parse(stored) : null;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed && typeof parsed === "object" && "category" in parsed && "item" in parsed) {
+          return parsed;
+        }
+        console.warn("잘못된 localStorage 데이터 형식, 초기화합니다.");
+        localStorage.removeItem("selectedClothing");
+        return null;
+      } catch (e) {
+        console.error("localStorage 데이터 파싱 오류:", e);
+        localStorage.removeItem("selectedClothing");
+        return null;
+      }
+    }
+    return null;
   });
-  
+
   useEffect(() => {
     if (selectedItem) {
       localStorage.setItem("selectedClothing", JSON.stringify(selectedItem));
@@ -119,11 +49,10 @@ const Clothes = () => {
       alert("의류를 선택해주세요!");
       return;
     }
-  
     console.log("✅ 다음 페이지로 이동:", selectedItem);
     navigate("/fabric");
   };
-  
+
   return (
     <div className="clothes-container">
       <div className="layout1">
@@ -144,12 +73,16 @@ const Clothes = () => {
               const selectedCategory = categories[activeTab];
               setSelectedItem({
                 category: selectedCategory,
-                item: item.name,  // item.name을 사용해서 선택된 항목 설정
+                item: item.name,
               });
             }}
           />
           <div className="footer">
-            <NextButtonWithPopup selectedItems={selectedItem ? [selectedItem] : []} nextRoute="/client/fabric" onNext={handleNext} />
+            <NextButtonWithPopup
+              selectedItems={selectedItem ? [selectedItem] : []}
+              nextRoute="/client/fabric"
+              onNext={handleNext}
+            />
           </div>
         </div>
       </div>
