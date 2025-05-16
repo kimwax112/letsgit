@@ -30,6 +30,7 @@ export function useChat(initialChats) {
   const bottomRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isAccepted, setIsAccepted] = useState(false); // 추가: 수락 상태 관리
   //////////////////////////////////
 
 

@@ -265,14 +265,6 @@ function ChatMain() {
 }
 //아래께 채팅창 말풍선 CSS임 #dcf8c6
 const styles = `
-  .message.sent {
-    background-color: #dcf8c6;
-    border-radius: 10px;
-    padding: 8px 12px;
-    margin: 5px;
-    max-width: 70%;
-    position: relative;
-  }
 
   .message.sent::after {
     content: '';

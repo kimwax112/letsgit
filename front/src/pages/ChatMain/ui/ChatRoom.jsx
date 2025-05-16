@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useNavigate } from "react-router-dom";
-import "./ChatRoom.css"; // CSS 파일을 import합니다.
+import "./ChatRoom.css"; 
 const ChatPage = ({ roomId, messages, setMessages }) => {
   const [client, setClient] = useState(null);
   const [message, setMessage] = useState("");
@@ -264,7 +264,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
             messages.map((msg, index) => {
               if (msg.type === "IMAGE") {
                 return (
-                  <p key={index}>
+                  <p key={index} className="message image"> 
                     <strong>{msg.sender}:</strong>
                     <br />
                     <img
@@ -276,7 +276,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
                 );
               } else if (msg.type === "FILE") {
                 return (
-                  <p key={index}>
+                  <p key={index} className="message file">
                     <strong>{msg.sender}:</strong>
                     <br />
                     <a
@@ -291,7 +291,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
                 );
               } else if (msg.component) {
                 return (
-                  <div key={index} style={{ margin: "5px 0" }}>
+                  <div key={index} className="message sent" style={{ margin: "5px 0" }}>
                     {React.cloneElement(msg.component, { visible: msg.visible })}
                     {msg.time && (
                       <span style={{ fontSize: 12, color: "#666", marginLeft: 8 }}>
@@ -302,7 +302,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
                 );
               } else {
                 return (
-                  <p key={index}>
+                  <p key={index} className="message chat">
                     <strong>{msg.sender}:</strong> {msg.content}
                   </p>
                 );

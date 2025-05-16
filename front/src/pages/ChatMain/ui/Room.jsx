@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components"; // keyframes 추가
 import { Modal } from "../../../utils";
 import SideMenu from "./SideMenu";
 import backArrow from "../../../assets/화살표.png";
@@ -32,21 +32,26 @@ const RoomHeader = styled.div`
   color: rgb(0, 0, 0); 
 `;
 const AlarmContainer = styled.div`
+  width : 500px;
   background-color:rgb(255, 255, 255); /* 노란색 배경으로 알림 스타일 */
   border-radius: 8px;
   border: 2px solid rgb(242, 242, 242); 
-  margin: 10px;
+  margin : 0 auto;
   cursor: pointer; /* 클릭 가능 표시 */
   transition: all 0.3s ease; /* 부드러운 애니메이션 */
   text-align: center;
   font-size : 20px;
   font-weight: bold;
-  
+  justify-content: center;
+  align-items: center;
+ opacity: ${(props) => props.opacity}; /* 동적 opacity 적용 */
+  transform: ${(props) => (props.opacity === 0 ? "translateY(-20px)" : "translateY(0)")};
+
 `
 const AlarmContent = styled.div`
-  background-color:rgb(243, 242, 240); /* 더 밝은 노란색으로 상세 내용 표시 */
-  border-radius: 5px;
-  border: 1px solid #f0e68c;
+  background-color:rgb(243, 242, 240); 
+  
+  
   
 `;
 
@@ -190,6 +195,26 @@ const SuccessPopupMessage = styled.p`
   font-size: 16px;
 `;
 
+const RoomButtonWraepper = styled.div`
+  display: flex;
+
+`
+const RoomAcceptButton = styled.button`
+  all : unset;
+  width: 100%;
+  background-color: white;
+  color : green;
+  border : 1px solid #dcf8c6;
+`
+const RoomCancleButton = styled.button`
+  all : unset;
+  width: 100%;
+  background-color: white;
+  color : red;
+  border : 1px solid #dcf8c6;
+  
+`
+
 function Room({
   roomId,
   selectedUser,
@@ -228,7 +253,10 @@ const location = useLocation();
   const [alarmMessage, setAlarmMessage] = useState(null); // Messagealarm 전용 상태
   const hasAddedAlarm = useRef(false); // Messagealarm 중복 추가 방지
   const [isAlarmOpen, setIsAlarmOpen] = useState(false); // 열림/닫힘 상태 관리
-  const [isVisible, setIsVisible] = useState(false);
+  const [isAlarmVisible, setIsAlarmVisible] = useState(true); // AlarmContainer 표시 상태
+  
+  const [opacity, setOpacity] = useState(1); // opacity 상태 추가
+  const [isAccepted, setIsAccepted] = useState(false); // 수락 상태 추가
 
 useEffect(() => {
   console.log("URL에서 받은 roomId??:", roomId);
@@ -244,7 +272,7 @@ useEffect(() => {
     setAlarmMessage({
       contract: {
         title: messageText,
-        designer: "요청 메시지",
+        designer: "주문자명",
         date: new Date().toISOString().split("T")[0],
       },
     });
@@ -262,6 +290,7 @@ useEffect(() => {
 
 const handleAlarmToggle = () => {
   setIsAlarmOpen((prev) => !prev); // 상태 토글
+  
 };
 
 const handleAccept = () => {
@@ -270,7 +299,22 @@ const handleAccept = () => {
       msg.type === "REQUEST" ? { ...msg, visible: true } : msg
     )
   );
+  setIsAccepted(true); // 수락 상태 업데이트
+  
+  // opacity를 점진적으로 감소시키는 애니메이션
+    let currentOpacity = 1;
+    const interval = setInterval(() => {
+      currentOpacity -= 0.02;
+      setOpacity(currentOpacity);
+
+      if (currentOpacity <= 0) {
+        clearInterval(interval);
+        setIsAlarmVisible(false); // opacity가 0이 되면 AlarmContainer 제거
+      }
+    }, 20);
+  
 };
+
 
 const handleCancel = () => {
   setMessages((prev) =>
@@ -279,6 +323,7 @@ const handleCancel = () => {
     )
   );
 };
+
 
 const getAlarmMessage = () => {
     const sourcePage = location.state?.sourcePage;
@@ -308,15 +353,19 @@ const getAlarmMessage = () => {
       
       </RoomHeader>
      {alarmMessage && (
-        <AlarmContainer onClick={handleAlarmToggle}>
+        <AlarmContainer onClick={handleAlarmToggle}
+        opacity={opacity}
+          > 
           <div>
             {isAlarmOpen ? getAlarmMessage() : getAlarmMessage()}
           </div>
           {isAlarmOpen && (
-            <AlarmContent>
-              <Messagealarm contract={alarmMessage.contract} visible={true} />
-              <button onClick={handleAccept}>수락</button>
-              <button onClick={handleCancel}>취소</button>
+            <AlarmContent isOpen={isAlarmOpen}>
+              <Messagealarm contract={alarmMessage.contract} visible={true} isAccepted={isAccepted} />
+              <RoomButtonWraepper> 
+              <RoomAcceptButton onClick={handleAccept}>수락</RoomAcceptButton>
+              <RoomCancleButton onClick={handleCancel}>취소</RoomCancleButton>
+              </RoomButtonWraepper>
             </AlarmContent>
           )}
         </AlarmContainer>
