@@ -280,6 +280,18 @@ const handleCancel = () => {
   );
 };
 
+const getAlarmMessage = () => {
+    const sourcePage = location.state?.sourcePage;
+    switch (sourcePage) {
+      case "DesignerContractList":
+        return "(디자이너명) 님이 해지요청을 하셨습니다.";
+      case "OtherPage": // 다른 페이지에서 온 경우
+        return "(의뢰인명) 님이 수정요청을 하셨습니다.";
+      default:
+        return "(의뢰인명) 님이 요청을 하셨습니다.";
+    }
+  };
+
 
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
@@ -295,22 +307,20 @@ const handleCancel = () => {
         </Title>
       
       </RoomHeader>
-      {alarmMessage && (
-  <AlarmContainer onClick={handleAlarmToggle}>
-    <div>
-      {isAlarmOpen
-        ? "(의뢰인명) 님이 수정요청을 하셨습니다."
-        : "(의뢰인명) 님이 수정요청을 하셨습니다."}
-    </div>
-    {isAlarmOpen && (
-      <AlarmContent>
-        <Messagealarm contract={alarmMessage.contract} visible={true} />
-        <button onClick={handleAccept}>수락</button>
-        <button onClick={handleCancel}>취소</button>
-      </AlarmContent>
-    )}
-  </AlarmContainer>
-)}
+     {alarmMessage && (
+        <AlarmContainer onClick={handleAlarmToggle}>
+          <div>
+            {isAlarmOpen ? getAlarmMessage() : getAlarmMessage()}
+          </div>
+          {isAlarmOpen && (
+            <AlarmContent>
+              <Messagealarm contract={alarmMessage.contract} visible={true} />
+              <button onClick={handleAccept}>수락</button>
+              <button onClick={handleCancel}>취소</button>
+            </AlarmContent>
+          )}
+        </AlarmContainer>
+      )}
      
 
       {/* 이곳에 Messagealarm 컴포넌트가 동적으로 생성되야함 */}

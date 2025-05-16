@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DesignerContractList.css";
 import clientImage from "../../../assets/desiner.png";
 
 const DesignerContractList = () => {
   const [contracts, setContracts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -13,11 +15,12 @@ const DesignerContractList = () => {
         const fetchedContracts = response.data.map((contract) => ({
           status: convertStatus(contract.status),
           clientName: contract.contractTitle,
-        //   content: contract.contractTitle,
+          //   content: contract.contractTitle,
           date: formatDate(contract.dueDate),
           period: calculatePeriod(contract.dueDate),
           amount: formatAmount(contract.requestFee),
           imageUrl: clientImage,
+          roomId: contract.roomId || "20", // roomId 추가, 서버에서 받아오지 못하면 기본값 "20"
         }));
         setContracts(fetchedContracts);
       })
@@ -28,19 +31,18 @@ const DesignerContractList = () => {
 
   const convertStatus = (status) => {
     if (status === "진행중") return "진행중";
-    if (status === "완료") return "완료됨";  
-    if (status === "해지") return "해지됨";  
+    if (status === "완료") return "완료됨";
+    if (status === "해지") return "해지됨";
     if (status === "미송신") return "미송신";
     if (status === "미수신") return "미수신";
     if (status === "수정건의") return "수정건의";
     if (status === "해지요청") return "해지요청";
     return status;
   };
-  
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0].replace(/-/g, '.');
+    return date.toISOString().split("T")[0].replace(/-/g, ".");
   };
 
   const calculatePeriod = (dueDate) => {
@@ -52,6 +54,16 @@ const DesignerContractList = () => {
 
   const formatAmount = (amount) => {
     return amount.toLocaleString() + "원";
+  };
+
+  // "해지요청" 버튼 클릭 핸들러
+  const handleCancelRequest = (contract) => {
+    navigate(`/client/chatmain/`, {
+     state: {
+        messageText: `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`,
+        sourcePage: "DesignerContractList", // 페이지 식별자 추가
+      },
+    });
   };
 
   return (
@@ -91,11 +103,6 @@ const DesignerContractList = () => {
           {/* 계약 정보 */}
           <div className="info">
             <div className="client-name">{contract.clientName}</div>
-            {/* <div className="content">
-              {contract.content.length > 20
-                ? contract.content.slice(0, 20) + "..."
-                : contract.content}
-            </div> */}
             <div className="dates">
               <div className="date">
                 <span>계약일</span> {contract.date}
@@ -117,14 +124,14 @@ const DesignerContractList = () => {
               <button>송신취소</button>
             ) : contract.status === "진행중" ? (
               <>
-                <button>해지요청</button>
+                <button onClick={() => handleCancelRequest(contract)}>해지요청</button>
                 <button>수정건의</button>
               </>
             ) : contract.status === "수정건의" ? (
               <button>수정건의 취소</button>
             ) : contract.status === "진행중(수정완료)" ? (
               <>
-                <button>해지요청</button>
+                <button onClick={() => handleCancelRequest(contract)}>해지요청</button>
                 <button>수정건의</button>
               </>
             ) : contract.status === "해지요청" ? (

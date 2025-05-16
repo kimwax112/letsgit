@@ -92,7 +92,9 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
       alert("메시지를 작성하고 작성완료를 눌러주세요.");
       return;
     }
-    navigate('/client/ChatMain', { state: { messageText: editorContent } });
+    navigate('/client/ChatMain', { state: { messageText: editorContent,
+      sourcePage: "OtherPage", 
+     } });
   };
       // MyEditor에서 작성완료 눌렀을 때만 호출됩니다.
       const handleEditorSend = (content) => {
