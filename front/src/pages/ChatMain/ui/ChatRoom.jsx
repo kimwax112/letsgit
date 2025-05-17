@@ -11,11 +11,10 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
   const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
   const messageEndRef = useRef(null);
   const navigate = useNavigate();
-  const hasJoined = useRef(false); // 입장 메시지 중복 방지를 위한 플래그
-
-    // useEffect(() => {
-  //   console.log("URL에서 받은 roomId:", roomId);
-  // }, [roomId]);
+  // const hasJoined = useRef(false); // 입장 메시지 중복 방지를 위한 플래그
+    useEffect(() => {
+    console.log("URL에서 받은 roomId:", roomId);
+  }, [roomId]);
 
   useEffect(() => {
     const checkSessionAndLoadMessages = async () => {
@@ -29,6 +28,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
 
           const msgRes = await fetch(`http://localhost:8081/api/messages/${roomId}`);
           const msgs = await msgRes.json();
+          // setMessages(msgs); // 이전 메시지 저장
 
           const loadedMessages = Array.isArray(msgs) ? msgs : [];
           // 서버 메시지를 먼저 추가
@@ -44,6 +44,8 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
           const roomRes = await fetch(`http://localhost:8081/api/rooms/${roomId}`);
           const roomData = await roomRes.json();
           setRoom(roomData);
+          console.log("룸데이터터:", roomData);
+          
         } else {
           alert("로그인이 필요합니다.");
           navigate("/");
@@ -55,10 +57,12 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
       }
     };
     checkSessionAndLoadMessages();
-  }, [roomId, navigate, setMessages]); // username 의존성 제거
+  
+  // , [roomId, navigate, setMessages]); // username 의존성 제거
 
-  useEffect(() => {
-    if (!username || client) return; // 이미 client가 있으면 재연결 방지
+  // useEffect(() => {
+    
+    if (!username) return; // 이미 client가 있으면 재연결 방지 if (!username || client) return;
 
     const socket = new SockJS("http://localhost:8081/ws");
     const stompClient = new Client({
@@ -69,18 +73,20 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
 
         stompClient.subscribe(`/topic/chat/${roomId}`, (msg) => {
           const receivedMessage = JSON.parse(msg.body);
-          // 중복 입장 메시지 방지
-          if (receivedMessage.type === "JOIN" && receivedMessage.sender === username && hasJoined.current) {
-            return;
-          }
-          setMessages((prev) => {
-            const prevMessages = Array.isArray(prev) ? prev : [];
-            return [...prevMessages, receivedMessage];
-          });
-          if (receivedMessage.type === "JOIN" && receivedMessage.sender === username) {
-            hasJoined.current = true;
-          }
+          setMessages((prev) => [...prev, receivedMessage]);
         });
+          // 중복 입장 메시지 방지
+          // if (receivedMessage.type === "JOIN" && receivedMessage.sender === username && hasJoined.current) {
+          //   return;
+          // }
+        //   setMessages((prev) => {
+        //     const prevMessages = Array.isArray(prev) ? prev : [];
+        //     return [...prevMessages, receivedMessage];
+        //   });
+        //   if (receivedMessage.type === "JOIN" && receivedMessage.sender === username) {
+        //     hasJoined.current = true;
+        //   }
+        // });
 
         stompClient.publish({
           destination: `/app/chat.addUser/${roomId}`,
@@ -96,7 +102,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
       onDisconnect: () => {
         console.log("WebSocket 연결 종료");
         setConnected(false);
-        hasJoined.current = false; // 연결 해제 시 플래그 초기화
+        // hasJoined.current = false; // 연결 해제 시 플래그 초기화
       },
     });
 
@@ -111,7 +117,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
 
   useEffect(() => {
     if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" }); {/*messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });*/}
     }
   }, [messages]);
 
@@ -119,7 +125,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
     if (client && connected && message.trim() !== "") {
       const newMessage = { sender: username, content: message, type: "CHAT" };
       client.publish({
-        destination: `/app/chat.sendMessage/${roomId}`,
+        destination: `/app/chat.sendMessage/${roomId}`,  // ✅ 전송 주소 수정
         body: JSON.stringify(newMessage),
       });
       // setMessages 호출 제거: WebSocket에서 수신된 메시지만 추가됨
@@ -129,9 +135,10 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
 
   const handleLogout = async () => {
     try {
+      // WebSocket으로 퇴장 메시지 전송
       if (client && connected) {
         client.publish({
-          destination: `/app/chat.sendMessage/${roomId}`,
+          destination: "/app/chat",  /*destination: `/app/chat.sendMessage/${roomId}`, 이게머지*/
           body: JSON.stringify({
             sender: username,
             content: `${username} 님이 퇴장하셨습니다.`,
@@ -143,7 +150,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
         method: "POST",
         credentials: "include",
       });
-      navigate("/");
+      navigate("/"); // 로그아웃 후 홈으로
     } catch (error) {
       console.error("로그아웃 실패:", error);
     }
@@ -161,9 +168,8 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
         }),
       });
     }
-    navigate("/EnterChatRoom");
+    navigate("/EnterChatRoom"); // 목록 페이지로 이동
   };
-
   const handleDeleteRoom = async () => {
     const confirmDelete = window.confirm("정말 이 채팅방을 삭제하시겠습니까?");
     if (!confirmDelete) return;
@@ -173,6 +179,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
         method: "DELETE",
         credentials: "include",
       });
+
       navigate("/EnterChatRoom");
     } catch (error) {
       console.error("채팅방 삭제 실패:", error);
@@ -187,6 +194,11 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
     const formData = new FormData();
     formData.append("file", file);
 
+    // FormData 내용 로그 출력
+     formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+    
     const res = await fetch("http://localhost:8081/files/upload", {
       method: "POST",
       body: formData,
@@ -202,8 +214,11 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
           type: "IMAGE",
           fileName: uploadedFileName.split(": ")[1],
           roomId: roomId,
+
         }),
+
       });
+
     }
   };
 
