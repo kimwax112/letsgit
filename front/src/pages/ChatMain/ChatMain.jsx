@@ -12,6 +12,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import './ui/ChatRoom.css';
 import axios from "axios";
+import RequestBar from "../../components/RequestBar/RequestBar";
 
 const CustomModal = styled(Modal)`
   display: flex;
@@ -134,7 +135,8 @@ function ChatMain() {
     setModalOpen,
     setModalOpen2,
     addRequestMessage,
-    handleItemSelect, // 클릭시 디자인된 의류 블루어
+    handleItemSelect, // 클릭시 디자인된 의류 블러움
+    handleRequestselect, // 클릭시 의뢰 블러움
     
   } = useChat(chatData);
 
@@ -262,9 +264,14 @@ function ChatMain() {
         )}
         {modalOpen2 && (
           <CustomModal onClose={() => setModalOpen2(false)}>
-            <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
+            <CustomModalHeader
             
-            <ModalContent />
+            >의뢰 불러오기 </CustomModalHeader>
+            
+            <RequestBar onClick={(request) => handleRequestselect(request)}
+              title="의뢰 제목"
+              date="2023-11-09"
+              />
           </CustomModal>
         )}
       </ChatLayout>

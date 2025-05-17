@@ -15,15 +15,16 @@ const Container = styled.button`
 `;
 
 const Text1 = styled.p`
-  flex: 0.6;
+  width: 70%;
   margin: 0;
+  font-size: 1px;
 `;
 
 const Text2 = styled.p`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: 1.4;
+  
   margin: 0;
 `;
 
@@ -35,10 +36,12 @@ const CloseIcon = styled.img`
 `;
 
 export default function RequestBar({ title, date, onClick, onCloseClick, showClose = true, className }) {
+  const RequestDate = {title, date};
   return (
+    
     <Container className={className} onClick={() => onClick?.({ title, date })}>
       <Text1>
-        <h2>{title}</h2>
+        <h2 style={{fontSize: '20px'}}>{title}</h2>
       </Text1>
       <Text2>{date}</Text2>
       {showClose && (

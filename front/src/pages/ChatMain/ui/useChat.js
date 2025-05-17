@@ -5,6 +5,7 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import Messagealarm from "./Messagealarm"; 
 import ItemBox from './ItemBox'
+import RequestBar from "../../../components/RequestBar/RequestBar";
 import './ChatRoom.css';
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
@@ -379,7 +380,7 @@ const handleItemSelect = (item) => {
       <ItemBox
         text1={item.text1}
         text2={item.text2}
-        className="message chat"
+        className="message sent2"
       />
     );
     const newMessage = {
@@ -398,14 +399,15 @@ const handleItemSelect = (item) => {
 
   const handleRequestselect = (request) => {
     setSelectedItem(request); // 선택된 아이템 상태 업데이트
-    setModalOpen(false); // 디자인 불러오기 모달 닫기
+    setModalOpen2(false); // 디자인 불러오기 모달 닫기
 
     // 선택된 아이템 정보를 messages 배열에 추가 (예시)
     const component = (
-      <ItemBox
-        text1={request.text1}
-        text2={request.text2}
-        className="message chat"
+      <RequestBar
+        title={request.title}
+        date={request.date}
+        showClose={false}
+        className="message sent2"
       />
     );
     const newMessage = {
@@ -421,6 +423,8 @@ const handleItemSelect = (item) => {
       return [...prevMessages, newMessage];
     });
   };
+
+
 
 
   return {
@@ -461,6 +465,7 @@ const handleItemSelect = (item) => {
     setModalOpen,
     setModalOpen2,
     addRequestMessage,
-    handleItemSelect, //클릭시 의뢰 렌더링 되는 함수
+    handleItemSelect, //클릭시 맨투맨 렌더링 되는 함수
+    handleRequestselect, //클릭시 의뢰 렌더링 되는 함수
   };
 }
