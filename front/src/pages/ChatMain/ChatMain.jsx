@@ -10,6 +10,7 @@ import ModalContent from "../Request/ui/ModalContent";
 import { useChat } from "./ui/useChat";
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import './ui/ChatRoom.css';
 import axios from "axios";
 
 const CustomModal = styled(Modal)`
@@ -17,6 +18,7 @@ const CustomModal = styled(Modal)`
   flex-direction: column;
   width: 700px;
   height: 800px;
+  
 `;
 
 const CustomModalHeader = styled.div`
@@ -34,10 +36,9 @@ const ItemBoxContainer = styled.div`
   background-color: white;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 10px;
-  padding-left: 20px;
+  justify-content: center;
+  gap: 50px;
+  
 `;
 
 const ReportButton = styled.button`
@@ -133,13 +134,16 @@ function ChatMain() {
     setModalOpen,
     setModalOpen2,
     addRequestMessage,
+    handleItemSelect, // 클릭시 디자인된 의류 블루어
+    
   } = useChat(chatData);
 
   const location = useLocation();
   const hasAddedRequestMessage = useRef(false); // useRef를 사용하여 DetailList 상태를 저장합니다.
-  useEffect(() => {
+  useEffect(() => { // React의 useEffect 훅을 사용하여 컴포넌트 마운트 및 location.state 변경 시 실행.
     const text = location.state?.messageText;
-    const targetUser = location.state?.targetUser || "ㅁㄴㅇㄹ";
+    const targetUser = location.state?.targetUser || "ㅁㄴㅇㄹ"; //  useLocation을 사용해서 DetailList에서 전달된 state 객체 가져오기
+                                                              // location.state에서 targetUser 추출. 없으면 기본값 "ㅁㄴㅇㄹ" 설정.
     if (text && !hasAddedRequestMessage.current) {
       addRequestMessage(targetUser, text);
       hasAddedRequestMessage.current = true;
@@ -243,7 +247,10 @@ function ChatMain() {
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨1" text2="(Sweatshirt)"
+            onClick={(item) => handleItemSelect(item)} // 여기서 (item) 정의
+            
+              />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
@@ -256,6 +263,7 @@ function ChatMain() {
         {modalOpen2 && (
           <CustomModal onClose={() => setModalOpen2(false)}>
             <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
+            
             <ModalContent />
           </CustomModal>
         )}

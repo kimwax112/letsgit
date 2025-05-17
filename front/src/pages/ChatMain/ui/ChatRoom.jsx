@@ -31,8 +31,9 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
           // setMessages(msgs); // 이전 메시지 저장
 
           const loadedMessages = Array.isArray(msgs) ? msgs : [];
-          // 서버 메시지를 먼저 추가
-          setMessages((prev) => {
+          // 서버에서 가져온 메시지(msg)를 배열로 먼저 처리 하고 msg가 배열로 아닌경우 빈 배열로 초기화 
+          setMessages((prev) => { //setMessages를 사용하여 상태 업데이트, // prev는 이전 상태를 나타냄 
+             
             const prevMessages = Array.isArray(prev) ? prev : [];
             // 중복 입장 메시지 필터링
             const filteredLoadedMessages = loadedMessages.filter(

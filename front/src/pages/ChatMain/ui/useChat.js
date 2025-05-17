@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import Messagealarm from "./Messagealarm"; 
-
+import ItemBox from './ItemBox'
+import './ChatRoom.css';
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
@@ -31,6 +32,7 @@ export function useChat(initialChats) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAccepted, setIsAccepted] = useState(false); // 추가: 수락 상태 관리
+  const [selectedItem, setSelectedItem] = useState(null); // 선택된 아이템 상태 추가
   //////////////////////////////////
 
 
@@ -356,6 +358,7 @@ export function useChat(initialChats) {
   //   ]);
   // };
 
+
     if (client && connected) {
       client.publish({
         destination: `/app/chat.sendMessage/${targetRoomId}`,
@@ -367,6 +370,58 @@ export function useChat(initialChats) {
       });
     }
   };
+const handleItemSelect = (item) => {
+    setSelectedItem(item); // 선택된 아이템 상태 업데이트
+    setModalOpen(false); // 디자인 불러오기 모달 닫기
+
+    // 선택된 아이템 정보를 messages 배열에 추가 (예시)
+    const component = (
+      <ItemBox
+        text1={item.text1}
+        text2={item.text2}
+        className="message chat"
+      />
+    );
+    const newMessage = {
+      id: `item-${Date.now()}`, // 고유 식별자, 예: "item-1715954280000" (2025-05-17 23:38 KST)
+      component,
+      type: "ITEM",
+      time: new Date().toLocaleTimeString(), // "11:38:00 PM"
+      visible: true,
+    };
+
+    setMessages((prev) => {
+      const prevMessages = Array.isArray(prev) ? prev : [];
+      return [...prevMessages, newMessage];
+    });
+  };
+
+  const handleRequestselect = (request) => {
+    setSelectedItem(request); // 선택된 아이템 상태 업데이트
+    setModalOpen(false); // 디자인 불러오기 모달 닫기
+
+    // 선택된 아이템 정보를 messages 배열에 추가 (예시)
+    const component = (
+      <ItemBox
+        text1={request.text1}
+        text2={request.text2}
+        className="message chat"
+      />
+    );
+    const newMessage = {
+      id: `item-${Date.now()}`, // 고유 식별자, 예: "item-1715954280000" (2025-05-17 23:38 KST)
+      component,
+      type: "ITEM",
+      time: new Date().toLocaleTimeString(), // "11:38:00 PM"
+      visible: true,
+    };
+
+    setMessages((prev) => {
+      const prevMessages = Array.isArray(prev) ? prev : [];
+      return [...prevMessages, newMessage];
+    });
+  };
+
 
   return {
     filteredChats,
@@ -406,5 +461,6 @@ export function useChat(initialChats) {
     setModalOpen,
     setModalOpen2,
     addRequestMessage,
+    handleItemSelect, //클릭시 의뢰 렌더링 되는 함수
   };
 }
