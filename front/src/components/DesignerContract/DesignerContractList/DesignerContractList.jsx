@@ -63,7 +63,7 @@ const DesignerContractList = () => {
       sourcePage: "DesignerContractList",
 
     };
-    localStorage.setItem("chatPayload", JSON,stringfy(payload));
+    
     navigate("/client/chatmain", {state : {messageText: `계약 "${contract.clientName}"에 대한 해지요청이 이씃ㅂ니다.`}});
   }
 

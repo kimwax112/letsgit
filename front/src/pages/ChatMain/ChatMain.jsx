@@ -79,25 +79,35 @@ const ButtonWrapper = styled.div`
   { name: "Annette Black", message: "I dont eat, so I dont have a favorite food.", time: "2023-11-09" },
 ];*/
 
+function formatDate(dateString) {
+  if (!dateString) return ""; // Return empty string if dateString is falsy
+  const d = new Date(dateString);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
+
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
-      .then((res) => {
-        // 채팅방 목록 데이터 가공해서 setChatData
-        const newData = res.data.map((room) => ({
-          id: room.id,
-          creator: room.creator,
-          name: room.name,
-          message: room.creator,
-          time: room.createdAt ?? "시간 정보 없음",
-        }));
-        setChatData(newData);
-        console.log("채팅방 리스트:", newData);
-      })
-      .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
-  }, []);
+useEffect(() => {
+  axios.get("http://localhost:8081/client/contract")
+    .then((response) => {
+      const mappedContracts = response.data.map(contract => ({
+        id: contract.contractId,
+        starredStatus: false,
+        title: contract.contractTitle,
+        clientId: contract.clientId,
+        status: contract.status,
+        date: contract.dueDate ? formatDate(contract.dueDate) : "날짜 없음", // Fallback for missing dueDate
+        preview: contract.preview || "",
+      }));
+      setContracts(mappedContracts);
+    })
+    .catch((error) => {
+      console.error("계약 데이터 가져오기 실패:", error);
+    });
+}, []);
 
   const {
     filteredChats,
@@ -159,6 +169,26 @@ function ChatMain() {
       }
     }
   }, [location.state?.messageText, addRequestMessage, filteredChats, handleProfileClick]);
+
+  const [contracts, setContracts] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:8081/client/contract")
+      .then((response) => {
+        const mappedContracts = response.data.map(contract => ({
+          id: contract.contractId,
+          starredStatus: false,
+          title: contract.contractTitle,
+          clientId: contract.clientId,
+          status: contract.status,
+          date: formatDate(contract.dueDate),
+          preview: contract.preview || "",
+        }));
+        setContracts(mappedContracts);
+      })
+      .catch((error) => {
+        console.error("계약 데이터 가져오기 실패:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -249,7 +279,7 @@ function ChatMain() {
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
-              <ItemBox text1="맨투맨1" text2="(Sweatshirt)"
+              <ItemBox text1="맨투맨1231" text2="(Sweatshirt)"
             onClick={(item) => handleItemSelect(item)} // 여기서 (item) 정의
             
               />
@@ -267,11 +297,15 @@ function ChatMain() {
             <CustomModalHeader
             
             >의뢰 불러오기 </CustomModalHeader>
-            
+            {contracts.map((c) => (
             <RequestBar onClick={(request) => handleRequestselect(request)}
-              title="의뢰 제목"
-              date="2023-11-09"
+              key={c.id}
+              title={c.title}
+              date={c.date}
               />
+              
+            ))}
+            
           </CustomModal>
         )}
       </ChatLayout>

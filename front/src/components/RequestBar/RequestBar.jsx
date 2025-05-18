@@ -37,6 +37,7 @@ const CloseIcon = styled.img`
 
 export default function RequestBar({ title, date, onClick, onCloseClick, showClose = true, className }) {
   const RequestDate = {title, date};
+  console.log("RequestBar Props:", { title, date }); // prop 확인
   return (
     
     <Container className={className} onClick={() => onClick?.({ title, date })}>
