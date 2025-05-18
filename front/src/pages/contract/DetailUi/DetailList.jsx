@@ -9,6 +9,8 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import share from '../../../assets/share.png';  
 import print from '../../../assets/print.png';
 import axios from 'axios';
+import ContractSendMessagePage from '../ContractSendMessagePage';
+import { use } from 'react';
 
 const Button = styled(NextButtonUI)`
   background-color: #d5d5d5;
@@ -29,7 +31,7 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   const navigate = useNavigate(); // 추가: ChatGPT
   const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
   const [isEditorSent, setIsEditorSent] = useState(false);  // 추가: 작성완료 눌렀는지 추적
-
+  const [contractMessage, setSendMessage] = useState(); //보낸 메시지 동적으로 관리되는 변수 
   useEffect(() => {
     const fetchContract = async () => {
       try {
@@ -92,18 +94,27 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
       alert("메시지를 작성하고 작성완료를 눌러주세요.");
       return;
     }
-    navigate('/client/ChatMain', { state: { messageText: editorContent,
+    navigate('/client/ContractSendMessagePage', 
+      { state: { messageText: editorContent, sendMessage : contractMessage,
       sourcePage: "OtherPage", 
      } });
   };
-      // MyEditor에서 작성완료 눌렀을 때만 호출됩니다.
-      const handleEditorSend = (content) => {
-        if (content.trim() !== "") {
-          setEditorContent(content);
-          setIsEditorSent(true);
-        }
-      };
 
+  
+const handleEditorSend = (content) => {  //요청보내기 누를때 저장되는 객체 구조  (content) == MyEditor에서 입력한 메시지 매개변수로 전달
+  if (content.trim() !== "") {
+    setEditorContent(content); // 상태 업데이트 editorContent에 입력된 메시지저장, isEditorsent를 true로 설정하여 "요청보내기"버튼 활성화준비"
+    setIsEditorSent(true);
+    // contractMessage 설정: 메시지와 계약 정보 조합
+    const newMessage = { //newMessage를 생성하여 메시지 내용(conent), 생성시간(time), 계약정보(contract), 고유(id)포함
+      id: `msg-${Date.now()}`, // 예: "msg-1715995680000" (2025-05-18 10:28 KST)
+      content: content,
+      time: new Date().toLocaleTimeString(), // "10:28:00 AM"
+      contract: contractData
+    };
+    setSendMessage(newMessage);
+  }
+};
   return (
     <div className="Detailcontainer">
       <div className="Detailtitle">

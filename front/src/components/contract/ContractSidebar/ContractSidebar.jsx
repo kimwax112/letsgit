@@ -40,8 +40,8 @@ export default function ContractSidebar({ unreadCount, starredCount, sentCount }
           </Link>
         </li>
 
-        <li className={location.pathname === "/client/sent" ? "active" : ""}>
-          <Link to="/client/sent" className="sidebar-link-with-badge">
+        <li className={location.pathname === "/client/ContractSendMessagePage" ? "active" : ""}>
+          <Link to="/client/ContractSendMessagePage" className="sidebar-link-with-badge">
             <div className="icon-text">
               <FaPaperPlane className="sidebar-icon" />
               <span>보낸 메세지</span>

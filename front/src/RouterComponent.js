@@ -70,6 +70,7 @@ const RouterComponent = () => {
               <Route path="ContractSendMessagePage" element={<ContractSendMessagePage />} />
               <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
+             
               
             </Routes>
           </ClientLayout>

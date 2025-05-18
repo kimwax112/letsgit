@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Message.css";
 
-export default function Message({contract}) {
+export default function Message({contract, content, time}) {
   const navigate = useNavigate();
   // const [contract, setContract] = useState(null);
 
@@ -17,6 +17,10 @@ export default function Message({contract}) {
   //   const contract1 = contracts.find((c) => c.id === "1");
   //   setContract(contract1);
   // }, []);
+  if (!contract || !contract.contractTitle) {
+    return <div className="message-container">계약 정보를 찾을 수 없습니다.</div>;
+  }
+
 
   if (!contract) return null;
 
@@ -28,11 +32,14 @@ export default function Message({contract}) {
   };
 
   return (
+    
     <div className="message-container" onClick={handleClick}>
-      <div className="contract-title">{contract.title}</div>
-      <div className="design-name">{contract.designer || "디자이너 없음"}</div>
-      <div className="contract-detail">보낸 메시지 미리보기</div>
-      <div className="contract-date">{contract.date}</div>
+
+      <div className="contract-title">{contract.contractTitle}</div>
+      <div className="design-name">{contract.designerid || "디자이너 없음"}</div>
+      <div className="contract-detail">{content || "보낸 메시지 미리보기" }</div>
+      <div className="contract-date">{time || contract.date || "날짜없음" }}</div>
+      
     </div>
   );
 }
