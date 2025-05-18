@@ -94,7 +94,7 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
       alert("메시지를 작성하고 작성완료를 눌러주세요.");
       return;
     }
-    navigate('/client/ContractSendMessagePage', 
+    navigate('/client/Chatmain', 
       { state: { messageText: editorContent, sendMessage : contractMessage,
       sourcePage: "OtherPage", 
      } });
@@ -103,14 +103,15 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   
 const handleEditorSend = (content) => {  //요청보내기 누를때 저장되는 객체 구조  (content) == MyEditor에서 입력한 메시지 매개변수로 전달
   if (content.trim() !== "") {
-    setEditorContent(content); // 상태 업데이트 editorContent에 입력된 메시지저장, isEditorsent를 true로 설정하여 "요청보내기"버튼 활성화준비"
+    setEditorContent(content); // content == 입력한 메시지  상태 업데이트 editorContent에 입력된 메시지저장, isEditorsent를 true로 설정하여 "요청보내기"버튼 활성화준비"
     setIsEditorSent(true);
     // contractMessage 설정: 메시지와 계약 정보 조합
     const newMessage = { //newMessage를 생성하여 메시지 내용(conent), 생성시간(time), 계약정보(contract), 고유(id)포함
+      
       id: `msg-${Date.now()}`, // 예: "msg-1715995680000" (2025-05-18 10:28 KST)
       content: content,
       time: new Date().toLocaleTimeString(), // "10:28:00 AM"
-      contract: contractData
+      contract: {...contractData, content : content} 
     };
     setSendMessage(newMessage);
   }

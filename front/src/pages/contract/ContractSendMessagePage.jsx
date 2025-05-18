@@ -13,8 +13,9 @@ export default function ContractSendMessagePage() {
   const [messages, setMessages] = useState([]); // 변수명 통일
 
   useEffect(() => {
-    if (sendMessage) {
-      // handleEditorSend에서 전달된 sendMessage를 사용
+    if (sendMessage) { //만약에 sendMessage(DetailList에서 작성한content)가 존재하고
+                      // contract또는 sendMessage 값이 바뀔때마다 messages상태를 갱신
+                       // handleEditorSend에서 전달된 sendMessage를 사용
       setMessages([sendMessage]);
     } else if (initialMessageText) {
       // 백업: sendMessage가 없을 경우 initialMessageText 사용
@@ -38,6 +39,7 @@ export default function ContractSendMessagePage() {
             contract={msg.contract}
             content={msg.content}
             time={msg.time}
+            id={msg.id} // 추가: 고유 ID 전달
           />
         ))}
       </ContractLayout>

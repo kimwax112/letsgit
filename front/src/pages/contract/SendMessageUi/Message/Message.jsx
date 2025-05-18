@@ -1,10 +1,12 @@
 // Message.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import "./Message.css";
 
-export default function Message({contract, content, time}) {
+export default function Message({contract, content, time,id }) {  
   const navigate = useNavigate();
+  const {state } = useLocation();
+  
   // const [contract, setContract] = useState(null);
 
   // useEffect(() => {
@@ -26,8 +28,8 @@ export default function Message({contract, content, time}) {
 
   const handleClick = () => {
     console.log("Message.jsx: Navigating to MessageDetailPage with contract:", contract); // 디버깅 로그
-    navigate(`/client/contract/MessageDetailPage/${contract.id}`, {
-      state: { contract },
+    navigate(`/client/contract/MessageDetailpage/${id}`, {
+      state: { contract, content, time,id },
     });
   };
 

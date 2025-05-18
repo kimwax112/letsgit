@@ -3,16 +3,19 @@ import share from '../../../assets/share.png';
 import print from '../../../assets/print.png';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 
-export default function DetailList({ contract, onToggleStar }) {
+export default function DetailList({onToggleStar, contract, content, time, id }) {
   const [isOpen, setIsOpen] = useState(false);
+
   if (!contract) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
     const toggleOpen = () => {
     setIsOpen((prev) => !prev);
   };
+
   return (
     <div className="Detailcontainer">
       <div className="Detailtitle">
@@ -37,7 +40,7 @@ export default function DetailList({ contract, onToggleStar }) {
         <div className="TitleContent">
           <p>보낸사람: {contract.sender || "미지정"}</p> {/* contract.sender 추가 (데이터에 없으므로 기본값) */}
           <p>받는사람: {contract.recipient || "미지정"}</p> {/* contract.recipient 추가 (데이터에 없으므로 기본값) */}
-          <p style={{ fontSize: '12px' }}>{contract.date}</p> {/* contract.date 사용  계약한 날짜인듯*/}
+          <p style={{ fontSize: '12px' }}>{time}</p> {/* contract.date 사용  계약한 날짜인듯*/}
         </div>
       </div>
 
@@ -58,6 +61,7 @@ export default function DetailList({ contract, onToggleStar }) {
           <FaChevronDown size={24} color="#333" />
         )}
         <p>계약내용 보기</p>
+
       </button>
 
       {isOpen && (
@@ -72,7 +76,8 @@ export default function DetailList({ contract, onToggleStar }) {
             overflowY: "auto",
           }}
         >
-          <p>상세 계약 내용입니다</p>
+          <p> {contract.content || "상세 계약 내용입니다"} </p>
+
           <p></p>
         </div>
       )}
