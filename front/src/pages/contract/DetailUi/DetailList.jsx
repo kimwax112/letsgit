@@ -109,11 +109,19 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
     const newMessage = { //newMessage를 생성하여 메시지 내용(conent), 생성시간(time), 계약정보(contract), 고유(id)포함
       
       id: `msg-${Date.now()}`, // 예: "msg-1715995680000" (2025-05-18 10:28 KST)
-      content: content,
-      time: new Date().toLocaleTimeString(), // "10:28:00 AM"
-      contract: {...contractData, content : content} 
+      content: content,  //실제 전송할 메시지 텍스트 
+      time: new Date().toLocaleTimeString(), // 메시지 생성 시각
+      contract: {...contractData, content : content} //기존계약 정보 (contractDate)를 복제한뒤 conetn 필드를 추가해 함꼐 전달할 수 있게 합니다.
     };
     setSendMessage(newMessage);
+ //contractMessage` 상태에 newMessage 객체를 저장합니다
+    localStorage.setItem(
+      "dratfRequest",
+      JSON.stringify({
+        editorContent: content,
+        contractMessage: newMessage
+  })
+);
   }
 };
   return (

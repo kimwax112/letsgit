@@ -58,13 +58,14 @@ const DesignerContractList = () => {
 
   // "해지요청" 버튼 클릭 핸들러
   const handleCancelRequest = (contract) => {
-    navigate(`/client/chatmain/`, {
-     state: {
-        messageText: `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`,
-        sourcePage: "DesignerContractList", // 페이지 식별자 추가
-      },
-    });
-  };
+    const payload = {
+      messageText : `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`,
+      sourcePage: "DesignerContractList",
+
+    };
+    localStorage.setItem("chatPayload", JSON,stringfy(payload));
+    navigate("/client/chatmain", {state : {messageText: `계약 "${contract.clientName}"에 대한 해지요청이 이씃ㅂ니다.`}});
+  }
 
   return (
     <div className="contract-list">
