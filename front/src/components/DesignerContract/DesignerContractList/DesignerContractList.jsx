@@ -27,7 +27,7 @@ const DesignerContractList = () => {
       .catch((error) => {
         console.error("계약서 목록 불러오기 실패:", error);
       });
-  }, []);
+  }, [setContracts]);
 
   const convertStatus = (status) => {
     if (status === "진행중") return "진행중";
@@ -64,7 +64,7 @@ const DesignerContractList = () => {
 
     };
     
-    navigate("/client/chatmain", {state : {messageText: `계약 "${contract.clientName}"에 대한 해지요청이 이씃ㅂ니다.`}});
+    navigate("/client/chatmain", {state : {sourcePage: "DesignerContractList", messageText: `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`}});
   }
 
   return (

@@ -238,7 +238,7 @@ function Room({
   isSuccessPopupOpen,
   popupMessage,
   bottomRef,
-  
+
 }) {
   // const navigate = useNavigate();
   // const [client, setClient] = useState(null);
@@ -301,20 +301,35 @@ const handleAccept = () => {
     )
   );
   setIsAccepted(true); // 수락 상태 업데이트
-  
-  // opacity를 점진적으로 감소시키는 애니메이션
-    let currentOpacity = 1;
-    const interval = setInterval(() => {
-      currentOpacity -= 0.02;
-      setOpacity(currentOpacity);
 
-      if (currentOpacity <= 0) {
-        clearInterval(interval);
-        setIsAlarmVisible(false); // opacity가 0이 되면 AlarmContainer 제거
-      }
-    }, 20);
-  
+  // sourcePage 확인
+  const sourcePage = location.state?.sourcePage;
+  if (sourcePage === "DesignerContractList") {
+    // 1) dratfRequest에서 contractMessage 꺼내오기
+    const raw = localStorage.getItem("dratfRequest");
+    if (!raw) return;
+    const { contractMessage } = JSON.parse(raw);
+
+    const rawArr = localStorage.getItem("canceledRequests");
+    const arr = rawArr ? JSON.parse(rawArr) : [];
+
+    arr.push(contractMessage);
+    localStorage.setItem("canceledRequests", JSON.stringify(arr));
+  }
+
+  // opacity를 점진적으로 감소시키는 애니메이션
+  let currentOpacity = 1;
+  const interval = setInterval(() => {
+    currentOpacity -= 0.02;
+    setOpacity(currentOpacity);
+
+    if (currentOpacity <= 0) {
+      clearInterval(interval);
+      setIsAlarmVisible(false); // opacity가 0이 되면 AlarmContainer 제거
+    }
+  }, 20);
 };
+
 
 
 const handleCancel = () => {
@@ -324,6 +339,8 @@ const handleCancel = () => {
     )
   );
 };
+
+
 
 
 const getAlarmMessage = () => {
@@ -338,6 +355,7 @@ const getAlarmMessage = () => {
     }
   };
 
+ 
 
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
@@ -372,7 +390,7 @@ const getAlarmMessage = () => {
         </AlarmContainer>
       )}
      
-
+      
       {/* 이곳에 Messagealarm 컴포넌트가 동적으로 생성되야함 */}
       <Content>
         <ChatContainer>

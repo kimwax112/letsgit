@@ -96,8 +96,9 @@ const Text2 = styled.div`
   color: #6B6565;
 `;
 
-export default function ItemBox({ children }) {
+export default function ItemBox({ children,data }) {
   const navigate = useNavigate();
+  
 
   const handleClick = () => {
     navigate('/client/RequestPost');
@@ -111,15 +112,15 @@ export default function ItemBox({ children }) {
           <Tag>청바지</Tag>
           <Tag>청바지</Tag>
         </TagContainer>
-        <Text>청바지 무릎부분 센스있게 작성가능하신분 모십니다</Text>
+        <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
         <Profile>
           <Circle>
             <ProfileImage src={designerImage} alt="디자이너 프로필" />
           </Circle>
           홍길동
         </Profile>
-        <Text2>희망금액: 10,000 원</Text2>
-        <Text2>희망기한: 2주</Text2>
+        <Text2>{data?.amount || "10000원"}</Text2>
+        <Text2>{"희망기한 " + data?.deadline || 희망기한: 2주} </Text2>
       </DescriptionContainer>
     </ItemBoxContainer>
   );

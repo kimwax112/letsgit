@@ -1,72 +1,26 @@
-import ContractSearchAndFilter from "../../components/contract/ContractSearchAndFilter/ContractSearchAndFilter";
-import CancledContractItem from "../../components/contract/ContractItem/CancledContractItem";
-import { useState } from "react";
+// src/components/ChatMain/CanceledList.jsx
+import React from "react";
+import styled from "styled-components";
 
-export default function Canceledlist() {
-  
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("전체");
+const Container = styled.div`
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff8f8;
+  margin-bottom: 16px;
+`;
 
-  const cancledcontract = [
-    {
-      id: "1",
-      starredStatus: false,
-      title: "사무실 임대 계약 해지",
-      preview: "서울 강남구 사무실 임대 계약 해지 진행",
-      status: "해지",
-      date: "2025.05.01",
-    },
-    {
-      id: "2",
-      starredStatus: true,
-      title: "렌탈 서비스 해지",
-      preview: "장비 렌탈 서비스 해지 요청 완료",
-      status: "해지",
-      date: "2025.04.20",
-    },
-    {
-      id: "3",
-      starredStatus: false,
-      title: "소프트웨어 라이선스 해지",
-      preview: "연간 라이선스 해지 및 환불 처리",
-      status: "해지",
-      date: "2025.03.15",
-    },
-  ];
-
-  const filtered = cancledcontract.filter(c => {
-    const matchSearch = 
-    c.title.includes(searchTerm) || 
-    c.preview.includes(searchTerm);
-    const matchStatus = 
-    statusFilter === "전체" || c.status == statusFilter;
-    return matchSearch && matchStatus;
-  })
-  const handleToggleStar = (id) => {
-    console.log("별 토글:", id);
-  };
-
+export default function CanceledList({ item }) {
+  const { id, content, time, contract } = item;
   return (
-    <div>
-      <ContractSearchAndFilter
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-      />
-      {filtered.length > 0 ? (
-        filtered.map(cancledcontract => (
-          <CancledContractItem
-            key={cancledcontract.id}  // contract.id를 key로 사용
-            cancledcontract={cancledcontract}
-            onToggleStar={() => handleToggleStar(cancledcontract.id)}
-          />
-        ))
-      ) : (
-        <p>취소된 계약이 없습니다.</p>
-      )}
-       
-    </div>
+    <Container>
+      <h3>취소된 요청</h3>
+      <p>시간: {time}</p>
+      <hr />
+      <h4>관련 계약</h4>
+      <p>제목: {contract.contractTitle}</p>
+      <p>디자이너: {contract.designerId}</p>
+      <p>클라이언트: {contract.clientId}</p>
+    </Container>
   );
 }
-  

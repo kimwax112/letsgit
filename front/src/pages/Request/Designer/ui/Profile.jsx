@@ -9,14 +9,45 @@ import designer from "../../../../assets/desiner.png";
 import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
-import axios from "axios";
-import {useEffect, navigate} from "react";
+
+
+// 하드코딩된 이미지 배열
+const profileImages = [
+  jeans,
+  require("../../../../assets/프로필이미지/프로필이미지1.jpg"),
+  require("../../../../assets/프로필이미지/프로필이미지2.jpg"),
+  require("../../../../assets/프로필이미지/프로필이미지3.jpg"),
+  require("../../../../assets/프로필이미지/프로필이미지4.jpg"),
+  require("../../../../assets/프로필이미지/프로필이미지5.jpg"),
+  require("../../../../assets/프로필이미지/프로필이미지6.jpg"),
+];
+
+const designerImages = [
+  designer,
+  require("../../../../assets/디자이너이미지/디자이너1.png"),
+  require("../../../../assets/디자이너이미지/디자이너2.png"),
+  require("../../../../assets/디자이너이미지/디자이너3.png"),
+  require("../../../../assets/디자이너이미지/디자이너4.png"),
+  require("../../../../assets/디자이너이미지/디자이너5.png"),
+  require("../../../../assets/디자이너이미지/디자이너6.png"),
+];
+
+const portfolioImages = [
+  port,
+  require("../../../../assets/포트폴리오이미지/포트폴리오1.png"),
+  require("../../../../assets/포트폴리오이미지/포트폴리오2.png"),
+  require("../../../../assets/포트폴리오이미지/포트폴리오3.png"),
+  require("../../../../assets/포트폴리오이미지/포트폴리오4.png"),
+  require("../../../../assets/포트폴리오이미지/포트폴리오5.png"),
+  require("../../../../assets/포트폴리오이미지/포트폴리오6.png"),
+];
 
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
   flex-direction: row;
   max-height: 600px; /* 팝업창 최대 높이 설정 */
   overflow-y: auto;
+  
 `;
 
 const ModalContent = styled.div`
@@ -115,6 +146,8 @@ const Container = styled.div`
   border: 0.5px solid;
   margin: 30px;
   cursor: pointer;
+  border-radius : 20px;
+  border : solid 2px ;
 `;
 
 const JeansImage = styled.img`
@@ -143,14 +176,24 @@ const CartImage = styled.img`
   width: 100%;
   height: 100%;
 `;
+const Text = styled.p`
+  font-size : 30px;
+  font-weight : bold;
+  position : relative;
+  z-index : 2;
+  color :rgb(255, 255, 255);
+  text-align : center;
+
+`
 
 export default function Profile({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false); // 상태 변수 이름 변경
-  const [postsCount, setPostsCount] = useState(0);  // 개수를 저장할 상태 추가
-  const [posts, setPosts] = useState([]);
-
+  const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
+   // 주석 처리: ChoseDesigner.jsx에서 이미 posts와 postsCount를 관리하므로 Profile 컴포넌트에서는 불필요함
+  // const [postsCount, setPostsCount] = useState(0);
+  // const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  
 
   const clickCart = (e) => {
     e.stopPropagation();
@@ -161,28 +204,34 @@ export default function Profile({ post }) {
     alert("대화방으로 이동합니다");
     navigate("/client/ChatMain");
   };
- 
   
-    const fetchPosts = () => {
-      axios.get("http://localhost:8081/api/posts", { withCredentials: true })
-        .then(response => {
-          setPosts(response.data);
-          setPostsCount(response.data.length); 
-        })
-        .catch(error => console.error("글 목록 불러오기 실패", error));
-    };
-    useEffect(() => {
-      fetchPosts();
-    }, []);
+  // postnum을 기준으로 이미지 인덱스 계산
+  const imageIndex = Math.abs(post.postnum % profileImages.length);
+  const designerImageIndex = Math.abs(post.postnum % designerImages.length);
+  const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
+
+  // 주석 처리: ChoseDesigner.jsx에서 이미 fetchPosts를 호출하여 데이터를 가져오므로 중복 호출 방지
+  // const fetchPosts = () => {
+  //   axios.get("http://localhost:8081/api/posts", { withCredentials: true })
+  //     .then(response => {
+  //       setPosts(response.data);
+  //       setPostsCount(response.data.length); 
+  //     })
+  //     .catch(error => console.error("글 목록 불러오기 실패", error));
+  // };
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, []);
+
   return (
     <>
       <Container onClick={() => setIsModalOpen(true)}>
-      {/* post 데이터를 이용해 각 프로필에 맞는 내용을 표시 */}
-      <div className="border-b py-2">
-        <p className="text-sm text-gray-500">{post.author}</p>
-        <p>{post.contents }</p>
-        <p>{post.id }</p>
-      </div>
+        <div className="border-b py-2">
+          <p className="text-sm text-gray-500">{post.author}</p>
+         <Text><p>{post.contents}</p></Text>
+          <p>{post.id}</p>
+        </div>
+        <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
         <CartButton onClick={clickCart}>
           <CartImage src={cart2} alt="cart" />
         </CartButton>
@@ -191,8 +240,8 @@ export default function Profile({ post }) {
       {isModalOpen && (
         <PortfoilModalContainer onClose={() => setIsModalOpen(false)}>
           <ModalContent>
-            <DesignerImage src={designer} alt="예시" />
-            <h3>Arlene McCoy</h3>
+            <DesignerImage src={designerImages[designerImageIndex]} alt="예시" />
+            <h3>{post.author}</h3>
             <p>
               의류 디자인 경력 약 5년 개인, 협업 디자인 경험도 있습니다. 기존 틀에
               벗어나 새로운 디자인을 하도록 노력하였습니다.
@@ -216,8 +265,8 @@ export default function Profile({ post }) {
               </ModalButton2>
             </PeriodContainer>
           </ModalContent>
-
-          <ModalContent2 src={port} alt="예시이미지" />
+          
+          <ModalContent2 src={portfolioImages[portfolioImageIndex]} alt="예시이미지" />
           {isRequestPopupOpen && (
             <RequestPopup onClose={() => setIsRequestPopupOpen(false)} />
           )}

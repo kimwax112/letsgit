@@ -8,7 +8,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 50px 0;
+  
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -24,8 +24,8 @@ const ModalContainer = styled.div`
   max-width: 800px;
   width: 60%;
   min-height: 900px;
-  max-height: 1000px;
-  height: auto;
+  
+  
   overflow-y: auto;
 `;
 
@@ -43,7 +43,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 50px 0;
+  
   gap: 10px;
 `;
 
@@ -91,10 +91,13 @@ const StyledButton = styled.button`
 
 export default function RequestPopup({ onClose, data }) {
   const handleSave = () => {
+    const requestData = [data]; // Wrap data in an array to match existing structure
+    localStorage.setItem("requestData", JSON.stringify(requestData));
+    console.log("Data saved to localStorage:", requestData);
     alert("임시저장이 완료되었습니다.");
   };
 
-  // 디버깅: 전달받은 데이터 출력
+  // Debugging: Log received data
   console.log("RequestPopup received data:", data);
 
   return (
@@ -108,7 +111,7 @@ export default function RequestPopup({ onClose, data }) {
           </div>
           <ButtonContainer>
             <StyledButton onClick={onClose}>취소</StyledButton>
-            <StyledButton onClick={handleSave}>임시저장</StyledButton>
+            <StyledButton onClick={handleSave}>저장</StyledButton>
           </ButtonContainer>
         </Header>
         <Text>

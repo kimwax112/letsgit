@@ -90,24 +90,27 @@ function formatDate(dateString) {
 
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
-useEffect(() => {
-  axios.get("http://localhost:8081/client/contract")
-    .then((response) => {
-      const mappedContracts = response.data.map(contract => ({
-        id: contract.contractId,
-        starredStatus: false,
-        title: contract.contractTitle,
-        clientId: contract.clientId,
-        status: contract.status,
-        date: contract.dueDate ? formatDate(contract.dueDate) : "날짜 없음", // Fallback for missing dueDate
-        preview: contract.preview || "",
+  useEffect(() => {
+  axios
+    .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
+    .then((res) => {
+      // 채팅방 목록 데이터 가공해서 setChatData
+      const newData = res.data.map((room) => ({
+        id: room.id, // roomID 추가
+        creator : room.creator,
+        name: room.name,
+        message: room.creator,
+        time: room.createdAt ?? "시간 정보 없음",
+        
       }));
-      setContracts(mappedContracts);
+      
+      setChatData(newData);
+      console.log("채팅방 리스트:", newData);
+
     })
-    .catch((error) => {
-      console.error("계약 데이터 가져오기 실패:", error);
-    });
+    .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
 }, []);
+
 
   const {
     filteredChats,
@@ -171,6 +174,7 @@ useEffect(() => {
   }, [location.state?.messageText, addRequestMessage, filteredChats, handleProfileClick]);
 
   const [contracts, setContracts] = useState([]);
+  //의뢰가져오는거
   useEffect(() => {
     axios.get("http://localhost:8081/client/contract")
       .then((response) => {
@@ -208,7 +212,7 @@ useEffect(() => {
         />
         {filteredChats.length > 0 ? (
           filteredChats.map((chat, index) => {
-            console.log("chat 내용 확인:", chat);
+            
             return (
               <ChatProfile
                 key={index}
@@ -297,9 +301,9 @@ useEffect(() => {
             <CustomModalHeader
             
             >의뢰 불러오기 </CustomModalHeader>
-            {contracts.map((c) => (
-            <RequestBar onClick={(request) => handleRequestselect(request)}
-              key={c.id}
+            {contracts.map((c,index) => (
+            <RequestBar key={index} onClick={(request)  => handleRequestselect(request)}
+              
               title={c.title}
               date={c.date}
               />

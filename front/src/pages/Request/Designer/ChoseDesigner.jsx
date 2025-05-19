@@ -31,8 +31,8 @@ const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  border: 2px solid;
-  border-radius: 10px;
+  border: 2px solid #799fc4;
+  border-radius: 20px;
   margin: 15px;
   padding: 20px;
 `;

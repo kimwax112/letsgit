@@ -23,10 +23,12 @@ import ContractList from "./components/contract/ContractList/ContractList";
 import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
 import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
-
+import CanceledPage from "./pages/contract/CanceledPage"
 
 
 const RouterComponent = () => {
+  
+
   return (
     <Routes>
       {/* 루트 경로 */}
@@ -70,6 +72,7 @@ const RouterComponent = () => {
               <Route path="ContractSendMessagePage" element={<ContractSendMessagePage />} />
               <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
+              <Route path="CanceledPage" element={<CanceledPage /> } />
              
               
             </Routes>
@@ -88,6 +91,7 @@ const RouterComponent = () => {
             <Route path="Portfolio" element={<Portfolio />} />
             <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
             <Route path="DesignerContractCreate" element={<DesignerContractCreatePage />}/>
+         
            </Routes>
         </DesignerLayout>
       } />

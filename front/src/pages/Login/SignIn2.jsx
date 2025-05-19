@@ -61,6 +61,7 @@ export default function SignIn2() {
     
         const data = await response.json();
         if (response.ok && data.message === "회원가입 성공!") {
+          localStorage.setItem("token", data.token); // 5/19
             localStorage.setItem("signupEmail", email);
             localStorage.setItem("signupUsername", username);
             localStorage.setItem("signupName", name);
