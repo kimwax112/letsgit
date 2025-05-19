@@ -48,7 +48,7 @@ const DesignerContractInputSection = ({ contractData, setContractData }) => {
         <label className={styles.label}>
           계약인(의뢰인) <span style={{ color: "red" }}>*</span>
         </label>
-        <input
+        <input autoFocus
           type="text"
           value={contractData.clientId || ""} // 빈 문자열로 기본값 설정
           name="clientName"
