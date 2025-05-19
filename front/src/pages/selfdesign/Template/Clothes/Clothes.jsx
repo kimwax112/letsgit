@@ -7,94 +7,132 @@ const items = {
   상의: [
     {
       name: "티셔츠(T-shirt)",
-      image: "/image/Clothes-item/상의/T-shirt.jpg"
+      image: "/image/Clothes-item/상의/T-shirt.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "맨투맨(Sweatshirt)",
-      image: "/image/Clothes-item/상의/Sweatshirt.jpg"
+      image: "/image/Clothes-item/상의/Sweatshirt.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "후드(Hoodie)",
-      image: "/image/Clothes-item/상의/hoodie.jpg"
+      image: "/image/Clothes-item/상의/hoodie.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "집업(Zip-up Jersey)",
-      image: "/image/Clothes-item/상의/Zip-up.jpg"
+      image: "/image/Clothes-item/상의/Zip-up.jpg",
+      color: null,
+      ratio: null,
     }
   ],
   아우터: [
     {
       name: "코트(Coat)",
-      image: "/image/Clothes-item/아우터/coat.jpg"
+      image: "/image/Clothes-item/아우터/coat.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "자켓(Jacket)",
-      image: "/image/Clothes-item/아우터/Jacket.jpg"
+      image: "/image/Clothes-item/아우터/Jacket.jpg",
+      color: null,
+      ratio: null,
     }
   ],
   바지: [
     {
       name: "청바지(Jeans)",
-      image: "/image/Clothes-item/바지/Jeans.jpg"
+      image: "/image/Clothes-item/바지/Jeans.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "슬랙스(Slacks)",
-      image: "/image/Clothes-item/바지/Slacks.jpg"
+      image: "/image/Clothes-item/바지/Slacks.jpg",
+      color: null,
+      ratio: null,
     },
     {
       name: "조거팬츠(Jogger Pants)",
-      image: "/image/Clothes-item/바지/JoggerPants.jpg"
+      image: "/image/Clothes-item/바지/JoggerPants.jpg",
+      color: null,
+      ratio: null,
     }
   ],
   원피스: [
     {
       name: "미니 원피스(Mini dress)",
-      image: "/image/Clothes-item/원피스/MiniDress.jpg"
-     },
-     {
+      image: "/image/Clothes-item/원피스/MiniDress.jpg",
+      color: null,
+      ratio: null,
+    },
+    {
       name: "맥시 원피스(Maxi dress)",
-      image: "/image/Clothes-item/원피스/MaxiDress.jpg"
-     },
+      image: "/image/Clothes-item/원피스/MaxiDress.jpg",
+      color: null,
+      ratio: null,
+    }
   ],
   스커트: [
     {
       name: "미니 스커트(Mini skirt)",
-      image: "/image/Clothes-item/치마/MiniSkirt.jpg"
-     },
-     {
+      image: "/image/Clothes-item/치마/MiniSkirt.jpg",
+      color: null,
+      ratio: null,
+    },
+    {
       name: "롱 스커트(Long skirt)",
-      image: "/image/Clothes-item/치마/LongSkirt.jpg"
-     },
+      image: "/image/Clothes-item/치마/LongSkirt.jpg",
+      color: null,
+      ratio: null,
+    }
   ],
   스니커즈: [
     {
       name: "러닝화(Running shoes)",
-      image: "/image/Clothes-item/스니커즈/RunningShoes.jpg"
-     },
-     {
+      image: "/image/Clothes-item/스니커즈/RunningShoes.jpg",
+      color: null,
+      ratio: null,
+    },
+    {
       name: "하이탑(High-top shoes)",
-      image: "/image/Clothes-item/스니커즈/high-topShoes.jpg"
-     },
+      image: "/image/Clothes-item/스니커즈/high-topShoes.jpg",
+      color: null,
+      ratio: null,
+    }
   ],
   신발: [
     {
       name: "로퍼(Loafers)",
-      image: "/image/Clothes-item/신발/loafers.jpg"
-     },
-     {
+      image: "/image/Clothes-item/신발/loafers.jpg",
+      color: null,
+      ratio: null,
+    },
+    {
       name: "샌들(Sandals)",
-      image: "/image/Clothes-item/신발/sandals.jpg"
-     },
+      image: "/image/Clothes-item/신발/sandals.jpg",
+      color: null,
+      ratio: null,
+    }
   ],
   가방: [
     {
       name: "백팩(BackPack)",
-      image: "/image/Clothes-item/가방/backpack.jpg"
-     },
-     {
+      image: "/image/Clothes-item/가방/backpack.jpg",
+      color: null,
+      ratio: null,
+    },
+    {
       name: "토트백(Tote bag)",
-      image: "/image/Clothes-item/가방/ToteBag.jpg"
-     },
+      image: "/image/Clothes-item/가방/ToteBag.jpg",
+      color: null,
+      ratio: null,
+    }
   ],
 };
 
@@ -102,12 +140,12 @@ const Clothes = () => {
   const navigate = useNavigate();
   const categories = Object.keys(items);
   const [activeTab, setActiveTab] = useState(0);
-  
+
   const [selectedItem, setSelectedItem] = useState(() => {
     const stored = localStorage.getItem("selectedClothing");
     return stored ? JSON.parse(stored) : null;
   });
-  
+
   useEffect(() => {
     if (selectedItem) {
       localStorage.setItem("selectedClothing", JSON.stringify(selectedItem));
@@ -119,11 +157,11 @@ const Clothes = () => {
       alert("의류를 선택해주세요!");
       return;
     }
-  
+
     console.log("✅ 다음 페이지로 이동:", selectedItem);
     navigate("/fabric");
   };
-  
+
   return (
     <div className="clothes-container">
       <div className="layout1">
@@ -144,7 +182,8 @@ const Clothes = () => {
               const selectedCategory = categories[activeTab];
               setSelectedItem({
                 category: selectedCategory,
-                item: item.name,  // item.name을 사용해서 선택된 항목 설정
+                item: item.name,
+                name: `${selectedCategory} - ${item.name}`,
               });
             }}
           />

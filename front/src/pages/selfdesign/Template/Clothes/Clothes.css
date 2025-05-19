@@ -89,8 +89,8 @@
   background: #fff;
   border-radius: 0.625rem;  /* 10px */
   width: 60%;
-  max-width: 100%; /* 최대 너비 설정 */
-  height: 62.5rem;  /* 1000px */
+  height: auto; /* 또는 min-height: 600px; */
+  padding-bottom: 5rem;
 }
 
 .content1 h3 {
