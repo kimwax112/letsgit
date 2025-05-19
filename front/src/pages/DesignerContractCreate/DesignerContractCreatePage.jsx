@@ -79,15 +79,15 @@ const DesignerContractCreatePage = () => {
   // 로컬스토리지에서 사용자 ID 가져오기
   useEffect(() => {
     const id = localStorage.getItem("id"); // 로컬 스토리지에서 userId 가져오기
-    //if (id) {
-    //  setContractData(prevData => ({
-    //    ...prevData,
-    //    designerId: id, // designerId를 로그인한 사용자 ID로 설정
-    //  }));
-    //} else {
-    //  alert("로그인이 필요합니다.");
-    //  navigate("/login"); // 로그인 페이지로 리디렉션
-    //}
+    if (id) {
+      setContractData(prevData => ({
+        ...prevData,
+        designerId: id, // designerId를 로그인한 사용자 ID로 설정
+      }));
+    } else {
+      alert("로그인이 필요합니다.");
+      navigate("/login"); // 로그인 페이지로 리디렉션
+    }
   }, [navigate]);
 
   // 로컬스토리지에서 작성중인 계약서 자동 불러오기
