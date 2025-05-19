@@ -32,7 +32,7 @@ const disputeSamples = [
   "분쟁 발생 시 상호 협의를 우선으로 하며, 해결되지 않으면 중재 기관에 의뢰합니다.",
 ];
 
-const deliverableOptions = ["상의", "하의", "가방", "신발", "액세서리", "기타"];
+const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
 const ComponentToPrint = React.forwardRef(({ contractData, deliverables }, ref) => (
   <div ref={ref} style={{ padding: "1rem", fontFamily: "Arial, sans-serif", color: "#000" }}>
@@ -79,15 +79,15 @@ const DesignerContractCreatePage = () => {
   // 로컬스토리지에서 사용자 ID 가져오기
   useEffect(() => {
     const id = localStorage.getItem("id"); // 로컬 스토리지에서 userId 가져오기
-    if (id) {
-      setContractData(prevData => ({
-        ...prevData,
-        designerId: id, // designerId를 로그인한 사용자 ID로 설정
-      }));
-    } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login"); // 로그인 페이지로 리디렉션
-    }
+    //if (id) {
+    //  setContractData(prevData => ({
+    //    ...prevData,
+    //    designerId: id, // designerId를 로그인한 사용자 ID로 설정
+    //  }));
+    //} else {
+    //  alert("로그인이 필요합니다.");
+    //  navigate("/login"); // 로그인 페이지로 리디렉션
+    //}
   }, [navigate]);
 
   // 로컬스토리지에서 작성중인 계약서 자동 불러오기
