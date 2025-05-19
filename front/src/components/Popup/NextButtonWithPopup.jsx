@@ -19,7 +19,7 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
 
   const handleConfirm = () => {
     setIsPopupOpen(false);
-    navigate(nextRoute); // 원하는 다음 페이지 경로
+    navigate(nextRoute);
   };
 
   return (
@@ -34,7 +34,7 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
           <ul>
             {selectedItems.map((item, index) => (
               <li key={index}>
-                {item.category} - {item.item}
+                {item.name} - {item.color}({item.ratio !== null ? `${item.ratio}%)` : "미정"}
               </li>
             ))}
           </ul>
@@ -43,6 +43,5 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
     </>
   );
 };
-
 
 export default NextButtonWithPopup;
