@@ -90,8 +90,27 @@ const StyledButton = styled.button`
 `;
 
 export default function RequestPopup({ onClose, data }) {
-  const handleSave = () => {
-    const requestData = [data]; // Wrap data in an array to match existing structure
+   const handleSave = () => {
+    // 기존 requestData 가져오기
+    const existingData = localStorage.getItem("requestData");
+    let requestData = [];
+    
+    if (existingData) {
+      try {
+        requestData = JSON.parse(existingData);
+        if (!Array.isArray(requestData)) {
+          requestData = [requestData]; // 배열이 아니면 배열로 변환
+        }
+      } catch (error) {
+        console.error("requestData 파싱 오류:", error);
+        requestData = [];
+      }
+    }
+
+    // 새로운 데이터 추가
+    requestData.push(data);
+    
+    // localStorage에 저장
     localStorage.setItem("requestData", JSON.stringify(requestData));
     console.log("Data saved to localStorage:", requestData);
     alert("임시저장이 완료되었습니다.");

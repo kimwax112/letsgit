@@ -101,7 +101,7 @@ export default function ItemBox({ children,data }) {
   
 
   const handleClick = () => {
-    navigate('/client/RequestPost');
+    navigate('/client/RequestPost' , {state : {requestData : data }});
   };
 
   return (
@@ -109,8 +109,8 @@ export default function ItemBox({ children,data }) {
       <InnerBox />
       <DescriptionContainer>
         <TagContainer>
-          <Tag>청바지</Tag>
-          <Tag>청바지</Tag>
+          <Tag>{data?.categoryTags}</Tag>
+          <Tag>{data?.categoryTags}</Tag>
         </TagContainer>
         <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
         <Profile>
@@ -120,7 +120,7 @@ export default function ItemBox({ children,data }) {
           홍길동
         </Profile>
         <Text2>{data?.amount || "10000원"}</Text2>
-        <Text2>{"희망기한 " + data?.deadline || 희망기한: 2주} </Text2>
+        <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 2주"}</Text2>
       </DescriptionContainer>
     </ItemBoxContainer>
   );
