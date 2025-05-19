@@ -57,3 +57,12 @@ src/pages/contract/DetailUI
   -최종확인: 교수님이 말씀하신 이미지나 내용 채워야하는거는 추가 진행 필요
   -파일업로드: 이미지 크기가 크면 비율 그대로 작아지게 만들어야함(수정필요)
 4. 단위 고정단위인 px에서 rem으로 단위 바꾸는 중
+
+*05.19.월요일*
+1. pages\selfdesign\Template\Fabric\Fabric.jsx 
+   -Fabric.jsx 파일에 원단 색상 선택할 수 있는 부분 옆에다가 혼합률 선택 가능한 기능 추가함.
+2. pages\selfdesign\Template\FinalConfirmation\FinalConfirmation.jsx
+   -FinalConfirmation.jsx 파일에 앞서서 선택한 옷 카테고리, 원단(이미지/이름/혼합률/색상), 사이즈, 메모란 추가하며 ui 수정함.
+  -selectedFabric: 선택한 원단 목록
+  -selectedColors: 각 원단의 색상 값 (Hex 코드)
+  -selectedRatios: 각 원단의 혼합률 (숫자값)
