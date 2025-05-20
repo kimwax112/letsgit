@@ -97,13 +97,12 @@
 .dropdown-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #9dbbd5;
   padding: 1.25rem; /* 20px -> 1.25rem */
   border-top: 0.125rem solid white; /* 2px -> 0.125rem */
   width: 100%;
   min-height: 15.625rem; /* 250px -> 15.625rem */
-  box-shadow: 0px 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -117,15 +116,19 @@
 }
 
 .dropdown-section h3 {
-  font-size: 1.3rem; /* 19px -> 1.2rem */
-  color: white;
+  font-size: 1.3rem;
+  color: #4a6171;
   font-weight: bold;
-  margin-bottom: 0.625rem; /* 10px -> 0.625rem */
+  margin-bottom: 0.625rem;
+  height: 3rem; /* 고정 높이 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 드롭다운 링크 */
 .dropdown-section a {
-  color: white;
+  color: #6b7c8a;
   text-decoration: none;
   font-size: 1.15rem; /* 16px -> 1rem */
   display: block;

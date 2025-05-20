@@ -1,22 +1,40 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./DesignerContractCreate.module.css";
 
-const DesignerContractEditor = () => {
+const DesignerContractEditor = ({ contractData, setContractData }) => {
   const editorRef = useRef(null);
+
+  // 부모 상태(contractContent)가 바뀔 때 에디터 내용 동기화
+  useEffect(() => {
+    if (
+      editorRef.current &&
+      editorRef.current.innerText !== (contractData.contractContent || "")
+    ) {
+      editorRef.current.innerText = contractData.contractContent || "";
+    }
+  }, [contractData.contractContent]);
+
+  // contentEditable 변경 시 부모 상태 업데이트
+  const handleInput = () => {
+    setContractData((prev) => ({
+      ...prev,
+      contractContent: editorRef.current.innerText,
+    }));
+  };
 
   // 텍스트 스타일 변경 함수
   const handleStyleChange = (style) => {
     const selection = window.getSelection();
-    const range = selection.getRangeAt(0); // 선택된 범위
+    if (!selection.rangeCount) return;
 
-    // 선택된 범위가 텍스트 노드인지 확인
-    if (range.startContainer.nodeType === 3) { // 텍스트 노드일 때만
-      const selectedText = range.toString(); // 선택된 텍스트
+    const range = selection.getRangeAt(0);
 
-      // 선택된 텍스트에 스타일 적용
+    if (range.startContainer.nodeType === 3) {
+      const selectedText = range.toString();
+      if (!selectedText) return;
+
       const span = document.createElement("span");
 
-      // 스타일에 따라 span에 스타일 적용
       if (style === "bold") {
         span.style.fontWeight = "bold";
       } else if (style === "italic") {
@@ -27,12 +45,17 @@ const DesignerContractEditor = () => {
         span.style.textDecoration = "line-through";
       }
 
-      span.style.color = "black"; // 기본 글자색을 검정색으로 고정
+      span.style.color = "black";
 
-      // 기존 텍스트를 span으로 대체
       range.deleteContents();
       span.textContent = selectedText;
       range.insertNode(span);
+
+      // 스타일 변경 후 부모 상태 업데이트
+      setContractData((prev) => ({
+        ...prev,
+        contractContent: editorRef.current.innerText,
+      }));
     }
   };
 
@@ -42,15 +65,22 @@ const DesignerContractEditor = () => {
     if (!selection.rangeCount) return;
 
     const range = selection.getRangeAt(0);
-    if (range.startContainer.nodeType === 3) { // 텍스트 노드일 때만
+
+    if (range.startContainer.nodeType === 3) {
+      const selectedText = range.toString();
+      if (!selectedText) return;
+
       const span = document.createElement("span");
       span.style.color = color;
-
-      const selectedText = range.toString();
       span.textContent = selectedText;
 
       range.deleteContents();
       range.insertNode(span);
+
+      setContractData((prev) => ({
+        ...prev,
+        contractContent: editorRef.current.innerText,
+      }));
     }
   };
 
@@ -60,15 +90,22 @@ const DesignerContractEditor = () => {
     if (!selection.rangeCount) return;
 
     const range = selection.getRangeAt(0);
-    if (range.startContainer.nodeType === 3) { // 텍스트 노드일 때만
+
+    if (range.startContainer.nodeType === 3) {
+      const selectedText = range.toString();
+      if (!selectedText) return;
+
       const span = document.createElement("span");
       span.style.backgroundColor = color;
-
-      const selectedText = range.toString();
       span.textContent = selectedText;
 
       range.deleteContents();
       range.insertNode(span);
+
+      setContractData((prev) => ({
+        ...prev,
+        contractContent: editorRef.current.innerText,
+      }));
     }
   };
 
@@ -78,40 +115,46 @@ const DesignerContractEditor = () => {
         <button
           onClick={() => handleStyleChange("bold")}
           className={styles.boldButton}
+          type="button"
         >
           B
         </button>
         <button
           onClick={() => handleStyleChange("italic")}
           className={styles.italicButton}
+          type="button"
         >
           I
         </button>
         <button
           onClick={() => handleStyleChange("underline")}
           className={styles.underlineButton}
+          type="button"
         >
           U
         </button>
         <button
           onClick={() => handleStyleChange("strikeThrough")}
           className={styles.strikeButton}
+          type="button"
         >
           S
         </button>
-        <button onClick={() => handleColorChange("#ff0000")}>Red</button>
-        <button onClick={() => handleBgColorChange("#ffff00")}>Yellow BG</button>
-        <select onChange={(e) => handleStyleChange("fontSize")} defaultValue="16">
-          <option value="16">16px</option>
-          <option value="18">18px</option>
-          <option value="20">20px</option>
-        </select>
+        <button onClick={() => handleColorChange("#ff0000")} type="button">
+          Red
+        </button>
+        <button onClick={() => handleBgColorChange("#ffff00")} type="button">
+          Yellow BG
+        </button>
+        {/* 폰트 크기 변경은 필요하면 추가 구현 가능 */}
       </div>
       <div
         ref={editorRef}
         contentEditable
         placeholder="계약 세부사항을 입력하세요"
         className={styles.editor}
+        onInput={handleInput}
+        spellCheck={false}
       />
     </div>
   );

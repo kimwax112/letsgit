@@ -7,12 +7,15 @@ import clientImage from "../../../assets/desiner.png";
 const DesignerContractList = () => {
   const [contracts, setContracts] = useState([]);
   const navigate = useNavigate();
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     axios
       .get("http://localhost:8081/designer/contract")
       .then((response) => {
-        const fetchedContracts = response.data.map((contract) => ({
+        const fetchedContracts = response.data
+        .filter((contract) => contract.designerId === userId) //필터
+         .map((contract) => ({
           status: convertStatus(contract.status),
           clientName: contract.contractTitle,
           //   content: contract.contractTitle,
@@ -23,6 +26,9 @@ const DesignerContractList = () => {
           roomId: contract.roomId || "20", // roomId 추가, 서버에서 받아오지 못하면 기본값 "20"
         }));
         setContracts(fetchedContracts);
+        console.log("userId:", userId);
+        console.log("response.data:", response.data);
+
       })
       .catch((error) => {
         console.error("계약서 목록 불러오기 실패:", error);
@@ -105,9 +111,9 @@ const DesignerContractList = () => {
           <div className="info">
             <div className="client-name">{contract.clientName}</div>
             <div className="dates">
-              <div className="date">
+              {/* <div className="date">
                 <span>계약일</span> {contract.date}
-              </div>
+              </div> */}
               <div className="period">
                 <span>계약 기간</span> {contract.period}
               </div>

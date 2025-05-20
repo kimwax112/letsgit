@@ -4,7 +4,7 @@ body{
 }
 
 .LogoStuff img{
-  width: 150px;
+  width: 9.38rem; /* 150px */
 }
 
 /* 헤더 스타일 */
@@ -14,74 +14,71 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  height: 50px;
+  box-shadow: 0 0.13rem 0.31rem rgba(0, 0, 0, 0.1); /* 2px 5px */
+  height: 3.13rem; /* 50px */
 }
 
 .header h1 {
   white-space: nowrap;
+  color: white;
+  font-size: 1.5rem;
 }
 
 .title-text{
-  margin-left: 190px;
-  margin-bottom: 180px;
+  margin-left: 11.88rem; /* 190px */
+  margin-bottom: 11.25rem; /* 180px */
 }
 
 .title-text h3 {
-  margin-top: 50px;
-  margin-left: 20px;
-  margin-bottom: -30px;
+  margin-top: 3.13rem; /* 50px */
+  margin-left: 1.25rem; /* 20px */
+  margin-bottom: -1.88rem; /* -30px */
 }
 
 .title-text h5{
   font-size: 1ch;
   color: darkgray;
-  margin-left: 30px;
+  margin-left: 1.88rem; /* 30px */
 }
 
 .text{
-  font-size: 30px;
+  font-size: 1.875rem; /* 30px */
   font-weight: bold;
 }
 
 .design-container {
   display: flex;
   align-items: flex-start; /* 위쪽 정렬 */
-  gap: 20px; /* 간격 조정 */
-  padding: 20px;
+  gap: 1.25rem; /* 20px */
+  padding: 1.25rem; /* 20px */
 }
 
 .design-step {
-  width: 150px; /* 너무 길어지지 않게 제한 */
-  font-size: 14px;
-  line-height: 1.5; /* 줄 간격 조절 */
-  word-break: keep-all; /* 줄바꿈 최소화 */
-}
-
-.header h1 {
-  color: white;
-  font-size: 1.5rem;
+  width: 9.38rem; /* 150px */
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.5;
+  word-break: keep-all;
 }
 
 .step-list {
-  margin-top: 20px; /* 위쪽 여백 추가 */
-  margin-bottom: 15px; /* 아래쪽 여백 추가 */
-  line-height: 1.6; /* 줄 간격 증가 */
+  margin-top: 1.25rem; /* 20px */
+  margin-bottom: 0.94rem; /* 15px */
+  line-height: 1.6;
 }
 
 .nav-links {
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  gap: 1.5rem; /* 간격 조정 */
-  width: 100%; /* 전체 너비 사용 */
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .nav-links button, .nav-links a {
-  padding: 0.7rem 1.5rem;
+  padding: 0.44rem 0.94rem; /* 7px 15px */
   background-color: #9dbbd5;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.31rem; /* 5px */
   color: white;
   font-size: 1rem;
   text-decoration: none;
@@ -94,19 +91,20 @@ body{
   background-color: #5d8cb1;
   transform: scale(1.05);
 }
+
 /* 카테고리 탭 스타일 */
 .category-tabs {
   display: flex;
-  flex-wrap: wrap; /* 탭이 많으면 줄바꿈 */
-  gap: 10px;
-  flex-grow: 1; /* 남은 공간 차지 */
+  flex-wrap: wrap;
+  gap: 0.63rem; /* 10px */
+  flex-grow: 1;
 }
 
 .tab {
-  padding: 0.7rem 1.2rem;
+  padding: 0.44rem 0.75rem; /* 7px 12px */
   color: black;
   border: 2px solid transparent;
-  border-radius: 5px;
+  border-radius: 0.31rem; /* 5px */
   background-color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
@@ -126,9 +124,9 @@ body{
 .item-card {
   position: relative;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.7); /* 반투명 배경 */
+  background-color: rgba(255, 255, 255, 0.7);
   text-align: center;
-  border-radius: 8px;
+  border-radius: 0.5rem; /* 8px */
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -143,7 +141,7 @@ body{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.4); /* 어두운 필터를 적용하여 텍스트 가독성 향상 */
+  filter: brightness(0.4);
 }
 
 .item-card .text-overlay {
@@ -154,15 +152,14 @@ body{
 .item-card:hover {
   transform: scale(1.05);
   border-color: #9dbbd5;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.25rem 0.94rem rgba(0, 0, 0, 0.2); /* 4px 15px */
 }
 
 .item-card.selected {
   border-color: #5d8cb1;
   background-color: #e8f0fa;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* 선택된 항목 강조 */
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.3); /* 4px 20px */
 }
-
 
 /* 하단 버튼 */
 .footer {
@@ -171,18 +168,16 @@ body{
   padding: 1rem 2rem;
 }
 
-
-.footer.button_size { /* CosMain/Clothes/Fabric/Size 밑에 세개 버튼 속성*/ 
+.footer.button_size {
   justify-content: center;
-  align-items: center;      /* 수직 가운데 정렬 */
-  padding: 0.7rem 1.5rem;
+  align-items: center;
+  padding: 0.44rem 0.94rem; /* 7px 15px */
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.31rem;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  
 }
 
 .footer button:hover {
@@ -191,132 +186,121 @@ body{
 
 .fabric-select {
   display: flex;
-  flex-wrap: wrap; /* 가로 공간 부족 시 다음 줄로 넘어감 */
-  gap: 20px;
+  flex-wrap: nowrap;
+  gap: 1.25rem; /* 20px */
   justify-content: center;
-  margin: 20px;
-  margin-left: 50px;
-  max-width: 1000px; /* 컨테이너 최대 너비 제한 */
-}
-
-.fabric-item {
-  width: 150px;
-  border-radius: 8px;
-  padding: 1rem;
-  text-align: center;      /* 중앙 정렬 */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  background-color:#74a3c7;
+  margin: 1.25rem; /* 20px */
+  margin-left: 3.13rem; /* 50px */
+  max-width: 62.5rem; /* 1000px */
 }
 
 .fabric-image {
   width: 100%;
-  height: 150px;           /* 예시 높이 */
-  background-color: #ffffff;  /* 임시 배경 */
-  margin-bottom: 0.5rem;
-  border-radius: 4px;
-  /* 실제 이미지 사용 시:
-  background-image: url("...");
-  background-size: cover;
-  background-position: center;
-  */
+  height: 9.38rem; /* 150px */
+  background-color: #ffffff;
+  margin-bottom: 0.31rem; /* 5px */
+  border-radius: 0.25rem; /* 4px */
 }
 
 .fabric-name {
-  font-size: 1.35rem;
+  font-size: 1.6rem; /* 기존 1.35rem -> 좀 더 크게 */
   font-weight: bold;
   margin: 0.5rem 0;
 }
 
 .fabric-color-box {
   background-color:#9dbbd5;
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  border-radius: 4px;
+  padding: 0.31rem; /* 5px */
+  margin: 0.31rem 0; /* 5px */
+  border-radius: 0.25rem;
   border: 1px solid #ddd;
 }
 
 .fabric-desc {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.9rem; 
   color: black;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 0.31rem;
   background-color: #ddd;
-  
 }
 
 .fabric-desc2 {
-  display: inline-block;    /* 가로로 나열하면서 줄바꿈이 가능하도록 */
-  margin-right: 8px;        /* 오른쪽 간격 (필요에 따라 조절) */
-  margin-bottom: 5px;       /* 아래쪽 간격 (여러 줄 표현 시) */
-  font-size: 0.9rem;
+  display: inline-block;
+  margin-right: 0.5rem; /* 8px */
+  margin-bottom: 0.31rem; /* 5px */
+  font-size: 1.1rem;; 
   color: #ffffff;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 0.31rem;
   background-color: #9dbbd5;
-  padding: 0.3rem 0.5rem;   /* 텍스트 주위 여백 */
-  text-align: left;  
-  max-width: 100%;       /* 내용 텍스트 왼쪽 정렬 */
+  padding: 0.19rem 0.31rem; /* 3px 5px */
+  text-align: left;
+  max-width: 100%;
 }
 
 .content1 {
   flex: 1;
-  padding: 20px;
+  padding: 1.25rem 1.88rem 1.25rem 0.94rem; /* 20px 30px 20px 15px */
   background: #fff;
-  border-radius: 10px;
+  border-radius: 0.63rem; /* 10px */
   margin: 0 auto;
-  margin-left: 15px;
-  padding-right: 30px;
-  width: 1220px;
-  height: 1350px !important; /* 높이를 800px로 설정 */
+  margin-left: 0.94rem; /* 15px */
+  width: 76.25rem; /* 1220px */
+  height: 70rem !important; /* 1000px */
 }
 
 
 .item-and-color-container {
   display: flex;
-  align-items: flex-start; /* FabricItem과 ColorSelect를 수직 정렬 */
-  gap: 20px; /* 양쪽 사이 간격 */
+  align-items: flex-start;
+  gap: 1.25rem; /* 20px */
 }
 
 .ColorSelect {
-  width: 50%;      /* FabricItem과 같은 너비로 */
-  background-color: #f0f0f0; /* 배경색 (원하는 색상으로 변경 가능) */
+  width: 50%;
+  background-color: #f0f0f0;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding : 16px;
-  margin-top: 25px;
-  margin-left: 40px;
+  gap: 0.63rem; /* 10px */
+  padding: 1rem; /* 16px */
+  margin-top: 1.56rem; /* 25px */
+  margin-left: 2.5rem; /* 40px */
 }
 
 .color-select-row {
   display: flex;
-  align-items: center;   /* 수직 가운데 정렬 */
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;             /* 텍스트와 컬러피커 사이 간격 */
-  margin-bottom: 10px;  /* 줄 간 간격 */
+  gap: 0.5rem; /* 8px */
+  margin-bottom: 0.63rem; /* 10px */
 }
-
 
 .color-select-row .fabric-name {
   font-size: 1.35rem;
-  margin-right: 10px;
+  margin-right: 0.63rem; /* 10px */
   font-weight: bold;
 }
 
 .pagination {
-  margin-left: 500px;
+  margin-left: 31.25rem; /* 500px */
 }
 
 .header2-1{
-  margin-left: 40px;
-  margin-top: 15px;
+  margin-left: 2.5rem; /* 40px */
+  margin-top: 0.94rem; /* 15px */
 }
 
 .header2-1 hr{
   width: 110%;
+}
+
+.color-select-row input[type="number"] {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem; /* 4px */
+  text-align: right;
 }

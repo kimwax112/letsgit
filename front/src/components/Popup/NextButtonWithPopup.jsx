@@ -19,7 +19,7 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
 
   const handleConfirm = () => {
     setIsPopupOpen(false);
-    navigate(nextRoute); // 원하는 다음 페이지 경로
+    navigate(nextRoute);
   };
 
   return (
@@ -31,18 +31,17 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
           onCancel={() => setIsPopupOpen(false)}
           onConfirm={handleConfirm}
         >
-          <ul>
-            {selectedItems.map((item, index) => (
-              <li key={index}>
-                {item.category} - {item.item}
-              </li>
-            ))}
-          </ul>
+        <ul>
+          {selectedItems.map((item, index) => (
+            <li key={index}>
+              {item.name} - {item.color ?? "미정"} ({item.ratio !== null && item.ratio !== undefined ? `${item.ratio}%` : "미정"})
+            </li>
+          ))}
+        </ul>
         </Popup>
       )}
     </>
   );
 };
-
 
 export default NextButtonWithPopup;

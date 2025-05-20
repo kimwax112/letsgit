@@ -2,6 +2,9 @@ import React from "react";
 import "./FabricItem.css";
 
 function FabricItem({ fabricItemsData, selectedIds, onClickItem }) {
+  if (!Array.isArray(fabricItemsData)) {
+    return null; // 데이터 없으면 아무것도 렌더링하지 않음
+  }
   return (
     <div className="fabric-select">
       {fabricItemsData.map((item) => {
