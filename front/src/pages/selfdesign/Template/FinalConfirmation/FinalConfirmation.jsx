@@ -39,12 +39,12 @@ const FinalConfirmation = () => {
   const captureRef = useRef(null);
 
   useEffect(() => {
-    console.log("🔍 useEffect 실행됨, id:", id);
-    if (!id) {
-      alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
-      window.location.href = "/login";
-      return;
-    } 
+    //console.log("🔍 useEffect 실행됨, id:", id);
+    //if (!id) {
+    //  alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+    // window.location.href = "/login";
+    //  return;
+    //} 
     
     const storedClothing =
       sessionStorage.getItem("selectedClothing") ||
