@@ -10,3 +10,23 @@ prjexport = 데베 sql. 시퀸스, 함수 데이터 다 들어가있음
 이것도 본인이 작성한거를 본인만 볼 수 있어야하지않음?
 3. 김세정님 sql중 몇 개 갈아엎었음. 그에 해당하는 mapper.xml파일도 수정되어있음
 ㅁㄴㅇㄹ
+
+
+
+5/20
+충돌 파일 리스트:
+
+package.json, package-lock.json
+
+DesignerContractList.jsx
+
+ContractList.jsx
+
+DesignerContractCreatePage.jsx
+
+SignIn2.jsx
+
+DetailList.jsx
+
+Clothes.jsx 등
+

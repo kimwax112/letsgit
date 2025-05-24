@@ -7,8 +7,10 @@ import clientImage from "../../../assets/desiner.png";
 const DesignerContractList = () => {
   const [contracts, setContracts] = useState([]);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("id");
 
+
+// 5/20 병합후 코드 
+  const userId = localStorage.getItem("id");
   useEffect(() => {
     axios
       .get("http://localhost:8081/designer/contract")
@@ -34,6 +36,28 @@ const DesignerContractList = () => {
         console.error("계약서 목록 불러오기 실패:", error);
       });
   }, [setContracts]);
+
+  //5/20 병합전 코드 
+  //   useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8081/designer/contract")
+  //     .then((response) => {
+  //       const fetchedContracts = response.data.map((contract) => ({
+  //         status: convertStatus(contract.status),
+  //         clientName: contract.contractTitle,
+  //         //   content: contract.contractTitle,
+  //         date: formatDate(contract.dueDate),
+  //         period: calculatePeriod(contract.dueDate),
+  //         amount: formatAmount(contract.requestFee),
+  //         imageUrl: clientImage,
+  //         roomId: contract.roomId || "20", // roomId 추가, 서버에서 받아오지 못하면 기본값 "20"
+  //       }));
+  //       setContracts(fetchedContracts);
+  //     })
+  //     .catch((error) => {
+  //       console.error("계약서 목록 불러오기 실패:", error);
+  //     });
+  // }, [setContracts]);
 
   const convertStatus = (status) => {
     if (status === "진행중") return "진행중";
