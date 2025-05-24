@@ -10,3 +10,6 @@ insert into user_info values('ghi003', 'password2','abc@def.kr')
 /
 insert into user_info values('jkl004', 'password4','abc@def.jp')
 /
+
+
+select * from user_info;

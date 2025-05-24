@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Modal } from '../../../utils';
 import deleteIcon from '../../../assets/delete.png';
 import RequestBar from "../../../components/RequestBar/RequestBar";
-
+import { useEffect} from 'react'
 
 const CloseButton = styled.button`
   background: none;
@@ -73,15 +73,40 @@ export default function ModalContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const requestTitle = "후드티 제작"
   const requestDate = "2025-01-01";
+
+  
+  // localStorage에서 requestData 가져오기
+  const [requestItems, setRequestItems] = useState([]);
+    useEffect(() => {
+      const storedData = localStorage.getItem("requestData");
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          if (Array.isArray(parsedData)) {
+            setRequestItems(parsedData);
+          }
+        } catch (error) {
+          console.error("requestData 파싱 오류:", error);
+        }
+      }
+    }, []);
   
   if (!isVisible) return null;
 
   return (
     <>
+    {requestItems.length > 0 ? (
+      requestItems.map((item, index) => (
 <RequestBar 
 title={requestTitle}
 date={requestDate}
 onCloseClick={() => setIsModalOpen(true)}/>
+    ))
+  ): (
+    <>
+    </>
+  )}
+    
 
       {/* 삭제 확인 모달 */}
       {isModalOpen && (

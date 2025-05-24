@@ -1,12 +1,19 @@
 .fabric-item {
-  background-color: white !important; /* 기본 배경 흰색 강제 적용 */
-  width: 150px;
-  border-radius: 8px;
+  /* 기존 스타일 유지 */
+  background-color: white !important;
+  width: 9.375rem;
+  border-radius: 0.5rem;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  transition: background-color 0.3s ease; /* 부드러운 색 변화 */
+  box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+  margin: 0.625rem;
+  transition: background-color 0.3s ease;
+
+  /* 세로 정렬 추가 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가로 중앙 정렬 */
+  gap: 0.5rem; /* 아이템 간 간격 */
 }
 
 .fabric-item.selected {

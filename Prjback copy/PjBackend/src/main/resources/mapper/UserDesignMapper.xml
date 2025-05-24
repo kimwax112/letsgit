@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Loginpj.mapper.UserDesignMapper">
+
+  <insert id="insertUserDesign" parameterType="com.example.Loginpj.model.UserDesign">
+    <selectKey keyProperty="designId" resultType="long" order="BEFORE">
+      SELECT user_design_seq.NEXTVAL FROM dual
+    </selectKey>
+
+    INSERT INTO user_design (
+      design_id,
+      "ID",
+      clothing_type,
+      fabric,
+      sizee,
+      design_name,
+      colors,
+      created_at,
+      category
+    ) VALUES (
+      #{designId, jdbcType=NUMERIC},
+      #{id, jdbcType=VARCHAR},
+      #{clothingType, jdbcType=VARCHAR},
+      #{fabricInsertJson, jdbcType=VARCHAR},
+      #{size, jdbcType=VARCHAR},
+      #{designName, jdbcType=VARCHAR},
+      #{colorsInsertJson, jdbcType=CLOB},
+      SYSDATE,
+      #{category, jdbcType=VARCHAR}
+    )
+  </insert>
+
+</mapper>

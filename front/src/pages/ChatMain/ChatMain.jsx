@@ -8,13 +8,18 @@ import Room from "./ui/Room";
 import ItemBox from "./ui/ItemBox";
 import ModalContent from "../Request/ui/ModalContent";
 import { useChat } from "./ui/useChat";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import './ui/ChatRoom.css';
 import axios from "axios";
+import RequestBar from "../../components/RequestBar/RequestBar";
+
 const CustomModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   width: 700px;
   height: 800px;
+  
 `;
 
 const CustomModalHeader = styled.div`
@@ -32,10 +37,9 @@ const ItemBoxContainer = styled.div`
   background-color: white;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 10px;
-  padding-left: 20px;
+  justify-content: center;
+  gap: 50px;
+  
 `;
 
 const ReportButton = styled.button`
@@ -75,11 +79,18 @@ const ButtonWrapper = styled.div`
   { name: "Annette Black", message: "I dont eat, so I dont have a favorite food.", time: "2023-11-09" },
 ];*/
 
-
+function formatDate(dateString) {
+  if (!dateString) return ""; // Return empty string if dateString is falsy
+  const d = new Date(dateString);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
 
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
-useEffect(() => {
+  useEffect(() => {
   axios
     .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
     .then((res) => {
@@ -99,6 +110,8 @@ useEffect(() => {
     })
     .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
 }, []);
+
+
   const {
     filteredChats,
     recentSearches,
@@ -115,6 +128,7 @@ useEffect(() => {
     isSuccessPopupOpen,
     popupMessage,
     bottomRef,
+    setMessages,
     handleSearch,
     handleRecentSearchClick,
     handleProfileClick,
@@ -133,8 +147,53 @@ useEffect(() => {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
+    addRequestMessage,
+    handleItemSelect, // 클릭시 디자인된 의류 블러움
+    handleRequestselect, // 클릭시 의뢰 블러움
+    
   } = useChat(chatData);
-  
+
+  const location = useLocation();
+  const hasAddedRequestMessage = useRef(false); // useRef를 사용하여 DetailList 상태를 저장합니다.
+  useEffect(() => { // React의 useEffect 훅을 사용하여 컴포넌트 마운트 및 location.state 변경 시 실행.
+    const text = location.state?.messageText;
+    const targetUser = location.state?.targetUser || "ㅁㄴㅇㄹ"; //  useLocation을 사용해서 DetailList에서 전달된 state 객체 가져오기
+                                                              // location.state에서 targetUser 추출. 없으면 기본값 "ㅁㄴㅇㄹ" 설정.
+    if (text && !hasAddedRequestMessage.current) {
+      addRequestMessage(targetUser, text);
+      hasAddedRequestMessage.current = true;
+
+      // 명시적으로 ID 20으로 설정된 방으로 이동
+      const targetRoom = filteredChats.find((chat) => chat.id === "20");
+      if (targetRoom) {
+        handleProfileClick(targetRoom); // ID 20으로 이동
+      } else {
+        console.error("ID 20인 방을 찾을 수 없습니다.");
+      }
+    }
+  }, [location.state?.messageText, addRequestMessage, filteredChats, handleProfileClick]);
+
+  const [contracts, setContracts] = useState([]);
+  //의뢰가져오는거
+  useEffect(() => {
+    axios.get("http://localhost:8081/client/contract")
+      .then((response) => {
+        const mappedContracts = response.data.map(contract => ({
+          id: contract.contractId,
+          starredStatus: false,
+          title: contract.contractTitle,
+          clientId: contract.clientId,
+          status: contract.status,
+          date: formatDate(contract.dueDate),
+          preview: contract.preview || "",
+        }));
+        setContracts(mappedContracts);
+      })
+      .catch((error) => {
+        console.error("계약 데이터 가져오기 실패:", error);
+      });
+  }, []);
+
   return (
     <>
       <StyleSheet />
@@ -152,52 +211,54 @@ useEffect(() => {
           onRecentSearchClick={handleRecentSearchClick}
         />
         {filteredChats.length > 0 ? (
-  filteredChats.map((chat, index) => {
-    console.log("chat 내용 확인:", chat);
-    return (
-      <ChatProfile
-        key={index}
-        chat={chat}
-        id={chat.id}
-        creator={chat.creator}
-        name={chat.name}
-        message={chat.message}
-        time={chat.time}
-        onClick={() => handleProfileClick(chat)}
-        extraContent={
-          currentView === "report" ? (
-            <ButtonWrapper>
-              <BlockButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBlockClick(chat.name);
-                }}
-              >
-                차단
-              </BlockButton>
-              <ReportButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReportClick(chat.name);
-                }}
-              >
-                신고
-              </ReportButton>
-            </ButtonWrapper>
-          ) : null
-        }
-      />
-    );
-  })
-) : (
-  <p>검색 결과가 없습니다.</p>
-)}
+          filteredChats.map((chat, index) => {
+            
+            return (
+              <ChatProfile
+                key={index}
+                chat={chat}
+                id={chat.id}
+                creator={chat.creator}
+                name={chat.name}
+                message={chat.message}
+                time={chat.time}
+                onClick={() => handleProfileClick(chat)}
+                extraContent={
+                  currentView === "report" ? (
+                    <ButtonWrapper>
+                      <BlockButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleBlockClick(chat.name);
+                        }}
+                      >
+                        차단
+                      </BlockButton>
+                      <ReportButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReportClick(chat.name);
+                        }}
+                      >
+                       'styles.css'
+                        신고
+                      </ReportButton>
+                    </ButtonWrapper>
+                  ) : null
+                }
+              />
+            );
+          })
+        ) : (
+          <p>검색 결과가 없습니다.</p>
+        )}
 
         {isModalOpen && (
           <Room
             roomId={selectedRoomId}
             selectedUser={selectedUser}
             messages={messages}
+            setMessages={setMessages}
             isSideMenuOpen={isSideMenuOpen}
             onClose={handleCloseModal}
             onMenuClick={handleMenuClick}
@@ -222,7 +283,10 @@ useEffect(() => {
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
-              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+              <ItemBox text1="맨투맨1231" text2="(Sweatshirt)"
+            onClick={(item) => handleItemSelect(item)} // 여기서 (item) 정의
+            
+              />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
@@ -234,8 +298,18 @@ useEffect(() => {
         )}
         {modalOpen2 && (
           <CustomModal onClose={() => setModalOpen2(false)}>
-            <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
-            <ModalContent />
+            <CustomModalHeader
+            
+            >의뢰 불러오기 </CustomModalHeader>
+            {contracts.map((c,index) => (
+            <RequestBar key={index} onClick={(request)  => handleRequestselect(request)}
+              
+              title={c.title}
+              date={c.date}
+              />
+              
+            ))}
+            
           </CustomModal>
         )}
       </ChatLayout>
@@ -244,14 +318,6 @@ useEffect(() => {
 }
 //아래께 채팅창 말풍선 CSS임 #dcf8c6
 const styles = `
-  .message.sent {
-    background-color:#dcf8c6;
-    border-radius: 10px;
-    padding: 8px 12px;
-    margin: 5px;
-    max-width: 70%;
-    position: relative;
-  }
 
   .message.sent::after {
     content: '';

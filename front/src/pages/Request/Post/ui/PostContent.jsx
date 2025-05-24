@@ -54,11 +54,11 @@ const StyledImage = styled.img`
 /* 라벨 배열 예시 */
 const labels = ["카테고리", "원하는 스타일", "원하는 금액"];
 
-export default function PostContent() {
+export default function PostContent({data}) {
   return (
     <Container>
       <LeftSection>
-        <Title>청바지 무릎부분 센스있게 작성하실 분 구합니다!</Title>
+        <Title>{data?.title || "청바지 무릎부분 센스있게 작성하실 분 구합니다!"}</Title>
         <SubTitle>
           {labels.map((label, i) => (
             <React.Fragment key={i}>

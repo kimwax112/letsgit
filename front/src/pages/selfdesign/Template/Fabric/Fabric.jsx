@@ -105,7 +105,6 @@ const fabricItemsData = [
   }
 ];
 
-
 // 색상 코드 → 색상 이름 변환
 const colorNames = {
   "#ff0000": "빨강",
@@ -123,6 +122,8 @@ const Fabric = () => {
   const [selectedColors, setSelectedColors] = useState({});
   const [filteredFabricData, setFilteredFabricData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedRatios, setSelectedRatios] = useState({});
+  const [totalRatio, setTotalRatio] = useState(0);
 
   const itemsPerPageFirst = 8;
   const itemsPerPageSecond = 4;
@@ -135,23 +136,39 @@ const Fabric = () => {
 
       const storedFabric = JSON.parse(localStorage.getItem("selectedFabric")) || [];
       const storedColors = JSON.parse(localStorage.getItem("selectedColors")) || {};
+      const storedRatios = JSON.parse(localStorage.getItem("selectedRatios")) || {};
 
       // 초기 색상 세팅
       const initializedColors = {};
       fabricItemsData.forEach(item => {
         initializedColors[item.id] = storedColors[item.id] || item.initialColor;
       });
-      setSelectedItems(storedFabric);
       setSelectedColors(initializedColors);
 
-      // ✅ 필터링된 원단 목록 설정
+      // 초기 혼합율 세팅
+      const initializedRatios = {};
+      fabricItemsData.forEach(item => {
+        initializedRatios[item.id] = storedRatios[item.id] ?? "";
+      });
+      setSelectedRatios(initializedRatios);
+
+      // 혼합율 합계 계산 후 설정
+      const sumRatios = Object.values(initializedRatios).reduce(
+        (acc, cur) => acc + (Number(cur) || 0),
+        0
+      );
+      setTotalRatio(sumRatios);
+
+      setSelectedItems(storedFabric);
+
+      // 필터링된 원단 목록 설정
       if (category) {
         const filtered = fabricItemsData.filter((fabric) =>
           fabric.availableFor.includes(category)
         );
         setFilteredFabricData(filtered);
       } else {
-        setFilteredFabricData(fabricItemsData); // fallback
+        setFilteredFabricData(fabricItemsData);
       }
     } catch (error) {
       console.error("로컬 스토리지 데이터 로드 오류:", error);
@@ -163,23 +180,57 @@ const Fabric = () => {
     currentPage === 1 ? itemsPerPageFirst : itemsPerPageFirst + itemsPerPageSecond
   );
 
-  const handleClickItem = (id) => {
-    setSelectedItems((prev) => {
-      const isSelected = prev.some((item) => item.id === id);
-      const updatedItems = isSelected
-        ? prev.filter((item) => item.id !== id)
-        : [...prev, filteredFabricData.find((item) => item.id === id)];
-      localStorage.setItem("selectedFabric", JSON.stringify(updatedItems));
-      return updatedItems;
+  const handleColorChange = (id, color) => {
+    setSelectedColors((prevColors) => {
+      const updatedColors = { ...prevColors, [id]: color };
+      localStorage.setItem("selectedColors", JSON.stringify(updatedColors));
+      return updatedColors;
     });
   };
 
-  const handleColorChange = (id, color) => {
-    if (!color) return;
-    setSelectedColors((prev) => {
-      const updatedColors = { ...prev, [id]: color };
-      localStorage.setItem("selectedColors", JSON.stringify(updatedColors));
-      return updatedColors;
+  const handleRatioChange = (id, value) => {
+    const ratio = Number(value);
+    setSelectedRatios((prevRatios) => {
+      const updatedRatios = { ...prevRatios, [id]: ratio };
+      localStorage.setItem("selectedRatios", JSON.stringify(updatedRatios));
+
+      const sumRatios = Object.values(updatedRatios).reduce(
+        (acc, cur) => acc + (Number(cur) || 0),
+        0
+      );
+      setTotalRatio(sumRatios);
+
+      return updatedRatios;
+    });
+  };
+
+  const handleClickItem = (id) => {
+    setSelectedItems((prev) => {
+      const isSelected = prev.some((item) => item.id === id);
+      let updatedItems;
+
+      if (isSelected) {
+        updatedItems = prev.filter((item) => item.id !== id);
+
+        setSelectedRatios((prevRatios) => {
+          const newRatios = { ...prevRatios };
+          delete newRatios[id];
+          localStorage.setItem("selectedRatios", JSON.stringify(newRatios));
+
+          const sumRatios = Object.values(newRatios).reduce(
+            (acc, cur) => acc + (Number(cur) || 0),
+            0
+          );
+          setTotalRatio(sumRatios);
+
+          return newRatios;
+        });
+      } else {
+        updatedItems = [...prev, filteredFabricData.find((item) => item.id === id)];
+      }
+
+      localStorage.setItem("selectedFabric", JSON.stringify(updatedItems));
+      return updatedItems;
     });
   };
 
@@ -201,22 +252,34 @@ const Fabric = () => {
             />
           </div>
 
-          <h3>2-2. 색상 선택</h3>
+          <h3>2-2. 색상 및 혼합율 선택</h3>
           <hr />
           <div className="ColorSelect">
             {selectedItems.length > 0 ? (
               selectedItems.map((fabricItem) => (
-                <div key={fabricItem.id} className="color-select-row">
-                  <span className="fabric-name">{fabricItem.name}</span>
+                <div key={fabricItem.id} className="color-select-row" style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "0.9375rem" }}>
+                  <span className="fabric-name" style={{ minWidth: "4.375rem" }}>{fabricItem.name}</span>
                   <div className="FixedColorPicker">
                     <FixedColorPicker
                       onColorChange={(color) => handleColorChange(fabricItem.id, color)}
                       initialColor={selectedColors[fabricItem.id]}
                     />
                   </div>
-                  <span className="selected-color-name">
+                  <span className="selected-color-name" style={{ minWidth: "6.875rem" }}>
                     선택한 색상: {getColorName(selectedColors[fabricItem.id])}
                   </span>
+                  <div className="mix-ratio-input" style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor={`ratio-${fabricItem.id}`} style={{ marginRight: "0.3125rem" }}>혼합율 (%)</label>
+                    <input
+                      id={`ratio-${fabricItem.id}`}
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={selectedRatios[fabricItem.id] || ""}
+                      onChange={(e) => handleRatioChange(fabricItem.id, e.target.value)}
+                      style={{ width: "3.75rem", padding: "0.25rem" }}
+                    />
+                  </div>
                 </div>
               ))
             ) : (
@@ -224,11 +287,21 @@ const Fabric = () => {
             )}
           </div>
 
+          <div style={{ marginTop: "0.625rem", marginLeft: "2.5rem", fontWeight: "bold", paddingRight: "1.25rem" }}>
+            <div style={{ color: "green", fontSize: "1rem" }}>
+              혼합율 합계: {totalRatio}%.
+            </div>
+            <div style={{ color: totalRatio === 100 ? "green" : "red", fontSize: "0.75rem", marginTop: "0.25rem" }}>
+              {totalRatio === 100 ? "정상입니다." : "합계가 100%가 되어야 합니다!"}
+            </div>
+          </div>
+
           <div className="footer">
             <NextButtonWithPopup
               selectedItems={selectedItems.map((item) => ({
                 name: item.name,
-                color: getColorName(selectedColors[item.id]) || "알 수 없음", // 색상 정보가 없으면 기본 값 처리
+                color: getColorName(selectedColors[item.id]) || "알 수 없음",
+                ratio: selectedRatios[item.id] !== undefined ? selectedRatios[item.id] : null,
               }))}
               nextRoute="/client/Size"
             />

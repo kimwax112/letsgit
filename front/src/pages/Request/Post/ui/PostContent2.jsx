@@ -20,6 +20,7 @@ const Text = styled.p`
   padding-left: 20px;
   width:100%;
   font-size : 25px;
+  color: black;
 `;
 
 const ButtonContainer = styled.div`
@@ -28,34 +29,34 @@ align-items: center;
 `;
 
 
-export default function PostContent2() {
+export default function PostContent2({data}) {
   return (
     <>
     <Container>
-     <Text>카테고리</Text>
+    <Text>{data?.categoryTags || "카테고리"}</Text>
      <ButtonContainer>
-     <ButtonCategory/>
+     <ButtonCategory categoryTags={data?.categoryTags}/>
      </ButtonContainer>
     </Container>
     
     <Container>
-    <Text>원하는스타일</Text>
+    <Text>{data?.style || "원하는스타일"}</Text>
     <ButtonContainer>
-    <ButtonCategory/>
+    <ButtonCategory style={data?.style}/>
     </ButtonContainer>
     </Container>
 
     <Container>
-    <Text>원하는 금액</Text>
+    <Text>{data?.amount || "원하는 금액"}</Text>
     <ButtonContainer>
-    <ButtonCategory/>
+    <ButtonCategory amount={data.amount}/>
     </ButtonContainer>
     </Container>
     
     <Container>
-    <Text>희망 마감기한</Text>
+    <Text>{data?.deadline || "희망 마감기한"}</Text>
     <ButtonContainer>
-    <ButtonCategory/>
+    <ButtonCategory deadline={data.amount}/>
     </ButtonContainer>
     </Container>
     
