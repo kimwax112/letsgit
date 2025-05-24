@@ -4,10 +4,12 @@ import PostContent from "./ui/PostContent";
 import PostContent2 from "./ui/PostContent2";
 import PostCotent3 from "./ui/PostContent3";
 import styled from "styled-components";
+import { useLocation } from 'react-router-dom';
 
 const Content = styled.div`
   width: 100%;
   display: flex;
+  
   justify-content: space-between; /* 왼쪽과 오른쪽 컨테이너를 양 끝으로 */
 `;
 
@@ -22,19 +24,25 @@ const Right = styled.div`
   align-items: flex-start;     /* 필요 시 세로 정렬 (예: 상단에 붙이기) */
 `;
 
-export default function RequestPost() {
+
+
+export default function RequestPost(onUpdateDescription) {
+
+   const location = useLocation();
+  const { requestData } = location.state || {};
+
   return (
     <>
 
-      <PostContent />
+      <PostContent  data={requestData}/>
 
       <Content>
         <Left>
-          <PostContent2 />
+          <PostContent2 data={requestData}/>
         </Left>
 
         <Right>
-          <PostCotent3 />
+          <PostCotent3 data={requestData} onUpdateDescription={onUpdateDescription}/>
         </Right>
       </Content>
     </>

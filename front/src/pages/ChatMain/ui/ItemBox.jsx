@@ -1,10 +1,10 @@
 // 디자인 불러오기 맨투맨 ui 
 import styled from "styled-components"
-
+import "./ChatRoom.css"
 const ItemBoxContainer = styled.div`
   border: 0.5px solid;
-  width: 280px;
-  height: 260px;
+  width: 20vh;
+  height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +17,7 @@ const ItemBoxContainer = styled.div`
 
 const InnerBox = styled.div`
   width: 90%;
-  height: 75%;
+  height: 100%;
   background-color: ${(props) => (props.selected ? "white" : "#799fc4")};
   display: flex;
   align-items: center;
@@ -30,9 +30,11 @@ const ItemText = styled.div`
   height: 35px;
 `;
 
-export default function ItemBox ({text1, text2}) {
+export default function ItemBox ({text1, text2, onClick, className}) {
+  const itemData = { text1, text2 }; // 아이템 데이터 객체 생성
   return (
-<ItemBoxContainer>
+    <div className={className}>
+<ItemBoxContainer onClick={() => onClick?.({ text1, text2 })}>
 <InnerBox/>
 <ItemText>
 {text1}
@@ -41,5 +43,6 @@ export default function ItemBox ({text1, text2}) {
 {text2}
 </ItemText>
 </ItemBoxContainer>
+</div>
   )
 }

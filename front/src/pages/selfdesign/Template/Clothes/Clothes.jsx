@@ -5,6 +5,10 @@ import { Sidebar, Tabs, ItemsContainer, BreadCrumb, NextButtonWithPopup } from '
 
 const items = {
   상의: [
+    // { name: "티셔츠(T-shirt)", image: "/image/Clothes-item/상의/T-shirt.jpg" },
+    // { name: "맨투맨(Sweatshirt)", image: "/image/Clothes-item/상의/Sweatshirt.jpg" },
+    // { name: "후드(Hoodie)", image: "/image/Clothes-item/상의/hoodie.jpg" },
+    // { name: "집업(Zip-up Jersey)", image: "/image/Clothes-item/상의/Zip-up.jpg" },
     {
       name: "티셔츠(T-shirt)",
       image: "/image/Clothes-item/상의/T-shirt.jpg",
@@ -134,6 +138,7 @@ const items = {
       ratio: null,
     }
   ],
+  // ... 나머지 items
 };
 
 const Clothes = () => {
@@ -143,7 +148,22 @@ const Clothes = () => {
 
   const [selectedItem, setSelectedItem] = useState(() => {
     const stored = localStorage.getItem("selectedClothing");
-    return stored ? JSON.parse(stored) : null;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed && typeof parsed === "object" && "category" in parsed && "item" in parsed) {
+          return parsed;
+        }
+        console.warn("잘못된 localStorage 데이터 형식, 초기화합니다.");
+        localStorage.removeItem("selectedClothing");
+        return null;
+      } catch (e) {
+        console.error("localStorage 데이터 파싱 오류:", e);
+        localStorage.removeItem("selectedClothing");
+        return null;
+      }
+    }
+    return null;
   });
 
   useEffect(() => {
@@ -188,7 +208,11 @@ const Clothes = () => {
             }}
           />
           <div className="footer">
-            <NextButtonWithPopup selectedItems={selectedItem ? [selectedItem] : []} nextRoute="/client/fabric" onNext={handleNext} />
+            <NextButtonWithPopup
+              selectedItems={selectedItem ? [selectedItem] : []}
+              nextRoute="/client/fabric"
+              onNext={handleNext}
+            />
           </div>
         </div>
       </div>

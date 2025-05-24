@@ -66,3 +66,7 @@ src/pages/contract/DetailUI
   -selectedFabric: 선택한 원단 목록
   -selectedColors: 각 원단의 색상 값 (Hex 코드)
   -selectedRatios: 각 원단의 혼합률 (숫자값)
+3. pages\DesignerContractCreatePage\\DesignerContractCreatePage.jsx
+   계약서작성페이지 더 세세하게 세부사항 내용들 추가 (계약 내용 샘플, 작업 범위 체크란, 개인 정보 동의 체크란, 서명)
+	-개인정보 동의에 체크해야지, 작성저장버튼이 활성화 됨
+  -추가로 수정한 관련 페이지: DesignerContractEditor.jsx

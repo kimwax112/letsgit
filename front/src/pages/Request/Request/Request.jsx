@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ContentHeader from '../ui/ContentHeader';
 import ItemBox from './ui/ItemBox';
+import {useState, useEffect} from 'react'
 
 export function RequestLayOut({ children }) {
   const Container = styled.div`
@@ -80,16 +81,40 @@ export function RequestLayOut({ children }) {
 }
 
 export default function Request() {
+   const [requestItems, setRequestItems] = useState([]);
+
+  // localStorage에서 requestData 가져오기
+  useEffect(() => {
+    const storedData = localStorage.getItem("requestData");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (Array.isArray(parsedData)) {
+          setRequestItems(parsedData);
+        }
+      } catch (error) {
+        console.error("requestData 파싱 오류:", error);
+      }
+    }
+  }, []);
   return (
     <>
       <ContentHeader children="의뢰 등록하기" />
-      <RequestLayOut>
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
+  <RequestLayOut>
+    <ItemBox />
+    <ItemBox />
+    <ItemBox />
+        {requestItems.length > 0 ? (
+          // requestData가 있으면 동적으로 ItemBox 렌더링
+          requestItems.map((item, index) => (
+            <ItemBox key={index} data={item} />
+          ))
+        ) : (
+          // requestData가 없으면 기본 ItemBox 표시 또는 빈 상태
+          <>
+         
+          </>
+        )}
       </RequestLayOut>
     </>
   );
