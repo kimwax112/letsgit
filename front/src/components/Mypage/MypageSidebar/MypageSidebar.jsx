@@ -16,8 +16,8 @@ export default function MypageSidebar() {
         <li className={location.pathname === "/client/MyDesignsRequests" ? "active" : ""}>
           <Link to="/client/MyDesignsRequests">디자인&의뢰</Link>
         </li>
-        <li className={location.pathname === "/client/progress-history" ? "active" : ""}>
-          <Link to="/client/progress-history">진행내역 조회</Link>
+        <li className={location.pathname === "/client/MyProgressPage" ? "active" : ""}>
+          <Link to="/client/MyProgressPage">진행내역 조회</Link>
         </li>
         <li className={location.pathname === "/client/written-reviews" ? "active" : ""}>
           <Link to="/client/written-reviews">작성한 후기</Link>

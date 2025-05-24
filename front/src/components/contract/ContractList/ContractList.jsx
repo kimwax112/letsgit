@@ -99,6 +99,23 @@ useEffect(() => {
   
     return matchesStar && matchesStatus && matchesSearch;
   });
+const handleStatusChange = async (contractId, newStatus) => {
+  try {
+    // 서버에 status 업데이트 요청
+    await axios.patch(`http://localhost:8081/client/contract/${contractId}`, {
+      status: newStatus,
+    });
+
+    // 로컬 상태 업데이트
+    const updatedContracts = contracts.map((contract) =>
+      contract.id === contractId ? { ...contract, status: newStatus } : contract
+    );
+    setContracts(updatedContracts);
+  } catch (error) {
+    console.error("status 업데이트 실패:", error);
+    alert("status 변경에 실패했습니다.");
+  }
+};
   
 
   return (
@@ -116,6 +133,7 @@ useEffect(() => {
             contract={contract}
             onToggleStar={() => handleToggleStar(contract.id)}
             onClick={() => handleClick(contract)}
+            onStatusChange={handleStatusChange}
           />
         ))
       ) : (

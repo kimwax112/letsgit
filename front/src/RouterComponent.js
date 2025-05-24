@@ -23,8 +23,8 @@ import ContractList from "./components/contract/ContractList/ContractList";
 import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
 import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
-import CanceledPage from "./pages/contract/CanceledPage"
-
+import CanceledPage from "./pages/contract/CanceledPage";
+import MyProgressPage from "./pages/MyPage/MyProgressPage";
 
 const RouterComponent = () => {
   
@@ -73,7 +73,7 @@ const RouterComponent = () => {
               <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
               <Route path="CanceledPage" element={<CanceledPage /> } />
-             
+              <Route path="MyProgressPage" element={<MyProgressPage />} />
               
             </Routes>
           </ClientLayout>
