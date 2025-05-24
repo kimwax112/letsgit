@@ -4,17 +4,18 @@ import axios from "axios";
 import ContractItem from "../../../components/contract/ContractItem/ContractItem";
 
 const statusImages = {
-  "진행중": "/image/cotton.png", // 실제 이미지 경로로 변경
-  "완료": "/image/size.png",
-  "대기 중": "/images/pending.png",
-  // 필요에 따라 추가 상태와 이미지 추가
+  "대기중": "/image/대기중.png",
+  "배송중": "/image/배송중.png",
+  "진행중": "/image/진행중.png", 
+  "완료": "/image/완료됨.png",
+  
 };
 
 export default function MyProgressContent({mode ="전체"}) {
   const [contracts, setContracts] = useState([]);
   const [statusFilter, setStatusFilter] = useState("전체");
     const [searchTerm, setSearchTerm] = useState("");
-const allStatuses = ["진행중", "완료", "해지"]; // 모든 상태 목록
+const allStatuses = ["대기중","배송중","진행중", "완료"]; // 모든 상태 목록
 
   useEffect(() => {
 
@@ -65,7 +66,16 @@ const allStatuses = ["진행중", "완료", "해지"]; // 모든 상태 목록
         starredStatus: false,
         title: "계약 3",
         clientId: "client3",
-        status: "해지",
+        status: "배송중",
+        date: formatDate("2025-05-30"),
+        preview: "이것은 대기 중인 계약입니다.",
+      },
+        {
+        id: 4,
+        starredStatus: false,
+        title: "계약 3",
+        clientId: "client3",
+        status: "대기중",
         date: formatDate("2025-05-30"),
         preview: "이것은 대기 중인 계약입니다.",
       },
@@ -116,21 +126,25 @@ const allStatuses = ["진행중", "완료", "해지"]; // 모든 상태 목록
           <ContractItem
             contract={contract}
             onToggleStar={() => handleToggleStar(contract.id)}
-            statusImage={statusImages[contract.status] || "/images/default.png"} // 상태별 이미지 전달, 기본 이미지 설정
+            
           />
            {/* 모든 상태 이미지 렌더링 */}
                 <div className="status-image-container">
                   <div className="status-images">
                     {allStatuses.map((status) => (
+                      <div key={status} className="status-item">
                       <img
-                        key={status}
                         src={statusImages[status] || "/images/default.png"}
                         alt={`${status} 상태 이미지`}
                         className={`status-image ${contract.status === status ? "active" : "inactive"}`}
-                        
                       />
+                      
+                      <span style={{fontWeight : "bold"}} className="status-text">{status}</span>
+                      </div> 
                     ))}
+            
                   </div>
+                
                 </div>
           </div>
         ))
