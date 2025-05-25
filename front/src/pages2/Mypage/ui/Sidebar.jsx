@@ -37,8 +37,8 @@ export default function DesignerSidebar() {
         </li>
         <li className={styles.menuItem}>
           <Link
-            to="/designer/Portfolio"
-            className={`${styles.link} ${location.pathname === "/designer/Portfolio" ? styles.active : ""}`}
+            to="/designer/DMyPage"
+            className={`${styles.link} ${location.pathname === "/designer/DMyPage" ? styles.active : ""}`}
           >
             포트폴리오 관리
           </Link>
@@ -75,9 +75,9 @@ export default function DesignerSidebar() {
               </li>
               <li>
                 <Link
-                  to="/designer/production/ongoing"
+                  to="/designer/OngoingRequests"
                   className={`${styles.subLink} ${
-                    location.pathname === "/designer/production/ongoing" ? styles.subActive : ""
+                    location.pathname === "/designer/OngoingRequests" ? styles.subActive : ""
                   }`}
                 >
                   진행중인 의뢰내역
@@ -85,9 +85,9 @@ export default function DesignerSidebar() {
               </li>
               <li>
                 <Link
-                  to="/designer/production/complete"
+                  to="/designer/CompletedRequest"
                   className={`${styles.subLink} ${
-                    location.pathname === "/designer/production/complete" ? styles.subActive : ""
+                    location.pathname === "/designer/CompletedRequest" ? styles.subActive : ""
                   }`}
                 >
                   완료된 의뢰 관리
@@ -95,9 +95,9 @@ export default function DesignerSidebar() {
               </li>
               <li>
                 <Link
-                  to="/designer/production/requests"
+                  to="/designer/EditRequests"
                   className={`${styles.subLink} ${
-                    location.pathname === "/designer/production/requests" ? styles.subActive : ""
+                    location.pathname === "/designer/EditRequests" ? styles.subActive : ""
                   }`}
                 >
                   내가 보낸 수정요청사항

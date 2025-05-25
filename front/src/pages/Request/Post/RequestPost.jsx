@@ -26,25 +26,25 @@ const Right = styled.div`
 
 
 
-export default function RequestPost(onUpdateDescription) {
-
-   const location = useLocation();
+export default function RequestPost({ onUpdateDescription }) {
+  const location = useLocation();
   const { requestData } = location.state || {};
 
   return (
     <>
+      <PostContent data={requestData} />
 
-      <PostContent  data={requestData}/>
+      {requestData && (
+        <Content>
+          <Left>
+            <PostContent2 data={requestData} />
+          </Left>
 
-      <Content>
-        <Left>
-          <PostContent2 data={requestData}/>
-        </Left>
-
-        <Right>
-          <PostCotent3 data={requestData} onUpdateDescription={onUpdateDescription}/>
-        </Right>
-      </Content>
+          <Right>
+            <PostCotent3 data={requestData} onUpdateDescription={onUpdateDescription} />
+          </Right>
+        </Content>
+      )}
     </>
   );
 }

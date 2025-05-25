@@ -78,6 +78,7 @@
 .styles.subMenu {
   background-color: #f0f0f0;
   border-radius: 0.25rem;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
 .subLink {
