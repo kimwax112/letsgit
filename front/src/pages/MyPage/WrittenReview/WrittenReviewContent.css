@@ -1,5 +1,5 @@
 .writtenreviewcontent-container {
-  width: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -30,13 +30,16 @@
 }
 
 .writtenreviewcontent-topside {
-  flex-direction: column;
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
-  
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
 }
+
+
 
 .writtenreviewcontent-bottomside {
   font-size: 14px;
@@ -44,7 +47,8 @@
   display: flex;
   align-items: center;
   border-top : 1px solid;
-  flex-direction: column;
+  justify-content: flex-start;
+  width : 100%;
 }
 
 .edit-mode {
@@ -76,5 +80,27 @@ button:hover {
 
 .reviewcontract-container {
   display : flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
+}
+
+.reviewcontract-containertop {
+  font-size: 14px;
+  font-weight: bold;
+  display:flex;
+  width : 100%;
+  justify-content: space-between;
+}
+.reviewcontract-containerbottom {
+  display: flex;
+  font-size : 20px;
+  font-weight: bold;
+  width: auto;
+  gap: 12px;
+  padding : 10px;
+  width : 100%;
+}
+.reviewbutton-container {
+  justify-content: flex-end;
 }

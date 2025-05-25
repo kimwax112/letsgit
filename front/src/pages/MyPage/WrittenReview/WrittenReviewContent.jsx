@@ -1,10 +1,35 @@
 import { useState, useEffect } from 'react';
-import "./WrittenReviewContent.css"
+import "./WrittenReviewContent.css";
+import styled from 'styled-components';
+
+const ReviewModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+`;
+
 export default function WrittenReviewContent() {
   const [contracts, setContracts] = useState([]);
-  const [editingContractId, setEditingContractId] = useState(null); // 편집 중인 계약 ID
-  const [tempReviewContext, setTempReviewContext] = useState(''); // 임시 리뷰 내용
-  const [tempReviewStar, setTempReviewStar] = useState(0); // 임시 별점 (1~5)
+  const [editingContractId, setEditingContractId] = useState(null);
+  const [tempReviewContext, setTempReviewContext] = useState('');
+  const [tempReviewStar, setTempReviewStar] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 표시 상태
 
   // 테스트 데이터 하드코딩
   useEffect(() => {
@@ -22,6 +47,7 @@ export default function WrittenReviewContent() {
         finishDate: "2025-06-01",
         reviewStar: "☆☆☆☆☆",
         reviewContext: "리뷰 내용 1",
+        image: "/image/기본이미지.png",
       },
       {
         contractId: 2,
@@ -36,6 +62,7 @@ export default function WrittenReviewContent() {
         finishDate: "2025-06-02",
         reviewStar: "☆☆☆☆☆",
         reviewContext: "리뷰 내용 2",
+        image: "/image/기본이미지.png",
       },
       {
         contractId: 3,
@@ -50,6 +77,7 @@ export default function WrittenReviewContent() {
         finishDate: "2025-06-03",
         reviewStar: "☆☆☆☆☆",
         reviewContext: "리뷰 내용 3",
+        image: "/image/기본이미지.png",
       },
       {
         contractId: 4,
@@ -63,8 +91,8 @@ export default function WrittenReviewContent() {
         isStarred: "true",
         finishDate: "2025-06-20",
         reviewStar: "☆☆☆☆☆",
-        image: "asdfasd",
         reviewContext: "리뷰내용",
+        image: "/image/기본이미지.png",
       },
     ];
 
@@ -81,8 +109,8 @@ export default function WrittenReviewContent() {
   const startEditing = (contract) => {
     setEditingContractId(contract.contractId);
     setTempReviewContext(contract.reviewContext || '');
-    // reviewStar 문자열을 별 개수로 변환 (예: "⭐️⭐️⭐️" → 3)
     setTempReviewStar(contract.reviewStar ? contract.reviewStar.match(/☆/g)?.length || 0 : 0);
+    setIsModalOpen(true); // 모달 열기
   };
 
   // 편집 저장
@@ -92,14 +120,23 @@ export default function WrittenReviewContent() {
         ? {
             ...contract,
             reviewContext: tempReviewContext,
-            reviewStar: "☆".repeat(tempReviewStar), // 별 개수를 문자열로 변환
+            reviewStar: "☆".repeat(tempReviewStar),
           }
         : contract
     );
     setContracts(updatedContracts);
-    setEditingContractId(null); // 편집 모드 비활성화
+    setEditingContractId(null);
     setTempReviewContext('');
     setTempReviewStar(0);
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setEditingContractId(null);
+    setTempReviewContext('');
+    setTempReviewStar(0);
+    setIsModalOpen(false);
   };
 
   // 별 클릭 핸들러
@@ -118,55 +155,55 @@ export default function WrittenReviewContent() {
           completedContracts.map((contract) => (
             <div key={contract.contractId} className="writtenreviewcontent-item">
               <div className="writtenreviewcontent-topside">
-                <div>{contract.designerId}</div>
-                <div>{contract.contractTitle}</div>
-                <div>{contract.requestFee} {contract.duedate}</div> 
+                <div className="designer-image">
+                  {contract.image ? (
+                    <img
+                      src={contract.image}
+                      alt="Designer"
+                      style={{ width: "80px", height: "80px", objectFit: "contain" }}
+                    />
+                  ) : (
+                    <div style={{ width: "80px", height: "80px", backgroundColor: "#eee" }}>
+                      이미지 없음
+                    </div>
+                  )}
+                </div>
+                <div className="designer-info">
+                  <div style={{ color: "gray" }}>{contract.designerId}</div>
+                  <div style={{ fontWeight: "bold", fontSize: "20px" }}>{contract.contractTitle}</div>
+                  <div style={{ color: "gray" }}>{contract.requestFee} {contract.duedate}</div>
+                </div>
               </div>
               <div className="writtenreviewcontent-bottomside">
-                {editingContractId === contract.contractId ? (
-                  // 편집 모드
-                  <div className="edit-mode">
-                    <textarea
-                      value={tempReviewContext}
-                      onChange={(e) => setTempReviewContext(e.target.value)}
-                      placeholder="리뷰 내용을 입력하세요"
-                      rows={3}
-                      style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <div className="star-rating">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                          key={star}
-                          onClick={() => handleStarClick(star)}
-                          style={{
-                            cursor: 'pointer',
-                            fontSize: '20px',
-                            color: star <= tempReviewStar ? '#FFD700' : '#D3D3D3', // 노란색/회색
-                          }}
-                        >
-                         ☆
-                        </span>
-                      ))}
-                    </div>
-                    <button onClick={() => saveEdit(contract.contractId)}>확인</button>
-                    <button onClick={() => setEditingContractId(null)} style={{ marginLeft: '5px' }}>
-                      취소
-                    </button>
-                  </div>
-                ) : (
-                  // 일반 모드
-                  <>
+                <>
                   <div className="reviewcontract-container">
-                    
-                   <div>{contract.finishDate || '미정'}</div> 
-                  <div>{contract.reviewStar || '별점 없음'}</div>
-                   <div>{contract.reviewContext || '리뷰 없음'}</div>
-                   </div>
-                    <button onClick={() => startEditing(contract)} style={{ marginLeft: '10px' }}>
-                      편집
-                    </button>
-                  </>
-                )}
+                      <div className="reviewcontract-containertop">
+                          <div class="datastar-container">
+                              <div>{contract.finishDate || '미정'}</div>
+                              <div>{contract.reviewStar || '별점 없음'}</div>
+                          </div>
+                          <div style={{justifyContent : "flex-end"}} className="reviewbutton-container">
+                            <button onClick={() => startEditing(contract)} style={{ marginLeft: '10px' }}>편집</button>
+                          </div>
+                      </div>
+
+                    <div className="reviewcontract-containerbottom">
+                      {contract.image ? (
+                        <img
+                          src={contract.image}
+                          alt="Designer"
+                          style={{ width: "200px", height: "200px", objectFit: "contain" }}
+                        />
+                      ) : (
+                        <div style={{ width: "80px", height: "80px", backgroundColor: "#eee" }}>
+                          이미지 없음
+                        </div>
+                      )}
+                      <div>{contract.reviewContext || '리뷰 없음'}</div>
+                    </div>
+                  </div>
+                  
+                </>
               </div>
             </div>
           ))
@@ -174,6 +211,46 @@ export default function WrittenReviewContent() {
           <p>완료된 계약이 없습니다.</p>
         )}
       </div>
+
+      {/* 모달 */}
+      {isModalOpen && editingContractId && (
+        <ReviewModal>
+          <ModalContent>
+            <h2>리뷰 편집</h2>
+          
+            <div className="edit-mode">
+              <textarea
+                value={tempReviewContext}
+                onChange={(e) => setTempReviewContext(e.target.value)}
+                placeholder="리뷰 내용을 입력하세요"
+                rows={3}
+                style={{ width: '100%', marginBottom: '10px' }}
+              />
+              <div className="star-rating">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => handleStarClick(star)}
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: '20px',
+                      color: star <= tempReviewStar ? '#FFD700' : '#D3D3D3',
+                    }}
+                  >
+                    ☆
+                  </span>
+                ))}
+              </div>
+              <div>
+                <button onClick={() => saveEdit(editingContractId)}>확인</button>
+                <button onClick={closeModal} style={{ marginLeft: '5px' }}>
+                  취소
+                </button>
+              </div>
+            </div>
+          </ModalContent>
+        </ReviewModal>
+      )}
     </div>
   );
 }
