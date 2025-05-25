@@ -3,52 +3,12 @@ import { MdDescription } from "react-icons/md";
 import DesignerContractInputSection from "../../components/DesignerContractCreate/DesignerContractInputSection";
 import DesignerContractEditor from "../../components/DesignerContractCreate/DesignerContractEditor";
 import DesignerContractFileUpload from "../../components/DesignerContractCreate/DesignerContractFileUpload";
+import SampleClauseSidebar, { sampleTemplates } from "../../components/DesignerContractCreate/SampleClauseSidebar";
 import DesignerLayout from "../../DesignerLayout";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
-const sampleTemplates = [
-  "의뢰인은 계약된 일정에 따라 제작 결과물을 전달받을 수 있습니다.",
-  "디자이너는 의뢰인의 요구사항을 성실히 반영하며 작업을 진행합니다.",
-  "계약 기간 동안 계약 내용을 무단 변경할 수 없습니다.",
-  "요청 비용은 계약서에 명시된 금액을 기준으로 합니다.",
-  "양측의 합의 없이는 계약을 해지할 수 없습니다.",
-];
-
-// 추가 샘플 카테고리별 샘플 문구
-const rightsSamples = [
-  "디자인 저작권은 디자이너에게 귀속됩니다.",
-  "의뢰인은 디자인의 2차 가공 시 디자이너의 동의를 받아야 합니다.",
-];
-const cancelSamples = [
-  "계약 변경 시 최소 7일 전에 서면으로 통보해야 합니다.",
-  "계약 해지 시 위약금 20%를 지불해야 합니다.",
-];
-const securitySamples = [
-  "양측은 계약 관련 정보를 외부에 공개하지 않으며 비밀을 유지합니다.",
-  "보안 위반 시 법적 책임을 질 수 있습니다.",
-];
-const disputeSamples = [
-  "분쟁 발생 시 상호 협의를 우선으로 하며, 해결되지 않으면 중재 기관에 의뢰합니다.",
-];
-
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
-
-const ComponentToPrint = React.forwardRef(({ contractData, deliverables }, ref) => (
-  <div ref={ref} style={{ padding: "1rem", fontFamily: "Arial, sans-serif", color: "#000" }}>
-    <h1 style={{ textAlign: "center" }}>계약서 미리보기</h1>
-    <h2>계약 제목: {contractData.contractTitle}</h2>
-    <p><strong>계약 기간:</strong> {contractData.startDate} ~ {contractData.endDate || "미정"}</p>
-    <p><strong>요청 비용:</strong> {contractData.requestFee} 원</p>
-    <p><strong>작업 범위:</strong> {deliverables.length > 0 ? deliverables.join(", ") : "없음"}</p>
-    <hr />
-    <div style={{ whiteSpace: "pre-wrap", marginBottom: "1rem" }}>
-      {contractData.contractContent}
-    </div>
-    <hr />
-    <p><strong>서명:</strong> {contractData.signature || "(서명 없음)"}</p>
-  </div>
-));
 
 const DesignerContractCreatePage = () => {
   const [contractData, setContractData] = useState({
@@ -64,6 +24,8 @@ const DesignerContractCreatePage = () => {
     contractContent: "", // 에디터 작성 내용
     signature: "",
   });
+
+  const [showSamplePanel, setShowSamplePanel] = useState(false);
 
   // 작업 범위 체크박스 상태
   const [deliverables, setDeliverables] = useState([]);
@@ -243,10 +205,11 @@ const DesignerContractCreatePage = () => {
         handleFeeChange={handleFeeChange} // 금액 입력 커스텀 핸들러 전달
       />
 
+      <br/>
       {/* 작업 범위 체크박스 추가 */}
       <div style={{ margin: "1.5rem 0" }}>
-        <hr style={{ border: "1px solid #E6E6E6", marginBottom: "1rem" }} />
-        <h2 style={{ fontSize: "1.4375rem", marginBottom: "0.75rem" }}>작업 범위 (Deliverables)</h2>
+        <hr style={{  border: "0.7px solid #E6E6E6", margin: "1.3rem 0" }} />
+        <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}> 카테고리 선택</h2>
         {deliverableOptions.map((item, idx) => (
           <label key={idx} style={{ marginRight: "1rem", cursor: "pointer" }}>
             <input
@@ -260,73 +223,26 @@ const DesignerContractCreatePage = () => {
         ))}
       </div>
 
-      <hr style={{ border: "1px solid #E6E6E6", margin: "1.5rem 0" }} />
+      <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
 
       {/* 샘플 문구 탭 UI */}
       <div>
-        <h2 style={{ fontSize: "1.4375rem", marginBottom: "0.75rem" }}>샘플 문구 삽입</h2>
-        <div style={{ marginBottom: "1rem" }}>
-          <button
-            style={{ marginRight: "0.5rem", padding: "0.5rem 1rem", cursor: "pointer", backgroundColor: sampleCategory === "basic" ? "#799FC4" : "#ccc", border: "none", borderRadius: "5px", color: "#fff" }}
-            onClick={() => setSampleCategory("basic")}
-          >
-            기본
-          </button>
-          <button
-            style={{ marginRight: "0.5rem", padding: "0.5rem 1rem", cursor: "pointer", backgroundColor: sampleCategory === "rights" ? "#799FC4" : "#ccc", border: "none", borderRadius: "5px", color: "#fff" }}
-            onClick={() => setSampleCategory("rights")}
-          >
-            권리
-          </button>
-          <button
-            style={{ marginRight: "0.5rem", padding: "0.5rem 1rem", cursor: "pointer", backgroundColor: sampleCategory === "cancel" ? "#799FC4" : "#ccc", border: "none", borderRadius: "5px", color: "#fff" }}
-            onClick={() => setSampleCategory("cancel")}
-          >
-            변경/해지
-          </button>
-          <button
-            style={{ marginRight: "0.5rem", padding: "0.5rem 1rem", cursor: "pointer", backgroundColor: sampleCategory === "security" ? "#799FC4" : "#ccc", border: "none", borderRadius: "5px", color: "#fff" }}
-            onClick={() => setSampleCategory("security")}
-          >
-            보안
-          </button>
-          <button
-            style={{ padding: "0.5rem 1rem", cursor: "pointer", backgroundColor: sampleCategory === "dispute" ? "#799FC4" : "#ccc", border: "none", borderRadius: "5px", color: "#fff" }}
-            onClick={() => setSampleCategory("dispute")}
-          >
-            분쟁
-          </button>
-        </div>
-
-        <div style={{ marginBottom: "2rem" }}>
-          {(sampleCategory === "basic" ? sampleTemplates
-            : sampleCategory === "rights" ? rightsSamples
-            : sampleCategory === "cancel" ? cancelSamples
-            : sampleCategory === "security" ? securitySamples
-            : disputeSamples
-          ).map((text, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleSampleInsert(text)}
-              title={text}
-              style={{
-                marginRight: "0.5rem",
-                marginBottom: "0.5rem",
-                padding: "0.4rem 0.8rem",
-                cursor: "pointer",
-                backgroundColor: "#799FC4",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                fontSize: "0.9rem",
-              }}
-              type="button"
-            >
-              {text.length > 20 ? text.slice(0, 20) + "..." : text}
-            </button>
-          ))}
-        </div>
+        <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}>샘플 문구 삽입</h2>
+        <button
+          onClick={() => setShowSamplePanel(true)}
+          style={{ backgroundColor: "#799FC4", color: "#fff", padding: "0.5rem 1rem", borderRadius: "5px", border: "none" }}
+        >
+          샘플 문구 보기
+        </button>
+        {showSamplePanel && (
+        <SampleClauseSidebar
+          onInsert={handleSampleInsert}
+          onClose={() => setShowSamplePanel(false)}
+        />
+      )}
       </div>
+
+      <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
 
       {/* 계약서 본문 에디터 */}
       <DesignerContractEditor
@@ -334,7 +250,14 @@ const DesignerContractCreatePage = () => {
         setContractData={setContractData}
       />
 
-      {/* 서명란 */}
+      <br/><br/>
+
+      {/* 파일 업로드 */}
+      <DesignerContractFileUpload />
+
+      <br/><br/>
+
+            {/* 서명란 */}
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         <label htmlFor="signature" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
           서명 (이름 입력)
@@ -354,9 +277,6 @@ const DesignerContractCreatePage = () => {
           }}
         />
       </div>
-
-      {/* 파일 업로드 */}
-      <DesignerContractFileUpload />
 
       <hr style={{ border: "1px solid #E6E6E6", marginBottom: "1rem" }} />
 

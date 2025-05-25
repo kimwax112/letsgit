@@ -79,6 +79,7 @@
 
 .toolbar button {
   background-color: #f0f0f0;
+  color: #222;
 }
 
 /* 툴바 버튼 스타일 */
@@ -163,3 +164,14 @@
     cursor: pointer;
   }
   
+  .colorPicker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  padding: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  display: flex;
+}

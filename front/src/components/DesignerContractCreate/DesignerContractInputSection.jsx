@@ -31,7 +31,7 @@ const DesignerContractInputSection = ({ contractData, setContractData }) => {
       {/* 계약 의뢰 */}
       <div className={styles.inputRow}>
         <label className={styles.label}>
-          계약 의뢰 <span style={{ color: "red" }}>*</span>
+          의뢰 제목 <span style={{ color: "red" }}>*</span>
         </label>
         <input
           type="text"
