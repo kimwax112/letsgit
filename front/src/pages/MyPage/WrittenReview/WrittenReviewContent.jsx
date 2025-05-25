@@ -24,12 +24,36 @@ const ModalContent = styled.div`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
 
+
+
 export default function WrittenReviewContent() {
   const [contracts, setContracts] = useState([]);
   const [editingContractId, setEditingContractId] = useState(null);
   const [tempReviewContext, setTempReviewContext] = useState('');
   const [tempReviewStar, setTempReviewStar] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 표시 상태
+
+// useEffect(() => {
+//   axios.get("http://localhost:8081/client/contract")
+//     .then((response) => {
+//       console.log("받은 계약 데이터:", response.data);
+//       const mappedContracts = response.data.map(contract => ({
+//         id: contract.contractId,
+//         starredStatus: false,
+//         title: contract.contractTitle,
+//         clientId: contract.clientId,
+//         status: contract.status,
+//         date: formatDate(contract.dueDate),
+//         preview: contract.preview || "",
+//       }));
+      
+
+//       setContracts(mappedContracts);
+//     })
+//     .catch((error) => {
+//       console.error("계약 데이터 가져오기 실패:", error);
+//     });
+// }, []);
 
   // 테스트 데이터 하드코딩
   useEffect(() => {
@@ -147,6 +171,9 @@ export default function WrittenReviewContent() {
   // 완료된 계약만 필터링
   const completedContracts = contracts.filter((contract) => contract.status === "완료");
 
+  // 현재 편집 중인 계약 객체 찾기
+  const editingContract = contracts.find((contract) => contract.contractId === editingContractId);
+
   return (
     <div className="writtenreviewcontent-container">
       <div className="writtenreviewcontent-title">작성한 후기</div>
@@ -168,11 +195,13 @@ export default function WrittenReviewContent() {
                     </div>
                   )}
                 </div>
+                
                 <div className="designer-info">
                   <div style={{ color: "gray" }}>{contract.designerId}</div>
                   <div style={{ fontWeight: "bold", fontSize: "20px" }}>{contract.contractTitle}</div>
                   <div style={{ color: "gray" }}>{contract.requestFee} {contract.duedate}</div>
                 </div>
+                
               </div>
               <div className="writtenreviewcontent-bottomside">
                 <>
@@ -213,20 +242,32 @@ export default function WrittenReviewContent() {
       </div>
 
       {/* 모달 */}
-      {isModalOpen && editingContractId && (
+      {isModalOpen && editingContractId && editingContract && (
         <ReviewModal>
           <ModalContent>
             <h2>리뷰 편집</h2>
-          
-            <div className="edit-mode">
-              <textarea
-                value={tempReviewContext}
-                onChange={(e) => setTempReviewContext(e.target.value)}
-                placeholder="리뷰 내용을 입력하세요"
-                rows={3}
-                style={{ width: '100%', marginBottom: '10px' }}
-              />
-              <div className="star-rating">
+             <div className="writtenreviewcontent-topside">
+                <div className="designer-image">
+                  {editingContract.image ? (
+                    <img
+                      src={editingContract.image}
+                      alt="Designer"
+                      style={{ width: "80px", height: "80px", objectFit: "contain" }}
+                    />
+                  ) : (
+                    <div style={{ width: "80px", height: "80px", backgroundColor: "#eee" }}>
+                      이미지 없음
+                    </div>
+                  )}
+                </div>
+                <div className="designer-info">
+                  <div style={{ color: "gray" }}>{editingContract.designerId}</div>
+                  <div style={{ fontWeight: "bold", fontSize: "20px" }}>{editingContract.contractTitle}</div>
+                  <div style={{ color: "gray" }}>{editingContract.requestFee} {editingContract.duedate}</div>
+                </div>
+              </div>
+
+                 <div className="star-rating">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
@@ -235,18 +276,30 @@ export default function WrittenReviewContent() {
                       cursor: 'pointer',
                       fontSize: '20px',
                       color: star <= tempReviewStar ? '#FFD700' : '#D3D3D3',
+                      justifyContent : "center"
+                      
                     }}
                   >
                     ☆
                   </span>
                 ))}
               </div>
-              <div>
+
+            <div className="edit-mode">
+              <textarea
+                value={tempReviewContext}
+                onChange={(e) => setTempReviewContext(e.target.value)}
+                placeholder="리뷰 내용을 입력하세요"
+                rows={3}
+                style={{ border : "1px solid #EBE5E5",borderRadius:"10px",  width: '90%', margin: '0 auto', height: "300px", backgroundColor : "#EBE5E5", padding : "10px"}}
+              />
+           
+              
+              <div className="modalbutton-container">
                 <button onClick={() => saveEdit(editingContractId)}>확인</button>
-                <button onClick={closeModal} style={{ marginLeft: '5px' }}>
-                  취소
-                </button>
+                <button onClick={closeModal} style={{ marginLeft: '5px' }}>취소</button>
               </div>
+              
             </div>
           </ModalContent>
         </ReviewModal>
