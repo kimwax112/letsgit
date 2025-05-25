@@ -1,71 +1,112 @@
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styles from './DesignerSidebar.module.css';
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0;
-  justify-content: flex-start; /* 중앙 정렬 대신 상단 정렬 */
-  align-items: flex-start; /* 중앙 정렬 대신 상단 정렬 */
-  flex-direction: column;
-  background-color: #fafafc;
+export default function DesignerSidebar() {
+  const location = useLocation();
 
-  @media (max-width: 768px) {
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-`;
+  // 서브메뉴 열림 상태 관리 (기본값은 현재 경로가 제작관리 관련일 때 열림)
+  const [isProductionOpen, setIsProductionOpen] = useState(false);
 
-const Title = styled.p`
-  font-size: 55px;
-  font-weight: bold;
-  margin: 60px; /* 큰 화면에서 유지 */
-  margin-bottom: 20px; /* 하단 마진 조정 */
+  // location 변경 시, 제작관리 관련 경로면 서브메뉴 자동 오픈
+  useEffect(() => {
+    if (location.pathname.startsWith("/designer/production")) {
+      setIsProductionOpen(true);
+    } else {
+      setIsProductionOpen(false);
+    }
+  }, [location.pathname]);
 
-  @media (max-width: 768px) {
-    font-size: 40px; /* 작은 화면에서 글자 크기 조정 */
-    margin: 20px; /* 작은 화면에서 마진 줄이기 */
-    margin-bottom: 10px; /* 하단 마진 더 줄이기 */
-  }
-`;
+  // 제작관리 메뉴 클릭 시 토글 함수
+  const toggleProductionMenu = () => {
+    setIsProductionOpen(prev => !prev);
+  };
 
-const Bar = styled.div`
-  width: 300px;
-  background-color: white;
-  min-height: 80vh;
-  margin: 0; /* 기본 마진 제거 */
-  padding: 0;
-  
-
-  @media (max-width: 768px) {
-    width: 100%; /* 작은 화면에서 너비 조정 */
-    min-height: auto; /* 높이 조정 */
-  }
-`;
-
-const ConText = styled.p`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 20px; /* 기본 마진 제거 */
-  padding: 10px;
-
-  @media (max-width: 768px) {
-    font-size: 16px; /* 작은 화면에서 글자 크기 조정 */
-    padding: 5px; /* 패딩 줄이기 */
-  }
-`;
-
-export default function Sidebar() {
   return (
-    <Container>
-      <Title>마이페이지</Title>
-      <Bar>
-        <ConText>내정보</ConText>
-        <ConText>포트폴리오 관리</ConText>
-        <ConText>계약조회&배송내역</ConText>
-        <ConText>제작관리</ConText>
-      </Bar>
-    </Container>
+    <div className={styles.container}>
+      <h2 className={styles.title}>마이페이지</h2>
+      <hr/>
+      <ul className={styles.menuList}>
+        <li className={styles.menuItem}>
+          <Link
+            to="/designer/MyInfo"
+            className={`${styles.link} ${location.pathname === "/designer/MyInfo" ? styles.active : ""}`}
+          >
+            내 정보
+          </Link>
+        </li>
+        <li className={styles.menuItem}>
+          <Link
+            to="/designer/Portfolio"
+            className={`${styles.link} ${location.pathname === "/designer/Portfolio" ? styles.active : ""}`}
+          >
+            포트폴리오 관리
+          </Link>
+        </li>
+        <li className={styles.menuItem}>
+          <Link
+            to="/designer/ContractDelivery"
+            className={`${styles.link} ${location.pathname === "/designer/ContractDelivery" ? styles.active : ""}`}
+          >
+            계약조회 & 배송내역
+          </Link>
+        </li>
+        <li className={styles.menuItem}>
+          {/* 제작관리 메뉴는 클릭 시 서브메뉴 토글 */}
+          <div
+            onClick={toggleProductionMenu}
+            className={`${styles.link} ${location.pathname.startsWith("/designer/production") ? styles.active : ""}`}
+            style={{ cursor: "pointer", userSelect: "none" }}
+          >
+            제작관리
+          </div>
+          {/* isProductionOpen이 true일 때만 서브메뉴 보여주기 */}
+          {isProductionOpen && (
+            <ul className={styles.subMenu}>
+              <li>
+                <Link
+                  to="/designer/production/history"
+                  className={`${styles.subLink} ${
+                    location.pathname === "/designer/production/history" ? styles.subActive : ""
+                  }`}
+                >
+                  제작내역
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/designer/production/ongoing"
+                  className={`${styles.subLink} ${
+                    location.pathname === "/designer/production/ongoing" ? styles.subActive : ""
+                  }`}
+                >
+                  진행중인 의뢰내역
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/designer/production/complete"
+                  className={`${styles.subLink} ${
+                    location.pathname === "/designer/production/complete" ? styles.subActive : ""
+                  }`}
+                >
+                  완료된 의뢰 관리
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/designer/production/requests"
+                  className={`${styles.subLink} ${
+                    location.pathname === "/designer/production/requests" ? styles.subActive : ""
+                  }`}
+                >
+                  내가 보낸 수정요청사항
+                </Link>
+              </li>
+            </ul>
+          )}
+        </li>
+      </ul>
+    </div>
   );
 }
