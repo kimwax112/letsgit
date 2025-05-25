@@ -8,6 +8,21 @@ export default function DesignerSidebar() {
   // 서브메뉴 열림 상태 관리 (기본값은 현재 경로가 제작관리 관련일 때 열림)
   const [isProductionOpen, setIsProductionOpen] = useState(false);
 
+  // 제작관리 관련 서브경로 배열 선언 (컴포넌트 안에)
+  const productionSubPaths = [
+    "/designer/production/history",
+    "/designer/OngoingRequests",
+    "/designer/CompletedRequest",
+    "/designer/EditRequests"
+  ];
+
+  // 현재 경로가 서브메뉴 중 하나인지 체크
+  const isSubMenuSelected = productionSubPaths.some(path => location.pathname === path);
+
+  // 제작관리 메뉴에 적용할 클래스 및 원 표시 조건
+  const productionActiveClass = (location.pathname.startsWith("/designer/production") || isSubMenuSelected) ? styles.active : "";
+
+
   // location 변경 시, 제작관리 관련 경로면 서브메뉴 자동 오픈
   useEffect(() => {
     if (location.pathname.startsWith("/designer/production")) {
@@ -55,9 +70,17 @@ export default function DesignerSidebar() {
           {/* 제작관리 메뉴는 클릭 시 서브메뉴 토글 */}
           <div
             onClick={toggleProductionMenu}
-            className={`${styles.link} ${location.pathname.startsWith("/designer/production") ? styles.active : ""}`}
-            style={{ cursor: "pointer", userSelect: "none" }}
+            className={`${styles.link} ${productionActiveClass}`}
+            style={{ cursor: "pointer", userSelect: "none", display: "flex", alignItems: "center" }}
           >
+            {isSubMenuSelected && (
+              <span style={{
+                display: "inline-block",
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+              }} />
+            )}
             제작관리
           </div>
           {/* isProductionOpen이 true일 때만 서브메뉴 보여주기 */}
