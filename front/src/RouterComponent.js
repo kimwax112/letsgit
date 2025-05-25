@@ -25,6 +25,7 @@ import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
 import CanceledPage from "./pages/contract/CanceledPage";
 import MyProgressPage from "./pages/MyPage/MyProgressPage";
+import WrittenReviewPage from './pages/MyPage/WrittenReviewPage';
 
 const RouterComponent = () => {
   
@@ -74,7 +75,7 @@ const RouterComponent = () => {
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
               <Route path="CanceledPage" element={<CanceledPage /> } />
               <Route path="MyProgressPage" element={<MyProgressPage />} />
-              
+              <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
             </Routes>
           </ClientLayout>
         }
