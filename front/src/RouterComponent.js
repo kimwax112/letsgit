@@ -26,7 +26,8 @@ import GoodSignUp from './pages/Login/GoodSignUp';
 import CanceledPage from "./pages/contract/CanceledPage";
 import MyProgressPage from "./pages/MyPage/MyProgressPage";
 import WrittenReviewPage from './pages/MyPage/WrittenReviewPage';
-
+import DesignerRequest from "./pages2/Request/DesignerRequest";
+import DesignerRequestPost from "./pages2/Request/DesignerRequestPost"
 const RouterComponent = () => {
   
 
@@ -92,7 +93,8 @@ const RouterComponent = () => {
             <Route path="Portfolio" element={<Portfolio />} />
             <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
             <Route path="DesignerContractCreate" element={<DesignerContractCreatePage />}/>
-         
+            <Route path="DesignerRequest" element={<DesignerRequest /> } />
+            <Route path="DesignerRequestPost" element={<DesignerRequestPost />} />
            </Routes>
         </DesignerLayout>
       } />

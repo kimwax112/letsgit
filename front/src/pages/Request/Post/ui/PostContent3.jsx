@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { RectButton } from "../../../../components";
+import { useLocation } from "react-router-dom";
 const Container = styled.div`
 width: 400px;
 height: auto;
@@ -32,13 +33,17 @@ const ButtonDetailContainer = styled.button`
 
 
 export default function PostCotent3 ({data}) {
+    const { pathname } = useLocation();
+const showButtons = pathname !== "/designer/DesignerRequestPost"; // 경로 비교 수정
   return (
     <>
 <Container>
+  {showButtons && ( // showButtons가 true일 때만 버튼 렌더링
   <ButtonContainer>
   <ButtonDetailContainer>상세설명</ButtonDetailContainer>
   <ButtonDetailContainer>수정하기</ButtonDetailContainer>
   </ButtonContainer>
+  )}
   <DetailBox> {data?.description || "asdf"}</DetailBox>
 </Container>
     </>

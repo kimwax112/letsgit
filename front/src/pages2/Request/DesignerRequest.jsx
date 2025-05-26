@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import ContentHeader from '../ui/ContentHeader';
-import ItemBox from './ui/ItemBox';
-import {useState, useEffect} from 'react'
-
+import DesignerItemBox from "./DesignerItemBox";
+import SearchRequest from "./SearchRequest";
+import "./DesignerRequest.css"
 export function RequestLayOut({ children }) {
   const Container = styled.div`
     width: 100%;
@@ -28,16 +27,15 @@ export function RequestLayOut({ children }) {
     gap: 100px;
   `;
 
-  // 페이지네이션 스타일 추가
   const PaginationContainer = styled.div`
     display: flex;
     gap: 10px;
     margin-top: 20px;
     justify-content: center;
-    padding:25px 0; /* 여백 추가 */
-    background-color: white; /* 바탕색 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
-    border-radius: 8px; /* 모서리 둥글게 */
+    padding: 25px 0;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
   `;
 
   const PageButton = styled.div`
@@ -68,8 +66,6 @@ export function RequestLayOut({ children }) {
         <Content>
           {children}
         </Content>
-
-        {/* 페이지네이션 추가 */}
         <PaginationContainer>
           <PageButton className="active">1</PageButton>
           <PageButton>2</PageButton>
@@ -80,8 +76,9 @@ export function RequestLayOut({ children }) {
   );
 }
 
-export default function Request({headerText = "의뢰 등록하기"}) {
-   const [requestItems, setRequestItems] = useState([]);
+export default function DesignerRequest({ headerText = "의뢰 찾기" }) {
+  const [requestItems, setRequestItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
 
   // localStorage에서 requestData 가져오기
   useEffect(() => {
@@ -97,21 +94,27 @@ export default function Request({headerText = "의뢰 등록하기"}) {
       }
     }
   }, []);
+
+  // 검색어로 requestItems 필터링
+  const filteredItems = requestItems.filter((item) =>
+    item.title && item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
-      <ContentHeader children={headerText} />
-  <RequestLayOut>
-    <ItemBox />
-        {requestItems.length > 0 ? (
-          // requestData가 있으면 동적으로 ItemBox 렌더링
-          requestItems.map((item, index) => (
-            <ItemBox key={index} data={item} />
+      <div className="designerrequest-header">
+        <h1>{headerText}</h1>
+        <div><SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} /></div>
+      </div>
+      
+      <RequestLayOut>
+        
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item, index) => (
+            <DesignerItemBox key={index} data={item} />
           ))
         ) : (
-          // requestData가 없으면 기본 ItemBox 표시 또는 빈 상태
-          <>
-         
-          </>
+          <p>검색 결과가 없습니다.</p>
         )}
       </RequestLayOut>
     </>
