@@ -9,11 +9,13 @@
 }
 
 .writtenreviewcontent-title {
+  display : flex;
   width: auto;
   font-size: 24px;
   font-weight: bold;
   justify-content: flex-start;
   align-items: center;
+  
 }
 
 .writtenreviewcontent-itemcontainer {
@@ -91,6 +93,7 @@ button:hover {
   display:flex;
   width : 100%;
   justify-content: space-between;
+  margin : 10px;
 }
 .reviewcontract-containerbottom {
   display: flex;

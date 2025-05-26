@@ -9,7 +9,8 @@ import designer from "../../../../assets/desiner.png";
 import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
-
+import axios from "axios";
+import { useEffect } from "react";
 
 // 하드코딩된 이미지 배열
 const profileImages = [
@@ -62,6 +63,7 @@ const ModalContent = styled.div`
   padding: 20px;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  height : auto;
 `;
 
 const DesignerImage = styled.img`
@@ -183,21 +185,41 @@ const Text = styled.p`
   z-index : 2;
   color :rgb(255, 255, 255);
   text-align : center;
-
 `
 
 export default function Profile({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
    // 주석 처리: ChoseDesigner.jsx에서 이미 posts와 postsCount를 관리하므로 Profile 컴포넌트에서는 불필요함
-  // const [postsCount, setPostsCount] = useState(0);
-  // const [posts, setPosts] = useState([]);
+  const [postsCount, setPostsCount] = useState(0);
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  
+
 
   const clickCart = (e) => {
     e.stopPropagation();
     alert("장바구니에 추가되었습니다!");
+
+    const existingCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // 현재 post 데이터를 장바구니에 추가 (중복 방지 로직 포함 가능)
+    const updatedCart = [...existingCart,  {
+      postnum : post.postnum,
+      id: post.id,
+      contents: post.contents,
+      image: profileImages[Math.abs(post.postnum % profileImages.length)], // 이미지 경로 추가
+      timestamp: new Date().toISOString(), // 추가된 시간 기록
+      },
+    ];
+
+    // 중복 제거 (id 기준)
+    const uniqueCart = Array.from(
+      new Map(updatedCart.map((item) => [item.id, item])).values()
+    );
+
+    // localStorage에 업데이트된 장바구니 데이터 저장
+    localStorage.setItem("cartItems", JSON.stringify(uniqueCart));
+
   };
 
   const ChatEvent = () => {
@@ -211,25 +233,25 @@ export default function Profile({ post }) {
   const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
 
   // 주석 처리: ChoseDesigner.jsx에서 이미 fetchPosts를 호출하여 데이터를 가져오므로 중복 호출 방지
-  // const fetchPosts = () => {
-  //   axios.get("http://localhost:8081/api/posts", { withCredentials: true })
-  //     .then(response => {
-  //       setPosts(response.data);
-  //       setPostsCount(response.data.length); 
-  //     })
-  //     .catch(error => console.error("글 목록 불러오기 실패", error));
-  // };
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
+  const fetchPosts = () => {
+    axios.get("http://localhost:8081/api/posts", { withCredentials: true })
+      .then(response => {
+        setPosts(response.data);
+        setPostsCount(response.data.length); 
+      })
+      .catch(error => console.error("글 목록 불러오기 실패", error));
+  };
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   return (
     <>
       <Container onClick={() => setIsModalOpen(true)}>
         <div className="border-b py-2">
-          <p className="text-sm text-gray-500">{post.author}</p>
-         <Text><p>{post.contents}</p></Text>
-          <p>{post.id}</p>
+          <Text>{post.id}</Text>
+         <Text>{post.contents}</Text>
+          
         </div>
         <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
         <CartButton onClick={clickCart}>
@@ -241,7 +263,7 @@ export default function Profile({ post }) {
         <PortfoilModalContainer onClose={() => setIsModalOpen(false)}>
           <ModalContent>
             <DesignerImage src={designerImages[designerImageIndex]} alt="예시" />
-            <h3>{post.author}</h3>
+            <h3 style={{color : "black"}}>{post.id}</h3>
             <p>
               의류 디자인 경력 약 5년 개인, 협업 디자인 경험도 있습니다. 기존 틀에
               벗어나 새로운 디자인을 하도록 노력하였습니다.
