@@ -125,7 +125,7 @@ const MyDesignsRequests = () => {
         fabric: '면 60%, 폴리 40%',
         color: '아이보리',
         clothingType: '맨투맨'
-      },,
+      },
       {
         id: 7,
         name: '스커트',
@@ -276,9 +276,9 @@ const MyDesignsRequests = () => {
       },
       {
         id: 6,
-        name: '원피스2',
-        description: '원피스2 설명',
-        image: '/images/원피스2.jpg',
+        name: '바지2',
+        description: '바지2 설명',
+        image: '/images/바지2.jpg',
         date: '2025-04-01',
         size: 'S',
         designName: '레이스 원피스',

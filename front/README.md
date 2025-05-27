@@ -70,3 +70,30 @@ src/pages/contract/DetailUI
    계약서작성페이지 더 세세하게 세부사항 내용들 추가 (계약 내용 샘플, 작업 범위 체크란, 개인 정보 동의 체크란, 서명)
 	-개인정보 동의에 체크해야지, 작성저장버튼이 활성화 됨
   -추가로 수정한 관련 페이지: DesignerContractEditor.jsx
+
+*05.26.월*
+1. page2\Mypage\OngoingRequestsPage.jsx
+page2\Mypage\ui\OngoingRequests.jsx
+ :제작관리에 "진행중인 의뢰내역"
+-EditRequestModal.jsx : 수정요청사항 전달 팝업
+-ProgressModal.jsx : 진행도 등록 팝업
+
+2. page2\Mypage\ui\CompletedRequestPage.jsx
+page2\Mypage\CompletedRequest.jsx
+ :제작관리에 "완료된 의뢰 관리"
+
+3. page2\Mypage\ui\EditRequestsPage.jsx
+page2\Mypage\ditRequests.jsx
+ :제작관리에 "내가 보낸 수정요청사항"
+-EditRequestViewModal : 수정요청사항 자세히 보는 팝업
+
+4. src\components\DesignerContractCreate폴더에 있는
+-DesignerContractInputSection.jsx => 계약서 주요 컴포넌트
+-DesignerContractEditor.jsx => 에디터 부분 코드
+-sampleTemplates.jsx(새로 추가함) => 계약조건사항 샘플관련 
+-DesignerContractFileUpload.jsx => 파일업로드 코드
+-DesignerContractCreate.module.css => 계약서 작성 관련 css 모음
+
+5/27일 충돌파일
+front/src/RouterComponent.js,
+front/src/components/DesignerContract/DesignerContractList/DesignerContractList.jsx
