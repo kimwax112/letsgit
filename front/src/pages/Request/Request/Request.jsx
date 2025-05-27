@@ -101,7 +101,6 @@ export default function Request({headerText = "의뢰 등록하기"}) {
     <>
       <ContentHeader children={headerText} />
   <RequestLayOut>
-    <ItemBox />
         {requestItems.length > 0 ? (
           // requestData가 있으면 동적으로 ItemBox 렌더링
           requestItems.map((item, index) => (

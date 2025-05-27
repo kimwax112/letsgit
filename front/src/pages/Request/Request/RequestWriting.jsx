@@ -263,9 +263,7 @@ export default function RequestWriting() {
         <Footer>
           <NextButtonUI onClick={handleOpenModal}>의뢰 등록</NextButtonUI>
           <NextButtonUI to="/client/Request">취소</NextButtonUI>
-          <NextButtonUI onClick={() => alert("임시 저장되었습니다!")}>
-            임시 저장
-          </NextButtonUI>
+          <NextButtonUI to="/client/Request" onClick={() => alert("저장되었습니다!")} />
         </Footer>
       </Wrapper>
 
