@@ -100,7 +100,7 @@ const DesignerContractList = () => {
   return (
     <div className="contract-list">
       {contracts.map((contract, index) => (
-        <div key={index} className="contract-item">
+        <div key={index} className="contract-item" onClick={() => navigate(`/designer/contract/${contract.roomId}`)}>
           {/* 상태 뱃지 */}
           <div
             className={`status ${

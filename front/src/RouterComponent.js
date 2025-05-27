@@ -27,6 +27,8 @@ import CanceledPage from "./pages/contract/CanceledPage"
 import OngoingRequestsPage from "./pages2/Mypage/OngoingRequestsPage";
 import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
 import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";
+import DesignerContractList from "./components/DesignerContract/DesignerContractList/DesignerContractList";
+import DContractDetail from "./components/DesignerContract/DesignerContractList/DContractDetail";
 
 const RouterComponent = () => {
   
@@ -96,6 +98,9 @@ const RouterComponent = () => {
             <Route path="OngoingRequests" element={<OngoingRequestsPage/>}/>
             <Route path="CompletedRequest" element={<CompletedRequestPage/>}/>
             <Route path="EditRequests" element={<EditRequestsPage/>}/>
+            <Route path="DContractDetail" element={<DContractDetail/>}/>
+            <Route path="DesignerContractList" element={<DesignerContractList/>}/>
+            <Route path="designer/contract/:roomId" element={<DContractDetail/>}/>
            </Routes>
         </DesignerLayout>
       } />
