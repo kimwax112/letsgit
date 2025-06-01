@@ -32,6 +32,7 @@ export default function WrittenReviewContent() {
   const [tempReviewContext, setTempReviewContext] = useState('');
   const [tempReviewStar, setTempReviewStar] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 표시 상태
+  
 
 // useEffect(() => {
 //   axios.get("http://localhost:8081/client/contract")
@@ -173,6 +174,7 @@ export default function WrittenReviewContent() {
 
   // 현재 편집 중인 계약 객체 찾기
   const editingContract = contracts.find((contract) => contract.contractId === editingContractId);
+
 
   return (
     <div className="writtenreviewcontent-container">
