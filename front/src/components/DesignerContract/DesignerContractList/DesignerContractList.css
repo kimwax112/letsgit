@@ -26,6 +26,19 @@
   text-align: center;
 }
 
+.status-edit {
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.status-edit label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+
 .ongoing {
   background-color: #28a745; /* 초록색 */
 }

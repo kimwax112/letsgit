@@ -1,84 +1,76 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";  // 추가
 import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
 import "./ContractList.css";
-import React from "react";
-import jeans from "../../../assets/jeans.png"; // <-- 이미지 추가
-import dress from "../../../assets/dress.png"; // <-- 다른 이미지
-import hood from "../../../assets/후드집업.png"; // <-- 또 다른 이미지
-const ContractList = ({ mode = "전체", onContractsChange }) => {
-  const [contracts, setContracts] = useState([
-    {
-      id: "1",
-      isStarred: true,
-      title: "디자인 계약서 1",
-      preview: "3페이지 분량 / 클라이언트 서명 완료",
-      status: "진행중",
-      date: "2025.04.11",
-      image: jeans,  // <-- 이미지 추가
-    },
-    {
-      id: "2",
-      isStarred: false,
-      title: "위탁계약서",
-      preview: "초안 전달 / 검토 중",
-      status: "완료",
-      date: "2025.04.05",
-      image: dress, // <-- 다른 이미지
-    },
-    {
-      id: "3",
-      isStarred: false,
-      title: "프로젝트 계약서",
-      preview: "계약 해지 요청 / 내용 확인 필요",
-      status: "해지",
-      date: "2025.03.30",
-      image: hood, // <-- 또 다른 이미지
-    },
-  ]);
-  
 
-  // contracts가 변경될 때마다 부모 컴포넌트에 알림
-  React.useEffect(() => {
-    if (onContractsChange) {
-      onContractsChange(contracts);
-    }
-  }, [contracts, onContractsChange]);
-
-  const contract1 = contracts.find(c => c.id === "1");  // ① 예시로 id==="1"인 계약 하나만 골라내기
-
-
+const ContractList = ({ mode = "전체" }) => {
+  const [contracts, setContracts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("전체");
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // 처음 컴포넌트 뜰 때 계약 데이터 가져오기
+    axios.get("http://localhost:8081/client/contract")
+      .then((response) => {
+        console.log("받은 계약 데이터:", response.data);
+        // 받아온 데이터 형태에 맞게 가공 (React에서 필요한 형태로)
+        const mappedContracts = response.data.map(contract => ({
+          id: contract.contractId,
+          starredStatus: false, // 별표 기본 false
+          title: contract.contractTitle, // 계약 제목 바로 넣기
+          clientId: contract.clientId,  // client_id → clientId
+          status: contract.status,
+          date: formatDate(contract.dueDate),
+          preview: contract.preview || "",  // preview가 없을 경우 빈 문자열로 기본 설정
+        }));
+        setContracts(mappedContracts);
+      })
+      .catch((error) => {
+        console.error("계약 데이터 가져오기 실패:", error);
+      });
+  }, []);
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${year}.${month}.${day}`;
+  };
+
   const handleClick = (contract) => {
     navigate(`/client/contract/${contract.id}`, { state: { contract } });
   };
 
-  const handleToggleStar = (index) => {
-    const updatedContracts = [...contracts];
-    updatedContracts[index].isStarred = !updatedContracts[index].isStarred;
+  const handleToggleStar = (contractId) => {
+    const updatedContracts = contracts.map((contract) => {
+      if (contract.id === contractId) {
+        return { ...contract, starredStatus: !contract.starredStatus };  // 해당 계약만 업데이트
+      }
+      return contract;
+    });
     setContracts(updatedContracts);
   };
+  
 
   const filteredContracts = contracts.filter((contract) => {
-    const matchesStatus =
-      statusFilter === "전체" || contract.status === statusFilter;
+    const matchesStatus = statusFilter === "전체" || contract.status === statusFilter;
+    
+    // contract.title과 contract.preview가 null이나 undefined가 아닌 경우에만 includes 호출
     const matchesSearch =
-      contract.title.includes(searchTerm) || contract.preview.includes(searchTerm);
-
-    const matchesStar = mode === "중요" ? contract.isStarred : true;
-
+      (contract.title && contract.title.includes(searchTerm)) || 
+      (contract.preview && contract.preview.includes(searchTerm));
+  
+    const matchesStar = mode === "중요" ? contract.starredStatus : true;
+  
     return matchesStar && matchesStatus && matchesSearch;
   });
+  
 
   return (
     <div>
-      
       <ContractSearchAndFilter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -86,11 +78,11 @@ const ContractList = ({ mode = "전체", onContractsChange }) => {
         setStatusFilter={setStatusFilter}
       />
       {filteredContracts.length > 0 ? (
-        filteredContracts.map((contract, index) => (
+        filteredContracts.map((contract) => (
           <ContractItem
-            key={index}
+            key={contract.id}  // contract.id를 key로 사용
             contract={contract}
-            onToggleStar={() => handleToggleStar(index)}
+            onToggleStar={() => handleToggleStar(contract.id)}
             onClick={() => handleClick(contract)}
           />
         ))

@@ -1,4 +1,3 @@
-//디자이너 프로필 목록들 나오는 ui
 import React, { useState } from "react";
 import styled from "styled-components";
 import cart2 from "../../../../assets/cart2.png";
@@ -10,6 +9,8 @@ import designer from "../../../../assets/desiner.png";
 import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
+import axios from "axios";
+import {useEffect, navigate} from "react";
 
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
@@ -143,9 +144,11 @@ const CartImage = styled.img`
   height: 100%;
 `;
 
-export default function Profile() {
+export default function Profile({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false); // 상태 변수 이름 변경
+  const [postsCount, setPostsCount] = useState(0);  // 개수를 저장할 상태 추가
+  const [posts, setPosts] = useState([]);
 
   const navigate = useNavigate();
 
@@ -158,11 +161,28 @@ export default function Profile() {
     alert("대화방으로 이동합니다");
     navigate("/client/ChatMain");
   };
-
+ 
+  
+    const fetchPosts = () => {
+      axios.get("http://localhost:8081/api/posts", { withCredentials: true })
+        .then(response => {
+          setPosts(response.data);
+          setPostsCount(response.data.length); 
+        })
+        .catch(error => console.error("글 목록 불러오기 실패", error));
+    };
+    useEffect(() => {
+      fetchPosts();
+    }, []);
   return (
     <>
       <Container onClick={() => setIsModalOpen(true)}>
-        <JeansImage src={jeans} alt="jeans" />
+      {/* post 데이터를 이용해 각 프로필에 맞는 내용을 표시 */}
+      <div className="border-b py-2">
+        <p className="text-sm text-gray-500">{post.author}</p>
+        <p>{post.contents }</p>
+        <p>{post.id }</p>
+      </div>
         <CartButton onClick={clickCart}>
           <CartImage src={cart2} alt="cart" />
         </CartButton>

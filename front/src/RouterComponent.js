@@ -23,6 +23,7 @@ import ContractList from "./components/contract/ContractList/ContractList";
 import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
 import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
+import Dropdown from './Dropdown';
 
 
 
@@ -75,7 +76,7 @@ const RouterComponent = () => {
           </ClientLayout>
         }
       />
-
+      <Route path = "/Dropdowntest" element={<Dropdown/>}/>
       {/* 디자이너 페이지 경로 */}
       <Route path="/designer/*" 
         element={

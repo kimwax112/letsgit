@@ -68,7 +68,7 @@ const DesignerNavbar = () => {
           <div className="dropdown">
             <a href="#">대화방</a>
             <div className="dropdown-menu">
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
                 일반 채팅방
               </Link>
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
@@ -120,7 +120,7 @@ const DesignerNavbar = () => {
           </div>
           <div className="dropdown-section">
             <h3>대화방</h3>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
               일반 채팅방
             </Link>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>

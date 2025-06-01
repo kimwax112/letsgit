@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Fabric.css";
 import { Sidebar, BreadCrumb, FabricItem, FixedColorPicker } from "../../../../components";
 import NextButtonWithPopup from "../../../../components/Popup/NextButtonWithPopup";
@@ -19,34 +19,72 @@ const fabricItemsData = [
   { id: 12, imageSrc: "default-image-path6.jpg", name: "메쉬", desc: "스포츠웨어", initialColor: "#ff66cc" },
 ];
 
+// 색상 코드 → 색상 이름 변환
+const colorNames = {
+  "#ff0000": "빨강",
+  "#00ff00": "초록",
+  "#0000ff": "파랑",
+  "#ff9900": "주황",
+  "#0099ff": "하늘",
+};
+
+const getColorName = (hex) => colorNames[hex] || "알 수 없음";
+
 const Fabric = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedColors, setSelectedColors] = useState({});
 
-  // 첫 페이지에서는 8개, 두 번째 페이지에서는 4개씩
   const itemsPerPageFirst = 8;
   const itemsPerPageSecond = 4;
 
-  // 현재 페이지에 맞는 원단 필터링
-  const filteredItems = currentPage === 1 
-    ? fabricItemsData.slice(0, itemsPerPageFirst) 
-    : fabricItemsData.slice(itemsPerPageFirst, itemsPerPageFirst + itemsPerPageSecond);
+  useEffect(() => {
+    try {
+      const storedFabric = JSON.parse(localStorage.getItem("selectedFabric")) || [];
+      const storedColors = JSON.parse(localStorage.getItem("selectedColors")) || {};
 
-  // 아이템 클릭 시 선택/해제
+      // ✅ 초기 값 설정: 만약 저장된 색상이 없으면 기본 색상으로 설정
+      const initializedColors = {};
+      fabricItemsData.forEach(item => {
+        initializedColors[item.id] = storedColors[item.id] || item.initialColor;
+      });
+
+      setSelectedItems(storedFabric);
+      setSelectedColors(initializedColors);
+    } catch (error) {
+      console.error("로컬 스토리지 데이터 로드 오류:", error);
+    }
+  }, []);
+
+  const filteredItems = fabricItemsData.slice(
+    currentPage === 1 ? 0 : itemsPerPageFirst,
+    currentPage === 1 ? itemsPerPageFirst : itemsPerPageFirst + itemsPerPageSecond
+  );
+
   const handleClickItem = (id) => {
+    
     setSelectedItems((prev) => {
       const isSelected = prev.some((item) => item.id === id);
-      if (isSelected) {
-        return prev.filter((item) => item.id !== id);
-      } else {
-        const newItem = fabricItemsData.find((item) => item.id === id);
-        return [...prev, newItem];
-      }
+      const updatedItems = isSelected ? prev.filter((item) => item.id !== id) : [...prev, fabricItemsData.find((item) => item.id === id)];
+      localStorage.setItem("selectedFabric", JSON.stringify(updatedItems));
+      return updatedItems;
     });
   };
 
-  // 선택된 원단 이름 배열
-  const selectedNames = selectedItems.map((item) => item.name);
+  const handleColorChange = (id, color) => {
+
+    console.log(`🎨 색상 변경: 원단 ID ${id}, 선택한 색상: ${color}`);
+    
+    if (!color) return; // ✅ null 또는 undefined 방지
+
+    setSelectedColors((prev) => {
+      const updatedColors = { ...prev, [id]: color };
+
+      console.log("🟢 업데이트된 색상:", updatedColors); // 디버깅 추가
+      localStorage.setItem("selectedColors", JSON.stringify(updatedColors));
+      return updatedColors;
+    });
+  };
 
   return (
     <div className="clothes-container">
@@ -55,13 +93,9 @@ const Fabric = () => {
           <Sidebar activePage={2} />
         </aside>
         <div className="content1">
-          <div className="header2-1">
-            <BreadCrumb activePage={2} />
-            <h3>2-1. 원단 선택</h3>
-            <hr />
-          </div>
-
-          {/* 원단 선택 영역 */}
+          <BreadCrumb activePage={2} />
+          <h3>2-1. 원단 선택</h3>
+          <hr />
           <div className="fabric-select">
             <FabricItem
               fabricItemsData={filteredItems}
@@ -69,40 +103,39 @@ const Fabric = () => {
               onClickItem={handleClickItem}
             />
           </div>
-  
-          {/* 페이지 버튼 */}
-          <div className="pagination">
-            <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>[1]</button>
-            <button onClick={() => setCurrentPage(2)} disabled={currentPage === 2}>[2]</button>
-          </div>
 
-          <div className="header2-1">
-            <h3>2-2. 색상 선택</h3>
-            <hr />
-          </div>
-  
-          {/* Color Picker 영역 */}
+          <h3>2-2. 색상 선택</h3>
+          <hr />
           <div className="ColorSelect">
             {selectedItems.length > 0 ? (
               selectedItems.map((fabricItem) => (
                 <div key={fabricItem.id} className="color-select-row">
                   <span className="fabric-name">{fabricItem.name}</span>
-                  <div className="FixedColorPicker"><FixedColorPicker /></div>
+                  <div className="FixedColorPicker">
+                  <FixedColorPicker
+                    onColorChange={(color) => handleColorChange(fabricItem.id, color)}
+                    initialColor={selectedColors[fabricItem.id]}
+                  />
+ 
+                  </div>
+                  {/* ✅ 선택한 색상 이름 표시 */}
+                  <span className="selected-color-name">
+                    선택한 색상: {getColorName(selectedColors[fabricItem.id])}
+                  </span>
                 </div>
               ))
             ) : (
               <div>아직 선택된 원단이 없습니다.</div>
             )}
           </div>
-  
-          {/* 다음 페이지 이동 버튼 */}
+
           <div className="footer">
-            <NextButtonWithPopup selectedItems={selectedNames} nextRoute="/client/Size" />
+            <NextButtonWithPopup selectedItems={selectedItems.map((item) => item.name)} nextRoute="/client/Size" />
           </div>
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default Fabric;

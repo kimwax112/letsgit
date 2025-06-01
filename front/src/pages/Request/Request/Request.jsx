@@ -82,7 +82,7 @@ export function RequestLayOut({ children }) {
 export default function Request() {
   return (
     <>
-      <ContentHeader children="디자이너 구인 게시글 작성하기" />
+      <ContentHeader children="의뢰 등록하기" />
       <RequestLayOut>
         <ItemBox />
         <ItemBox />

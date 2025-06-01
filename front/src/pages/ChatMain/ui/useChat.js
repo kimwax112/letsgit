@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import RequestBar from "../../../components/RequestBar/RequestBar";
-import ItemBox from "./ItemBox";
-import Message from '../../../pages/contract/SendMessageUi/Message/Message';
+import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
+
 export function useChat(initialChats) {
   const [filteredChats, setFilteredChats] = useState(initialChats);
   const [recentSearches, setRecentSearches] = useState(["Ralph Edwards", "hello"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedRoomId, setselectedRoomId] = useState('');
+
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-
-
   const [isComposing, setIsComposing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
@@ -21,10 +22,18 @@ export function useChat(initialChats) {
   const [confirmAction, setConfirmAction] = useState(null);
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+   const [username, setUsername] = useState("");
+    const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
+      const [client, setClient] = useState(null);
+      const [connected, setConnected] = useState(false);
+  const [roomCreator, setselectedRoomCreator] = useState('');
   const bottomRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+//////////////////////////////////
 
+
+  
   // URL 파라미터에서 신고 완료 여부 확인
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -45,13 +54,124 @@ export function useChat(initialChats) {
     }
   }, [isSuccessPopupOpen]);
 
+  useEffect(() => {
+    setFilteredChats(initialChats);
+  }, [initialChats]);
   // 메시지 스크롤 처리
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+  /*const checkSessionAndLoadMessages = async () => {
+    try {
+      const res = await fetch("http://localhost:8081/api/checkSession", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.username) {
+        setUsername(data.username);
 
+        // ✅ 메시지 불러오기
+        const msgRes = await fetch(`http://localhost:8081/api/messages/${selectedRoomId}`);
+        const msgs = await msgRes.json();
+        setMessages(msgs); // 이전 메시지 저장
+        // ✅ 방 정보 불러오기
+    const roomRes = await fetch(`http://localhost:8081/api/rooms/${selectedRoomId}`);
+    const roomData = await roomRes.json();
+    setRoom(roomData);
+    console.log("룸데이터터:", roomData);
+
+      } else {
+        alert("로그인이 필요합니다.");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("세션 확인 실패:", err);
+      alert("세션 확인 중 오류 발생");
+      navigate("/");
+    }
+  };*/
+  const connectWebSocket = (roomId, username) => {
+    const socket = new SockJS("http://localhost:8081/ws");
+    const stompClient = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
+      onConnect: () => {
+        console.log("WebSocket 연결 성공");
+  
+        // ✅ 채팅방 구독
+        stompClient.subscribe(`/topic/chat/${roomId}`, (msg) => {
+          const receivedMessage = JSON.parse(msg.body);
+          setMessages((prev) => [...prev, receivedMessage]);
+        });
+  
+        // ✅ 입장 메시지 전송
+        stompClient.publish({
+          destination: `/app/chat.addUser/${roomId}`,
+          body: JSON.stringify({
+            sender: username,
+            content: `${username} 님이 입장하셨습니다.`,
+            type: "JOIN",
+          }),
+        });
+  
+        setConnected(true);
+      },
+      onDisconnect: () => {
+        console.log("WebSocket 연결 종료");
+        setConnected(false);
+      },
+    });
+  
+    stompClient.activate();
+    setClient(stompClient);
+  
+    // 나중에 컴포넌트 언마운트 시 연결 해제하도록 리턴
+    return stompClient;
+  };
+  
+  const checkSessionAndLoadMessages = async (roomId) => {
+    try {
+      console.log("매개변수룸아이디", roomId);
+      const res = await fetch("http://localhost:8081/api/checkSession", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.username) {
+        setUsername(data.username);
+        setselectedRoomId(roomId);
+        console.log("셀렉티드의 값은?", roomId);
+  
+        const msgRes = await fetch(`http://localhost:8081/api/messages/${roomId}`);
+        const msgs = await msgRes.json();
+        setMessages(msgs);
+  
+        const roomRes = await fetch(`http://localhost:8081/api/rooms/${roomId}`);
+        const roomData = await roomRes.json();
+        setRoom(roomData);
+  
+        console.log("룸데이터터:", roomData);
+  
+        // ✅ WebSocket 연결
+        const stomp = connectWebSocket(roomId, data.username);
+        if (client) {
+          client.deactivate();
+        }
+        setClient(stomp);
+  
+      } else {
+        alert("로그인이 필요합니다.");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("세션 확인 실패:", err);
+      alert("세션 확인 중 오류 발생");
+      navigate("/");
+    }
+  };
+  
+  
   const handleSearch = (term) => {
     if (term) {
       const filtered = initialChats.filter((chat) =>
@@ -62,16 +182,34 @@ export function useChat(initialChats) {
       setFilteredChats(initialChats);
     }
   };
-
+  
   const handleRecentSearchClick = (search) => {
     handleSearch(search);
     setRecentSearches((prev) => [search, ...prev.filter((item) => item !== search)].slice(0, 5));
   };
 
-  const handleProfileClick = (name) => {
-    setSelectedUser(name);
+  /*const handleProfileClick = (chat) => {
+    setSelectedUser(chat.name); // 기존 코드
+    console.log("챗아이디디 : ", chat.id);
+
+    setselectedRoomId(chat.id); // 추가: roomID 설정
+    setselectedRoomCreator(chat.creator);
     setIsModalOpen(true);
+    console.log("셀렉티드룸 : ", selectedRoomId);
+    checkSessionAndLoadMessages();
+  };*/
+  const handleProfileClick = (chat) => {
+    setSelectedUser(chat.name);
+    setselectedRoomId(chat.id);
+    setselectedRoomCreator(chat.creator);
+    setIsModalOpen(true);
+    
+    console.log("챗아이디디 : ", chat.id);
+  
+    checkSessionAndLoadMessages(chat.id); // 여기서 chat.id를 직접 넘겨줌
   };
+  
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -87,17 +225,37 @@ export function useChat(initialChats) {
     setIsSideMenuOpen(false);
   };
 
-  const handleKeyDown = (e) => {
+  /*const handleKeyDown = (e) => {
     if (e.key === "Enter" && !isComposing && e.target.value.trim()) {
       setMessages([
         ...messages,
         { text: e.target.value.trim(), time: new Date().toLocaleTimeString() },
       ]);
+      
       e.target.value = "";
     }
-  };
+  };*/
+  /*const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !isComposing && e.target.value.trim()) {
+      const newMessage = e.target.value.trim();
+  
+      if (client && connected) {
+        client.publish({
+          destination: `/app/chat.sendMessage/${roomId}`,
+          body: JSON.stringify({
+            sender: username,
+            content: newMessage,
+            type: "CHAT",
+          }),
+        });
+      }
+  
+      setMessage(""); // 상태 초기화
+      e.target.value = ""; // input 초기화
+    }
+  };*/
 
-
+ 
 
   const handleCompositionStart = () => {
     setIsComposing(true);
@@ -153,81 +311,11 @@ export function useChat(initialChats) {
   const handleConfirmNo = () => {
     setIsConfirmOpen(false);
   };
-  const handleRequestSelect = (request) => {
-    const requestComponent = (
-      <div className="message sent">
-        <RequestBar
-          title={request.title}
-          date={request.date}
-          onClick={() => console.log("RequestBar clicked in chat")}
-          showClose={false}
-          className="chat-request-bar" // 채팅방에서만 적용될 클래스 추가
-        />
-        <span className="time">{new Date().toLocaleTimeString()}</span>
-      </div>
-    );
-    setMessages([
-      ...messages,
-      { component: requestComponent, type: "request" },
-    ]);
-    setModalOpen2(false);
-  };
-  const handleItemSelect = (item) => {
-    const itemComponent = (
-      <div className="message sent">
-        <ItemBox
-          text1={item.text1}
-          text2={item.text2}
-          onClick={() => console.log("ItemBox clicked in chat")}
-          className="chat-item-box" // 채팅방에서만 적용될 클래스 추가
-        />
-        <span className="time">{new Date().toLocaleTimeString()}</span>
-      </div>
-    );
-    setMessages([
-      ...messages,
-      { component: itemComponent, type: "item" },
-    ]);
-    setModalOpen(false); // 디자인 불러오기 모달 닫기
-  };
-
-  const addMessageForUser = (userName, messageText) => { // 추가: ChatGPT
-    const newMessage = {
-      text: messageText,
-      time: new Date().toLocaleTimeString(),
-      type: "sent",
-    };
-    setSelectedUser(userName);
-    setIsModalOpen(true);
-    setMessages((prev) => [...prev, newMessage]);
-  };
-
-   // **요청보내기**로 받은 텍스트를 Message 컴포넌트로 추가
-   const addRequestMessage = (userName, messageText) => { // 추가
-    const component = (
-      <Message
-        contract={{
-          title: messageText,
-          designer: "요청 메시지",
-          date: new Date().toISOString().split("T")[0],
-        }}
-      />
-    );
-    setSelectedUser(userName);
-    setIsModalOpen(true);
-    setMessages((prev) => [
-      ...prev,
-      {
-        component,
-        type: "sent",
-        time: new Date().toLocaleTimeString(),
-      },
-    ]);
-  };
- 
 
   return {
-    filteredChats, // 현재 표시되는 채팅몰고, 검색 필터링 결과에 따라 변경됨 초기값: initialChats 관련함수 handleSerch, handleBlockClick, handleSideMenuBlock
+    filteredChats,
+    selectedRoomId, 
+    // 현재 표시되는 채팅몰고, 검색 필터링 결과에 따라 변경됨 초기값: initialChats 관련함수 handleSerch, handleBlockClick, handleSideMenuBlock
     recentSearches,//최근 검색어 기록을 저장하는 배열 초기값 ["Ralph Edwards", "hello"] 관련함수 :handleRecentSearchClick
     isModalOpen, //채팅방 모달(Room)의 열림/닫힘 상태 초기값: false 관련함수 : handleProfileClick, handleCloseModal, handleSideMenuBlock, handleSideMenuReport
     selectedUser,// 현재 선택된 채팅 상대의 이름 초기값 : null 관련함수 :handleProfileClick, handleCloseModal
@@ -248,7 +336,7 @@ export function useChat(initialChats) {
     handleCloseModal,
     handleMenuClick,
     handleCloseSideMenu,
-    handleKeyDown,
+    //handleKeyDown,
     handleCompositionStart,
     handleCompositionEnd,
     handleSidebarLinkClick,
@@ -260,10 +348,5 @@ export function useChat(initialChats) {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
-    handleRequestSelect, // 추가
-    handleItemSelect, // 새로운 핸들러 추가
-    addMessageForUser, // 추가: ChatGPT
-    addRequestMessage,  // ✅ 반드시 반환
-
   };
 }

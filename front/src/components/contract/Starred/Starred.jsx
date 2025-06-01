@@ -4,21 +4,21 @@ import ContractList from "../../contract/ContractList";
 const Starred = () => {
   const [contracts, setContracts] = useState([
     {
-      isStarred: true,
+      starredStatus: true,
       title: "디자인 계약서 1",
       preview: "3페이지 분량 / 클라이언트 서명 완료",
       status: "진행중",
       date: "2025.04.11",
     },
     {
-      isStarred: false,
+      starredStatus: false,
       title: "위탁계약서",
       preview: "초안 전달 / 검토 중",
       status: "완료",
       date: "2025.04.05",
     },
     {
-      isStarred: true,
+      starredStatus: true,
       title: "프로젝트 계약서",
       preview: "계약 해지 요청 / 내용 확인 필요",
       status: "해지",
@@ -29,12 +29,12 @@ const Starred = () => {
   // 별 클릭 시 상태 토글
   const handleToggleStar = (index) => {
     const updated = [...contracts];
-    updated[index].isStarred = !updated[index].isStarred;
+    updated[index].starredStatus = !updated[index].starredStatus;
     setContracts(updated);
   };
 
   // 중요 계약만 필터링
-  const starredContracts = contracts.filter((c) => c.isStarred);
+  const starredContracts = contracts.filter((c) => c.starredStatus);
 
   return (
     <div>

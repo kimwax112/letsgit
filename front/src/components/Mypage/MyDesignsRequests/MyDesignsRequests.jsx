@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './MyDesignsRequests.css';
+import axios from 'axios';
 
 const MyDesignsRequests = () => {
 
@@ -14,6 +15,8 @@ const MyDesignsRequests = () => {
   const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
   // 로그인한 사용자 정보 (예: 세션에서 가져온 username)
   const [username, setUsername] = useState(null);  // 로그인한 사용자 정보
+  const [designs, setDesigns] = useState([]);//셀렉티드디자인아이템템
+
   const [userFiles, setUserFiles] = useState([]);  // 사용자 이미지 파일 상태
   const [orderItems, setOrderItems] = useState([
     {
@@ -285,7 +288,75 @@ const MyDesignsRequests = () => {
       },
     ],
   };
+  const colorMap = {
+    "#ff0000": "빨강",
+    "#00ff00": "초록",
+    "#0000ff": "파랑",
+    "#ff9900": "주황",
+    "#0099ff": "하늘",
+  };
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/current-user', {
+          method: 'GET',
+          credentials: 'include',  // 쿠키를 포함시켜 세션을 전달
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.username);
+          setUsername(data.username);  // 로그인한 사용자 이름을 상태에 저장
+        } else {
+          console.error('로그인된 사용자가 없습니다.');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 실패:', error);
+      }
+    };
+    
 
+    fetchUsername();
+  }, []);
+  const getColorName = (colorCode) => {
+    return colorMap[colorCode] || colorCode; // 색상 코드가 없으면 코드 자체를 반환
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const parseColors = (json) => {
+    try {
+      const parsed = JSON.parse(json);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // 첫 번째 색상만 표시
+         return getColorName(parsed[0].color); // 첫 번째 색상 이름 반환
+      } else {
+        return '색상 없음';
+      }
+    } catch (e) {
+      console.error("색상 파싱 오류:", e);
+      return '색상 없음';
+    }
+  };
+  const formatDateTime = (datetime) => {
+    try {
+      const date = new Date(datetime);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}시`;
+    } catch (e) {
+      return '';
+    }
+  };
+  
+  
+    // 카테고리 필터링
+    const filteredDesigns = designs.filter(
+      (item) => item.category === selectedCategory
+    );
+    /////////////////////////////
   const handleTabClick = (tab) => setActiveTab(tab);
   //const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
   const handleCategoryChange = async (event) => {
@@ -293,11 +364,25 @@ const MyDesignsRequests = () => {
     setSelectedCategory(selected);
   
     if (selected === 'pattern') {
-      await fetchUserFiles(); // '의류 패턴 설계도 디자인' 선택하면 즉시 파일 가져오기
+      await fetchUserFiles(); // 'pattern' 선택 시 파일 가져오기
+    } else if (selected === 'template') {
+      setUserFiles([]); // ✅ 패턴 파일 초기화
+      fetchMyDesigns(); // 'template' 선택 시 디자인 가져오기
     } else {
-      setUserFiles([]); // 다른 카테고리 선택 시 카드 비우기
+      setUserFiles([]); // 둘 다 아니면 비우기
     }
   };
+  
+  
+    // JSON 문자열 파싱 유틸
+    const parseFabric = (json) => {
+      try {
+        const list = JSON.parse(json);
+        return Array.isArray(list) ? list.join(', ') : '';
+      } catch (e) {
+        return '';
+      }
+    };
   // Handling design card click
   const handleDesignCardClick = (item) => {
     setSelectedDesignItem(item);
@@ -309,7 +394,10 @@ const MyDesignsRequests = () => {
     setSelectedOrderItem(item);
     setIsOrderModalOpen(true);
   };
-
+  const handleCardClick = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
   const closeDesignModal = () => setIsDesignModalOpen(false);
   const closeOrderModal = () => setIsOrderModalOpen(false);
 
@@ -335,28 +423,41 @@ const MyDesignsRequests = () => {
       console.error('파일 가져오기 에러:', error);
     }
   };
+  
+  /*const fetchMyDesigns = () => {
+    const id = "test33"; // ✅ localStorage에서 ID 가져오기 하드코딩고쳐
+    console.log("📦 현재 localStorage ID:", id);
+  
+    if (!id) return;
+  
+    axios.post('http://localhost:8081/api/designs/mydesigns', { id })
+      .then((res) => {
+        console.log('🎯 받은 디자인 데이터:', res.data);
+        setDesigns(res.data);
+      })
+      .catch((err) => {
+        console.error('❌ 디자인 불러오기 실패', err);
+      });
+  };*/
+    const fetchMyDesigns = () => {
+    const userId = localStorage.getItem("username");
+    console.log("📦 현재 localStorage ID:", userId);
+  
+    if (!username) return;
+  
+    axios.post('http://localhost:8081/api/designs/mydesigns', { username })
+      .then((res) => {
+        console.log('🎯 받은 디자인 데이터:', res.data);
+        setDesigns(res.data);
+      })
+      .catch((err) => {
+        console.error('❌ 디자인 불러오기 실패', err);
+      });
+  };
   useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const response = await fetch('http://localhost:8081/api/current-user', {
-          method: 'GET',
-          credentials: 'include',  // 쿠키를 포함시켜 세션을 전달
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data.username);
-          setUsername(data.username);  // 로그인한 사용자 이름을 상태에 저장
-        } else {
-          console.error('로그인된 사용자가 없습니다.');
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 실패:', error);
-      }
-    };
-    
-
-    fetchUsername();
+    fetchMyDesigns();
   }, []);
+  
   return (
     <div>
       <div className="tabs">
@@ -385,26 +486,38 @@ const MyDesignsRequests = () => {
               </select>
             </div>
             <div className="card-container">
-              {/*{designItems[selectedCategory].map((item) => (
-                <div key={item.id} className="card" onClick={() => handleDesignCardClick(item)}>
-                  <img src={item.image} alt={item.name} className="card-image-top" />
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                </div>
-              ))}*/}
-                   {userFiles.length > 0 && userFiles.map((item) => (
-                <div
-                  key={item.fileName}
-                  className="card"
-                  onClick={() => handleDesignCardClick(item)}
-                >
-                  {/*<img src={item.filePath} alt={item.fileName} className="card-image" />*/}
-                  <img src={`http://localhost:8081/files/view/${item.fileName}`} alt={item.fileName} className="card-image" />
+            
+            {selectedCategory === 'template' && (
+  filteredDesigns.length === 0 ? (
+    <p>해당 카테고리에 저장된 디자인이 없습니다.</p>
+  ) : (
+    <div className="card-container">
+      {filteredDesigns.map((item) => (
+        <div key={item.designId} className="card" onClick={() => handleCardClick(item)}>
+          {/*<img src={item.imageUrl} alt={item.designName} className="card-image" />*/}
+          <h3>{item.designName}</h3>
+          <p>{item.clothingType}</p>
+        </div>
+      ))}
+    </div>
+  )
+)}
 
-                  {/*<h3>{item.fileName}</h3>*/}
-                  <p>{item.uploadedAt}</p>
-                </div>
-              ))}
+{selectedCategory === 'pattern' && (
+  userFiles.length > 0 ? (
+    <div className="card-container">
+      {userFiles.map((item) => (
+        <div key={item.fileName} className="card" onClick={() => handleDesignCardClick(item)}>
+          <img src={`http://localhost:8081/files/view/${item.fileName}`} alt={item.fileName} className="card-image" />
+          <p>{item.uploadedAt}</p>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p>해당 카테고리에 저장된 파일이 없습니다.</p>
+  )
+)}
+
               
 
             </div>
@@ -446,7 +559,21 @@ const MyDesignsRequests = () => {
           </div>
         </div>
       )}
-
+      
+      {isModalOpen && selectedItem && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close-btn" onClick={closeModal}>&times;</span>
+            <h2>{selectedItem.designName}</h2>
+            {/* <img src={selectedItem.imageUrl} alt={selectedItem.designName} className="modal-image" /> */}
+            <p><strong>의류 종류:</strong> {selectedItem.clothingType}</p>
+            <p><strong>원단:</strong> {parseFabric(selectedItem.fabricJson)}</p>
+            <p><strong>사이즈:</strong> {selectedItem.size}</p>
+            <p><strong>제작일:</strong> {formatDateTime(selectedItem.createdAt)}</p>
+            <p><strong>색상:</strong> {parseColors(selectedItem.colorsJson)}</p>
+          </div>
+        </div>
+      )}
       {/* Order Modal */}
       {isOrderModalOpen && selectedOrderItem && (
         <div className="modal">

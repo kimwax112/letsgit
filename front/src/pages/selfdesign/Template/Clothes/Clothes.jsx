@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Clothes.css";
-import {useNavigate} from "react-router-dom";
-import {Sidebar,Tabs,ItemsContainer,BreadCrumb,NextButtonWithPopup} from '../../../../components'
-
+import { useNavigate } from "react-router-dom";
+import { Sidebar, Tabs, ItemsContainer, BreadCrumb, NextButtonWithPopup } from '../../../../components';
 
 const items = {
   상의: ["티셔츠(T-shirt)", "맨투맨(Sweatshirt)", "후드(Hoodie)", "집업(Zip-up Jersey)"],
@@ -15,44 +14,61 @@ const items = {
   가방: ["백팩", "토트백"],
 };
 
-
 const Clothes = () => {
   const navigate = useNavigate();
-  const categories = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방"];
+  const categories = Object.keys(items);
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedItem, setSelectedItem] = useState(null);
   
+  const [selectedItem, setSelectedItem] = useState(() => {
+    return localStorage.getItem("selectedClothing") || null;
+  });
+  
+  useEffect(() => {
+    if (selectedItem) {
+      console.log("✅ 선택한 의류(저장됨):", selectedItem);
+      localStorage.setItem("selectedClothing", selectedItem);
+    }
+  }, [selectedItem]);
 
-
-  const selectedItems = selectedItem ? [selectedItem] : [];
-
-
+  const handleNext = () => {
+    if (!selectedItem) {
+      alert("의류를 선택해주세요!");
+      return;
+    }
+  
+    console.log("✅ 다음 페이지로 이동:", selectedItem);
+    navigate("/fabric");
+  };
+  
   return (
     <div className="clothes-container">
-
-      {/* 디자인 단계 */}
       <div className="layout1">
         <aside>
-          <Sidebar activePage={1} />  
-          </aside>
+          <Sidebar activePage={1} />
+        </aside>
         <div className="content1">
-          <BreadCrumb activePage={1}/>
+          <BreadCrumb activePage={1} />
           <h3>1. 의류 종류 선택</h3>
-          <hr/>
-      
+          <hr />
+          <br />
           <Tabs categories={categories} activeTab={activeTab} setActiveTab={setActiveTab} />
           <ItemsContainer
-          items={items}
-          activeTab={categories[activeTab]}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}/>
+            items={items}
+            activeTab={categories[activeTab]}
+            selectedItem={selectedItem}
+            setSelectedItem={(item) => {
+              console.log("🎯 선택한 의류:", item);
+              setSelectedItem(item);
+            }}
+          />
           <div className="footer">
-          <NextButtonWithPopup selectedItems={selectedItems} nextRoute="/client/fabric" />
-          </div>      
-        </div>          
-       </div>
-    </div>  
+            <NextButtonWithPopup selectedItems={selectedItem ? [selectedItem] : []} nextRoute="/client/fabric" onNext={handleNext} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default Clothes;
+

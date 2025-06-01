@@ -10,14 +10,14 @@ const dummyData = [
     preview: "이건 계약 내용의 미리보기",
     status: "계약 중",
     date: "2024-04-11",
-    isStarred: true,
+    starredStatus: true,
   },
   {
     title: "계약서 2",
     preview: "이건 두번째 계약",
     status: "계약 완료",
     date: "2024-04-10",
-    isStarred: false,
+    isStarstarredStatusred: false,
   },
 ];
 
@@ -27,7 +27,7 @@ const ContractMainPage = () => {
   const handleToggleStar = (title) => {
     setContracts((prev) =>
       prev.map((c) =>
-        c.title === title ? { ...c, isStarred: !c.isStarred } : c
+        c.title === title ? { ...c, starredStatus: !c.starredStatus } : c
       )
     );
   };

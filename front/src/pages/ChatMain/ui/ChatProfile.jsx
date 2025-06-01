@@ -70,9 +70,9 @@ const ExtraContentWrapper = styled.div`
   align-self: center;
 `;
 
-export default function ChatProfile({ name, message, time, onClick, extraContent }) {
+export default function ChatProfile({ name, message, id, time, onClick, extraContent, chat, creator }) {
   return (
-    <ProfileContainer onClick={() => onClick(name)}>
+    <ProfileContainer onClick={() => onClick(chat)}>
       <ProfileWrapper>
         <Profile src={profile} alt="프로필" />
         <TextWrapper>
@@ -80,7 +80,7 @@ export default function ChatProfile({ name, message, time, onClick, extraContent
           <ProfileContext>{message}</ProfileContext>
         </TextWrapper>
       </ProfileWrapper>
-      <ChatTime>{time}</ChatTime>
+      <ChatTime>{id}</ChatTime>
       {extraContent && <ExtraContentWrapper>{extraContent}</ExtraContentWrapper>}
     </ProfileContainer>
   );

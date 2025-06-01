@@ -24,7 +24,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
       label: "목 너비", 
       values: Array(7).fill("디자인 선택 후 산출"), 
       type: "disabled", 
-      colspan: 7 
+      colpan: 7 
     },
     { 
       category: "K", 
@@ -117,7 +117,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
 
   return (
     <div className="table-container">
-      <div class="imgContainer">
+      <div className="imgContainer">
       {/* 상단 이미지 */}
       <img style={{ width: "600px" }} src="/image/size.png" alt="이미지가 없습니다" />
       
@@ -232,6 +232,10 @@ function Sizespec({ selectedSize, setSelectedSize }) {
       )}
       
       </div>
+      
+  
+
+
       
 
       {/* 사이즈 스펙 테이블 */}

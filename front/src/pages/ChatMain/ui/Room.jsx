@@ -1,30 +1,36 @@
-// Room.jsx
 import React from "react";
 import styled from "styled-components";
 import { Modal } from "../../../utils";
 import SideMenu from "./SideMenu";
 import backArrow from "../../../assets/화살표.png";
-import Message from '../../../pages/contract/SendMessageUi/Message/Message';
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
+import ChatPage from "./ChatRoom";
+
+
+
 
 const RoomContainer = styled(Modal)`
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 600px;
+  width: 700px;
   height: 700px;
-  overflow-x: hidden;
+  overflow-x : hidden;
 `;
 
 const RoomHeader = styled.div`
   width: 100%;
   display: flex;
   background-color: #799fc4;
-  
 `;
 
 const RoomFooter = styled.div`
   width: 100%;
-  height: 7vh;
+  height: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -82,8 +88,6 @@ const Title1 = styled.div`
   gap: 10px;
   color: white;
 `;
-
-
 
 const MenuButton = styled.button`
   all: unset;
@@ -164,8 +168,9 @@ const SuccessPopupMessage = styled.p`
 `;
 
 function Room({
+  roomId,
   selectedUser,
-  messages,
+  //messages,
   isSideMenuOpen,
   onClose,
   onMenuClick,
@@ -185,44 +190,46 @@ function Room({
   popupMessage,
   bottomRef,
 }) {
-  console.log(`Messages in Room for ${selectedUser}:`, messages);
+  const navigate = useNavigate();
+  const [client, setClient] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [connected, setConnected] = useState(false);
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
+  
+//////////
+
+useEffect(() => {
+  console.log("URL에서 받은 roomId??:", roomId);
+}, [roomId]);
+///////////////
 
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
       <RoomHeader>
         <BackButton onClick={onClose} />
-        <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-          <div style={{ display: "flex", gap: 10, color: "white" }}>
-            <h2 style={{color: 'black'}}>{selectedUser}</h2>
-            <button onClick={onMenuClick} style={{ all: "unset", width: 30, cursor: "pointer", fontSize: 16 }}>
-              ☰
-            </button>
-          </div>
-        </div>
+        <Title>
+          <Title1>
+            <h2>{selectedUser}</h2>
+            <MenuButton onClick={onMenuClick}>
+              <h2>☰</h2>
+            </MenuButton>
+          </Title1>
+        </Title>
       </RoomHeader>
-
       <Content>
         <ChatContainer>
-          {messages.length > 0 ? (
-            messages.map((msg, idx) => (
-              <div key={idx} className={`message ${msg.type || "sent"}`}>
-                {msg.component ? (
-                  /* 추가: ChatGPT — 컴포넌트가 있으면 그것만 렌더링 */
-                  msg.component
-                ) : (
-                  /* 추가: ChatGPT — 컴포넌트 없으면 텍스트만 렌더링 */
-                  <div>{msg.text}</div>
-                )}
-                <span className="time">{msg.time}</span>
-              </div>
-            ))
-          ) : (
-            <p>메시지가 없습니다.</p>
-          )}
+          {/*{messages.map((msg, index) => (
+            <div key={index} className="message sent">
+              {msg.text}
+              <span className="time">{msg.time}</span>
+            </div>
+          ))}*/}
+            
           <div ref={bottomRef} />
         </ChatContainer>
       </Content>
-
       <SideMenu
         isOpen={isSideMenuOpen}
         onClose={onCloseSideMenu}
@@ -232,45 +239,25 @@ function Room({
         onBlock={onBlock}
         onReport={onReport}
       />
-
       <RoomFooter>
-        <RoomInput
-          type="text"
-          placeholder="여기에 입력해주세요"
-          onKeyDown={onKeyDown}
-          onCompositionStart={onCompositionStart}
-          onCompositionEnd={onCompositionEnd}
-        />
+        <ChatPage roomId={roomId}/>
       </RoomFooter>
-
       {isConfirmOpen && (
-        <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)", background: "#fff",
-          padding: 20, borderRadius: 10, boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-          zIndex: 1000, display: "flex", flexDirection: "column", gap: 15
-        }}>
-          <p style={{ fontSize: 16, textAlign: "center" }}>{confirmMessage}</p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
-            <button onClick={onConfirmYes} style={{ padding: "8px 16px", background: "#799fc4", color: "#fff", border: "none", borderRadius: 5 }}>예</button>
-            <button onClick={onConfirmNo} style={{ padding: "8px 16px", background: "#9dbdd5", color: "#fff", border: "none", borderRadius: 5 }}>아니요</button>
-          </div>
-        </div>
+        <ConfirmModal>
+          <ConfirmMessage>{confirmMessage}</ConfirmMessage>
+          <ConfirmButtonWrapper>
+            <YesButton onClick={onConfirmYes}>예</YesButton>
+            <NoButton onClick={onConfirmNo}>아니요</NoButton>
+          </ConfirmButtonWrapper>
+        </ConfirmModal>
       )}
-
       {isSuccessPopupOpen && (
-        <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)", background: "#fff",
-          padding: 20, borderRadius: 10, boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-          zIndex: 1000, textAlign: "center"
-        }}>
-          <p style={{ color: "green", fontWeight: "bold", fontSize: 16 }}>{popupMessage}</p>
-        </div>
+        <SuccessPopup>
+          <SuccessPopupMessage>{popupMessage}</SuccessPopupMessage>
+        </SuccessPopup>
       )}
     </RoomContainer>
   );
 }
-
 
 export default Room;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./ContractItem.css";
 
 const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
-  const { isStarred, title, preview, status, date } = contract;
+  const { starredStatus, title, preview, status, date } = contract;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -16,7 +16,7 @@ const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
       <div className="contract-left">
         <div className="contract-star" onClick={(e) => e.stopPropagation()}>
           <Star
-            className={`star-icon ${isStarred ? "active" : ""}`}
+            className={`star-icon ${starredStatus ? "active" : ""}`}
             size={23}
             onClick={onToggleStar}
           />
