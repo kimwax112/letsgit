@@ -40,6 +40,8 @@ const FinalConfirmation = () => {
   const [rows, setRows] = useState([]);
   const [sizeValues, setSizeValues] = useState([]); // 선택된 사이즈의 values 배열
   const id = sessionStorage.getItem("id") || localStorage.getItem("id");
+   
+  const [sizeLabels, setSizeLabels] = useState([]);
 
 
   // 저장할 영역 ref
@@ -60,19 +62,34 @@ const FinalConfirmation = () => {
         }
       }, []);
 
-      useEffect(() => {
-    const savedRows = localStorage.getItem("sizeSpecRows");
-    if (savedRows) {
-      try {
-        setRows(JSON.parse(savedRows));
-      } catch (e) {
-        console.error("localStorage rows 파싱 오류:", e);
-        setRows([]);
+ const loadSizeData = () => {
+    if (selectedSize && category) {
+      const storageKey = category === "바지" ? "sizeSpecRowsBottom" : "sizeSpecRows";
+      const savedRows = localStorage.getItem(storageKey);
+      if (savedRows) {
+        try {
+          const rows = JSON.parse(savedRows);
+          const sizeIndex = sizes.indexOf(selectedSize);
+          if (sizeIndex >= 0) {
+            const values = rows
+              .filter((row) => !row.colspan && row.type !== "disabled")
+              .map((row) => row.values[sizeIndex]);
+            setSizeValues(values);
+
+            const labels =
+              category === "바지"
+                ? ["총길이", "허리둘레", "엉덩이둘레", "밑위길이", "허벅지단면", "밑단둘레"]
+                : ["총 기장", "가슴 단면", "밑단 단면", "소매 기장", "어깨 단면", "허리 단면", "암홀 (직선)", "소매단 단면", "소매통 단면"];
+            setSizeLabels(labels);
+          }
+        } catch (e) {
+          console.error(`localStorage ${storageKey} 파싱 오류:`, e);
+          setSizeValues([]);
+          setSizeLabels([]);
+        }
       }
     }
-  }, []);
-
-  
+  };
 
 
   useEffect(() => {
@@ -100,38 +117,43 @@ const FinalConfirmation = () => {
     
 
  
-    const storedFabric =
+    // const storedFabric =
+    //   sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
+    // const storedColors =
+    //   sessionStorage.getItem("selectedColors") || localStorage.getItem("selectedColors");
+    // const storedSize =
+    //   sessionStorage.getItem("selectedSize") || localStorage.getItem("selectedSize");
+
+    // if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
+    // if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
+    // if (storedSize) setSelectedSize(storedSize);
+// }, [id]);
+  
+    const storedFabric = 
       sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
-    const storedColors =
+    const storedColors = 
       sessionStorage.getItem("selectedColors") || localStorage.getItem("selectedColors");
-    const storedSize =
-      sessionStorage.getItem("selectedSize") || localStorage.getItem("selectedSize");
+    const storedSize = 
+      sessionStorage.getItem("selectedSize");
 
     if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
     if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
     if (storedSize) setSelectedSize(storedSize);
 
-  
-     // sizeSpecRows에서 선택된 사이즈의 values 배열 추출
-    if (storedSize) {
-      const savedRows = localStorage.getItem("sizeSpecRows");
-      if (savedRows) {
-        try {
-          const rows = JSON.parse(savedRows);
-          const sizeIndex = sizes.indexOf(storedSize);
-          if (sizeIndex >= 0) {
-            const values = rows
-              .filter((row) => !row.colspan && row.type !== "disabled") // 숫자형 values만
-              .map((row) => row.values[sizeIndex]);
-            setSizeValues(values);
-          }
-        } catch (e) {
-          console.error("localStorage sizeSpecRows 파싱 오류:", e);
-          setSizeValues([]);
-        }
+    loadSizeData();
+  }, [category, selectedSize, id]);
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "sizeSpecRows" || event.key === "sizeSpecRowsBottom") {
+        loadSizeData();
       }
-    }
-  }, [id]);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [category, selectedSize]);
+  
 
   const handleSubmit = async () => {
     if (!designName.trim()) {
@@ -203,7 +225,7 @@ const FinalConfirmation = () => {
   const renderSizeComponent = () => {
     switch (category) {
       case "상의":
-        return <img src="image/size.jpg" alt="이미지가 없습니다."/>
+        return <img src="/image/size.png" alt="이미지가 없습니다."/>
       case "바지":
         return <img src="/image/pants.png" alt="이미지가 없습니다."/>
       case "아우터":
@@ -280,38 +302,26 @@ const FinalConfirmation = () => {
                 ) : (
                   "미선택"
                 )}
-               <div className="finalconfirmation-category-image">
-                {renderSizeComponent()}
-                 {selectedSize && sizeValues.length > 0 && (
-              <div className="summary-item size-values">
-              <div className="value">
-                <ul className="size-list">
-                {[
-                  "총 기장",
-                  "가슴 단면",
-                  "밑단 단면",
-                  "소매 기장",
-                  "어깨 단면",
-                  "허리 단면",
-                  "암홀 (직선)",
-                  "소매단 단면",
-                  "소매통 단면",
-                  ].map((label, index) => (
-                    <li key={index} className="size-item">
-                      <span className="size-label">{label}</span>
-                      <span className="size-value">{sizeValues[index]?.toFixed(1)} cm</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              </div>
-
-            )}
-
-                </div> 
+              <div className="finalconfirmation-category-image">
+                  {renderSizeComponent()}
+                  {selectedSize && sizeValues.length > 0 && (
+                    <div className="summary-item size-values">
+                      <span className="label">사이즈 스펙 ({selectedSize}):</span>
+                      <div className="value">
+                        <ul className="size-list">
+                          {sizeLabels.map((label, index) => (
+                            <li key={index} className="size-item">
+                              <span className="size-label">{label}</span>
+                              <span className="size-value">{sizeValues[index]?.toFixed(1)} cm</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            
 
             <div className="summary-item">
               <span className="label">선택한 사이즈:</span>
