@@ -29,7 +29,6 @@ import WrittenReviewPage from './pages/MyPage/WrittenReviewPage';
 
 import DesignerRequest from "./pages2/Request/DesignerRequest";
 import DesignerRequestPost from "./pages2/Request/DesignerRequestPost"
-import CanceledPage from "./pages/contract/CanceledPage"
 import OngoingRequestsPage from "./pages2/Mypage/OngoingRequestsPage";
 import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
 import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";

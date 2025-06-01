@@ -42,6 +42,7 @@ const showButtons = pathname !== "/designer/DesignerRequestPost"; // 경로 비�
   <ButtonContainer>
   <ButtonDetailContainer>상세설명</ButtonDetailContainer>
   <ButtonDetailContainer>수정하기</ButtonDetailContainer>
+  
   </ButtonContainer>
   )}
   <DetailBox> {data?.description || "asdf"}</DetailBox>

@@ -21,6 +21,8 @@ const Right = styled.div`
   display: flex;               /* 내부 요소를 가로 배치 */
   justify-content: center;   /* 내부 요소들을 오른쪽 정렬 */
   align-items: flex-start;     /* 필요 시 세로 정렬 (예: 상단에 붙이기) */
+  flex-direction: column;
+  gap : 10px;
 `;
 
 
@@ -42,8 +44,15 @@ export default function DesignerRequestPost(onUpdateDescription) {
 
         <Right>
           <PostCotent3 data={requestData} onUpdateDescription={onUpdateDescription}/>
+
+     
         </Right>
+        
+
       </Content>
+         <div style={{display : "flex" , justifyContent : "center", alignItems : "center", margin : "20px"}}className="designerrequestpost-footer">
+          <button style={{width : "200px",height : "50px", }}>의뢰신청하기</button>
+        </div>
     </>
   );
 }

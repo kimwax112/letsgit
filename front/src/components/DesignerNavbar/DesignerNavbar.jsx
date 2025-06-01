@@ -33,9 +33,9 @@ const DesignerNavbar = () => {
             <Link to="/designer/DesignerRequest" onClick={() => setIsMenuOpen(false)}>
                 의뢰 찾기
               </Link>
-            <div className="dropdown-menu">
+            
               
-            </div>
+            
           </div>
           <div className="dropdown">
             <a href="#">제작 관리</a>

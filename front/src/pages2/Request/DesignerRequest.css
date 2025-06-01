@@ -1,12 +1,14 @@
 .designerrequest-header {
-  margin: 20px;
+  
+  background-color: #fff;
   display: flex;
   
-  
-  justify-content: center; 
+  margin : 0 auto;
+  justify-content: space-between; 
   align-items: center;
   gap: 20px;
   box-sizing: border-box; 
+
 }
 
 .designerrequest-header h1 {
@@ -19,7 +21,7 @@
 .designerrequest-header > div {
   display: flex;
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
   
 }
 

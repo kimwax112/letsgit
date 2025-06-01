@@ -102,7 +102,8 @@ export default function DesignerRequest({ headerText = "의뢰 찾기" }) {
 
   return (
     <>
-      <div className="designerrequest-header">
+    
+      <div  className="designerrequest-header">
         <h1>{headerText}</h1>
         <div><SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} /></div>
       </div>
@@ -117,6 +118,7 @@ export default function DesignerRequest({ headerText = "의뢰 찾기" }) {
           <p>검색 결과가 없습니다.</p>
         )}
       </RequestLayOut>
+    
     </>
   );
 }
