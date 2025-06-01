@@ -14,7 +14,9 @@
   flex-direction: column;
   align-items: center; /* 가로 중앙 정렬 */
   gap: 0.5rem; /* 아이템 간 간격 */
+  
 }
+
 
 .fabric-item.selected {
   background-color: #74a3c7 !important; /* 선택되었을 때 배경색 변경 */

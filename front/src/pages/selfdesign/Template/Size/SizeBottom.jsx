@@ -59,37 +59,11 @@ function Sizespec({ selectedSize, setSelectedSize }) {
         "2xl": false,
         "3xl": false,
       });
-            // localStorage에서 rows 로드 또는 초기화
-      const savedRows = localStorage.getItem("sizeSpecRows");
-      if (savedRows) {
-        try {
-          setRows(JSON.parse(savedRows));
-        } catch (e) {
-          console.error("localStorage rows 파싱 오류:", e);
-          setRows(initialRows);
-        }
-      } else {
-        setRows(initialRows);
-      }
+
+      // 테이블의 값도 초기화
+      setRows(initialRows);
     }
   }, [selectedSize]);
-
-  // useEffect(() => {
-  //   // selectedSize가 null일 경우 editable 상태와 테이블 값 초기화
-  //   if (selectedSize === null) {
-  //     setEditable({
-  //       xs: true,
-  //       s: false,
-  //       m: false,
-  //       l: false,
-  //       xl: false,
-  //       "2xl": false,
-  //       "3xl": false,
-  //     });
-  //     // 테이블의 값도 초기화
-  //     setRows(initialRows);
-  //   }
-  // }, [selectedSize]);
 
   const handleCellClick = (size) => {
     // 클릭한 사이즈를 활성화하고, 나머지 사이즈는 비활성화
@@ -141,20 +115,11 @@ function Sizespec({ selectedSize, setSelectedSize }) {
   // "총 기장" 행의 인덱스 찾기
   const totalLengthIndex = rows.findIndex((row) => row.category === "A");
 
-    // rows가 변경될 때 localStorage에 저장
-  useEffect(() => {
-    try {
-      localStorage.setItem("sizeSpecRows", JSON.stringify(rows));
-    } catch (e) {
-      console.error("localStorage 저장 오류:", e);
-    }
-  }, [rows]);
-
   return (
     <div className="table-container">
       <div className="imgContainer">
       {/* 상단 이미지 */}
-      <img style={{ width: "600px" }} src="/image/size.png" alt="이미지가 없습니다" />
+      <img style={{ width: "600px" }} src="/image/pants.png" alt="이미지가 없습니다" />
       
       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
       {rows.find((row) => row.category === "A") && (

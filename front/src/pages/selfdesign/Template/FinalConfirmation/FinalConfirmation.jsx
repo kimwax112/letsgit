@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Sidebar, BreadCrumb } from "../../../../components";
 import "./FinalConfirmation.css";
 import html2canvas from "html2canvas";
-
+import SizeBottom from "../Size/SizeBottom";
+import Sizespec from "../Size/Sizespec";
 const getColorName = (hex) => {
   const colorMap = {
     "#ff0000": "빨강",
@@ -33,10 +34,46 @@ const FinalConfirmation = () => {
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");  // 메모 상태 추가
 
+  
+
+  const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]; 
+  const [rows, setRows] = useState([]);
+  const [sizeValues, setSizeValues] = useState([]); // 선택된 사이즈의 values 배열
   const id = sessionStorage.getItem("id") || localStorage.getItem("id");
+
 
   // 저장할 영역 ref
   const captureRef = useRef(null);
+
+  const [category, setCategory] = useState(null);
+  
+     // localStorage에서 선택된 카테고리 읽기
+      useEffect(() => {
+        const storedClothing = localStorage.getItem("selectedClothing");
+        if (storedClothing) {
+          try {
+            const clothing = JSON.parse(storedClothing);
+            setCategory(clothing.category);
+          } catch (e) {
+            console.error("selectedClothing 파싱 오류:", e);
+          }
+        }
+      }, []);
+
+      useEffect(() => {
+    const savedRows = localStorage.getItem("sizeSpecRows");
+    if (savedRows) {
+      try {
+        setRows(JSON.parse(savedRows));
+      } catch (e) {
+        console.error("localStorage rows 파싱 오류:", e);
+        setRows([]);
+      }
+    }
+  }, []);
+
+  
+
 
   useEffect(() => {
     //console.log("🔍 useEffect 실행됨, id:", id);
@@ -45,6 +82,8 @@ const FinalConfirmation = () => {
     // window.location.href = "/login";
     //  return;
     //} 
+
+
     
     const storedClothing =
       sessionStorage.getItem("selectedClothing") ||
@@ -58,7 +97,9 @@ const FinalConfirmation = () => {
         setSelectedItem(null);
       }
     }
+    
 
+ 
     const storedFabric =
       sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
     const storedColors =
@@ -69,6 +110,27 @@ const FinalConfirmation = () => {
     if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
     if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
     if (storedSize) setSelectedSize(storedSize);
+
+  
+     // sizeSpecRows에서 선택된 사이즈의 values 배열 추출
+    if (storedSize) {
+      const savedRows = localStorage.getItem("sizeSpecRows");
+      if (savedRows) {
+        try {
+          const rows = JSON.parse(savedRows);
+          const sizeIndex = sizes.indexOf(storedSize);
+          if (sizeIndex >= 0) {
+            const values = rows
+              .filter((row) => !row.colspan && row.type !== "disabled") // 숫자형 values만
+              .map((row) => row.values[sizeIndex]);
+            setSizeValues(values);
+          }
+        } catch (e) {
+          console.error("localStorage sizeSpecRows 파싱 오류:", e);
+          setSizeValues([]);
+        }
+      }
+    }
   }, [id]);
 
   const handleSubmit = async () => {
@@ -138,6 +200,24 @@ const FinalConfirmation = () => {
     });
   };
 
+  const renderSizeComponent = () => {
+    switch (category) {
+      case "상의":
+        return <img src="image/size.jpg" alt="이미지가 없습니다."/>
+      case "바지":
+        return <img src="/image/pants.png" alt="이미지가 없습니다."/>
+      case "아우터":
+        return <div>아우터용 사이즈 입력 (구현 필요)</div>;
+      case "원피스":
+        return <div>원피스용 사이즈 입력 (구현 필요)</div>;
+      case "스커트":
+        return <div>스커트용 사이즈 입력 (구현 필요)</div>;
+      default:
+        return <div>선택된 카테고리가 없습니다.</div>;
+    }
+  };
+
+
     return (
     <div className="final-container">
       <div className="layout1">
@@ -191,15 +271,47 @@ const FinalConfirmation = () => {
                             color={selectedColors[f.id] || f.initialColor}
                           />{" "}
                           {getColorName(selectedColors[f.id] || f.initialColor)}
+                          
                         </div>
                       </div>
                     </div>
+                  
                   ))
                 ) : (
                   "미선택"
                 )}
+               <div className="finalconfirmation-category-image">
+                {renderSizeComponent()}
+                 {selectedSize && sizeValues.length > 0 && (
+              <div className="summary-item size-values">
+              <div className="value">
+                <ul className="size-list">
+                {[
+                  "총 기장",
+                  "가슴 단면",
+                  "밑단 단면",
+                  "소매 기장",
+                  "어깨 단면",
+                  "허리 단면",
+                  "암홀 (직선)",
+                  "소매단 단면",
+                  "소매통 단면",
+                  ].map((label, index) => (
+                    <li key={index} className="size-item">
+                      <span className="size-label">{label}</span>
+                      <span className="size-value">{sizeValues[index]?.toFixed(1)} cm</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              </div>
+
+            )}
+
+                </div> 
               </div>
             </div>
+            
 
             <div className="summary-item">
               <span className="label">선택한 사이즈:</span>
@@ -220,6 +332,9 @@ const FinalConfirmation = () => {
                 style={{ width: "100%" }}
               />
             </div>
+            
+          {/* 선택된 사이즈의 values 렌더링 */}
+           
           </section>
 
           <footer className="footer">
