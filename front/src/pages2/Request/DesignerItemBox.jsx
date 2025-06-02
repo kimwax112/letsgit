@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
-import designerImage from '../../../../assets/desiner.png';
+import designerImage from "../../assets/desiner.png";
 
 // 아이템 박스 컨테이너
 const ItemBoxContainer = styled.div`
@@ -96,12 +96,12 @@ const Text2 = styled.div`
   color: #6B6565;
 `;
 
-export default function ItemBox({ children,data }) {
+export default function DesignerItemBox({ children,data }) {
   const navigate = useNavigate();
   
 
   const handleClick = () => {
-    navigate('/client/RequestPost' , {state : {requestData : data }});
+    navigate('/designer/DesignerRequestPost' , {state : {requestData : data }});
   };
 
   return (
@@ -110,6 +110,7 @@ export default function ItemBox({ children,data }) {
       <DescriptionContainer>
         <TagContainer>
           <Tag>{data?.categoryTags}</Tag>
+        
         </TagContainer>
         <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
         <Profile>

@@ -93,3 +93,7 @@ page2\Mypage\ditRequests.jsx
 -sampleTemplates.jsx(새로 추가함) => 계약조건사항 샘플관련 
 -DesignerContractFileUpload.jsx => 파일업로드 코드
 -DesignerContractCreate.module.css => 계약서 작성 관련 css 모음
+
+5/27일 충돌파일
+front/src/RouterComponent.js,
+front/src/components/DesignerContract/DesignerContractList/DesignerContractList.jsx

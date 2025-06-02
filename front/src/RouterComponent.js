@@ -23,7 +23,12 @@ import ContractList from "./components/contract/ContractList/ContractList";
 import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
 import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
-import CanceledPage from "./pages/contract/CanceledPage"
+import CanceledPage from "./pages/contract/CanceledPage";
+import MyProgressPage from "./pages/MyPage/MyProgressPage";
+import WrittenReviewPage from './pages/MyPage/WrittenReviewPage';
+
+import DesignerRequest from "./pages2/Request/DesignerRequest";
+import DesignerRequestPost from "./pages2/Request/DesignerRequestPost"
 import OngoingRequestsPage from "./pages2/Mypage/OngoingRequestsPage";
 import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
 import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";
@@ -78,8 +83,8 @@ const RouterComponent = () => {
               <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
               <Route path="CanceledPage" element={<CanceledPage /> } />
-             
-              
+              <Route path="MyProgressPage" element={<MyProgressPage />} />
+              <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
             </Routes>
           </ClientLayout>
         }
@@ -96,6 +101,8 @@ const RouterComponent = () => {
             <Route path="Portfolio" element={<Portfolio />} />
             <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
             <Route path="DesignerContractCreate" element={<DesignerContractCreatePage />}/>
+            <Route path="DesignerRequest" element={<DesignerRequest /> } />
+            <Route path="DesignerRequestPost" element={<DesignerRequestPost />} />
             <Route path="OngoingRequests" element={<OngoingRequestsPage/>}/>
             <Route path="CompletedRequest" element={<CompletedRequestPage/>}/>
             <Route path="EditRequests" element={<EditRequestsPage/>}/>

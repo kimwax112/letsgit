@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
 import "./FavoriteDesigners.css";
 import designerimg from "../../../assets/desiner.png";
@@ -45,14 +45,57 @@ const dummyDesigners = [
     name: "막디자인3",
     intro: "자켓 전문 디자이너예요!",
     image: designerimg,
-  }
+  },
 ];
 
 export default function FavoriteDesigners() {
-  const [designers, setDesigners] = useState(dummyDesigners);
+  const [designers, setDesigners] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOrder, setSortOrder] = useState("recent");
+
+  // 초기 데이터 설정 및 localStorage 감지
+  useEffect(() => {
+    // 초기 디자이너 목록 설정
+    const initialDesigners = [...dummyDesigners];
+
+    // localStorage에서 cartItems 가져오기
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // cartItems 데이터를 디자이너 목록에 추가
+    const cartDesigners = cartItems.map((item) => ({
+      id: item.id, // cartItems의 id 사용 (예: "챗테")
+      name: item.id, // cartItems의 id를 name으로 매핑 (작성자 정보로 간주)
+      intro: item.contents, // cartItems의 contents 사용
+      image: item.image || designerimg, // cartItems의 image 사용, 없으면 기본 이미지
+      postnum: item.postnum, // cartItems의 postnum 추가
+      timestamp: item.timestamp, // cartItems의 timestamp 추가
+    }));
+
+    // dummyDesigners와 cartDesigners 병합
+    setDesigners([...initialDesigners, ...cartDesigners]);
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
+
+  // localStorage 변경 감지
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "cartItems") {
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        const cartDesigners = cartItems.map((item) => ({
+          id: item.id,
+          name: item.id, // cartItems의 id를 name으로 매핑
+          intro: item.contents, // cartItems의 contents 사용
+          image: item.image || designerimg,
+          postnum: item.postnum,
+          timestamp: item.timestamp,
+        }));
+        setDesigners([...dummyDesigners, ...cartDesigners]);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []); // 빈 의존성 배열로 마운트 시 리스너 설정
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -64,9 +107,9 @@ export default function FavoriteDesigners() {
 
   const sortedDesigners = [...filteredDesigners].sort((a, b) => {
     if (sortOrder === "name") {
-      return a.name.localeCompare(b.name, "ko");
+      return a.name.localeCompare(b.name, "ko"); // 이름순 정렬
     } else {
-      return b.id - a.id; // id 기준으로 최근순
+      return 0; // 배열 순서 변경하지 않음
     }
   });
 
@@ -106,15 +149,15 @@ export default function FavoriteDesigners() {
       <div className="top-bar">
         {/* 1줄: 검색, 정렬, 삭제 버튼들 */}
         <div className="top-row">
-        <div className="search-input">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="디자이너 이름 검색"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        </div>
+          <div className="search-input">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="디자이너 이름 검색"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
           <select onChange={(e) => setSortOrder(e.target.value)} value={sortOrder}>
             <option value="recent">최근 찜한 순</option>
             <option value="name">이름순</option>
@@ -137,7 +180,6 @@ export default function FavoriteDesigners() {
         </div>
       </div>
 
-
       <div className="designer-list">
         {sortedDesigners.length === 0 ? (
           <p>검색 결과가 없습니다.</p>
@@ -158,6 +200,10 @@ export default function FavoriteDesigners() {
               <div className="info">
                 <h4>{designer.name}</h4>
                 <p>{designer.intro}</p>
+                {designer.postnum && <p>게시물 번호: {designer.postnum}</p>} {/* 추가 정보 표시 */}
+                {designer.timestamp && (
+                  <p>추가 시간: {new Date(designer.timestamp).toLocaleString()}</p>
+                )}
               </div>
             </div>
           ))
