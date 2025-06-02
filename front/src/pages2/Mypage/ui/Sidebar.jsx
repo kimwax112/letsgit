@@ -44,8 +44,8 @@ export default function DesignerSidebar() {
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
           <Link
-            to="/designer/MyInfo"
-            className={`${styles.link} ${location.pathname === "/designer/MyInfo" ? styles.active : ""}`}
+            to="/designer/DMyInfo"
+            className={`${styles.link} ${location.pathname === "/designer/DMyInfo" ? styles.active : ""}`}
           >
             내 정보
           </Link>

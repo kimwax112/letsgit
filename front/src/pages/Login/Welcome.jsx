@@ -34,13 +34,9 @@ export default function Welcome(onSignupClick) {
 
 
     // ✅ rememberMe가 체크되었을 경우에만 localStorage에 저장
-    if (true) {
-      localStorage.setItem("id", username);
-      localStorage.setItem("passwd", password);
-    } else {
-      localStorage.removeItem("id");
-      localStorage.removeItem("passwd");
-    }
+    localStorage.setItem("id", data.id);
+    localStorage.setItem("name", data.name);
+    setMessage("로그인 성공!");
 
 
     // ✅ usertype에 따라 페이지 이동

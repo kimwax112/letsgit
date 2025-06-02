@@ -29,6 +29,7 @@ import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
 import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";
 import DesignerContractList from "./components/DesignerContract/DesignerContractList/DesignerContractList";
 import DContractDetail from "./components/DesignerContract/DesignerContractList/DContractDetail";
+import DMyInfoPage from "./pages2/Mypage/DMyInfoPage";
 
 const RouterComponent = () => {
   
@@ -101,6 +102,7 @@ const RouterComponent = () => {
             <Route path="DContractDetail" element={<DContractDetail/>}/>
             <Route path="DesignerContractList" element={<DesignerContractList/>}/>
             <Route path="designer/contract/:roomId" element={<DContractDetail/>}/>
+            <Route path="DMyInfo" element={<DMyInfoPage/>}/>
            </Routes>
         </DesignerLayout>
       } />
