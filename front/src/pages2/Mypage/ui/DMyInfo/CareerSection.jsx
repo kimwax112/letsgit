@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CertificateModal from "./CertificateModal";
+import EducationModal from "./EducationModal";
 
 const fashionCerts = [
   "패션디자이너 자격증",
@@ -32,21 +33,38 @@ export default function CareerSection() {
   const [selectedCategory, setSelectedCategory] = useState("design");
   const [selectedCerts, setSelectedCerts] = useState([]);
   const [careerPeriod, setCareerPeriod] = useState("");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+   
+  const [educationList, setEducationList] = useState([]);  // 학력목록 상태 추가
+  const [certificationList, setCertificationList] = useState([]);   // 자격증 상태 추가
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
 
-  const certsToShow = (selectedCategory === "design" ? designCerts
-    : selectedCategory === "programming" ? programmingCerts
-    : fashionCerts // fashion일 때
+  const certsToShow = (
+    selectedCategory === "design" ? designCerts :
+    selectedCategory === "programming" ? programmingCerts :
+    fashionCerts
   ).filter(cert => cert.includes(searchTerm));
 
   const toggleCert = (cert) => {
-    if (selectedCerts.includes(cert)) {
-      setSelectedCerts(selectedCerts.filter((c) => c !== cert));
-    } else {
-      setSelectedCerts([...selectedCerts, cert]);
-    }
+    setSelectedCerts((prev) =>
+      prev.includes(cert) ? prev.filter(c => c !== cert) : [...prev, cert]
+    );
   };
+
+  const handleAddCert = (newCert) => {
+  if (!selectedCerts.includes(newCert)) {
+    setSelectedCerts([...selectedCerts, newCert]);
+  }
+  };
+
+  const handleAddEducation = (newEdu) => {
+    setEducationList((prev) => [...prev, newEdu]);
+  };
+
+  const handleAddCertification = (newCert) => {
+    setCertificationList((prev) => [...prev, newCert]);
+  };
+
 
   return (
     <div className="form-section">
@@ -275,22 +293,145 @@ export default function CareerSection() {
         </div>
       </div>
 
-      {/* 자격증 팝업 */}
-    <div>
-      <button 
-        onClick={() => setIsModalOpen(true)} 
-        className="bg-green-500 text-white px-4 py-2 rounded"
+      {/* 학력추가 버튼 */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "1.5rem",
+          gap: "1rem",
+        }}
       >
-        자격증 추가
-      </button>
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          style={{
+            padding: "0.6rem 1.2rem",
+            fontSize: "0.95rem",
+            backgroundColor: "#799FC4",
+            color: "white",
+            border: "none",
+            borderRadius: "0.4rem",
+            cursor: "pointer",
+            flexShrink: 0, // 버튼 사이즈 줄지 않게
+          }}
+        >
+          학력 추가
+        </button>
 
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+            maxWidth: "100%",
+            overflowX: "auto",
+            padding: "0.3rem 0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "0.5rem",
+            flex: 1,
+          }}
+        >
+          {educationList.length > 0 ? (
+            educationList.map((edu, idx) => (
+              <div
+                key={idx}
+                style={{
+                  backgroundColor: "#E5EDF5",
+                  padding: "0.4rem 0.8rem",
+                  borderRadius: "1rem",
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                학교명: {edu.school} / 전공: {edu.major} / 재적 상태: {edu.status}
+              </div>
+            ))
+          ) : (
+            <span style={{ color: "#888" }}>추가된 학력이 없습니다.</span>
+          )}
+        </div>
+      </div>
+
+
+
+      {/* 자격증 추가 버튼 */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "1.5rem",
+          gap: "1rem",
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => setIsCertModalOpen(true)}
+          style={{
+            padding: "0.6rem 1.2rem",
+            fontSize: "0.95rem",
+            backgroundColor: "#799FC4",
+            color: "white",
+            border: "none",
+            borderRadius: "0.4rem",
+            cursor: "pointer",
+            flexShrink: 0, // 버튼 사이즈 줄지 않게
+          }}
+        >
+          자격증 추가
+        </button>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+            maxWidth: "100%",
+            overflowX: "auto",
+            padding: "0.3rem 0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "0.5rem",
+            flex: 1,
+          }}
+        >
+          {certificationList.length > 0 ? (
+            certificationList.map((cert, idx) => (
+              <div
+                key={idx}
+                style={{
+                  backgroundColor: "#E5EDF5",
+                  padding: "0.4rem 0.8rem",
+                  borderRadius: "1rem",
+                  fontSize: "0.9rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                자격증명: {cert.name} / 발행기관: {cert.agency} / 취득일자: {cert.date}
+              </div>
+            ))
+          ) : (
+            <span style={{ color: "#888" }}>추가된 자격증이 없습니다.</span>
+          )}
+        </div>
+      </div>
+
+
+
+      {/* 학력 모달 렌더링 */}
       {isModalOpen && (
-        <CertificateModal onClose={() => setIsModalOpen(false)} />
+        <EducationModal
+          onClose={() => setIsModalOpen(false)}
+          onAddCert={handleAddEducation}
+        />
       )}
-    </div>
 
-
-
+      {/* 자격증 모달 */}
+      {isCertModalOpen && (
+        <CertificateModal
+          onClose={() => setIsCertModalOpen(false)}
+          onAddCertification={handleAddCertification}
+        />
+      )}
 
       {/* 하단 버튼 */}
       <div className="action-buttons">

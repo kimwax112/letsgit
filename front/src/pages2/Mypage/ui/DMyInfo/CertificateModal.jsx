@@ -1,72 +1,158 @@
-import React from 'react';
+import React, { useState } from "react";
 
-const CertificateModal = ({ onClose }) => {
+export default function CertificateModal ({ onClose, onAddCertification }) {
+  const [name, setName] = useState(""); // 자격증명
+  const [agency, setAgency] = useState(""); // 발행기관
+  const [date, setDate] = useState(""); // 취득일자
+  const [file, setFile] = useState(null); // 첨부 파일
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !agency || !date) {
+      alert("모든 항목을 입력해주세요.");
+      return;
+    }
+    onAddCertification({ name, agency, date, file });
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white w-[400px] rounded-xl shadow-lg p-6 relative">
+    <div
+      style={{
+        position: "fixed",
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.4)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 1000,
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          backgroundColor: "white",
+          padding: "2rem",
+          borderRadius: "0.5rem",
+          width: "400px",
+          position: "relative",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+        }}
+      >
+        <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>자격증</h2>
+
         {/* 닫기 버튼 */}
-        <button 
-          className="absolute top-3 right-3 text-gray-500 hover:text-black text-xl"
+        <button
+          type="button"
           onClick={onClose}
+          aria-label="닫기"
+          style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
         >
-          ❌
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
 
-        {/* 제목 */}
-        <h2 className="text-xl font-bold mb-4">자격증</h2>
+        {/* 자격증명 */}
+        <label style={{ display: "block", marginBottom: "0.25rem" }}>
+          자격증명<span style={{ color: "red" }}>*</span>
+        </label>
+        <input
+          type="text"
+          placeholder="자격증명을 입력하세요"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "0.3rem",
+            border: "1px solid #ccc",
+            boxSizing: "border-box",
+          }}
+        />
 
-        {/* 입력 필드들 */}
-        <div className="flex flex-col gap-3">
-          {/* 자격증명 */}
-          <label className="flex flex-col text-sm">
-            자격증명
-            <input 
-              type="text" 
-              className="border border-gray-300 rounded-md p-2 mt-1"
-              placeholder="예: 컴퓨터활용능력 1급"
-            />
-          </label>
+        {/* 발행기관 */}
+        <label style={{ display: "block", marginBottom: "0.25rem" }}>
+          발행기관<span style={{ color: "red" }}>*</span>
+        </label>
+        <input
+          type="text"
+          placeholder="발행기관을 입력하세요"
+          value={agency}
+          onChange={(e) => setAgency(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "0.3rem",
+            border: "1px solid #ccc",
+            boxSizing: "border-box",
+          }}
+        />
 
-          {/* 발급일 */}
-          <label className="flex flex-col text-sm">
-            발급일
-            <input 
-              type="date" 
-              className="border border-gray-300 rounded-md p-2 mt-1"
-            />
-          </label>
+        {/* 취득일자 */}
+        <label style={{ display: "block", marginBottom: "0.25rem" }}>
+          취득일자<span style={{ color: "red" }}>*</span>
+        </label>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            marginBottom: "1rem",
+            borderRadius: "0.3rem",
+            border: "1px solid #ccc",
+            boxSizing: "border-box",
+          }}
+          required
+        />
 
-          {/* 발급기관 */}
-          <label className="flex flex-col text-sm">
-            발급기관
-            <input 
-              type="text" 
-              className="border border-gray-300 rounded-md p-2 mt-1"
-              placeholder="예: 대한상공회의소"
-            />
-          </label>
+        {/* 증빙 자료 첨부 */}
+        <label style={{ display: "block", marginBottom: "0.25rem" }}>증빙 자료 첨부</label>
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          style={{ marginBottom: "1rem" }}
+        />
 
-          {/* 증빙 파일 */}
-          <label className="flex flex-col text-sm">
-            증빙 자료 첨부
-            <input 
-              type="file" 
-              className="mt-1"
-            />
-          </label>
-        </div>
-
-        {/* 저장 버튼 */}
-        <div className="mt-5 text-right">
-          <button 
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            저장
-          </button>
-        </div>
-      </div>
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "0.6rem",
+            backgroundColor: "#799FC4",
+            color: "white",
+            border: "none",
+            borderRadius: "0.3rem",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          추가
+        </button>
+      </form>
     </div>
   );
-};
-
-export default CertificateModal;
+}
