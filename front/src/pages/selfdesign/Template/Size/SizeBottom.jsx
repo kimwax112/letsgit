@@ -152,7 +152,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
     <div className="table-container2">
       <div className="left-section">
       {/* 상단 이미지 */}
-      <div class="controll-container">
+      <div class="controll-container2">
       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
       {rows.find((row) => row.category === "A") && (
         
@@ -161,6 +161,8 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             rowIndex={rows.findIndex((row) => row.category === "A")}
             onIncrement={handleIncrementRow}
             onDecrement={handleDecrementRow}
+              className="size-controller-row2" // 페이지 전용 스타일
+
           />        
       )}
        {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
@@ -171,6 +173,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             rowIndex={rows.findIndex((row) => row.category === "B")}
             onIncrement={handleIncrementRow}
             onDecrement={handleDecrementRow}
+            className="size-controller-row2" // 페이지 전용 스타일
           /> 
       )}
        {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
@@ -181,6 +184,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             rowIndex={rows.findIndex((row) => row.category === "C")}
             onIncrement={handleIncrementRow}
             onDecrement={handleDecrementRow}
+            className="size-controller-row2" // 페이지 전용 스타일
           />
       )}
        {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
@@ -191,6 +195,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             rowIndex={rows.findIndex((row) => row.category === "D")}
             onIncrement={handleIncrementRow}
             onDecrement={handleDecrementRow}
+            className="size-controller-row2" // 페이지 전용 스타일
           />
       )}
        {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
@@ -200,6 +205,7 @@ function Sizespec({ selectedSize, setSelectedSize }) {
             rowIndex={rows.findIndex((row) => row.category === "E")}
             onIncrement={handleIncrementRow}
             onDecrement={handleDecrementRow}
+            className="size-controller-row2" // 페이지 전용 스타일
           />
       )}
       </div>

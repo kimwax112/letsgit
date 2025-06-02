@@ -7,6 +7,7 @@ import { SizeController,SizeControllerRow } from "../../../../components"; // �
 function Sizespec({ selectedSize, setSelectedSize }) {
   // 상단 헤더에 표시할 사이즈 배열
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+  
 
   // 초기 행 데이터 배열
   const initialRows = [

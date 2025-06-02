@@ -19,7 +19,8 @@ const ModalContent = styled.div`
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 600px;
+  height : 800px;
   max-width: 90%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 `;
@@ -293,16 +294,17 @@ export default function WrittenReviewContent() {
                 onChange={(e) => setTempReviewContext(e.target.value)}
                 placeholder="리뷰 내용을 입력하세요"
                 rows={3}
-                style={{ border : "1px solid #EBE5E5",borderRadius:"10px",  width: '90%', margin: '0 auto', height: "300px", backgroundColor : "#EBE5E5", padding : "10px"}}
+                style={{ border : "1px solid #EBE5E5",borderRadius:"10px",  width: '90%', margin: '0 auto', height: "500px", backgroundColor : "#EBE5E5", padding : "10px"}}
               />
            
+              </div>
               
               <div className="modalbutton-container">
                 <button onClick={() => saveEdit(editingContractId)}>확인</button>
                 <button onClick={closeModal} style={{ marginLeft: '5px' }}>취소</button>
               </div>
               
-            </div>
+            
           </ModalContent>
         </ReviewModal>
       )}

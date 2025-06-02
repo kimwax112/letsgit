@@ -232,7 +232,7 @@ const handleStarClick = (star) => {
           />
            {contract.status === "완료" && (
             <button style={{marginRight: "auto"}} onClick={() => openReviewModal(contract)}>
-              리뷰 <br/> 작성
+              후기 <br/> 작성
             </button>
           )}
         </div>
