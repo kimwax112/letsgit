@@ -257,8 +257,8 @@ const DesignerContractCreatePage = () => {
 
       {/* 계약서 본문 에디터 */}
       <DesignerContractEditor
-        contractData={contractData}
-        setContractData={setContractData}
+        contractData={contentBySection}
+        setContractData={setContentBySection}
       />
 
       <br/><br/>
