@@ -37,7 +37,7 @@ const DeliveryCard = ({
 
         {/* 오른쪽 */}
         <div className="right-section">
-          <button onClick={() => navigate(`/designer/delivery/${contractId}`)}>
+          <button className="action-btn" nClick={() => navigate(`/designer/delivery/${contractId}`)}>
             배송상세보기
           </button>
           <button

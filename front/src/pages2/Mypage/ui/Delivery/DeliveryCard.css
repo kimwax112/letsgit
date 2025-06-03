@@ -81,15 +81,17 @@
 }
 
 .action-btn {
+  width: 130px; /* ✅ 고정 가로 길이 추가 */
   padding: 8px 14px;
   border-radius: 6px;
-  background-color: #799fc4; /* ✅ 버튼 색 지정 */
+  background-color: #799fc4;
   border: none;
-  color: #fff; /* ✅ 글자색 흰색으로 */
+  color: #fff;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  text-align: center;
 }
 
 .action-btn:hover {
