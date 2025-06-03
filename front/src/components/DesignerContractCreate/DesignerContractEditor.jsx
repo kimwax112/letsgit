@@ -1,6 +1,15 @@
 import React, { useRef, useEffect, useState  } from "react";
 import styles from "./DesignerContractCreate.module.css";
 
+const sectionTitles = {
+  basic: "기본",
+  copyright: "저작권",
+  cancellation: "취소",
+  security: "보안",
+  dispute: "분쟁",
+  etc: "추가 작성란"
+};
+
 const DesignerContractEditor = ({ contractData, setContractData }) => {
   const editorRef = useRef(null);
 
@@ -94,28 +103,34 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
   const handleDrop = (e) => {
     e.preventDefault();
 
-    const text = e.dataTransfer.getData("text/plain");
-    if (!text) return;
+    const data = e.dataTransfer.getData("text/plain");
+    if (!data) return;
 
-    // 현재 selection을 얻어 Range로 가져오기
+    let parsed;
+    try {
+      parsed = JSON.parse(data);
+    } catch {
+      parsed = { text: data }; // 그냥 텍스트인 경우도 대비
+    }
+
+    const { section, text } = parsed;
+
     const selection = window.getSelection();
     if (!selection.rangeCount) return;
-
     const range = selection.getRangeAt(0);
 
-    // 드롭 위치에 텍스트 노드 삽입
-    // 기존 내용을 삭제하지 않고 삽입하려면 deleteContents 안 함
-    range.deleteContents(); // 필요시 선택 영역 삭제
-    const textNode = document.createTextNode(text);
+    // 텍스트 삽입
+    range.deleteContents();
+    const textNode = document.createTextNode(text || "");
     range.insertNode(textNode);
 
-    // 커서를 삽입한 텍스트 뒤로 이동
+    // 커서 이동
     range.setStartAfter(textNode);
     range.setEndAfter(textNode);
     selection.removeAllRanges();
     selection.addRange(range);
 
-    // contentEditable 내부 HTML이 바뀌었으니 부모 상태에 반영
+    // 에디터 HTML 저장
     setContractData((prev) => ({
       ...prev,
       contractContent: editorRef.current.innerHTML,

@@ -36,7 +36,7 @@ const categoryNames = {
   dispute: "분쟁",
 };
 
-const SampleClauseSidebar = ({ onInsert, onClose }) => {
+const SampleClauseSidebar = ({ onInsert, onClose, selectedCategory }) => {
   const [category, setCategory] = React.useState("basic");
 
   return (
@@ -84,7 +84,7 @@ const SampleClauseSidebar = ({ onInsert, onClose }) => {
             onDragStart={(e) => {
                 e.dataTransfer.setData("text/plain", text); // 드래그 데이터 저장
             }}
-              onClick={() => onInsert(text)}
+              onClick={() => onInsert(selectedCategory, text)}
               style={{
                 backgroundColor: "#eee",
                 border: "1px solid #ccc",

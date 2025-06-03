@@ -25,6 +25,15 @@ const DesignerContractCreatePage = () => {
     signature: "",
   });
 
+  const [contentBySection, setContentBySection] = useState({
+    basic: "",
+    copyright: "",
+    cancellation: "",
+    security: "",
+    dispute: "",
+    etc: "",
+  });
+
   const [showSamplePanel, setShowSamplePanel] = useState(false);
 
   // 작업 범위 체크박스 상태
@@ -67,12 +76,10 @@ const DesignerContractCreatePage = () => {
     localStorage.setItem("contractDraft", JSON.stringify({ contractData, deliverables }));
   }, [contractData, deliverables]);
 
-  const handleSampleInsert = (text) => {
-    setContractData(prev => ({
+  const handleSampleInsert = (category, text) => {
+    setContentBySection(prev => ({
       ...prev,
-      contractContent: prev.contractContent
-        ? prev.contractContent + "\n" + text
-        : text,
+      [category]: prev[category] ? prev[category] + "\n" + text : text,
     }));
   };
 
@@ -94,6 +101,8 @@ const DesignerContractCreatePage = () => {
       return;
     }
 
+    const fullContractText = Object.values(contentBySection).join("\n\n---\n\n");
+
     try {
       const response = await fetch("http://localhost:8081/client/contract", {
         method: "POST",
@@ -102,7 +111,8 @@ const DesignerContractCreatePage = () => {
         },
         body: JSON.stringify({
           ...contractData,
-          requestFee, // 숫자로 변환한 값 전달
+          contractContent: fullContractText, // 내용 합쳐서 보냄
+          requestFee,
           deliverables,
         }),
       });
@@ -238,6 +248,7 @@ const DesignerContractCreatePage = () => {
         <SampleClauseSidebar
           onInsert={handleSampleInsert}
           onClose={() => setShowSamplePanel(false)}
+          selectedCategory={sampleCategory}
         />
       )}
       </div>

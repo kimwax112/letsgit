@@ -60,10 +60,10 @@ export default function DesignerSidebar() {
         </li>
         <li className={styles.menuItem}>
           <Link
-            to="/designer/ContractDelivery"
-            className={`${styles.link} ${location.pathname === "/designer/ContractDelivery" ? styles.active : ""}`}
+            to="/designer/Delivery"
+            className={`${styles.link} ${location.pathname === "/designer/Delivery" ? styles.active : ""}`}
           >
-            계약조회 & 배송내역
+            배송내역
           </Link>
         </li>
         <li className={styles.menuItem}>
