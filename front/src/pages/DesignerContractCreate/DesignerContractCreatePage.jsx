@@ -7,6 +7,7 @@ import SampleClauseSidebar, { sampleTemplates } from "../../components/DesignerC
 import DesignerLayout from "../../DesignerLayout";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import ContractPreview from "../../components/DesignerContractCreate/ContractPreview";
 
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
