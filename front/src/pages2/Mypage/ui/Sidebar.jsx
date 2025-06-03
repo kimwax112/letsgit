@@ -67,6 +67,14 @@ export default function DesignerSidebar() {
           </Link>
         </li>
         <li className={styles.menuItem}>
+          <Link
+            to="/designer/DesignerReceivedReviews"
+            className={`${styles.link} ${location.pathname === "/designer/DesignerReceivedReviews" ? styles.active : ""}`}
+          >
+            작성된 후기
+          </Link>
+        </li>
+        <li className={styles.menuItem}>
           {/* 제작관리 메뉴는 클릭 시 서브메뉴 토글 */}
           <div
             onClick={toggleProductionMenu}
