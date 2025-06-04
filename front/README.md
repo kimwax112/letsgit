@@ -99,6 +99,7 @@ front/src/RouterComponent.js,
 front/src/components/DesignerContract/DesignerContractList/DesignerContractList.jsx
 
 //챗지피티 랑 대화한 내용
+이거 구현하려면 3d 이미지로 해야할거 같긴해서.. 좀 힘들거 같긴해요 ㅠ
 export default Sizespec;
 export defulat SizeControllerRow;
 
