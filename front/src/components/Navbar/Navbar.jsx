@@ -28,7 +28,7 @@ const Navbar = () => {
         </button>
 
         {/* 기본 메뉴 */}
-        <div className="nav-links">
+        <div className="nav-links"> 
           <div className="dropdown">
             <a href="#">직접 의류 디자인</a>
             <div className="dropdown-menu">
@@ -71,6 +71,7 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+
           <div className="dropdown">
             <a href="#">대화방</a>
             <div className="dropdown-menu">
@@ -81,6 +82,10 @@ const Navbar = () => {
                 사용자 신고/차단
               </Link>
             </div>
+          </div>
+
+          <div className="dropdown">
+            <a href="/client/WrittenReviewPage">작성한 후기</a>
           </div>
         </div>
       </nav>

@@ -99,8 +99,6 @@ const FinalConfirmation = () => {
     // window.location.href = "/login";
     //  return;
     //} 
-
-
     
     const storedClothing =
       sessionStorage.getItem("selectedClothing") ||

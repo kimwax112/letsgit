@@ -7,6 +7,7 @@ import SampleClauseSidebar, { sampleTemplates } from "../../components/DesignerC
 import DesignerLayout from "../../DesignerLayout";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import ContractPreview from "../../components/DesignerContractCreate/ContractPreview";
 
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
@@ -23,6 +24,15 @@ const DesignerContractCreatePage = () => {
     starredStatus: 0,
     contractContent: "", // 에디터 작성 내용
     signature: "",
+  });
+
+  const [contentBySection, setContentBySection] = useState({
+    basic: "",
+    copyright: "",
+    cancellation: "",
+    security: "",
+    dispute: "",
+    etc: "",
   });
 
   const [showSamplePanel, setShowSamplePanel] = useState(false);
@@ -67,12 +77,10 @@ const DesignerContractCreatePage = () => {
     localStorage.setItem("contractDraft", JSON.stringify({ contractData, deliverables }));
   }, [contractData, deliverables]);
 
-  const handleSampleInsert = (text) => {
-    setContractData(prev => ({
+  const handleSampleInsert = (category, text) => {
+    setContentBySection(prev => ({
       ...prev,
-      contractContent: prev.contractContent
-        ? prev.contractContent + "\n" + text
-        : text,
+      [category]: prev[category] ? prev[category] + "\n" + text : text,
     }));
   };
 
@@ -94,6 +102,8 @@ const DesignerContractCreatePage = () => {
       return;
     }
 
+    const fullContractText = Object.values(contentBySection).join("\n\n---\n\n");
+
     try {
       const response = await fetch("http://localhost:8081/client/contract", {
         method: "POST",
@@ -102,7 +112,8 @@ const DesignerContractCreatePage = () => {
         },
         body: JSON.stringify({
           ...contractData,
-          requestFee, // 숫자로 변환한 값 전달
+          contractContent: fullContractText, // 내용 합쳐서 보냄
+          requestFee,
           deliverables,
         }),
       });
@@ -238,6 +249,7 @@ const DesignerContractCreatePage = () => {
         <SampleClauseSidebar
           onInsert={handleSampleInsert}
           onClose={() => setShowSamplePanel(false)}
+          selectedCategory={sampleCategory}
         />
       )}
       </div>
@@ -246,8 +258,8 @@ const DesignerContractCreatePage = () => {
 
       {/* 계약서 본문 에디터 */}
       <DesignerContractEditor
-        contractData={contractData}
-        setContractData={setContractData}
+        contractData={contentBySection}
+        setContractData={setContentBySection}
       />
 
       <br/><br/>

@@ -34,6 +34,11 @@ import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
 import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";
 import DesignerContractList from "./components/DesignerContract/DesignerContractList/DesignerContractList";
 import DContractDetail from "./components/DesignerContract/DesignerContractList/DContractDetail";
+import DMyInfoPage from "./pages2/Mypage/DMyInfoPage";
+import DeliveryPage from "./pages2/Mypage/DeliveryPage";
+import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
+import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
+import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
 
 const RouterComponent = () => {
   
@@ -108,6 +113,10 @@ const RouterComponent = () => {
             <Route path="DContractDetail" element={<DContractDetail/>}/>
             <Route path="DesignerContractList" element={<DesignerContractList/>}/>
             <Route path="designer/contract/:roomId" element={<DContractDetail/>}/>
+            <Route path="DMyInfo" element={<DMyInfoPage/>}/>
+            <Route path="Delivery" element={<DeliveryPage/>}/>
+            <Route path="/designer/delivery/:contractId" element={<DeliveryDetail data={dummyDeliveries} />} />
+            <Route path="DesignerReceivedReviews" element={<DesignerReceivedReviewsPage />} />
            </Routes>
         </DesignerLayout>
       } />
