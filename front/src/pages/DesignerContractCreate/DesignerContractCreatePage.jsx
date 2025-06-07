@@ -37,6 +37,9 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
 
   const [showSamplePanel, setShowSamplePanel] = useState(false);
 
+  //체크박스시, 작성완료버튼 활성화
+  const [agreeToAll, setAgreeToAll] = useState(false);
+
   // 작업 범위 체크박스 상태
   const [deliverables, setDeliverables] = useState([]);
 
@@ -274,58 +277,72 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
 
       {/* 동의 체크박스 UI*/}
       <div style={{ marginBottom: "1.5rem", fontSize: "0.9rem", color: "#555" }}>
-        <label style={{ cursor: "pointer", userSelect: "none" }}>
-          <input
-            type="checkbox"
-            checked={agreePrivacy}
-            onChange={() => setAgreePrivacy(!agreePrivacy)}
-            style={{ marginRight: "0.5rem" }}
-          />
-          개인정보 수집 및 이용안내(필수, 선택)에 모두 동의합니다.
-        </label>
+      <input
+        type="checkbox"
+        checked={agreeToAll}
+        onChange={(e) => setAgreeToAll(e.target.checked)}
+      />
+      <label>
+        개인정보 수집 및 이용안내(필수, 선택)에 모두 동의합니다.
+      </label>
       </div>
 
       {/* 저장 / 취소 버튼 */}
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
-        <button
-          onClick={() => setShowPreview(true)}
-          style={{
-            backgroundColor: "#E0E0E0",
-            color: "#333",
-            padding: "0.5rem 1rem",
-            borderRadius: "5px",
-            border: "none",
-          }}
-        >
-          미리보기
-        </button>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", marginTop: "1.5rem" }}>
+      {/* 미리보기 버튼 */}
+      <button
+        onClick={() => setShowPreview(true)}
+        style={{
+          backgroundColor: "#f0f4f8",
+          color: "#799FC4",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "1px solid #799FC4",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: "pointer",
+        }}
+      >
+        미리보기
+      </button>
 
-        <button
-          onClick={handleCancel}
-          style={{
-            backgroundColor: "#D9534F",
-            color: "#fff",
-            padding: "0.5rem 1rem",
-            borderRadius: "5px",
-            border: "none",
-          }}
-        >
-          취소
-        </button>
+      {/* 취소 버튼 */}
+      <button
+        onClick={handleCancel}
+        style={{
+          backgroundColor: "#eee",
+          color: "#999",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "1px solid #ccc",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: "pointer",
+        }}
+      >
+        취소
+      </button>
 
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#5CB85C",
-            color: "#fff",
-            padding: "0.5rem 1rem",
-            borderRadius: "5px",
-            border: "none",
-          }}
-        >
-          작성 완료
-        </button>
-      </div>
+      {/* 작성 완료 버튼 (동의 체크 여부에 따라 비활성화) */}
+      <button
+        onClick={handleSubmit}
+        disabled={!agreeToAll} // <- 이 변수에 체크 여부가 담겨 있어야 해
+        style={{
+          backgroundColor: agreeToAll ? "#799FC4" : "#ccc",
+          color: "#fff",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "none",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: agreeToAll ? "pointer" : "not-allowed",
+          opacity: agreeToAll ? 1 : 0.6,
+          transition: "background-color 0.3s ease",
+        }}
+      >
+        작성 완료
+      </button>
+    </div>
 
       {showPreview && (
         <div
