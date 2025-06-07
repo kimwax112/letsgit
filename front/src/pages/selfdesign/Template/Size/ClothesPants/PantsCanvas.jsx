@@ -11,11 +11,11 @@ import React, { useRef, useEffect, useState } from 'react';
   // const [hemWidth, setHemWidth] = useState(30);      // 밑단단면
 
 export default function PantsOutlineCanvas({
-  waistWidth,    setWaistWidth,
-  rise,          setRise,
-  length,        setLength,
-  thighWidth,    setThighWidth,
-  hemWidth,      setHemWidth,
+  waistWidth,    setWaistWidth, //허리단면
+  rise,          setRise, // 밑외
+  length,        setLength, // 총장
+  thighWidth,    setThighWidth, // 허벅지단면
+  hemWidth,      setHemWidth, // 밑단단면
   isPreview = false, // FinalConfirmation에서 호출될 때 입력 컨트롤 숨기기
 
 }) {
@@ -110,7 +110,7 @@ const canvasRef = useRef(null);
 
   if (!isPreview) {
       try {
-        const imageData = canvas.toDataURL('image/png');
+        const imageData = canvas.toDataURL('image2/png');
         localStorage.setItem('pantsCanvasImage', imageData);
       } catch (e) {
         console.error('localStorage 저장 오류:', e);
@@ -125,13 +125,21 @@ const canvasRef = useRef(null);
   
 
   return (
-    <div>
-
+    <div className="canvas-adjust" style={{ textAlign: 'center', marginTop: '2rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+      <div className="size-spec-layout">
+        <div className="size-spec-container">
       
       <h3>바지 테두리 조절</h3>
       <canvas ref={canvasRef} width={300} height={400} style={{ border: '1px solid #ccc' }} />
 
-     <div>
+     <div className="cliders-grid" style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr 1fr',
+              gap: '1.5rem',
+              marginTop: '2rem',
+              justifyItems: 'center',
+            }}
+          >
         <label>총장: {length}px</label>
         <input type="range" min="150" max="280" value={length} onChange={e => setLength(Number(e.target.value))} />
       </div>
@@ -158,6 +166,9 @@ const canvasRef = useRef(null);
         <input type="range" min="10" max="80" value={hemWidth} onChange={e => setHemWidth(Number(e.target.value))} />
       </div>
     </div>
+    </div>
+  </div>
+    
   );
 };
 

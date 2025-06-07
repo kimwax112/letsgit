@@ -288,26 +288,20 @@ const FinalConfirmation = () => {
 
         // sizeLabels와 sizeValues를 매핑하여 ClothesTest에 전달
         const sizePropsBottom = {
-          waistWidth: sizeLabels.includes("목 파임") ? sizeValues[sizeLabels.indexOf("목 파임")] : 18,
-          neckXOffset: sizeLabels.includes("목 너비") ? sizeValues[sizeLabels.indexOf("목 너비")] : 15,
-          shoulderOffset: sizeLabels.includes("어깨 단면") ? sizeValues[sizeLabels.indexOf("어깨 단면")] : 38,
-          chestOffset: sizeLabels.includes("가슴 단면") ? sizeValues[sizeLabels.indexOf("가슴 단면")] : 82,
-          bodyLength: sizeLabels.includes("총 기장") ? sizeValues[sizeLabels.indexOf("총 기장")] : 67,
-          armLengthFactor: sizeLabels.includes("소매 기장")
-            ? (sizeValues[sizeLabels.indexOf("소매 기장")] - 20) / (26 - 20)
-            : 1,
-          upperWidthOffset: 0,
-          lowerWidthOffset: sizeLabels.includes("밑단 단면") ? sizeValues[sizeLabels.indexOf("밑단 단면")] : 90,
-          topBodyHeight: sizeLabels.includes("암홀 (직선)") ? sizeValues[sizeLabels.indexOf("암홀 (직선)")] : 40,
+          waistWidth: sizeLabels.includes("허리단면") ? sizeValues[sizeLabels.indexOf("허리단면")] : 72,
+          rise: sizeLabels.includes("밑위") ? sizeValues[sizeLabels.indexOf("밑위")] : 26,
+          length: sizeLabels.includes("총장") ? sizeValues[sizeLabels.indexOf("총장")] : 97,
+          thighWidth: sizeLabels.includes("허벅지 단면") ? sizeValues[sizeLabels.indexOf("허벅지 단면")] : 27,
+          hemWidth: sizeLabels.includes("밑단 단면") ? sizeValues[sizeLabels.indexOf("밑단 단면")] : 34,
         };
-        return storedImage ? (
+        return storedImageBottom ? (
     <img
-      src={storedImage}
-      alt="셔츠 미리보기"
+      src={storedImageBottom}
+      alt="바지 미리보기"
       style={{ width: "300px", height: '300px', border: '1px solid #ccc' }}
     />
   ) : (
-    <div>먼저 사이즈 스펙에서 셔츠를 조절해주세요.</div>
+    <div>먼저 사이즈 스펙에서 바지를 조절해주세요.</div>
   );
         
       case "아우터":

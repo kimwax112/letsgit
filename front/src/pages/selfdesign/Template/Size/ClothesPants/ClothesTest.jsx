@@ -133,7 +133,7 @@ export default function ClothesTest({
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '2rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+    <div className="canvas-adjust" style={{ textAlign: 'center', marginTop: '2rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
       <div className="size-spec-layout">
         <div className="size-spec-container">
           <canvas
