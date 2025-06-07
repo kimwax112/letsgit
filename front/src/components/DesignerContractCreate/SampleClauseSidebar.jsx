@@ -41,6 +41,8 @@ const categoryNames = {
   dispute: "분쟁",
 };
 
+
+
 // CSS 스타일 객체 예시
 const tabContainerStyle = {
   marginBottom: "1rem",

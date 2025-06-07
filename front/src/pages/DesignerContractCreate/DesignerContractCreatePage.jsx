@@ -157,8 +157,9 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
     }
   };
 
-  // PDF 미리보기용 ref & 핸들러
+  // 미리보기용 ref & 핸들러
   const componentRef = useRef();
+  const [showPreview, setShowPreview] = useState(false);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: contractData.contractTitle || "계약서",
@@ -285,46 +286,83 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
       </div>
 
       {/* 저장 / 취소 버튼 */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: "2rem",
-          gap: "1rem",
-        }}
-      >
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
+        <button
+          onClick={() => setShowPreview(true)}
+          style={{
+            backgroundColor: "#E0E0E0",
+            color: "#333",
+            padding: "0.5rem 1rem",
+            borderRadius: "5px",
+            border: "none",
+          }}
+        >
+          미리보기
+        </button>
+
         <button
           onClick={handleCancel}
           style={{
-            padding: "0.75rem 1.5rem",
-            fontSize: "1rem",
-            cursor: "pointer",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-            backgroundColor: "#f0f0f0", // 완전 흰색 대신 연한 회색으로 변경
-            color: "#333",
+            backgroundColor: "#D9534F",
+            color: "#fff",
+            padding: "0.5rem 1rem",
+            borderRadius: "5px",
+            border: "none",
           }}
-          type="button"
         >
           취소
         </button>
+
         <button
           onClick={handleSubmit}
-          disabled={!agreePrivacy}
           style={{
-            padding: "0.75rem 1.5rem",
-            fontSize: "1rem",
-            cursor: agreePrivacy ? "pointer" : "not-allowed",
-            borderRadius: "4px",
-            border: "none",
-            backgroundColor: agreePrivacy ? "#799FC4" : "#ccc",
+            backgroundColor: "#5CB85C",
             color: "#fff",
+            padding: "0.5rem 1rem",
+            borderRadius: "5px",
+            border: "none",
           }}
-          type="button"
         >
           작성 완료
         </button>
       </div>
+
+      {showPreview && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              padding: "2rem",
+              borderRadius: "10px",
+              maxWidth: "100%",
+              maxHeight: "90%",
+              overflowY: "auto",
+            }}
+          >
+            <ContractPreview
+              ref={componentRef}
+              contractData={contractData}
+              contentBySection={contentBySection}
+              deliverables={deliverables}
+              onClose={() => setShowPreview(false)}
+              onPrint={handlePrint}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

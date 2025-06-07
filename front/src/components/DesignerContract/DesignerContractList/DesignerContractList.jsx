@@ -120,7 +120,7 @@ const DesignerContractList = () => {
             </div> */}
             <div className="dates">
               <div className="date">
-                <span>계약일</span> {contract.date}
+                {/*<span>계약일</span> {contract.date}*/}
               </div>
               <div className="period">
                 <span>계약 기간</span> {contract.period}
