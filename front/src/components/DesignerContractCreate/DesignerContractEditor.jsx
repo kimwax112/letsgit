@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import styles from "./DesignerContractCreate.module.css";
+import SampleClauseSidebar, { sampleTemplates } from "../../components/DesignerContractCreate/SampleClauseSidebar";
 
 const sectionTitles = {
   basic: "기본",
@@ -18,6 +19,16 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
     security: useRef(null),
     dispute: useRef(null),
     etc: useRef(null),
+  };
+
+  const [showSamplePanel, setShowSamplePanel] = useState(false);
+  const [sampleCategory, setSampleCategory] = useState("");
+
+  const handleSampleInsert = (category, text) => {
+    setContentBySection(prev => ({
+      ...prev,
+      [category]: prev[category] ? prev[category] + "\n" + text : text,
+    }));
   };
 
   const [contentBySection, setContentBySection] = useState({
@@ -82,6 +93,29 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
 
     updateContent(section, refs[section].current.innerHTML);
   };
+
+  const handleInsertText = (section, text) => {
+  const editor = refs[section]?.current;
+  if (!editor) return;
+
+  editor.focus();
+
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  const textNode = document.createTextNode(text);
+  range.deleteContents();
+  range.insertNode(textNode);
+
+  // 커서 위치 업데이트
+  range.setStartAfter(textNode);
+  range.setEndAfter(textNode);
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  updateContent(section, editor.innerHTML);
+};
 
   const handleColorChange = (section, color) => {
     if (section !== "etc") return; // 자유 작성란 외엔 색상 변경 제한
@@ -165,7 +199,7 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
         <div key={section} style={{ marginBottom: "2rem" }}>
           <h3>{sectionTitles[section]}</h3>
 
-          {/* 기본 섹션은 굵게, 기울임, 밑줄만 */}
+          {/* 기본 섹션은 굵게, 기울임, 밑줄만
           {section !== "etc" && (
             <div className={styles.toolbar} style={{ marginBottom: "0.5rem" }}>
               <button onClick={() => handleStyleChange(section, "bold")}>
@@ -178,7 +212,36 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
                 U
               </button>
             </div>
-          )}
+          )} */}
+
+            {section !== "etc" && (
+              <div>
+                <button
+                  onClick={() => {
+                    setSampleCategory(section); // 클릭한 버튼의 섹션으로 설정
+                    setShowSamplePanel(true);   // 사이드바 열기
+                  }}
+                  style={{
+                    backgroundColor: "#799FC4",
+                    color: "#fff",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "5px",
+                    border: "none",
+                    marginBottom: "10px"
+                  }}
+                >
+                  샘플 문구 보기
+                </button>
+                {showSamplePanel && (
+                <SampleClauseSidebar
+                  onInsert={handleSampleInsert}
+                  onClose={() => setShowSamplePanel(false)}
+                  selectedCategory={sampleCategory}
+                />
+              )}
+              </div>
+            )}
+
 
           {/* 자유 작성란(etc)만 전체 스타일 도구 */}
           {section === "etc" && (

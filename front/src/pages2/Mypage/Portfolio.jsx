@@ -16,7 +16,6 @@ const Layout = styled.div`
 // 사이드바 영역 (고정 너비)
 const Left = styled.div`
   width: 400px;
-  background-color: #f4f4f4;
   transition: width 0.3s ease-in-out;
 `;
 

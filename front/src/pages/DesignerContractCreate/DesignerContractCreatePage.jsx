@@ -41,7 +41,7 @@ const DesignerContractCreatePage = () => {
   const [deliverables, setDeliverables] = useState([]);
 
   // 샘플 문구 카테고리 관리
-  const [sampleCategory, setSampleCategory] = useState("basic"); // 기본은 기존 샘플문구
+  const [sampleCategory, setSampleCategory] = useState("");
 
   // 개인정보 수집 동의 체크박스 상태 추가
   const [agreePrivacy, setAgreePrivacy] = useState(false);
@@ -236,7 +236,7 @@ const DesignerContractCreatePage = () => {
 
       <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
 
-      {/* 샘플 문구 탭 UI */}
+      {/* 샘플 문구 탭 UI
       <div>
         <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}>샘플 문구 삽입</h2>
         <button
@@ -252,9 +252,7 @@ const DesignerContractCreatePage = () => {
           selectedCategory={sampleCategory}
         />
       )}
-      </div>
-
-      <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
+      </div> */}
 
       {/* 계약서 본문 에디터 */}
       <DesignerContractEditor

@@ -37,7 +37,15 @@ const categoryNames = {
 };
 
 const SampleClauseSidebar = ({ onInsert, onClose, selectedCategory }) => {
-  const [category, setCategory] = React.useState("basic");
+  //const [category, setCategory] = React.useState(selectedCategory || "basic");
+
+   const [category, setCategory] = React.useState(selectedCategory || "basic");
+
+    React.useEffect(() => {
+    if (selectedCategory && selectedCategory !== category) {
+      setCategory(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   return (
     <div
@@ -77,13 +85,13 @@ const SampleClauseSidebar = ({ onInsert, onClose, selectedCategory }) => {
         ))}
       </div>
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {sampleTemplates[category].map((text, idx) => (
+        {(sampleTemplates[category] || []).map((text, idx) => (
           <li key={idx} style={{ marginBottom: "0.75rem" }}>
             <button
-            draggable={true}  // 드래그 가능하게 설정
-            onDragStart={(e) => {
-                e.dataTransfer.setData("text/plain", text); // 드래그 데이터 저장
-            }}
+              draggable={true}
+              onDragStart={(e) => {
+                e.dataTransfer.setData("text/plain", text);
+              }}
               onClick={() => onInsert(selectedCategory, text)}
               style={{
                 backgroundColor: "#eee",
@@ -92,7 +100,7 @@ const SampleClauseSidebar = ({ onInsert, onClose, selectedCategory }) => {
                 padding: "0.5rem",
                 width: "100%",
                 textAlign: "left",
-                color: "#444"
+                color: "#444",
               }}
             >
               {text}
