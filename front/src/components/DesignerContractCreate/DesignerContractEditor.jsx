@@ -312,7 +312,7 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
             contentEditable
             placeholder={`${sectionTitles[section]} 내용을 입력하세요`}
             className={styles.editor}
-            onInput={() => handleInput(section)}
+            onBlur={() => handleInput(section)}  //사용자가 입력 다 하고 포커스 이동할 때만 처리됨.
             onDrop={(e) => handleDrop(e, section)}
             onDragOver={handleDragOver}
             spellCheck={false}
