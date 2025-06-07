@@ -50,6 +50,8 @@ const Size = () => {
         setCategory(clothing.category);
       } catch (e) {
         console.error("selectedClothing 파싱 오류:", e);
+        console.log("🚩 selectedClothing.category:", category);
+
       }
     }
   }, []);
@@ -62,7 +64,10 @@ const Size = () => {
       setSelectedSize={setSelectedSize} />
 
       case "바지":
-        return <SizeBottom selectedSize={selectedSize} setSelectedSize={setSelectedSize} />;
+        return<SizeBottom
+      selectedSize={selectedSize}
+      setSelectedSize={setSelectedSize}
+    />;
       case "아우터":
         // return <SizeOuter selectedSize={selectedSize} setSelectedSize={setSelectedSize} />;
       // 추가 카테고리
