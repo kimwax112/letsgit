@@ -1,42 +1,35 @@
-// Sizespec.jsx
 import React, { useState, useEffect } from "react";
 import "./Sizespeccss.css";
-import { SizeController,SizeControllerRow } from "../../../../components"; // 기존 SizeController (전체 컨트롤러)
+import { SizeController, SizeControllerRow } from "../../../../components";
+import ClothesTest from "./ClothesPants/ClothesTest";
 
-
-function Sizespec({ selectedSize, setSelectedSize }) {
-  // 상단 헤더에 표시할 사이즈 배열
+function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
-  
+
+  // ClothesTest 상태 정의
+  const [neckY, setNeckY] = useState(18);
+  const [neckXOffset, setNeckXOffset] = useState(15);
+  const [shoulderOffset, setShoulderOffset] = useState(38);
+  const [chestOffset, setChestOffset] = useState(82);
+  const [bodyLength, setBodyLength] = useState(67);
+  const [armLengthFactor, setArmLengthFactor] = useState(0);
+  const [upperWidthOffset, setUpperWidthOffset] = useState(0);
+  const [lowerWidthOffset, setLowerWidthOffset] = useState(90);
+  const [topBodyHeight, setTopBodyHeight] = useState(40);
 
   // 초기 행 데이터 배열
   const initialRows = [
-    { category: "A", label: "총 기장", values: [65, 67, 69, 71, 73, 75, 77], type: "highlight" },
-    { category: "B", label: "가슴 단면", values: [82, 86, 90, 94, 98, 102, 106], type: "highlight" },
-    { category: "C", label: "밑단 단면", values: [90, 94, 98, 102, 106, 110, 114], type: "highlight" },
-    { category: "D", label: "소매 기장", values: [20, 21, 22, 23, 24, 25, 26], type: "highlight" },
-    { category: "E", label: "어깨 단면", values: [38, 40, 42, 44, 46, 48, 50], type: "normal" },
+    { category: "A", label: "총 기장", values: [65, 67, 69, 71, 73, 75, 77], type: "highlight", key: "bodyLength" },
+    { category: "B", label: "가슴 단면", values: [82, 86, 90, 94, 98, 102, 106], type: "highlight", key: "chestOffset" },
+    { category: "C", label: "밑단 단면", values: [90, 94, 98, 102, 106, 110, 114], type: "highlight", key: "lowerWidthOffset" },
+    { category: "D", label: "소매 기장", values: [1, 2, 3, 4, 5, 6, 7], type: "highlight", key: "armLengthFactor" },
+    { category: "E", label: "어깨 단면", values: [38, 40, 42, 44, 46, 48, 50], type: "normal", key: "shoulderOffset" },
     { category: "F", label: "허리 단면", values: [70, 72, 74, 76, 78, 80, 82], type: "normal" },
-    { category: "G", label: "암홀 (직선)", values: [18, 18.5, 19, 19.5, 20, 20.5, 21], type: "normal" },
-    { category: "H", label: "소매단 단면", values: [12, 12.5, 13, 13.5, 14, 14.5, 15], type: "normal" },
-    { category: "I", label: "소매통 단면", values: [14, 14.5, 15, 15.5, 16, 16.5, 17], type: "normal" },
-    { 
-      category: "J", 
-      label: "목 너비", 
-      values: Array(7).fill("디자인 선택 후 산출"), 
-      type: "disabled", 
-      colpan: 7 
-    },
-    { 
-      category: "K", 
-      label: "목 파임", 
-      values: Array(7).fill("디자인 선택 후 산출"), 
-      type: "disabled", 
-      colspan: 7 
-    }
+    { category: "G", label: "암홀 (직선)", values: [40, 42, 44, 46, 48, 50, 52], type: "normal", key: "topBodyHeight" },
+    { category: "J", label: "목 파임", values: [18, 19, 20, 21, 22, 23, 24], type: "normal", key: "neckY" },
+    { category: "K", label: "목 너비", values: [15, 16, 17, 18, 19, 20, 21], type: "normal", key: "neckXOffset" },
   ];
 
-  // rows 상태: 입력값 변경 및 증감 기능을 위해 상태 관리
   const [rows, setRows] = useState(initialRows);
   const [editable, setEditable] = useState({
     xs: true,
@@ -48,8 +41,19 @@ function Sizespec({ selectedSize, setSelectedSize }) {
     "3xl": false,
   });
 
+  const resetValues = () => {
+    setNeckY(18);
+    setNeckXOffset(15);
+    setShoulderOffset(38);
+    setChestOffset(82);
+    setBodyLength(67);
+    setArmLengthFactor(1);
+    setUpperWidthOffset(0);
+    setLowerWidthOffset(90);
+    setTopBodyHeight(40);
+  };
+
   useEffect(() => {
-    // selectedSize가 null일 경우 editable 상태와 테이블 값 초기화
     if (selectedSize === null) {
       setEditable({
         xs: true,
@@ -60,7 +64,6 @@ function Sizespec({ selectedSize, setSelectedSize }) {
         "2xl": false,
         "3xl": false,
       });
-            // localStorage에서 rows 로드 또는 초기화
       const savedRows = localStorage.getItem("sizeSpecRows");
       if (savedRows) {
         try {
@@ -75,52 +78,73 @@ function Sizespec({ selectedSize, setSelectedSize }) {
     }
   }, [selectedSize]);
 
-  // useEffect(() => {
-  //   // selectedSize가 null일 경우 editable 상태와 테이블 값 초기화
-  //   if (selectedSize === null) {
-  //     setEditable({
-  //       xs: true,
-  //       s: false,
-  //       m: false,
-  //       l: false,
-  //       xl: false,
-  //       "2xl": false,
-  //       "3xl": false,
-  //     });
-  //     // 테이블의 값도 초기화
-  //     setRows(initialRows);
-  //   }
-  // }, [selectedSize]);
+  useEffect(() => {
+    const newRows = rows.map(row => {
+      if (row.key === "bodyLength") return { ...row, values: [bodyLength, ...row.values.slice(1)] };
+      if (row.key === "chestOffset") return { ...row, values: [chestOffset, ...row.values.slice(1)] };
+      if (row.key === "lowerWidthOffset") return { ...row, values: [lowerWidthOffset, ...row.values.slice(1)] };
+      if (row.key === "armLengthFactor") return { ...row, values: [armLengthFactor , ...row.values.slice(1)] };
+      if (row.key === "shoulderOffset") return { ...row, values: [shoulderOffset, ...row.values.slice(1)] };
+      if (row.key === "topBodyHeight") return { ...row, values: [topBodyHeight, ...row.values.slice(1)] };
+      if (row.key === "neckY") return { ...row, values: [neckY, ...row.values.slice(1)] };
+      if (row.key === "neckXOffset") return { ...row, values: [neckXOffset, ...row.values.slice(1)] };
+      return row;
+    });
+    setRows(newRows);
+  }, [bodyLength, chestOffset, lowerWidthOffset, armLengthFactor, shoulderOffset, topBodyHeight, neckY, neckXOffset]);
 
   const handleCellClick = (size) => {
-    // 클릭한 사이즈를 활성화하고, 나머지 사이즈는 비활성화
+    if (typeof setSelectedSize !== "function") {
+      console.error("setSelectedSize가 함수가 아닙니다");
+      return;
+    }
+    const sizeIndex = sizes.indexOf(size.toUpperCase());
+    if (sizeIndex === -1) return;
+
     const newEditable = { ...editable };
     Object.keys(newEditable).forEach((key) => {
-      newEditable[key] = key === size;
+      newEditable[key] = key === size.toLowerCase();
     });
     setEditable(newEditable);
-    setSelectedSize(size);  // 선택된 사이즈 상태 업데이트
+    setSelectedSize(size.toLowerCase());
+
+    rows.forEach((row) => {
+      const value = row.values[sizeIndex];
+      if (row.key === "bodyLength") setBodyLength(value);
+      if (row.key === "chestOffset") setChestOffset(value);
+      if (row.key === "lowerWidthOffset") setLowerWidthOffset(value);
+      if (row.key === "armLengthFactor") setArmLengthFactor(value);
+      if (row.key === "shoulderOffset") setShoulderOffset(value);
+      if (row.key === "topBodyHeight") setTopBodyHeight(value);
+      if (row.key === "neckY") setNeckY(value);
+      if (row.key === "neckXOffset") setNeckXOffset(value);
+    });
   };
-  // 텍스트 입력 변경 처리 함수
+
   const handleInputChange = (rowIndex, event) => {
     const newRows = [...rows];
     const newValue = event.target.value;
+    const valueToUse = newValue.trim() === "" ? "0" : newValue;
 
-    const valueToUse = newValue.trim() === '' ? '0' : newValue;
-
-    // 값이 숫자일 경우만 처리
     if (!isNaN(valueToUse)) {
       const numericValue = parseFloat(valueToUse);
       const diff = numericValue - rows[rowIndex].values[0];
       newRows[rowIndex].values = rows[rowIndex].values.map((value, index) => value + diff * index);
-      newRows[rowIndex].values[0] = numericValue; // 첫 번째 값만 변경
+      newRows[rowIndex].values[0] = numericValue;
+
+      if (newRows[rowIndex].key === "bodyLength") setBodyLength(numericValue);
+      if (newRows[rowIndex].key === "chestOffset") setChestOffset(numericValue);
+      if (newRows[rowIndex].key === "lowerWidthOffset") setLowerWidthOffset(numericValue);
+      if (newRows[rowIndex].key === "armLengthFactor") setArmLengthFactor(numericValue);
+      if (newRows[rowIndex].key === "shoulderOffset") setShoulderOffset(numericValue);
+      if (newRows[rowIndex].key === "topBodyHeight") setTopBodyHeight(numericValue);
+      if (newRows[rowIndex].key === "neckY") setNeckY(numericValue);
+      if (newRows[rowIndex].key === "neckXOffset") setNeckXOffset(numericValue);
+      
       setRows(newRows);
-    } else {
-      event.preventDefault();
     }
   };
 
-  // 특정 행(rowIndex)의 첫번째 값을 증감하는 로직
   const applyDiffToRow = (rowIndex, diff) => {
     const newRows = [...rows];
     const currentValue = newRows[rowIndex].values[0];
@@ -128,21 +152,22 @@ function Sizespec({ selectedSize, setSelectedSize }) {
       typeof value === "number" ? value + diff * idx : value
     );
     newRows[rowIndex].values[0] = currentValue + diff;
+
+    if (newRows[rowIndex].key === "bodyLength") setBodyLength(currentValue + diff);
+    if (newRows[rowIndex].key === "chestOffset") setChestOffset(currentValue + diff);
+    if (newRows[rowIndex].key === "lowerWidthOffset") setLowerWidthOffset(currentValue + diff);
+    if (newRows[rowIndex].key === "armLengthFactor") setArmLengthFactor(currentValue + diff);
+    if (newRows[rowIndex].key === "shoulderOffset") setShoulderOffset(currentValue + diff);
+    if (newRows[rowIndex].key === "topBodyHeight") setTopBodyHeight(currentValue + diff);
+    if (newRows[rowIndex].key === "neckY") setNeckY(currentValue + diff);
+    if (newRows[rowIndex].key === "neckXOffset") setNeckXOffset(currentValue + diff);
+
     setRows(newRows);
   };
 
-  const handleIncrementRow = (rowIndex) => {
-    applyDiffToRow(rowIndex, 1);
-  };
+  const handleIncrementRow = (rowIndex) => applyDiffToRow(rowIndex, 1);
+  const handleDecrementRow = (rowIndex) => applyDiffToRow(rowIndex, -1);
 
-  const handleDecrementRow = (rowIndex) => {
-    applyDiffToRow(rowIndex, -1);
-  };
-
-  // "총 기장" 행의 인덱스 찾기
-  const totalLengthIndex = rows.findIndex((row) => row.category === "A");
-
-    // rows가 변경될 때 localStorage에 저장
   useEffect(() => {
     try {
       localStorage.setItem("sizeSpecRows", JSON.stringify(rows));
@@ -153,140 +178,45 @@ function Sizespec({ selectedSize, setSelectedSize }) {
 
   return (
     <div className="table-container">
+      <ClothesTest
+        neckY={neckY}
+        setNeckY={setNeckY}
+        neckXOffset={neckXOffset}
+        setNeckXOffset={setNeckXOffset}
+        shoulderOffset={shoulderOffset}
+        setShoulderOffset={setShoulderOffset}
+        chestOffset={chestOffset}
+        setChestOffset={setChestOffset}
+        bodyLength={bodyLength}
+        setBodyLength={setBodyLength}
+        armLengthFactor={armLengthFactor}
+        setArmLengthFactor={setArmLengthFactor}
+        upperWidthOffset={upperWidthOffset}
+        setUpperWidthOffset={setUpperWidthOffset}
+        lowerWidthOffset={lowerWidthOffset}
+        setLowerWidthOffset={setLowerWidthOffset}
+        topBodyHeight={topBodyHeight}
+        setTopBodyHeight={setTopBodyHeight}
+        resetValues={resetValues}
+      />
       <div className="imgContainer">
-      {/* 상단 이미지 */}
-      <img style={{ width: "600px" }} src="/image/size.png" alt="이미지가 없습니다" />
-      
-      {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-      {rows.find((row) => row.category === "A") && (
-        <div className="controller-rowA">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "A")}
-            rowIndex={rows.findIndex((row) => row.category === "A")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "B") && (
-        <div className="controller-rowB">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "B")}
-            rowIndex={rows.findIndex((row) => row.category === "B")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "C") && (
-        <div className="controller-rowC">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "C")}
-            rowIndex={rows.findIndex((row) => row.category === "C")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "D") && (
-        <div className="controller-rowD">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "D")}
-            rowIndex={rows.findIndex((row) => row.category === "D")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "E") && (
-        <div className="controller-rowE">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "E")}
-            rowIndex={rows.findIndex((row) => row.category === "E")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       
-       {/* {rows.find((row) => row.category === "F") && ( 허리단면 부분
-        <div className="controller-rowF">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "F")}
-            rowIndex={rows.findIndex((row) => row.category === "F")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )} */}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "G") && (
-        <div className="controller-rowG">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "G")}
-            rowIndex={rows.findIndex((row) => row.category === "G")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "H") && (
-        <div className="controller-rowH">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "H")}
-            rowIndex={rows.findIndex((row) => row.category === "H")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-      )}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {rows.find((row) => row.category === "I") && (
-        <div className="controller-rowI">
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "I")}
-            rowIndex={rows.findIndex((row) => row.category === "I")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-          />
-        </div>
-        
-        
-      )}
-      
+        {/* 상단 이미지 및 컨트롤러 생략 */}
       </div>
-      
-  
 
-
-      
-
-      {/* 사이즈 스펙 테이블 */}
       <table className="sizespec-table">
         <thead>
           <tr>
-            <th style={{ width: "150px" }} colSpan={2}>(단위 : cm)</th>
+            <th style={{ width: "150px" }} colSpan={2}>
+              (단위 : cm)
+            </th>
             {sizes.map((size, index) => (
               <th
                 key={index}
-                onClick={() => setSelectedSize(size)}
-                className={selectedSize === size ? "active" : ""}
+                onClick={() => handleCellClick(size.toLowerCase())}
+                className={selectedSize === size.toLowerCase() ? "active" : ""}
                 style={{ cursor: "pointer" }}
               >
-                {size && size.toLowerCase ? size.toLowerCase() : ""}
+                {size.toLowerCase()}
               </th>
             ))}
           </tr>
@@ -320,8 +250,6 @@ function Sizespec({ selectedSize, setSelectedSize }) {
           ))}
         </tbody>
       </table>
-
-      {/* SizeController를 별도로 사용하지 않고, "총 기장" 컨트롤러는 위에서 따로 관리 */}
     </div>
   );
 }

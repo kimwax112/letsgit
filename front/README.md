@@ -98,7 +98,6 @@ page2\Mypage\ditRequests.jsx
 front/src/RouterComponent.js,
 front/src/components/DesignerContract/DesignerContractList/DesignerContractList.jsx
 
-<<<<<<< HEAD
 //챗지피티 랑 대화한 내용
 이거 구현하려면 3d 이미지로 해야할거 같긴해서.. 좀 힘들거 같긴해요 ㅠ
 export default Sizespec;
@@ -546,7 +545,6 @@ function Sizespec({ selectedSize, setSelectedSize }) {
 }
 
 export default Sizespec;
-=======
 *6.3.화*
 1. pages2\Mypage\DMyInfoPage.jsx - 디자이너 마이페이지(내정보의 레이아웃 컴포넌트)
 2.pages2\Mypage\ui\DMyInfo\DMyInfo.jsx - 디자이너 마이페이지(내정보-프로필, 개인정보, 이력사항 컴포넌트들을 다루는 상위 컴포넌트)
@@ -564,4 +562,3 @@ export default Sizespec;
 -pages2\Mypage\ui\DeliveryCard - 배송조회 계약별 배송부분 컴포넌트 조각
 -DeliveryDetailDeliveryDetail - 배송상세보기 버튼 클릭 시, 나오는 페이지(미완성)
 6.components\DesignerContractCreate\DesignerContractEditor.jsx - 디자이너 계약서 작성 샘플문구 카테고리별로(미리보기 미완성)
->>>>>>> eae52dc5e3621aeb3db297ed431c9d0e9425ba68

@@ -200,7 +200,9 @@ hr {
 }
 
 .finalconfirmation-category-image {
-  
+  display : flex;
+  gap : 1.25rem;
+
 }
 
 .size-values {
@@ -239,3 +241,6 @@ hr {
   color: #0077cc;
 }
 
+summary-item size-values {
+  
+}

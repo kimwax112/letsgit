@@ -39,6 +39,7 @@ import DeliveryPage from "./pages2/Mypage/DeliveryPage";
 import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
 import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
 import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
+import ClothesTest from "./pages/selfdesign/Template/Size/ClothesPants/ClothesTest";
 
 const RouterComponent = () => {
   
@@ -89,6 +90,7 @@ const RouterComponent = () => {
               <Route path="CanceledPage" element={<CanceledPage /> } />
               <Route path="MyProgressPage" element={<MyProgressPage />} />
               <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
+              <Route path="ClothesText" element={<ClothesTest/>} />
             </Routes>
           </ClientLayout>
         }
