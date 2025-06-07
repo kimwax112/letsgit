@@ -11,18 +11,18 @@ import ContractPreview from "../../components/DesignerContractCreate/ContractPre
 
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
-const DesignerContractCreatePage = () => {
+const DesignerContractCreatePage = ({ username, clientId }) => {
   const [contractData, setContractData] = useState({
     requestId: "",
-    designerId: "", // 로그인한 사용자의 ID로 설정
+    designerId: username || "", // 상위에서 전달받은 사용자 이름
     startDate: "",
     endDate: "",
     requestFee: "",
-    status: "미수신", // 기본 진행중
-    clientId: "",
+    status: "미수신",
+    clientId: clientId || "", // 상위에서 전달받음
     contractTitle: "",
     starredStatus: 0,
-    contractContent: "", // 에디터 작성 내용
+    contractContent: "",
     signature: "",
   });
 
@@ -48,20 +48,6 @@ const DesignerContractCreatePage = () => {
 
   const navigate = useNavigate();
 
-  // 로컬스토리지에서 사용자 ID 가져오기
-  useEffect(() => {
-    const id = localStorage.getItem("id"); // 로컬 스토리지에서 userId 가져오기
-    if (id) {
-      setContractData(prevData => ({
-        ...prevData,
-        designerId: id, // designerId를 로그인한 사용자 ID로 설정
-      }));
-    } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login"); // 로그인 페이지로 리디렉션
-    }
-  }, [navigate]);
-
   // 로컬스토리지에서 작성중인 계약서 자동 불러오기
   useEffect(() => {
     const saved = localStorage.getItem("contractDraft");
@@ -77,15 +63,17 @@ const DesignerContractCreatePage = () => {
     localStorage.setItem("contractDraft", JSON.stringify({ contractData, deliverables }));
   }, [contractData, deliverables]);
 
-  const handleSampleInsert = (category, text) => {
-    setContentBySection(prev => ({
+  const handleSampleInsert = (text) => {
+    setContractData(prev => ({
       ...prev,
-      [category]: prev[category] ? prev[category] + "\n" + text : text,
+      contractContent: prev.contractContent
+        ? prev.contractContent + "\n" + text
+        : text,
     }));
   };
 
   // 작성 완료 버튼 클릭 시
-  const handleSubmit = async () => {
+    const handleSubmit = async () => {
     if (!contractData.contractTitle || !contractData.startDate || !contractData.requestFee) {
       alert("계약 제목, 마감일, 요청 비용을 모두 입력해주세요.");
       return;
@@ -102,8 +90,6 @@ const DesignerContractCreatePage = () => {
       return;
     }
 
-    const fullContractText = Object.values(contentBySection).join("\n\n---\n\n");
-
     try {
       const response = await fetch("http://localhost:8081/client/contract", {
         method: "POST",
@@ -112,7 +98,6 @@ const DesignerContractCreatePage = () => {
         },
         body: JSON.stringify({
           ...contractData,
-          contractContent: fullContractText, // 내용 합쳐서 보냄
           requestFee,
           deliverables,
         }),
@@ -120,8 +105,7 @@ const DesignerContractCreatePage = () => {
 
       if (response.ok) {
         alert("작성 완료! 계약서가 저장되었습니다.");
-        localStorage.removeItem("contractDraft"); // 저장된 초안 삭제
-        navigate('/designer/DesignerContractManage');
+        navigate("/designer/DesignerContractManage");
       } else {
         alert("작성 실패했습니다. 다시 시도해주세요.");
       }
@@ -135,19 +119,18 @@ const DesignerContractCreatePage = () => {
     if (window.confirm("정말 작성 취소하시겠습니까?")) {
       setContractData({
         requestId: "",
-        designerId: "", // 취소 시에도 designerId 초기화
+        designerId: username || "",
         startDate: "",
         endDate: "",
         requestFee: "",
         status: "미수신",
-        clientId: "",
+        clientId: clientId || "",
         contractTitle: "",
         starredStatus: 0,
         contractContent: "",
         signature: "",
       });
       setDeliverables([]);
-      localStorage.removeItem("contractDraft");
     }
   };
 
@@ -160,13 +143,11 @@ const DesignerContractCreatePage = () => {
     }
   };
 
-  // 금액 입력 콤마 자동 포맷팅
   const formatNumberWithCommas = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const handleFeeChange = (e) => {
-    // 입력값 콤마 제거 후 숫자만 다시 포맷
     const value = e.target.value.replace(/,/g, "");
     if (!isNaN(value) || value === "") {
       setContractData(prev => ({

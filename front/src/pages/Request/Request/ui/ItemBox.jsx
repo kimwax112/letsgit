@@ -110,6 +110,7 @@ export default function ItemBox({ children,data }) {
       <DescriptionContainer>
         <TagContainer>
           <Tag>{data?.categoryTags}</Tag>
+          <Tag>{data?.categoryTags}</Tag>
         </TagContainer>
         <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
         <Profile>

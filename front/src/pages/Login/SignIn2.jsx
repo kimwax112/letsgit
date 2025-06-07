@@ -5,17 +5,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export default function SignIn2() {
     const navigate = useNavigate();
     const location = useLocation();
-    const [usertype, setUserType] = useState("client");
+    const userType = location.state?.userType || "client"; // 기본값 설정
 
-    useEffect(() => {
-      const storedUserType = localStorage.getItem("usertype");
-      if (storedUserType) {
-        setUserType(storedUserType);
-      }
-    }, []);
-
-    const [id, setId] = useState("");
-    const [passwd, setPasswd] = useState("");
+    const [username, setId] = useState("");
+    const [password, setPasswd] = useState("");
     const [confirmPasswd, setConfirmPasswd] = useState("");
     const [email, setEmail] = useState("");
     const [birthdate, setBirthdate] = useState("");
@@ -24,27 +17,25 @@ export default function SignIn2() {
     const [gender, setGender] = useState("");
     const [message, setMessage] = useState("");
     const [isidValid, setIsidValid] = useState(false);
-    const [idCheckMessage, setIdCheckMessage] = useState("");            
+    const [idCheckMessage, setidCheckMessage] = useState("");            
     const [confirmPassword, setConfirmPassword] = useState("");
-      const [isIdValid, setIsIdValid] = useState(false);
+      const [isUsernameValid, setIsUsernameValid] = useState(false);
+      const [usernameCheckMessage, setUsernameCheckMessage] = useState("");
       const [isSignup, setIsSignup] = useState(false);
 
       const handleSignupSubmit = async (e) => {
         e.preventDefault();
-
-        const storedUserType = localStorage.getItem("usertype");
-
-        if (!id.trim() && !passwd.trim()) {
+        if (!username.trim() && !password.trim()) {
           setMessage("회원가입 정보를 입력해 주십시오.");
           return;
         }
     
-        if (!id.trim()) {
+        if (!username.trim()) {
           setMessage("아이디가 입력되지 않았습니다.");
           return;
         }
     
-        if (!passwd.trim()) {
+        if (!password.trim()) {
           setMessage("비밀번호가 입력되지 않았습니다.");
           return;
         }
@@ -53,7 +44,7 @@ export default function SignIn2() {
           return;
         }*/
     
-        if (passwd !== confirmPasswd) {
+        if (password !== confirmPasswd) {
           setMessage("비밀번호가 일치하지 않습니다.");
           return;
         }
@@ -63,30 +54,25 @@ export default function SignIn2() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id, passwd, email, birthdate, tel, name, gender, usertype }),
+          body: JSON.stringify({ username, password, email, birthdate, tel, name, gender, userType }),
           credentials: "include",
           mode: "cors",
         });
     
         const data = await response.json();
         if (response.ok && data.message === "회원가입 성공!") {
-          // localStorage.setItem("token", data.token); // 5/19
-          //   localStorage.setItem("signupEmail", email);
-          //   localStorage.setItem("signupUsername", username);
-          //   localStorage.setItem("signupName", name);
-          //   localStorage.setItem("signupPass", password);
+            localStorage.setItem("signupEmail", email);
+            localStorage.setItem("signupUsername", username);
+            localStorage.setItem("signupName", name);
+            localStorage.setItem("signupPass", password);
 
-          localStorage.setItem("signupEmail", email);
-          localStorage.setItem("id", id);          
-          localStorage.setItem("name", name);
-          localStorage.setItem("password", passwd);  
 
           setMessage(data.message);
           setTimeout(() => {
-              navigate('/GoodSign');
+            navigate('/GoodSign');  // 회원가입 성공 시 Hello 컴포넌트로 이동
           }, 1000);
         } else {
-            setMessage(data.message);
+          setMessage(data.message);
         }
       };
        // 회원가입 화면으로 이동 시 초기화
@@ -104,25 +90,25 @@ export default function SignIn2() {
         setMessage("");
         setConfirmPasswd("");
         setIsSignup(false);
-        setIdCheckMessage("");
+        setUsernameCheckMessage("");
       };
     
       const handleCheckUsername = async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/check-id/?id=${id}`
+          `${process.env.REACT_APP_API_URL}/api/check-username/?username=${username}`
         );
         const data = await response.json();
-        if (!id.trim()) {
+        if (!username.trim()) {
           setMessage("입력 이후 중복확인을 진행하십시오");
             return;
         } else {
           if(data.exists){ 
            
-            setIsIdValid(false);
-            setIdCheckMessage("중복 Id입니다!");
+            setIsUsernameValid(false);
+            setUsernameCheckMessage("중복 Id입니다!");
           }else{
-          setIsIdValid(true);
-          setIdCheckMessage("사용 가능한 Id입니다.");
+          setIsUsernameValid(true);
+          setUsernameCheckMessage("사용 가능한 Id입니다.");
           }
         }
       };
@@ -143,7 +129,7 @@ export default function SignIn2() {
                 <input
                 type="text"
                 className={`input-text  ${!isidValid ? "invalid" : ""}`}
-                value={id}
+                value={username}
                 onChange={(e) => setId(e.target.value)}
                 
                 />
@@ -163,7 +149,7 @@ export default function SignIn2() {
             <input
               type="password"
               className="input-password"
-              value={passwd}
+              value={password}
               onChange={(e) => setPasswd(e.target.value)}
             />
                         </div>
