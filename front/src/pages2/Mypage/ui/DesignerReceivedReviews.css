@@ -177,3 +177,18 @@ textarea {
 .comment-edit-form button:hover {
   background-color: #43a047;
 }
+
+/* DesignerReceivedReviews.css */
+.profile-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.result-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  object-fit: cover;
+}

@@ -3,8 +3,7 @@ import styled from "styled-components";
 import ContentHeader from '../ui/ContentHeader';
 import ItemBox from './ui/ItemBox';
 import {useState, useEffect} from 'react'
-import SearchRequest from "../../../pages2/Request/SearchRequest";
-import "./Request.css"
+
 export function RequestLayOut({ children }) {
   const Container = styled.div`
     width: 100%;
@@ -81,9 +80,9 @@ export function RequestLayOut({ children }) {
   );
 }
 
-export default function Request({headerText = "의뢰 등록하기"}) {
+export default function Request() {
    const [requestItems, setRequestItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
+
   // localStorage에서 requestData 가져오기
   useEffect(() => {
     const storedData = localStorage.getItem("requestData");
@@ -98,31 +97,20 @@ export default function Request({headerText = "의뢰 등록하기"}) {
       }
     }
   }, []);
-
-   const filteredItems = requestItems.filter((item) =>
-    item.title && item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <>
-    
-        <div  className="clientrequest-header">
-          <div className="clientrequest-titlecontainer">
-          <h1>{headerText}</h1>
-          <div><SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} /></div>
-          </div>
-          <div className=""></div>
-          <div className="cientrequest-titlecontainer2">
-            <ContentHeader/></div>
-        </div>
-        
-        
-          
-        <RequestLayOut>
-
-        {filteredItems.length > 0 ? (
+      <ContentHeader children="의뢰 등록하기" />
+  <RequestLayOut>
+    <ItemBox />
+    <ItemBox />
+    <ItemBox />
+        {requestItems.length > 0 ? (
           // requestData가 있으면 동적으로 ItemBox 렌더링
+<<<<<<< HEAD
        filteredItems.slice().reverse().map((item, index) => (
+=======
+          requestItems.map((item, index) => (
+>>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
             <ItemBox key={index} data={item} />
           ))
         ) : (

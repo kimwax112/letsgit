@@ -1,4 +1,3 @@
-// FinalConfirmation.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Sidebar, BreadCrumb } from "../../../../components";
 import "./FinalConfirmation.css";
@@ -6,6 +5,7 @@ import html2canvas from "html2canvas";
 import SizeBottom from "../Size/SizeBottom";
 import Sizespec from "../Size/Sizespec";
 import ClothesTest from "../Size/ClothesPants/ClothesTest";
+
 const getColorName = (hex) => {
   const colorMap = {
     "#ff0000": "빨강",
@@ -44,7 +44,9 @@ const FinalConfirmation = () => {
   const id = sessionStorage.getItem("id") || localStorage.getItem("id");
    
   const [sizeLabels, setSizeLabels] = useState([]);
+  // const [note, setNote] = useState("");
 
+  const [username, setUsername] = useState(null);  // 상태로 username 관리
 
   // 저장할 영역 ref
   const captureRef = useRef(null);
@@ -123,18 +125,35 @@ const FinalConfirmation = () => {
       } else {
         setSizeValues([]);
         setSizeLabels([]);
+  // 로그인 세션을 백엔드에서 받아와 sessionStorage에 저장 + 상태 세팅
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("http://localhost:8081/api/checkSession", {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          sessionStorage.setItem("username", data.username);
+          setUsername(data.username);
+        } else {
+          alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+          window.location.href = "/login";
+        }
+      } catch (error) {
+        console.error("세션 확인 오류:", error);
+        alert("로그인 세션 확인 중 오류가 발생했습니다.");
+        window.location.href = "/login";
       }
-    }
-  };
+    };
+
+    fetchSession();
+  }, []);
 
   useEffect(() => {
-    //console.log("🔍 useEffect 실행됨, id:", id);
-    //if (!id) {
-    //  alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
-    // window.location.href = "/login";
-    //  return;
-    //} 
-    
+    // username이 있을 때만 sessionStorage에서 데이터 불러오기
+    if (!username) return;
+
     const storedClothing =
       sessionStorage.getItem("selectedClothing") ||
       localStorage.getItem("selectedClothing");
@@ -147,46 +166,18 @@ const FinalConfirmation = () => {
         setSelectedItem(null);
       }
     }
-    
 
- 
-    // const storedFabric =
-    //   sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
-    // const storedColors =
-    //   sessionStorage.getItem("selectedColors") || localStorage.getItem("selectedColors");
-    // const storedSize =
-    //   sessionStorage.getItem("selectedSize") || localStorage.getItem("selectedSize");
-
-    // if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
-    // if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
-    // if (storedSize) setSelectedSize(storedSize);
-// }, [id]);
-  
-    const storedFabric = 
+    const storedFabric =
       sessionStorage.getItem("selectedFabric") || localStorage.getItem("selectedFabric");
-    const storedColors = 
+    const storedColors =
       sessionStorage.getItem("selectedColors") || localStorage.getItem("selectedColors");
-    const storedSize = 
-      sessionStorage.getItem("selectedSize");
+    const storedSize =
+      sessionStorage.getItem("selectedSize") || localStorage.getItem("selectedSize");
 
     if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
     if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
     if (storedSize) setSelectedSize(storedSize);
-
-    loadSizeData();
-  }, [category, selectedSize, id]);
-
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === "sizeSpecRows" || event.key === "sizeSpecRowsBottom") {
-        loadSizeData();
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, [category, selectedSize]);
-  
+  }, [username]);
 
   const handleSubmit = async () => {
     if (!designName.trim()) {
@@ -202,9 +193,10 @@ const FinalConfirmation = () => {
     const finalColor = formattedColors.length > 0 ? formattedColors[0].color : "#ffffff";
 
     const finalData = {
-      id,
+      username,
       designName: designName.trim(),
       clothingType: selectedItem.item,
+      clothingType: selectedItem ? selectedItem.name : "", // 변경된 부분
       fabricJson: JSON.stringify(selectedFabric.map(f => f.name)),
       colorsJson: JSON.stringify(
         formattedColors.length > 0 ? formattedColors : [{ color: finalColor }]
@@ -213,6 +205,8 @@ const FinalConfirmation = () => {
       category: "template",
       note,
     };
+
+    console.log("전송하는 finalData:", finalData);
 
     try {
       setLoading(true);
@@ -241,10 +235,7 @@ const FinalConfirmation = () => {
     if (!captureRef.current) return;
 
     html2canvas(captureRef.current).then((canvas) => {
-      // 캔버스를 이미지 데이터 URL로 변환
       const imgData = canvas.toDataURL("image/png");
-
-      // 이미지 다운로드용 링크 생성
       const link = document.createElement("a");
       link.href = imgData;
       link.download = `${designName || "design"}_confirmation.png`;
@@ -327,10 +318,7 @@ const FinalConfirmation = () => {
           <h3>4. 최종 확인</h3>
           <hr />
 
-          {/* 캡처할 영역 전체를 감싸는 ref */}
           <section className="summary-section" ref={captureRef}>
-            
-            {/* 디자인 이름 입력란 - 제일 위로 이동 */}
             <div className="summary-item design-name-input">
               <label htmlFor="designName" className="label">
                 디자인 이름:
@@ -369,33 +357,13 @@ const FinalConfirmation = () => {
                             color={selectedColors[f.id] || f.initialColor}
                           />{" "}
                           {getColorName(selectedColors[f.id] || f.initialColor)}
-                          
                         </div>
                       </div>
                     </div>
-                  
                   ))
                 ) : (
                   "미선택"
                 )}
-              <div className="finalconfirmation-category-image">
-                  {renderSizeComponent()}
-                  {selectedSize && sizeValues.length > 0 && (
-                    <div className="summary-item size-values">
-                      <span className="label">사이즈 스펙 ({selectedSize}):</span>
-                      <div className="value">
-                        <ul className="size-list">
-                          {sizeLabels.map((label, index) => (
-                            <li key={index} className="size-item">
-                              <span className="size-label">{label}</span>
-                              <span className="size-value">{sizeValues[index]?.toFixed(1)} cm</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
 
@@ -404,7 +372,6 @@ const FinalConfirmation = () => {
               <span className="value">{selectedSize || "미선택"}</span>
             </div>
 
-            {/* 메모 입력란 */}
             <div className="summary-item note-input">
               <label htmlFor="note" className="label">
                 메모 또는 요청사항:
@@ -418,9 +385,6 @@ const FinalConfirmation = () => {
                 style={{ width: "100%" }}
               />
             </div>
-            
-          {/* 선택된 사이즈의 values 렌더링 */}
-           
           </section>
 
           <footer className="footer">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './DesignerReceivedReviews.css';
 
 export default function DesignerReceivedReviews() {
@@ -14,6 +14,8 @@ export default function DesignerReceivedReviews() {
   const [editingComment, setEditingComment] = useState({ reviewId: null, commentIndex: null });
   const [tempEditedComment, setTempEditedComment] = useState('');
 
+  const didInit = useRef(false);
+
   useEffect(() => {
     const mockReviews = [
       {
@@ -21,9 +23,10 @@ export default function DesignerReceivedReviews() {
         designerId: "designer001",
         contractTitle: "ㅁㅇㄴㄹ",
         finishDate: "2025.06.01",
-        reviewStar: 4,  // 별점 숫자로 변경
-        reviewContext: "전체적으로 만족스러운 결과물이 나왔습니다. 소통도 원활했고, 제 요구사항을 잘 반영해주셨어요. 다만 일정이 조금 늦어진 점만 제외하면 완벽했습니다.",
-        image: "/image/기본이미지.png",
+        reviewStar: 4,
+        reviewContext: "전체적으로 만족스러운 결과물이 나왔습니다...",
+        profileImage: "/image/human/human1.jpg",
+        resultImage: "/image/DesignerPortfolio/포트폴리오1.jpg",
       },
       {
         contractId: 2,
@@ -31,23 +34,21 @@ export default function DesignerReceivedReviews() {
         contractTitle: "하하하하",
         finishDate: "2025.06.02",
         reviewStar: 5,
-        reviewContext: "전체적으로 만족스러운 결과물이 나왔습니다. 소통도 원활했고, 제 요구사항을 잘 반영해주셨어요. 다만 일정이 조금 늦어진 점만 제외하면 완벽했습니다.",
-        image: "/image/기본이미지.png",
+        reviewContext: "전체적으로 만족스러운 결과물이 나왔습니다...",
+        profileImage: "/image/human/human2.jpg",
+        resultImage: "/image/DesignerPortfolio/포트폴리오2.jpg",
       },
     ];
-    setReviews(mockReviews);
 
-    // 초기화 방지용: 기존 comments가 비었을 때만 세팅
-    setComments((prev) => {
-        if (Object.keys(prev).length === 0) {
-        return {
-            1: ["첫 댓글입니다!"],
-            2: [],
-        };
-        }
-        return prev;
-    });
-    }, []);
+    if (!didInit.current) {
+      setReviews(mockReviews);
+      setComments({
+        1: ["첫 댓글입니다!"],
+        2: [],
+      });
+      didInit.current = true;
+    }
+  }, []);
 
   const startEditing = (review) => {
     setEditingReviewId(review.contractId);
@@ -115,14 +116,14 @@ export default function DesignerReceivedReviews() {
 
     // 점3개 눌렀을 때 메뉴 토글
     const toggleCommentMenu = (reviewId, idx) => {
-    if (
+      if (
         editingComment.reviewId === reviewId &&
-        editingComment.commentIndex === `menu-${idx}`
-    ) {
+        editingComment.commentIndex === idx
+      ) {
         setEditingComment({ reviewId: null, commentIndex: null });
-    } else {
-        setEditingComment({ reviewId, commentIndex: `menu-${idx}` });
-    }
+      } else {
+        setEditingComment({ reviewId, commentIndex: idx });
+      }
     };
 
     // 수정 시작
@@ -167,11 +168,12 @@ export default function DesignerReceivedReviews() {
         {reviews.map((review) => (
           <div key={review.contractId} className="writtenreviewcontent-item">
             <div className="writtenreviewcontent-topside">
-              <img
-                src={review.image}
-                alt="Designer"
-                style={{ width: 80, height: 80, objectFit: "contain", borderRadius: 8 }}
-              />
+              {/* 상단 프로필 이미지 */}
+                <img
+                  src={review.profileImage}
+                  alt="Designer Profile"
+                  style={{ width: 80, height: 80, objectFit: "cover", borderRadius: "50%" }}
+                />
               <div>
                 <div style={{ color: "gray" }}>{review.designerId}</div>
                 <div style={{ fontWeight: "bold", fontSize: 20 }}>{review.contractTitle}</div>
@@ -181,10 +183,11 @@ export default function DesignerReceivedReviews() {
 
             {/* 별과 리뷰 내용 왼쪽에 이미지 추가, flexbox 사용 */}
             <div className="writtenreviewcontent-bottomside" style={{ display: 'flex', gap: 15, marginTop: 15 }}>
+              {/* 후기 이미지 */}
               <img
-                src={review.image}
-                alt="Design"
-                style={{ width: 60, height: 60, objectFit: 'contain', borderRadius: 8, alignSelf: 'flex-start' }}
+                src={review.resultImage}
+                alt="Design Result"
+                style={{ width: 150, height: 150, objectFit: 'cover', borderRadius: 12, alignSelf: 'flex-start' }}
               />
               <div>
                 <div>{renderStars(review.reviewStar)}</div>
@@ -220,7 +223,8 @@ export default function DesignerReceivedReviews() {
                             >
                                 ⋯
                             </div>
-                            {editingComment.reviewId === review.contractId && editingComment.commentIndex === `menu-${idx}` && (
+                            {editingComment.reviewId === review.contractId &&
+                              editingComment.commentIndex === idx && (
                                 <div style={{ position: 'absolute', right: 20, top: 20, background: '#fff', border: '1px solid #ccc', zIndex: 1 }}>
                                 <div
                                     style={{ padding: '5px 10px', cursor: 'pointer' }}
@@ -268,10 +272,10 @@ export default function DesignerReceivedReviews() {
             <h2>후기 편집</h2>
             <div style={{ display: "flex", gap: 15, marginBottom: 15 }}>
               <img
-                src={reviews.find(r => r.contractId === editingReviewId)?.image}
-                alt="Designer"
+                src={reviews.find(r => r.contractId === editingReviewId)?.profileImage}
+                alt="Designer Profile"
                 style={{ width: 120, height: 120, objectFit: "contain", borderRadius: "50%" }}
-                />
+              />
               <div>
                 <div style={{ color: "gray" }}>{reviews.find(r => r.contractId === editingReviewId)?.designerId}</div>
                 <div style={{ fontWeight: "bold", fontSize: 20 }}>

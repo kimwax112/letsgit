@@ -11,18 +11,18 @@ import ContractPreview from "../../components/DesignerContractCreate/ContractPre
 
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
-const DesignerContractCreatePage = () => {
+const DesignerContractCreatePage = ({ username, clientId }) => {
   const [contractData, setContractData] = useState({
     requestId: "",
-    designerId: "", // 로그인한 사용자의 ID로 설정
+    designerId: username || "", // 상위에서 전달받은 사용자 이름
     startDate: "",
     endDate: "",
     requestFee: "",
-    status: "미수신", // 기본 진행중
-    clientId: "",
+    status: "미수신",
+    clientId: clientId || "", // 상위에서 전달받음
     contractTitle: "",
     starredStatus: 0,
-    contractContent: "", // 에디터 작성 내용
+    contractContent: "",
     signature: "",
   });
 
@@ -37,30 +37,19 @@ const DesignerContractCreatePage = () => {
 
   const [showSamplePanel, setShowSamplePanel] = useState(false);
 
+  //체크박스시, 작성완료버튼 활성화
+  const [agreeToAll, setAgreeToAll] = useState(false);
+
   // 작업 범위 체크박스 상태
   const [deliverables, setDeliverables] = useState([]);
 
   // 샘플 문구 카테고리 관리
-  const [sampleCategory, setSampleCategory] = useState("basic"); // 기본은 기존 샘플문구
+  const [sampleCategory, setSampleCategory] = useState("");
 
   // 개인정보 수집 동의 체크박스 상태 추가
   const [agreePrivacy, setAgreePrivacy] = useState(false);
 
   const navigate = useNavigate();
-
-  // 로컬스토리지에서 사용자 ID 가져오기
-  useEffect(() => {
-    const id = localStorage.getItem("id"); // 로컬 스토리지에서 userId 가져오기
-    if (id) {
-      setContractData(prevData => ({
-        ...prevData,
-        designerId: id, // designerId를 로그인한 사용자 ID로 설정
-      }));
-    } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login"); // 로그인 페이지로 리디렉션
-    }
-  }, [navigate]);
 
   // 로컬스토리지에서 작성중인 계약서 자동 불러오기
   useEffect(() => {
@@ -77,15 +66,17 @@ const DesignerContractCreatePage = () => {
     localStorage.setItem("contractDraft", JSON.stringify({ contractData, deliverables }));
   }, [contractData, deliverables]);
 
-  const handleSampleInsert = (category, text) => {
-    setContentBySection(prev => ({
+  const handleSampleInsert = (text) => {
+    setContractData(prev => ({
       ...prev,
-      [category]: prev[category] ? prev[category] + "\n" + text : text,
+      contractContent: prev.contractContent
+        ? prev.contractContent + "\n" + text
+        : text,
     }));
   };
 
   // 작성 완료 버튼 클릭 시
-  const handleSubmit = async () => {
+    const handleSubmit = async () => {
     if (!contractData.contractTitle || !contractData.startDate || !contractData.requestFee) {
       alert("계약 제목, 마감일, 요청 비용을 모두 입력해주세요.");
       return;
@@ -102,8 +93,6 @@ const DesignerContractCreatePage = () => {
       return;
     }
 
-    const fullContractText = Object.values(contentBySection).join("\n\n---\n\n");
-
     try {
       const response = await fetch("http://localhost:8081/client/contract", {
         method: "POST",
@@ -112,7 +101,6 @@ const DesignerContractCreatePage = () => {
         },
         body: JSON.stringify({
           ...contractData,
-          contractContent: fullContractText, // 내용 합쳐서 보냄
           requestFee,
           deliverables,
         }),
@@ -120,8 +108,7 @@ const DesignerContractCreatePage = () => {
 
       if (response.ok) {
         alert("작성 완료! 계약서가 저장되었습니다.");
-        localStorage.removeItem("contractDraft"); // 저장된 초안 삭제
-        navigate('/designer/DesignerContractManage');
+        navigate("/designer/DesignerContractManage");
       } else {
         alert("작성 실패했습니다. 다시 시도해주세요.");
       }
@@ -135,19 +122,18 @@ const DesignerContractCreatePage = () => {
     if (window.confirm("정말 작성 취소하시겠습니까?")) {
       setContractData({
         requestId: "",
-        designerId: "", // 취소 시에도 designerId 초기화
+        designerId: username || "",
         startDate: "",
         endDate: "",
         requestFee: "",
         status: "미수신",
-        clientId: "",
+        clientId: clientId || "",
         contractTitle: "",
         starredStatus: 0,
         contractContent: "",
         signature: "",
       });
       setDeliverables([]);
-      localStorage.removeItem("contractDraft");
     }
   };
 
@@ -160,13 +146,11 @@ const DesignerContractCreatePage = () => {
     }
   };
 
-  // 금액 입력 콤마 자동 포맷팅
   const formatNumberWithCommas = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const handleFeeChange = (e) => {
-    // 입력값 콤마 제거 후 숫자만 다시 포맷
     const value = e.target.value.replace(/,/g, "");
     if (!isNaN(value) || value === "") {
       setContractData(prev => ({
@@ -176,8 +160,9 @@ const DesignerContractCreatePage = () => {
     }
   };
 
-  // PDF 미리보기용 ref & 핸들러
+  // 미리보기용 ref & 핸들러
   const componentRef = useRef();
+  const [showPreview, setShowPreview] = useState(false);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: contractData.contractTitle || "계약서",
@@ -236,7 +221,7 @@ const DesignerContractCreatePage = () => {
 
       <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
 
-      {/* 샘플 문구 탭 UI */}
+      {/* 샘플 문구 탭 UI
       <div>
         <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}>샘플 문구 삽입</h2>
         <button
@@ -252,9 +237,7 @@ const DesignerContractCreatePage = () => {
           selectedCategory={sampleCategory}
         />
       )}
-      </div>
-
-      <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
+      </div> */}
 
       {/* 계약서 본문 에디터 */}
       <DesignerContractEditor
@@ -294,58 +277,109 @@ const DesignerContractCreatePage = () => {
 
       {/* 동의 체크박스 UI*/}
       <div style={{ marginBottom: "1.5rem", fontSize: "0.9rem", color: "#555" }}>
-        <label style={{ cursor: "pointer", userSelect: "none" }}>
-          <input
-            type="checkbox"
-            checked={agreePrivacy}
-            onChange={() => setAgreePrivacy(!agreePrivacy)}
-            style={{ marginRight: "0.5rem" }}
-          />
-          개인정보 수집 및 이용안내(필수, 선택)에 모두 동의합니다.
-        </label>
+      <input
+        type="checkbox"
+        checked={agreeToAll}
+        onChange={(e) => setAgreeToAll(e.target.checked)}
+      />
+      <label>
+        개인정보 수집 및 이용안내(필수, 선택)에 모두 동의합니다.
+      </label>
       </div>
 
       {/* 저장 / 취소 버튼 */}
-      <div
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", marginTop: "1.5rem" }}>
+      {/* 미리보기 버튼 */}
+      <button
+        onClick={() => setShowPreview(true)}
         style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: "2rem",
-          gap: "1rem",
+          backgroundColor: "#f0f4f8",
+          color: "#799FC4",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "1px solid #799FC4",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: "pointer",
         }}
       >
-        <button
-          onClick={handleCancel}
+        미리보기
+      </button>
+
+      {/* 취소 버튼 */}
+      <button
+        onClick={handleCancel}
+        style={{
+          backgroundColor: "#eee",
+          color: "#999",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "1px solid #ccc",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: "pointer",
+        }}
+      >
+        취소
+      </button>
+
+      {/* 작성 완료 버튼 (동의 체크 여부에 따라 비활성화) */}
+      <button
+        onClick={handleSubmit}
+        disabled={!agreeToAll} // <- 이 변수에 체크 여부가 담겨 있어야 해
+        style={{
+          backgroundColor: agreeToAll ? "#799FC4" : "#ccc",
+          color: "#fff",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "6px",
+          border: "none",
+          minWidth: "100px",
+          fontWeight: "bold",
+          cursor: agreeToAll ? "pointer" : "not-allowed",
+          opacity: agreeToAll ? 1 : 0.6,
+          transition: "background-color 0.3s ease",
+        }}
+      >
+        작성 완료
+      </button>
+    </div>
+
+      {showPreview && (
+        <div
           style={{
-            padding: "0.75rem 1.5rem",
-            fontSize: "1rem",
-            cursor: "pointer",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-            backgroundColor: "#f0f0f0", // 완전 흰색 대신 연한 회색으로 변경
-            color: "#333",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          type="button"
         >
-          취소
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={!agreePrivacy}
-          style={{
-            padding: "0.75rem 1.5rem",
-            fontSize: "1rem",
-            cursor: agreePrivacy ? "pointer" : "not-allowed",
-            borderRadius: "4px",
-            border: "none",
-            backgroundColor: agreePrivacy ? "#799FC4" : "#ccc",
-            color: "#fff",
-          }}
-          type="button"
-        >
-          작성 완료
-        </button>
-      </div>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              padding: "2rem",
+              borderRadius: "10px",
+              maxWidth: "100%",
+              maxHeight: "90%",
+              overflowY: "auto",
+            }}
+          >
+            <ContractPreview
+              ref={componentRef}
+              contractData={contractData}
+              contentBySection={contentBySection}
+              deliverables={deliverables}
+              onClose={() => setShowPreview(false)}
+              onPrint={handlePrint}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

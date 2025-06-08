@@ -37,7 +37,7 @@ hr {
 }
 
 .summary-section {
-  max-height: 80vh; /* 예: 화면 높이의 60% 이상 안 커지도록 */
+  max-height: 60vh; /* 예: 화면 높이의 60% 이상 안 커지도록 */
   overflow-y: auto; /* 내용이 넘치면 스크롤 생성 */
 }
 
@@ -197,6 +197,7 @@ hr {
 
 .pdf-btn:hover {
   background-color: #007acc;
+<<<<<<< HEAD
 }
 
 .finalconfirmation-category-image {
@@ -243,4 +244,6 @@ hr {
 
 summary-item size-values {
   
+=======
+>>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
 }

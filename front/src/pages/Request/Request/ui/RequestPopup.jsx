@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Button } from "../../../../components";
-import { useNavigate } from 'react-router-dom';
+
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -87,7 +87,6 @@ const StyledButton = styled.button`
 `;
 
 export default function RequestPopup({ onClose, data }) {
-  const navigate = useNavigate();
    const handleSave = () => {
     // 기존 requestData 가져오기
     const existingData = localStorage.getItem("requestData");
@@ -111,8 +110,7 @@ export default function RequestPopup({ onClose, data }) {
     // localStorage에 저장
     localStorage.setItem("requestData", JSON.stringify(requestData));
     console.log("Data saved to localStorage:", requestData);
-    alert("저장이 완료되었습니다.");
-    navigate("/client/request");
+    alert("임시저장이 완료되었습니다.");
   };
 
   // Debugging: Log received data

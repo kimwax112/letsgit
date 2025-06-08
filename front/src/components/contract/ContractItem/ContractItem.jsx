@@ -2,18 +2,14 @@ import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./ContractItem.css";
 
-
 const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
   const { starredStatus, title, preview, status, date } = contract;
-  
   const navigate = useNavigate();
 
   const handleClick = () => {
     if (onClick) onClick();
     if (to) navigate(to);
   };
-
-
 
   return (
     <div className="contract-item" onClick={onClick || handleClick}>
@@ -34,8 +30,6 @@ const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
         <p className={`contract-status ${status.toLowerCase()}`}>{status}</p>
         <p className="contract-date">{date}</p>
       </div>
-
-      
     </div>
   );
 };

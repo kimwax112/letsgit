@@ -1,78 +1,68 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DesignerContractList.css";
 import clientImage from "../../../assets/desiner.png";
 
 const DesignerContractList = () => {
   const [contracts, setContracts] = useState([]);
-  const navigate = useNavigate();
-
-
-// 5/20 병합후 코드 
-  // const userId = localStorage.getItem("id");
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8081/designer/contract")
-  //     .then((response) => {
-  //       const fetchedContracts = response.data
-  //       .filter((contract) => contract.designerId === userId) //필터
-  //        .map((contract) => ({
-  //         status: convertStatus(contract.status),
-  //         clientName: contract.contractTitle,
-  //         //   content: contract.contractTitle,
-  //         date: formatDate(contract.dueDate),
-  //         period: calculatePeriod(contract.dueDate),
-  //         amount: formatAmount(contract.requestFee),
-  //         imageUrl: clientImage,
-  //         roomId: contract.roomId || "20", // roomId 추가, 서버에서 받아오지 못하면 기본값 "20"
-  //       }));
-  //       setContracts(fetchedContracts);
-  //       console.log("userId:", userId);
-  //       console.log("response.data:", response.data);
-
-  //     })
-  //     .catch((error) => {
-  //       console.error("계약서 목록 불러오기 실패:", error);
-  //     });
-  // }, [setContracts]);
-
-  //5/20 병합전 코드 
-    useEffect(() => {
+  const [editingStatusIndex, setEditingStatusIndex] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const statusOptions = [
+    "진행중", "완료", "해지", "미송신", "미수신", "수정건의", "해지요청"
+  ];
+  
+  useEffect(() => {
     axios
       .get("http://localhost:8081/designer/contract")
       .then((response) => {
         const fetchedContracts = response.data.map((contract) => ({
+          contractId: contract.contractId, // <-- 추가
           status: convertStatus(contract.status),
           clientName: contract.contractTitle,
-          //   content: contract.contractTitle,
           date: formatDate(contract.dueDate),
           period: calculatePeriod(contract.dueDate),
           amount: formatAmount(contract.requestFee),
           imageUrl: clientImage,
-          roomId: contract.roomId || "20", // roomId 추가, 서버에서 받아오지 못하면 기본값 "20"
         }));
         setContracts(fetchedContracts);
       })
       .catch((error) => {
         console.error("계약서 목록 불러오기 실패:", error);
       });
-  }, [setContracts]);
+  }, []);
+  
 
   const convertStatus = (status) => {
     if (status === "진행중") return "진행중";
-    if (status === "완료") return "완료됨";
-    if (status === "해지") return "해지됨";
+    if (status === "완료") return "완료됨";  
+    if (status === "해지") return "해지됨";  
     if (status === "미송신") return "미송신";
     if (status === "미수신") return "미수신";
     if (status === "수정건의") return "수정건의";
     if (status === "해지요청") return "해지요청";
     return status;
   };
-
+  
+  const handleStatusSave = (contractId) => {
+    axios.post("http://localhost:8081/api/StatusChange", {
+      contractId: contractId,
+      status: selectedStatus,
+    })
+    .then((res) => {
+      alert("상태가 성공적으로 변경되었습니다!");
+      setEditingStatusIndex(null);
+      // 상태 업데이트를 위해 데이터 다시 로드 (간단히 location.reload 가능)
+      window.location.reload(); 
+    })
+    .catch((err) => {
+      console.error("상태 변경 실패:", err);
+      alert("상태 변경에 실패했습니다.");
+    });
+  };
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0].replace(/-/g, ".");
+    return date.toISOString().split('T')[0].replace(/-/g, '.');
   };
 
   const calculatePeriod = (dueDate) => {
@@ -86,21 +76,10 @@ const DesignerContractList = () => {
     return amount.toLocaleString() + "원";
   };
 
-  // "해지요청" 버튼 클릭 핸들러
-  const handleCancelRequest = (contract) => {
-    const payload = {
-      messageText : `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`,
-      sourcePage: "DesignerContractList",
-
-    };
-    
-    navigate("/client/chatmain", {state : {sourcePage: "DesignerContractList", messageText: `계약 "${contract.clientName}"에 대한 해지요청이 있습니다.`}});
-  }
-
   return (
     <div className="contract-list">
       {contracts.map((contract, index) => (
-        <div key={index} className="contract-item" onClick={() => navigate(`/designer/contract/${contract.roomId}`)}>
+        <div key={index} className="contract-item">
           {/* 상태 뱃지 */}
           <div
             className={`status ${
@@ -134,10 +113,15 @@ const DesignerContractList = () => {
           {/* 계약 정보 */}
           <div className="info">
             <div className="client-name">{contract.clientName}</div>
+            {/* <div className="content">
+              {contract.content.length > 20
+                ? contract.content.slice(0, 20) + "..."
+                : contract.content}
+            </div> */}
             <div className="dates">
-              {/* <div className="date">
-                <span>계약일</span> {contract.date}
-              </div> */}
+              <div className="date">
+                {/*<span>계약일</span> {contract.date}*/}
+              </div>
               <div className="period">
                 <span>계약 기간</span> {contract.period}
               </div>
@@ -155,19 +139,42 @@ const DesignerContractList = () => {
               <button>송신취소</button>
             ) : contract.status === "진행중" ? (
               <>
-                <button onClick={() => handleCancelRequest(contract)}>해지요청</button>
+                <button>해지요청</button>
                 <button>수정건의</button>
               </>
             ) : contract.status === "수정건의" ? (
               <button>수정건의 취소</button>
             ) : contract.status === "진행중(수정완료)" ? (
               <>
-                <button onClick={() => handleCancelRequest(contract)}>해지요청</button>
+                <button>해지요청</button>
                 <button>수정건의</button>
               </>
             ) : contract.status === "해지요청" ? (
               <button>해지요청 취소</button>
             ) : null}
+            {/* 상태 수정 버튼 */}
+            <button onClick={() => {
+              setEditingStatusIndex(index);
+              setSelectedStatus(contract.status); // 기본값 선택
+            }}>상태 수정</button>
+            {/* 상태 드롭다운 및 저장 */}
+      {editingStatusIndex === index && (
+        <div className="status-edit">
+          {statusOptions.map((status) => (
+            <label key={status}>
+              <input
+                type="radio"
+                name={`status-${index}`}
+                value={status}
+                checked={selectedStatus === status}
+                onChange={() => setSelectedStatus(status)}
+              />
+              {status}
+            </label>
+          ))}
+          <button onClick={() => handleStatusSave(contract.contractId)}>저장</button>
+        </div>
+      )}
           </div>
         </div>
       ))}
