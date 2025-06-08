@@ -96,16 +96,6 @@ export default function DesignerSidebar() {
             <ul className={styles.subMenu}>
               <li>
                 <Link
-                  to="/designer/production/history"
-                  className={`${styles.subLink} ${
-                    location.pathname === "/designer/production/history" ? styles.subActive : ""
-                  }`}
-                >
-                  제작내역
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/designer/OngoingRequests"
                   className={`${styles.subLink} ${
                     location.pathname === "/designer/OngoingRequests" ? styles.subActive : ""

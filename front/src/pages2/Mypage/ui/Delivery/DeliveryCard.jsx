@@ -70,7 +70,21 @@ const DeliveryCard = ({
             {isShipped ? '배송조회' : '배송등록'}
           </button>
           <button className="action-btn">대화하기</button>
-          <button className="action-btn report-btn">신고하기</button>
+          <button
+            className="action-btn report-btn"
+            onClick={() => {
+              if (window.confirm("신고하시겠습니까?")) {
+                // 확인 클릭 시 실행할 로직
+                alert("신고가 접수되었습니다."); // 예시
+                // 여기에 실제 신고 처리 함수 호출 가능
+              } else {
+                // 취소 클릭 시 별도 동작 없으면 생략 가능
+                console.log("신고 취소됨");
+              }
+            }}
+          >
+            신고하기
+          </button>
         </div>
       </div>
 
