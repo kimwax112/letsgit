@@ -1,9 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import styled from "styled-components"; // keyframes 추가
-=======
-import styled from "styled-components";
->>>>>>> feature/sj
 import { Modal } from "../../../utils";
 import SideMenu from "./SideMenu";
 import backArrow from "../../../assets/화살표.png";
@@ -13,11 +9,7 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import ChatPage from "./ChatRoom";
-<<<<<<< HEAD
 import Messagealarm from "./Messagealarm"; // Messagealarm 컴포넌트 임포트
-=======
-
->>>>>>> feature/sj
 
 
 
@@ -26,21 +18,15 @@ const RoomContainer = styled(Modal)`
   flex-direction: column;
   position: relative;
   width: 600px;
-<<<<<<< HEAD
   height: 800px;
   overflow-x : hidden;
   
-=======
-  height: 700px;
-  overflow-x : hidden;
->>>>>>> feature/sj
 `;
 
 const RoomHeader = styled.div`
   width: 100%;
   display: flex;
   background-color: #799fc4;
-<<<<<<< HEAD
   font-size: 20px;
   font-weight: bold;
   color: rgb(0, 0, 0); 
@@ -69,9 +55,6 @@ const AlarmContent = styled.div`
   
 `;
 
-=======
-`;
->>>>>>> feature/sj
 
 const RoomFooter = styled.div`
   width: 100%;
@@ -212,7 +195,6 @@ const SuccessPopupMessage = styled.p`
   font-size: 16px;
 `;
 
-<<<<<<< HEAD
 const RoomButtonWraepper = styled.div`
   display: flex;
 
@@ -238,12 +220,6 @@ function Room({
   selectedUser,
   messages,
   setMessages,
-=======
-function Room({
-  roomId,
-  selectedUser,
-  //messages,
->>>>>>> feature/sj
   isSideMenuOpen,
   onClose,
   onMenuClick,
@@ -262,7 +238,6 @@ function Room({
   isSuccessPopupOpen,
   popupMessage,
   bottomRef,
-<<<<<<< HEAD
 
 }) {
   // const navigate = useNavigate();
@@ -283,25 +258,12 @@ const location = useLocation();
   
   const [opacity, setOpacity] = useState(1); // opacity 상태 추가
   const [isAccepted, setIsAccepted] = useState(false); // 수락 상태 추가
-=======
-}) {
-  const navigate = useNavigate();
-  const [client, setClient] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [connected, setConnected] = useState(false);
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState(null); // ✅ 방 정보 상태 추가
-  
-//////////
->>>>>>> feature/sj
 
 useEffect(() => {
   console.log("URL에서 받은 roomId??:", roomId);
 }, [roomId]);
 ///////////////
 
-<<<<<<< HEAD
 
 
 useEffect(() => {
@@ -395,15 +357,12 @@ const getAlarmMessage = () => {
 
  
 
-=======
->>>>>>> feature/sj
   return (
     <RoomContainer onClose={onClose} showCloseButton={false}>
       <RoomHeader>
         <BackButton onClick={onClose} />
         <Title>
           <Title1>
-<<<<<<< HEAD
             <h2 style={{color : 'white'}}>{selectedUser}</h2>
             <MenuButton onClick={onMenuClick}>
               <h2 style={{color : 'white'}}>☰</h2>
@@ -437,24 +396,6 @@ const getAlarmMessage = () => {
         <ChatContainer>
           
     
-=======
-            <h2>{selectedUser}</h2>
-            <MenuButton onClick={onMenuClick}>
-              <h2>☰</h2>
-            </MenuButton>
-          </Title1>
-        </Title>
-      </RoomHeader>
-      <Content>
-        <ChatContainer>
-          {/*{messages.map((msg, index) => (
-            <div key={index} className="message sent">
-              {msg.text}
-              <span className="time">{msg.time}</span>
-            </div>
-          ))}*/}
-            
->>>>>>> feature/sj
           <div ref={bottomRef} />
         </ChatContainer>
       </Content>
@@ -468,14 +409,9 @@ const getAlarmMessage = () => {
         onReport={onReport}
       />
       <RoomFooter>
-<<<<<<< HEAD
         
         <ChatPage roomId={roomId} messages={messages} setMessages={setMessages} />
         </RoomFooter>
-=======
-        <ChatPage roomId={roomId}/>
-      </RoomFooter>
->>>>>>> feature/sj
       {isConfirmOpen && (
         <ConfirmModal>
           <ConfirmMessage>{confirmMessage}</ConfirmMessage>
