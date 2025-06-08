@@ -39,13 +39,10 @@ import DeliveryPage from "./pages2/Mypage/DeliveryPage";
 import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
 import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
 import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
-<<<<<<< HEAD
 import ClothesTest from "./pages/selfdesign/Template/Size/ClothesPants/ClothesTest";
 import DeliveryRegister from "./pages2/Mypage/ui/Delivery/DeliveryRegister";
 import DeliveryTracking from "./pages2/Mypage/ui/Delivery/DeliveryTracking";
-=======
 import FavoriteRequests from './backTest/FavoriteRequests';
->>>>>>> feature/sj
 
 const RouterComponent = () => {
   
