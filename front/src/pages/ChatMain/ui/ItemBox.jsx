@@ -45,8 +45,4 @@ export default function ItemBox ({text1, text2, onClick, className}) {
 </ItemBoxContainer>
 </div>
   )
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/sj
