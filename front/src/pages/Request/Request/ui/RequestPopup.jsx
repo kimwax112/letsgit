@@ -8,7 +8,6 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
@@ -23,9 +22,7 @@ const ModalContainer = styled.div`
   min-width: 400px;
   max-width: 800px;
   width: 60%;
-  min-height: 900px;
-  
-  
+  height: 80%;
   overflow-y: auto;
 `;
 

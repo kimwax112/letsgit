@@ -85,6 +85,15 @@ const ContractList = ({ mode = "전체" }) => {
             onToggleStar={() => handleToggleStar(contract.id)}
             onClick={() => handleClick(contract)}
           />
+<<<<<<< HEAD
+           {contract.status === "완료" && (
+            <button style={{marginRight: "auto"}} onClick={() => openReviewModal(contract)}>
+             계약<br/>종료
+            </button>
+          )}
+        </div>
+=======
+>>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
         ))
       ) : (
         <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>

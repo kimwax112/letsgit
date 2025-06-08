@@ -197,4 +197,53 @@ hr {
 
 .pdf-btn:hover {
   background-color: #007acc;
+<<<<<<< HEAD
+}
+
+.finalconfirmation-category-image {
+  display : flex;
+  gap : 1.25rem;
+
+}
+
+.size-values {
+  margin-top: 16px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.size-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.size-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 20px;
+}
+
+.size-item:last-child {
+  border-bottom: none;
+}
+
+.size-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.size-value {
+  font-weight: 600;
+  color: #0077cc;
+}
+
+summary-item size-values {
+  
+=======
+>>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
 }

@@ -1,16 +1,27 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Fabric/Fabric.css";
-import Sizespec from "./Sizespec";
+
 import Sizespecbutton from "./Sizespecbutton";
 import { Sidebar, BreadCrumb } from "../../../../components";
 import axios from "axios";  // Axios 임포트
 import SizeBottom from "./SizeBottom";
+import ClothesTest from "./ClothesPants/ClothesTest";
+import Sizespec from "./Sizespec";
 
 const Size = () => {
   const [selectedSize, setSelectedSize] = useState(null);  // 선택된 사이즈
   const [category, setCategory] = useState(null);
   const navigate = useNavigate();
+
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(null);
+  const [sizeData, setSizeData] = useState({});
+
+  const handleSizeChange = (index, sizeValues) => {
+    setSelectedSizeIndex(index);
+    setSizeData(sizeValues); // 예: { totalLength: 69, chest: 90, ... }
+  };
+
 
   // "저장하기" 버튼 클릭 시
   const handleSave = async () => {
@@ -39,6 +50,8 @@ const Size = () => {
         setCategory(clothing.category);
       } catch (e) {
         console.error("selectedClothing 파싱 오류:", e);
+        console.log("🚩 selectedClothing.category:", category);
+
       }
     }
   }, []);
@@ -47,9 +60,14 @@ const Size = () => {
   const renderSizeComponent = () => {
     switch (category) {
       case "상의": 
-        return <Sizespec selectedSize={selectedSize} setSelectedSize={setSelectedSize} />;
+        return <Sizespec onSizeChange={handleSizeChange} selectedSizeIndex={selectedSizeIndex} selectedSize={selectedSize}
+      setSelectedSize={setSelectedSize} />
+
       case "바지":
-        return <SizeBottom selectedSize={selectedSize} setSelectedSize={setSelectedSize} />;
+        return<SizeBottom
+      selectedSize={selectedSize}
+      setSelectedSize={setSelectedSize}
+    />;
       case "아우터":
         // return <SizeOuter selectedSize={selectedSize} setSelectedSize={setSelectedSize} />;
       // 추가 카테고리
@@ -81,7 +99,7 @@ const Size = () => {
             {renderSizeComponent()}
             
             <div className="footer button_size">
-              <Sizespecbutton label="초기화" style={{ cursor: "pointer" }} onClick={() => setSelectedSize(null)} />
+              {/* <Sizespecbutton label="초기화" style={{ cursor: "pointer" }} onClick={() => setSelectedSize(null)} /> */}
               <Sizespecbutton label="이전" onClick={() => navigate(-1)} />
               <Sizespecbutton label="저장하기" onClick={handleSave} />
             </div>

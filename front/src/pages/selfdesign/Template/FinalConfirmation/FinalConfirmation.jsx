@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Sidebar, BreadCrumb } from "../../../../components";
 import "./FinalConfirmation.css";
 import html2canvas from "html2canvas";
+import SizeBottom from "../Size/SizeBottom";
+import Sizespec from "../Size/Sizespec";
+import ClothesTest from "../Size/ClothesPants/ClothesTest";
 
 const getColorName = (hex) => {
   const colorMap = {
@@ -30,13 +33,98 @@ const FinalConfirmation = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [designName, setDesignName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState("");  // 메모 상태 추가
+  
+
+  
+
+  const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]; 
+  const [rows, setRows] = useState([]);
+  const [sizeValues, setSizeValues] = useState([]); // 선택된 사이즈의 values 배열
+  const id = sessionStorage.getItem("id") || localStorage.getItem("id");
+   
+  const [sizeLabels, setSizeLabels] = useState([]);
+  // const [note, setNote] = useState("");
 
   const [username, setUsername] = useState(null);  // 상태로 username 관리
 
   // 저장할 영역 ref
   const captureRef = useRef(null);
 
+  const [category, setCategory] = useState(null);
+  
+     // localStorage에서 선택된 카테고리 읽기
+      useEffect(() => {
+        const storedClothing = localStorage.getItem("selectedClothing");
+        if (storedClothing) {
+          try {
+            const clothing = JSON.parse(storedClothing);
+            setCategory(clothing.category);
+          } catch (e) {
+            console.error("selectedClothing 파싱 오류:", e);
+          }
+        }
+      }, []);
+
+//  const loadSizeData = () => {
+//     if (selectedSize && category) {
+//       const storageKey = category === "바지" ? "sizeSpecRowsBottom" : "sizeSpecRows";
+//       const savedRows = localStorage.getItem(storageKey);
+//       if (savedRows) {
+//         try {
+//           const rows = JSON.parse(savedRows);
+//           const sizeIndex = sizes.indexOf(selectedSize);
+//           if (sizeIndex >= 0) {
+//             const values = rows
+//               .filter((row) => !row.colspan && row.type !== "disabled")
+//               .map((row) => row.values[sizeIndex]);
+//             setSizeValues(values);
+
+//             const labels =
+//               category === "바지"
+//                 ? ["총길이", "허리둘레", "엉덩이둘레", "밑위길이", "허벅지단면", "밑단둘레"]
+//                 : ["총 기장", "가슴 단면", "밑단 단면", "소매 기장", "어깨 단면", "허리 단면", "암홀 (직선)", "소매단 단면", "소매통 단면"];
+//             setSizeLabels(labels);
+//           }
+//         } catch (e) {
+//           console.error(`localStorage ${storageKey} 파싱 오류:`, e);
+//           setSizeValues([]);
+//           setSizeLabels([]);
+//         }
+//       }
+//     }
+//   };
+
+// 사이트 데이터 로드 
+  const loadSizeData = () => {
+    if (selectedSize && category) {
+      const storageKey = category === "바지" ? "sizeSpecRowsBottom" : "sizeSpecRows";
+      const savedRows = localStorage.getItem(storageKey);
+      if (savedRows) {
+        try {
+          const rows = JSON.parse(savedRows);
+          const sizeIndex = sizes.indexOf(selectedSize.toUpperCase());
+          if (sizeIndex >= 0) {
+            // Filter out rows that are not relevant (e.g., disabled or colspan rows)
+            const filteredRows = rows.filter((row) => !row.colspan && row.type !== "disabled");
+            // Map values for the selected size
+            const values = filteredRows.map((row) => row.values[sizeIndex]);
+            // Map labels from the rows
+            const labels = filteredRows.map((row) => row.label);
+            setSizeValues(values);
+            setSizeLabels(labels);
+          } else {
+            setSizeValues([]);
+            setSizeLabels([]);
+          }
+        } catch (e) {
+          console.error(`localStorage ${storageKey} 파싱 오류:`, e);
+          setSizeValues([]);
+          setSizeLabels([]);
+        }
+      } else {
+        setSizeValues([]);
+        setSizeLabels([]);
   // 로그인 세션을 백엔드에서 받아와 sessionStorage에 저장 + 상태 세팅
   useEffect(() => {
     const fetchSession = async () => {
@@ -107,6 +195,7 @@ const FinalConfirmation = () => {
     const finalData = {
       username,
       designName: designName.trim(),
+      clothingType: selectedItem.item,
       clothingType: selectedItem ? selectedItem.name : "", // 변경된 부분
       fabricJson: JSON.stringify(selectedFabric.map(f => f.name)),
       colorsJson: JSON.stringify(
@@ -157,7 +246,68 @@ const FinalConfirmation = () => {
     });
   };
 
-  return (
+  const renderSizeComponent = () => {
+    switch (category) {
+      case "상의":
+          const storedImage = localStorage.getItem("shirtCanvasImage");
+
+        // sizeLabels와 sizeValues를 매핑하여 ClothesTest에 전달
+        const sizeProps = {
+          neckY: sizeLabels.includes("목 파임") ? sizeValues[sizeLabels.indexOf("목 파임")] : 18,
+          neckXOffset: sizeLabels.includes("목 너비") ? sizeValues[sizeLabels.indexOf("목 너비")] : 15,
+          shoulderOffset: sizeLabels.includes("어깨 단면") ? sizeValues[sizeLabels.indexOf("어깨 단면")] : 38,
+          chestOffset: sizeLabels.includes("가슴 단면") ? sizeValues[sizeLabels.indexOf("가슴 단면")] : 82,
+          bodyLength: sizeLabels.includes("총 기장") ? sizeValues[sizeLabels.indexOf("총 기장")] : 67,
+          armLengthFactor: sizeLabels.includes("소매 기장")
+            ? (sizeValues[sizeLabels.indexOf("소매 기장")] - 20) / (26 - 20)
+            : 1,
+          upperWidthOffset: 0,
+          lowerWidthOffset: sizeLabels.includes("밑단 단면") ? sizeValues[sizeLabels.indexOf("밑단 단면")] : 90,
+          topBodyHeight: sizeLabels.includes("암홀 (직선)") ? sizeValues[sizeLabels.indexOf("암홀 (직선)")] : 40,
+        };
+        return storedImage ? (
+    <img
+      src={storedImage}
+      alt="셔츠 미리보기"
+      style={{ width: "300px", height: '300px', border: '1px solid #ccc' }}
+    />
+  ) : (
+    <div>먼저 사이즈 스펙에서 셔츠를 조절해주세요.</div>
+  );
+      case "바지":
+        const storedImageBottom = localStorage.getItem("pantsCanvasImage");
+
+        // sizeLabels와 sizeValues를 매핑하여 ClothesTest에 전달
+        const sizePropsBottom = {
+          waistWidth: sizeLabels.includes("허리단면") ? sizeValues[sizeLabels.indexOf("허리단면")] : 72,
+          rise: sizeLabels.includes("밑위") ? sizeValues[sizeLabels.indexOf("밑위")] : 26,
+          length: sizeLabels.includes("총장") ? sizeValues[sizeLabels.indexOf("총장")] : 97,
+          thighWidth: sizeLabels.includes("허벅지 단면") ? sizeValues[sizeLabels.indexOf("허벅지 단면")] : 27,
+          hemWidth: sizeLabels.includes("밑단 단면") ? sizeValues[sizeLabels.indexOf("밑단 단면")] : 34,
+        };
+        return storedImageBottom ? (
+    <img
+      src={storedImageBottom}
+      alt="바지 미리보기"
+      style={{ width: "300px", height: '300px', border: '1px solid #ccc' }}
+    />
+  ) : (
+    <div>먼저 사이즈 스펙에서 바지를 조절해주세요.</div>
+  );
+        
+      case "아우터":
+        return <div>아우터용 사이즈 입력 (구현 필요)</div>;
+      case "원피스":
+        return <div>원피스용 사이즈 입력 (구현 필요)</div>;
+      case "스커트":
+        return <div>스커트용 사이즈 입력 (구현 필요)</div>;
+      default:
+        return <div>선택된 카테고리가 없습니다.</div>;
+    }
+  };
+
+
+    return (
     <div className="final-container">
       <div className="layout1">
         <aside>
