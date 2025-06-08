@@ -106,11 +106,7 @@ export default function Request() {
     <ItemBox />
         {requestItems.length > 0 ? (
           // requestData가 있으면 동적으로 ItemBox 렌더링
-<<<<<<< HEAD
-       filteredItems.slice().reverse().map((item, index) => (
-=======
           requestItems.map((item, index) => (
->>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
             <ItemBox key={index} data={item} />
           ))
         ) : (
