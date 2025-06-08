@@ -168,20 +168,12 @@ export default function DesignerReceivedReviews() {
         {reviews.map((review) => (
           <div key={review.contractId} className="writtenreviewcontent-item">
             <div className="writtenreviewcontent-topside">
-<<<<<<< HEAD
               {/* 상단 프로필 이미지 */}
                 <img
                   src={review.profileImage}
                   alt="Designer Profile"
                   style={{ width: 80, height: 80, objectFit: "cover", borderRadius: "50%" }}
                 />
-=======
-              <img
-                src={review.image}
-                alt="Designer"
-                style={{ width: 80, height: 80, objectFit: "contain", borderRadius: 8 }}
-              />
->>>>>>> feature/sj
               <div>
                 <div style={{ color: "gray" }}>{review.designerId}</div>
                 <div style={{ fontWeight: "bold", fontSize: 20 }}>{review.contractTitle}</div>
@@ -191,18 +183,11 @@ export default function DesignerReceivedReviews() {
 
             {/* 별과 리뷰 내용 왼쪽에 이미지 추가, flexbox 사용 */}
             <div className="writtenreviewcontent-bottomside" style={{ display: 'flex', gap: 15, marginTop: 15 }}>
-<<<<<<< HEAD
               {/* 후기 이미지 */}
               <img
                 src={review.resultImage}
                 alt="Design Result"
                 style={{ width: 150, height: 150, objectFit: 'cover', borderRadius: 12, alignSelf: 'flex-start' }}
-=======
-              <img
-                src={review.image}
-                alt="Design"
-                style={{ width: 60, height: 60, objectFit: 'contain', borderRadius: 8, alignSelf: 'flex-start' }}
->>>>>>> feature/sj
               />
               <div>
                 <div>{renderStars(review.reviewStar)}</div>
@@ -238,12 +223,8 @@ export default function DesignerReceivedReviews() {
                             >
                                 ⋯
                             </div>
-<<<<<<< HEAD
                             {editingComment.reviewId === review.contractId &&
                               editingComment.commentIndex === idx && (
-=======
-                            {editingComment.reviewId === review.contractId && editingComment.commentIndex === `menu-${idx}` && (
->>>>>>> feature/sj
                                 <div style={{ position: 'absolute', right: 20, top: 20, background: '#fff', border: '1px solid #ccc', zIndex: 1 }}>
                                 <div
                                     style={{ padding: '5px 10px', cursor: 'pointer' }}
@@ -291,17 +272,10 @@ export default function DesignerReceivedReviews() {
             <h2>후기 편집</h2>
             <div style={{ display: "flex", gap: 15, marginBottom: 15 }}>
               <img
-<<<<<<< HEAD
                 src={reviews.find(r => r.contractId === editingReviewId)?.profileImage}
                 alt="Designer Profile"
                 style={{ width: 120, height: 120, objectFit: "contain", borderRadius: "50%" }}
               />
-=======
-                src={reviews.find(r => r.contractId === editingReviewId)?.image}
-                alt="Designer"
-                style={{ width: 120, height: 120, objectFit: "contain", borderRadius: "50%" }}
-                />
->>>>>>> feature/sj
               <div>
                 <div style={{ color: "gray" }}>{reviews.find(r => r.contractId === editingReviewId)?.designerId}</div>
                 <div style={{ fontWeight: "bold", fontSize: 20 }}>
