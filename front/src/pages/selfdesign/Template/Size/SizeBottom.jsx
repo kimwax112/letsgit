@@ -33,6 +33,15 @@ function SizeBottom({ selectedSize, setSelectedSize }) {
 
   // rows 상태: 입력값 변경 및 증감 기능을 위해 상태 관리
   const [rowsBottom, setRowsBottom] = useState(initialRowsBottom);
+
+    const resetValues = () => {
+    setLength(97);
+    setWaistWidth(72);
+    setRise(26);
+    setThighWidth(27);
+    setHemWidth(34);
+  
+  };
   
   useEffect(() => {
    setRowsBottom(rows =>
@@ -216,6 +225,7 @@ function SizeBottom({ selectedSize, setSelectedSize }) {
           setThighWidth={setThighWidth}
           hemWidth={hemWidth}
           setHemWidth={setHemWidth}
+          resetValues={resetValues}
         />
       {/* 상단 이미지 */}
       <div  className="controll-container2">

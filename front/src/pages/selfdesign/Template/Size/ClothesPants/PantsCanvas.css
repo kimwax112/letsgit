@@ -1,0 +1,25 @@
+/* SizeBottom.css */
+
+.cliders-grid {
+  display: grid;
+  /* 4열로 동일한 비율로 나누기 */
+  grid-template-columns: repeat(4, 1fr);
+  /* 행과 열 사이 간격 */
+  column-gap: 1.5rem;
+  row-gap: 2px;
+  /* 컨테이너 중앙 정렬 (필요하다면) */
+  justify-items: center;
+  align-items: center;
+  
+  width: 100%;
+}
+
+.cliders-grid > div {
+  /* 각 컨트롤러 내부를 세로로 정렬 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 컨트롤러 박스의 최대 폭을 제한하고 싶다면 */
+  width: 100%;
+  max-width: 120px;
+}

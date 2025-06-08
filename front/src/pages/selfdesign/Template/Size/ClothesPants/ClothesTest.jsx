@@ -140,7 +140,7 @@ export default function ClothesTest({
             ref={canvasRef}
             width={300}
             height={300}
-            style={{ border: '1px solid #ccc', maxWidth: '100%', height: 'auto' }}
+            style={{ margin :"3px", border: '2px solid #ccc' , borderRadius: '10px', backgroundColor: '#f9f9f9' }}
           ></canvas>
           <div
             className="cliders-grid"

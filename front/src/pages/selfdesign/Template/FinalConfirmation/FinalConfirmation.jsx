@@ -204,7 +204,7 @@ const FinalConfirmation = () => {
     const finalData = {
       id,
       designName: designName.trim(),
-      clothingType: selectedItem,
+      clothingType: selectedItem.item,
       fabricJson: JSON.stringify(selectedFabric.map(f => f.name)),
       colorsJson: JSON.stringify(
         formattedColors.length > 0 ? formattedColors : [{ color: finalColor }]
