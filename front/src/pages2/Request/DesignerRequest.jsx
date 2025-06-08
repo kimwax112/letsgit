@@ -111,7 +111,7 @@ export default function DesignerRequest({ headerText = "의뢰 찾기" }) {
       <RequestLayOut>
         
         {filteredItems.length > 0 ? (
-          filteredItems.map((item, index) => (
+       filteredItems.slice().reverse().map((item, index) => (
             <DesignerItemBox key={index} data={item} />
           ))
         ) : (

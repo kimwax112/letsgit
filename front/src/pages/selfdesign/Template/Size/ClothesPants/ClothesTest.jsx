@@ -35,23 +35,26 @@ export default function ClothesTest({
 
     const shoulderLeftBase = { x: 40 + offsetX, y: 120 }; //
 
-    const sleeveLeftBase = { x: 60 + offsetX, y: 10 };
-    const sleeveRightBase = { x: 240 + offsetX, y: 10 };
+    const sleeveLeftBase = { x: 60 + offsetX, y: 20 };
+    const sleeveRightBase = { x: 240 + offsetX, y: 20 };
 
     const midLeftShoulder = {
       x: (neckLeftX + shoulderLeftBase.x) / 2,
       y: (50 + shoulderLeftBase.y) / 2,
     };
 
+  
     
+
+
     const leftShoulder = {
       x: shoulderLeftBase.x * armLengthFactor + midLeftShoulder.x * (1 - armLengthFactor ),
       y: shoulderLeftBase.y * armLengthFactor + midLeftShoulder.y * (1 - armLengthFactor ),
     };
 
     const leftSleeve = {
-      x: sleeveLeftBase.x * armLengthFactor + midLeftShoulder.x * (1 - armLengthFactor),
-      y: sleeveLeftBase.y * armLengthFactor + midLeftShoulder.y * (1 - armLengthFactor),
+      x: sleeveLeftBase.x * armLengthFactor + midLeftShoulder.x * (1 - armLengthFactor) ,
+      y: sleeveLeftBase.y * armLengthFactor + midLeftShoulder.y * (1 - armLengthFactor) ,
     };
 
     const neckRightX = 200 + shoulderOffset-38 + upperWidthOffset + offsetX;
@@ -140,7 +143,7 @@ export default function ClothesTest({
             ref={canvasRef}
             width={300}
             height={300}
-            style={{ margin :"3px", border: '2px solid #ccc' , borderRadius: '10px', backgroundColor: '#f9f9f9' }}
+           style={{ margin :"3px", border: '2px solid #ccc' , borderRadius: '10px', backgroundColor: '#f9f9f9' }}
           ></canvas>
           <div
             className="cliders-grid"
@@ -267,8 +270,8 @@ export default function ClothesTest({
               <h4>소매 기장</h4>
               <input
                 type="range"
-                min={1}
-                max={5}
+                min={0}
+                max={6}
                 step={0.01}
                 value={armLengthFactor}
                 onChange={(e) => setArmLengthFactor(Number(e.target.value))}

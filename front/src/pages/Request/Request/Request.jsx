@@ -122,7 +122,7 @@ export default function Request({headerText = "의뢰 등록하기"}) {
 
         {filteredItems.length > 0 ? (
           // requestData가 있으면 동적으로 ItemBox 렌더링
-          filteredItems.map((item, index) => (
+       filteredItems.slice().reverse().map((item, index) => (
             <ItemBox key={index} data={item} />
           ))
         ) : (

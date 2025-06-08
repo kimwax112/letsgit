@@ -22,7 +22,7 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
     { category: "A", label: "총 기장", values: [65, 67, 69, 71, 73, 75, 77], type: "highlight", key: "bodyLength" },
     { category: "B", label: "가슴 단면", values: [82, 86, 90, 94, 98, 102, 106], type: "highlight", key: "chestOffset" },
     { category: "C", label: "밑단 단면", values: [90, 94, 98, 102, 106, 110, 114], type: "highlight", key: "lowerWidthOffset" },
-    { category: "D", label: "소매 기장", values: [1, 2, 3, 4, 5, 6, 7], type: "highlight", key: "armLengthFactor" },
+    { category: "D", label: "소매 기장", values: [0, 1, 2, 3, 4, 5, 6], type: "highlight", key: "armLengthFactor" },
     { category: "E", label: "어깨 단면", values: [38, 40, 42, 44, 46, 48, 50], type: "normal", key: "shoulderOffset" },
     { category: "F", label: "허리 단면", values: [70, 72, 74, 76, 78, 80, 82], type: "normal" },
     { category: "G", label: "암홀 (직선)", values: [40, 42, 44, 46, 48, 50, 52], type: "normal", key: "topBodyHeight" },
@@ -47,7 +47,7 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
     setShoulderOffset(38);
     setChestOffset(82);
     setBodyLength(67);
-    setArmLengthFactor(1);
+    setArmLengthFactor(0);
     setUpperWidthOffset(0);
     setLowerWidthOffset(90);
     setTopBodyHeight(40);
