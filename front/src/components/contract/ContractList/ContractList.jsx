@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";  // 추가
+import axios from "axios";
 import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
 import "./ContractList.css";
@@ -13,19 +13,16 @@ const ContractList = ({ mode = "전체" }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 처음 컴포넌트 뜰 때 계약 데이터 가져오기
     axios.get("http://localhost:8081/client/contract")
       .then((response) => {
-        console.log("받은 계약 데이터:", response.data);
-        // 받아온 데이터 형태에 맞게 가공 (React에서 필요한 형태로)
         const mappedContracts = response.data.map(contract => ({
           id: contract.contractId,
-          starredStatus: false, // 별표 기본 false
-          title: contract.contractTitle, // 계약 제목 바로 넣기
-          clientId: contract.clientId,  // client_id → clientId
+          starredStatus: false,
+          title: contract.contractTitle,
+          clientId: contract.clientId,
           status: contract.status,
           date: formatDate(contract.dueDate),
-          preview: contract.preview || "",  // preview가 없을 경우 빈 문자열로 기본 설정
+          preview: contract.preview || "",
         }));
         setContracts(mappedContracts);
       })
@@ -47,27 +44,27 @@ const ContractList = ({ mode = "전체" }) => {
   const handleToggleStar = (contractId) => {
     const updatedContracts = contracts.map((contract) => {
       if (contract.id === contractId) {
-        return { ...contract, starredStatus: !contract.starredStatus };  // 해당 계약만 업데이트
+        return { ...contract, starredStatus: !contract.starredStatus };
       }
       return contract;
     });
     setContracts(updatedContracts);
   };
-  
 
   const filteredContracts = contracts.filter((contract) => {
     const matchesStatus = statusFilter === "전체" || contract.status === statusFilter;
-    
-    // contract.title과 contract.preview가 null이나 undefined가 아닌 경우에만 includes 호출
     const matchesSearch =
-      (contract.title && contract.title.includes(searchTerm)) || 
+      (contract.title && contract.title.includes(searchTerm)) ||
       (contract.preview && contract.preview.includes(searchTerm));
-  
     const matchesStar = mode === "중요" ? contract.starredStatus : true;
-  
+
     return matchesStar && matchesStatus && matchesSearch;
   });
-  
+
+  const openReviewModal = (contract) => {
+    // 리뷰 모달 열기 로직 (예시)
+    console.log("리뷰 모달 열기:", contract);
+  };
 
   return (
     <div>
@@ -79,24 +76,18 @@ const ContractList = ({ mode = "전체" }) => {
       />
       {filteredContracts.length > 0 ? (
         filteredContracts.map((contract) => (
-          <ContractItem
-            key={contract.id}  // contract.id를 key로 사용
-            contract={contract}
-            onToggleStar={() => handleToggleStar(contract.id)}
-            onClick={() => handleClick(contract)}
-          />
-<<<<<<< HEAD
-<<<<<<< HEAD
-           {contract.status === "완료" && (
-            <button style={{marginRight: "auto"}} onClick={() => openReviewModal(contract)}>
-             계약<br/>종료
-            </button>
-          )}
-        </div>
-=======
->>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
-=======
->>>>>>> feature/sj
+          <div key={contract.id} style={{ display: "flex", alignItems: "center" }}>
+            <ContractItem
+              contract={contract}
+              onToggleStar={() => handleToggleStar(contract.id)}
+              onClick={() => handleClick(contract)}
+            />
+            {contract.status === "완료" && (
+              <button style={{ marginLeft: "auto" }} onClick={() => openReviewModal(contract)}>
+                계약<br />종료
+              </button>
+            )}
+          </div>
         ))
       ) : (
         <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>
