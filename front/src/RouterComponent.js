@@ -39,6 +39,8 @@ import DeliveryPage from "./pages2/Mypage/DeliveryPage";
 import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
 import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
 import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
+import DeliveryRegister from "./pages2/Mypage/ui/Delivery/DeliveryRegister";
+import DeliveryTracking from "./pages2/Mypage/ui/Delivery/DeliveryTracking";
 
 const RouterComponent = () => {
   
@@ -115,8 +117,10 @@ const RouterComponent = () => {
             <Route path="designer/contract/:roomId" element={<DContractDetail/>}/>
             <Route path="DMyInfo" element={<DMyInfoPage/>}/>
             <Route path="Delivery" element={<DeliveryPage/>}/>
-            <Route path="/designer/delivery/:contractId" element={<DeliveryDetail data={dummyDeliveries} />} />
             <Route path="DesignerReceivedReviews" element={<DesignerReceivedReviewsPage />} />
+            <Route path="Delivery/detail" element={<DeliveryDetail />} />
+            <Route path="delivery/register/:contractId" element={<DeliveryRegister />} />
+            <Route path="delivery/tracking/:contractId" element={<DeliveryTracking />} />
            </Routes>
         </DesignerLayout>
       } />

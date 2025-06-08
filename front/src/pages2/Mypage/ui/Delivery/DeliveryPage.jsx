@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DeliveryCard from './DeliveryCard';
+import DeliveryDetail from './DeliveryDetail';
+import DeliveryTracking from './DeliveryTracking';
 
 const DeliveryPage = () => {
   // 전체 더미 데이터
@@ -9,7 +11,7 @@ const DeliveryPage = () => {
       status: '작업진행중',
       imageUrl: '/image/brandDesign/브랜드디자인1.jpg',
       customerName: '홍길동',
-      orderTitle: '탑꾸 3종세트',
+      orderTitle: '원피스 3종',
       price: '16,000원',
       deadline: '6월 10일',
       contractId: 'abc123',
@@ -20,7 +22,7 @@ const DeliveryPage = () => {
       status: '배송중',
       imageUrl: '/image/brandDesign/브랜드디자인3.jpg',
       customerName: '김민지',
-      orderTitle: '포카 커스텀',
+      orderTitle: '봄 느낌 원피스',
       price: '14,000원',
       deadline: '6월 8일',
       contractId: 'xyz789',
@@ -61,37 +63,67 @@ const DeliveryPage = () => {
     },
   ];
 
-  const [visibleCount, setVisibleCount] = useState(3); // 처음에 보여줄 개수
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [selectedDelivery, setSelectedDelivery] = useState(null); // 상세보기용
+  const [deliveries, setDeliveries] = useState([]);  // 배열 상태와 setter 생성
+
+  // 삭제 함수
+  const handleDelete = (contractId) => {
+    if (window.confirm('배송내역을 삭제하시겠습니까?')) {
+      setDeliveries(prev => prev.filter(item => item.contractId !== contractId));
+    }
+  };
 
   const handleShowMore = () => {
-    setVisibleCount(prev => prev + 2); // 2개씩 더 보여주기
+    setVisibleCount(prev => prev + 2);
+  };
+
+  // 상세보기 눌렀을 때
+  const handleViewDetail = (delivery) => {
+    setSelectedDelivery(delivery);
+  };
+
+  // 뒤로 가기
+  const handleBack = () => {
+    setSelectedDelivery(null);
   };
 
   return (
     <div className="page-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
-      <h1 style={{ fontSize: '30px', fontWeight: '700', marginBottom: '32px', color: '#799fc4' }}>배송 내역</h1>
+      {selectedDelivery ? (
+        <DeliveryTracking delivery={selectedDelivery} onBack={handleBack} />
+      ) : (
+        <>
+          <h1 style={{ fontSize: '30px', fontWeight: '700', marginBottom: '32px', color: '#799fc4' }}>배송 내역</h1>
 
-      {allDeliveries.slice(0, visibleCount).map((d, idx) => (
-        <DeliveryCard key={idx} {...d} />
-      ))}
+          {allDeliveries.slice(0, visibleCount).map((d, idx) => (
+            <DeliveryCard 
+              key={idx} 
+              {...d} 
+              delivery={d}
+              onDelete={() => handleDelete(d.contractId)} // 여기 d로 바꿈
+            />
+          ))}
 
-      {visibleCount < allDeliveries.length && (
-        <div style={{ textAlign: 'center', marginTop: '24px' }}>
-          <button
-            onClick={handleShowMore}
-            style={{
-              padding: '10px 20px',
-              fontSize: '16px',
-              backgroundColor: '#799fc4',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-            }}
-          >
-            더보기
-          </button>
-        </div>
+          {visibleCount < allDeliveries.length && (
+            <div style={{ textAlign: 'center', marginTop: '24px' }}>
+              <button
+                onClick={handleShowMore}
+                style={{
+                  padding: '10px 20px',
+                  fontSize: '16px',
+                  backgroundColor: '#799fc4',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                더보기
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
