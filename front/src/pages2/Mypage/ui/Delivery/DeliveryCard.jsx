@@ -1,5 +1,4 @@
 // DeliveryCard.jsx
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DeliveryCard.css';
@@ -30,37 +29,11 @@ const DeliveryCard = ({
   return (
     <div className="delivery-card">
       <div className="delivery-date">{date}</div>
-=======
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './DeliveryCard.css';
-
-const DeliveryCard = ({
-  date,
-  status,
-  imageUrl,
-  customerName,
-  orderTitle,
-  price,
-  deadline,
-  contractId,
-  isShipped,
-}) => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="delivery-card">
-      <div className="delivery-date">{date}</div>  {/* 날짜 불러오기->Delivery.jsx에서 */}
->>>>>>> feature/sj
 
       <div className="delivery-body">
         {/* 왼쪽 */}
         <div className="left-section">
-<<<<<<< HEAD
           <div className="status">{status}</div>
-=======
-          <div className="status">{status}</div>  {/* 배송상태 불러오기->Delivery.jsx에서 */}
->>>>>>> feature/sj
           <div className="info-container">
             <img src={imageUrl} alt="디자인 미리보기" className="preview-image" />
             <div className="info-text">
@@ -74,7 +47,6 @@ const DeliveryCard = ({
 
         {/* 오른쪽 */}
         <div className="right-section">
-<<<<<<< HEAD
           <button
             className="action-btn"
              onClick={() => {
@@ -93,21 +65,11 @@ const DeliveryCard = ({
               navigate(isShipped ? `/designer/delivery/tracking/${contractId}` : `/designer/delivery/register/${contractId}`, {
                 state: { delivery },
               })
-=======
-          <button className="action-btn" nClick={() => navigate(`/designer/delivery/${contractId}`)}>
-            배송상세보기
-          </button>
-          <button
-            className="action-btn"
-            onClick={() =>
-              navigate(isShipped ? `/designer/delivery/${contractId}` : `/delivery/register/${contractId}`)
->>>>>>> feature/sj
             }
           >
             {isShipped ? '배송조회' : '배송등록'}
           </button>
           <button className="action-btn">대화하기</button>
-<<<<<<< HEAD
           <button
             className="action-btn report-btn"
             onClick={() => {
@@ -128,11 +90,6 @@ const DeliveryCard = ({
 
       {/* 상세 정보 보여주기 */}
       {showDetail && <DeliveryDetail delivery={delivery} />}
-=======
-          <button className="action-btn report-btn">신고하기</button>
-        </div>
-      </div>
->>>>>>> feature/sj
     </div>
   );
 };
