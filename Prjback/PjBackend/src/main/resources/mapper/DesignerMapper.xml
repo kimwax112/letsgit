@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Loginpj.mapper.DesignerMapper">
+
+  <!-- username으로 user 정보 조회 -->
+  <select id="findDesignerIdByUsername" resultType="com.example.Loginpj.model.User">
+    SELECT USERNAME, PASSWORD, EMAIL, NAME, TEL, BIRTHDATE, GENDER, USERTYPE
+    FROM user_info
+    WHERE USERNAME = #{username}
+  </select>
+
+</mapper>

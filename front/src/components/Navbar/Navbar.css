@@ -1,0 +1,121 @@
+/* 기본 폰트 설정 */
+.body {
+  font-family: 'Pretendard';
+  src: url('/src/fonts/Pretendard/woff2/Pretendard-ExtraBold.woff2') format('woff2');
+}
+
+/* 네비게이션 바 */
+.navbar {
+  background-color: #9dbbd5;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메뉴바 */
+.nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* 전체 메뉴 버튼 */
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 1.25rem;
+  transition: color 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.menu-btn:hover {
+  color: yellow;
+}
+
+/* 기본 메뉴 */
+.nav-links {
+  display: flex;
+  gap: 5rem !important;
+  letter-spacing: 0.05em;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+/* 드롭다운 전체 구조 */
+.dropdown {
+  position: relative;
+}
+
+.dropdown a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.25rem !important;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.95); /* 반투명 흰색 */
+  padding: 0.75rem 1rem;
+  min-width: 220px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  border-radius: 6px;
+}
+
+.dropdown-menu a {
+  color: #34312E;
+  text-decoration: none;
+  padding: 0.6rem 0.4rem;
+  font-size: 1.2rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  border-radius: 4px;
+}
+
+/* 드롭다운 호버 시 메뉴 표시 */
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+/* 전체 메뉴 드롭다운 컨테이너 (햄버거 메뉴 눌렀을 때) */
+.dropdown-container {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  border-top: 2px solid #fff;
+}
+
+.dropdown-section h3 {
+  font-size: 1.25rem;
+  color: #34312E;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-section a {
+  display: block;
+  text-decoration: none;
+  color: #34312E;
+  padding: 0.4rem 0;
+  font-size: 1.1rem;
+}
+
+.dropdown-section a:hover {
+  background-color: #f2f2f2;
+  padding-left: 0.5rem;
+  border-radius: 4px;
+}
