@@ -1,0 +1,246 @@
+import { useState, useEffect } from "react";
+import React from "react";
+import styled from "styled-components";
+import Sidebar from "./ui/Sidebar";
+import Content from "./ui/Content";
+import { ImageUploader, NextButtonUI } from "../../components";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+// 전체 레이아웃
+const Layout = styled.div`
+  display: flex;
+  min-height: 100vh;
+`;
+
+const Left = styled.div`
+  width: 400px;
+  background-color: #f4f4f4;
+`;
+
+const Right = styled.div`
+  flex: 1;
+  padding: 20px;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  margin: 0 auto;
+  margin: 80px;
+  justify-content: flex-end;  
+  gap: 10px;
+`;
+
+const PortfolioExplain = styled.div`
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  min-height: 30vh;
+  background-color: white;
+  margin: 0 auto 80px;
+  flex-direction: column;
+  padding: 20px;
+`;
+
+const PortfolioExplain2 = styled(PortfolioExplain)``;
+const PortfolioExplain3 = styled(PortfolioExplain)``;
+
+const Text = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const Textinput = styled.input`
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px;
+  opacity: 0.7;
+`;
+
+const UploadContainer = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+`;
+
+const CarouselTrack = styled.div`
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease-in-out;
+`;
+
+const ArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+`;
+
+const LeftArrow = styled(ArrowButton)`
+  left: 10px;
+`;
+
+const RightArrow = styled(ArrowButton)`
+  right: 10px;
+`;
+
+const CustomUpload = styled(ImageUploader)`
+  width: 20vh;
+  height: 20vh;
+  min-width: 150px;
+  min-height: 150px;
+  max-width: 200px;
+  max-height: 200px;
+  flex-shrink: 0;
+`;
+
+const CustomUpload2 = styled(ImageUploader)`
+  width: 20vh;
+  height: auto;
+  flex-shrink: 0;
+`;
+
+export default function Portfolio() {
+  const [inputValue, setInputValue] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [files, setFiles] = useState({});
+  const [name, setName] = useState("");
+  const [contents, setContent] = useState("");
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
+
+  const itemsPerView = 3;
+  const totalItems = 5;
+  const maxIndex = Math.max(0, totalItems - itemsPerView);
+
+  useEffect(() => {
+    axios.get("http://localhost:8081/api/user", { withCredentials: true })
+      .then(response => {
+        if (response.data.name) {
+          setName(response.data.name);
+        }
+      })
+      .catch(error => console.error("로그인 상태 확인 실패", error));
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e?.preventDefault();
+    if (!contents.trim()) return;
+
+    try {
+      await axios.post("http://localhost:8081/api/posts", { contents }, { withCredentials: true });
+      setContent("");
+      fetchPosts();
+      alert('포트폴리오 작성 완료!');
+      navigate('/designer/Dmypage');
+    } catch (error) {
+      console.error("글 작성 실패", error);
+    }
+  };
+
+  const fetchPosts = () => {
+    axios.get("http://localhost:8081/api/posts", { withCredentials: true })
+      .then(response => setPosts(response.data))
+      .catch(error => console.error("글 목록 불러오기 실패", error));
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
+  };
+
+  const itemWidthVh = 20;
+  const gapPx = 20;
+  const containerWidthPx = 600;
+  const itemWidthPx = (itemWidthVh * window.innerHeight) / 100;
+  const totalItemWidthPx = itemWidthPx + gapPx;
+  const trackWidthPx = totalItems * totalItemWidthPx - gapPx;
+
+  const translateX = currentIndex === maxIndex
+    ? -(trackWidthPx - containerWidthPx)
+    : -(currentIndex * totalItemWidthPx);
+
+  return (
+    <Layout>
+      <Left>
+        <Sidebar />
+      </Left>
+      <Right>
+        <Content>
+          <PortfolioExplain>
+            <Text>포트폴리오 설명</Text>
+            <Textinput
+              value={contents}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="주로하는 프로젝트의 목적 주로 만드는 옷과 스타일을 설명해주세요"
+            />
+          </PortfolioExplain>
+
+          <PortfolioExplain2>
+            <Text>이미지 등록(필수)</Text>
+            <UploadContainer>
+              {currentIndex > 0 && (
+                <LeftArrow onClick={handlePrev}>
+                  <FaArrowLeft />
+                </LeftArrow>
+              )}
+
+              <CarouselTrack style={{ transform: `translateX(${translateX}px)` }}>
+                <CustomUpload id="upload1" files={files} setFiles={setFiles} />
+                <CustomUpload id="upload2" files={files} setFiles={setFiles} />
+                <CustomUpload id="upload3" files={files} setFiles={setFiles} />
+                <CustomUpload id="upload4" files={files} setFiles={setFiles} />
+                <CustomUpload id="upload5" files={files} setFiles={setFiles} />
+              </CarouselTrack>
+
+              {currentIndex < maxIndex && (
+                <RightArrow onClick={handleNext}>
+                  <FaArrowRight />
+                </RightArrow>
+              )}
+            </UploadContainer>
+          </PortfolioExplain2>
+
+          <PortfolioExplain3>
+            <Text>참여했던 계약 등록</Text>
+            <UploadContainer>
+              <CustomUpload2 id="upload6" files={files} setFiles={setFiles} />
+            </UploadContainer>
+          </PortfolioExplain3>
+
+          <Footer>
+            <NextButtonUI
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.target.blur();
+              }}
+              onClick={handleSubmit}
+            />
+          </Footer>
+        </Content>
+      </Right>
+    </Layout>
+  );
+}

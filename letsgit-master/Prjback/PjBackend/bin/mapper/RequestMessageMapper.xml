@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Loginpj.mapper.RequestMessageMapper">
+
+    <resultMap id="RequestMessageResultMap" type="com.example.Loginpj.model.RequestMessage">
+        <id property="id" column="id"/>
+        <result property="contractId" column="contract_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="designerId" column="designer_id"/>
+        <result property="content" column="content"/>
+        <result property="sentTime" column="sent_time"/>
+        <result property="isRead" column="is_read"/>
+    </resultMap>
+
+    <select id="getMessagesByClientId" resultMap="RequestMessageResultMap">
+        SELECT 
+            id,
+            contract_id,
+            client_id,
+            designer_id,
+            content,
+            sent_time,
+            is_read
+        FROM request_messages
+        WHERE client_id = #{clientId}
+        ORDER BY sent_time DESC
+    </select>
+
+    <insert id="insertMessage">
+        INSERT INTO request_messages (
+            contract_id,
+            client_id,
+            designer_id,
+            content,
+            sent_time,
+            is_read
+        ) VALUES (
+            #{contractId, jdbcType=BIGINT},
+            #{clientId, jdbcType=VARCHAR},
+            #{designerId, jdbcType=VARCHAR},
+            #{content, jdbcType=VARCHAR},
+            SYSDATE,
+            'N'
+        )
+    </insert>
+    
+    <select id="getMessageById" resultType="com.example.Loginpj.model.RequestMessage">
+        SELECT * FROM request_messages WHERE id = #{id}
+    </select>
+
+</mapper>
