@@ -20,9 +20,15 @@ const Left = styled.div`
 
 // 콘텐츠 영역 (남은 공간 채움)
 const Right = styled.div`
-  flex: 1; /* 나머지 공간을 유연하게 채움 */
-  padding: 20px;
+  flex: 1;
+  background-color: #fff;
+  padding: 1.5rem; /* 24px */
+  margin: 2rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 1.25rem; /* 20px */
+  font-family: 'Noto Sans KR', sans-serif;
 `;
+
 const Text= styled.p`
   display:flex;
   justify-content: flex-start;
@@ -63,13 +69,11 @@ export default function DMyPage() {
       <Right>
         <Content>
         <Text>내 포트폴리오</Text>
-      <Portfolio>
-      <Text style={{opacity: '0.2'}}>포트폴리오를 등록해 나의 디자인을 노출시켜보세요</Text>
-      <Img src={hoddi} alt="포트폴리오 아이콘" />
-      <Button to='/designer/Portfolio'>포트폴리오 등록하기</Button>
-      </Portfolio>
-
-      
+          <Portfolio>
+          <Text style={{opacity: '0.2'}}>포트폴리오를 등록해 나의 디자인을 노출시켜보세요</Text>
+          <Img src={hoddi} alt="포트폴리오 아이콘" />
+          <Button to='/designer/Portfolio'>포트폴리오 등록하기</Button>
+          </Portfolio>
         </Content>
       </Right>
     </Layout>

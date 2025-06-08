@@ -7,8 +7,7 @@ import Check2 from '../../assets/Check2.png'
 export default function SignIn() {
   const navigate = useNavigate();
   const handleSelectType = (type) => {
-    localStorage.setItem("usertype", type); // localStorage에 저장
-    navigate('/SignIn2');
+    navigate('/SignIn2', { state: { userType: type } }); // 선택한 유형을 state로 전달
   };
   return (
     <div>

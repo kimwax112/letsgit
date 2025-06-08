@@ -1,161 +1,205 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styles from "./DesignerContractCreate.module.css";
+import SampleClauseSidebar, { sampleTemplates } from "../../components/DesignerContractCreate/SampleClauseSidebar";
+
+const sectionTitles = {
+  basic: "기본",
+  copyright: "저작권",
+  cancellation: "취소",
+  security: "보안",
+  dispute: "분쟁",
+  etc: "추가 작성란",
+};
 
 const DesignerContractEditor = ({ contractData, setContractData }) => {
-  const editorRef = useRef(null);
+  const refs = {
+    basic: useRef(null),
+    copyright: useRef(null),
+    cancellation: useRef(null),
+    security: useRef(null),
+    dispute: useRef(null),
+    etc: useRef(null),
+  };
 
-  // 부모 상태(contractContent)가 바뀔 때 에디터 내용 동기화
-  useEffect(() => {
-    if (
-      editorRef.current &&
-      editorRef.current.innerText !== (contractData.contractContent || "")
-    ) {
-      editorRef.current.innerText = contractData.contractContent || "";
-    }
-  }, [contractData.contractContent]);
+  const [showSamplePanel, setShowSamplePanel] = useState(false);
+  const [sampleCategory, setSampleCategory] = useState("");
 
-  // contentEditable 변경 시 부모 상태 업데이트
-  const handleInput = () => {
-    setContractData((prev) => ({
+  const handleSampleInsert = (category, text) => {
+    setContentBySection(prev => ({
       ...prev,
-      contractContent: editorRef.current.innerText,
+      [category]: prev[category] ? prev[category] + "\n" + text : text,
     }));
   };
 
-  // 텍스트 스타일 변경 함수
-  const handleStyleChange = (style) => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+  const [contentBySection, setContentBySection] = useState({
+    basic: contractData.contractContentBySection?.basic || "",
+    copyright: contractData.contractContentBySection?.copyright || "",
+    cancellation: contractData.contractContentBySection?.cancellation || "",
+    security: contractData.contractContentBySection?.security || "",
+    dispute: contractData.contractContentBySection?.dispute || "",
+    etc: contractData.contractContentBySection?.etc || "",
+  });
 
-    const range = selection.getRangeAt(0);
-
-    if (range.startContainer.nodeType === 3) {
-      const selectedText = range.toString();
-      if (!selectedText) return;
-
-      const span = document.createElement("span");
-
-      if (style === "bold") {
-        span.style.fontWeight = "bold";
-      } else if (style === "italic") {
-        span.style.fontStyle = "italic";
-      } else if (style === "underline") {
-        span.style.textDecoration = "underline";
-      } else if (style === "strikeThrough") {
-        span.style.textDecoration = "line-through";
-      }
-
-      span.style.color = "black";
-
-      range.deleteContents();
-      span.textContent = selectedText;
-      range.insertNode(span);
-
-      // 스타일 변경 후 부모 상태 업데이트
-      setContractData((prev) => ({
-        ...prev,
-        contractContent: editorRef.current.innerText,
-      }));
+  useEffect(() => {
+    if (contractData.contractContentBySection) {
+      setContentBySection(contractData.contractContentBySection);
     }
+  }, [contractData.contractContentBySection]);
+
+  const updateContent = (section, html) => {
+    setContentBySection((prev) => {
+      const updated = { ...prev, [section]: html };
+      setContractData((prevParent) => ({
+        ...prevParent,
+        contractContentBySection: updated,
+      }));
+      return updated;
+    });
   };
 
-  // 글자색 변경 함수
-  const handleColorChange = (color) => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-
-    if (range.startContainer.nodeType === 3) {
-      const selectedText = range.toString();
-      if (!selectedText) return;
-
-      const span = document.createElement("span");
-      span.style.color = color;
-      span.textContent = selectedText;
-
-      range.deleteContents();
-      range.insertNode(span);
-
-      setContractData((prev) => ({
-        ...prev,
-        contractContent: editorRef.current.innerText,
-      }));
-    }
+  const handleInput = (section) => {
+    if (!refs[section].current) return;
+    updateContent(section, refs[section].current.innerHTML);
   };
 
-  // 배경색 변경 함수
-  const handleBgColorChange = (color) => {
+  const handleStyleChange = (section, style) => {
+  if (!refs[section].current) return;
+  refs[section].current.focus();
+
+  const allowedStyles = ["bold", "italic"]; // 볼드, 이탤릭만 허용
+
+  if (!allowedStyles.includes(style)) return;
+
+  switch (style) {
+    case "bold":
+      document.execCommand("bold");
+      break;
+    case "italic":
+      document.execCommand("italic");
+      break;
+    default:
+      break;
+  }
+
+  updateContent(section, refs[section].current.innerHTML);
+};
+
+  const handleInsertText = (section, text) => {
+  const editor = refs[section]?.current;
+  if (!editor) return;
+
+  editor.focus();
+
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+
+  const range = selection.getRangeAt(0);
+  const textNode = document.createTextNode(text);
+  range.deleteContents();
+  range.insertNode(textNode);
+
+  // 커서 위치 업데이트
+  range.setStartAfter(textNode);
+  range.setEndAfter(textNode);
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  updateContent(section, editor.innerHTML);
+};
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e, section) => {
+    e.preventDefault();
+
+    const data = e.dataTransfer.getData("text/plain");
+    if (!data) return;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(data);
+    } catch {
+      parsed = { text: data };
+    }
+
+    const { text } = parsed;
+
+    const editor = refs[section].current;
+    if (!editor) return;
+
     const selection = window.getSelection();
     if (!selection.rangeCount) return;
 
     const range = selection.getRangeAt(0);
+    range.deleteContents();
+    const textNode = document.createTextNode(text || "");
+    range.insertNode(textNode);
 
-    if (range.startContainer.nodeType === 3) {
-      const selectedText = range.toString();
-      if (!selectedText) return;
+    range.setStartAfter(textNode);
+    range.setEndAfter(textNode);
 
-      const span = document.createElement("span");
-      span.style.backgroundColor = color;
-      span.textContent = selectedText;
+    selection.removeAllRanges();
+    selection.addRange(range);
 
-      range.deleteContents();
-      range.insertNode(span);
-
-      setContractData((prev) => ({
-        ...prev,
-        contractContent: editorRef.current.innerText,
-      }));
-    }
+    updateContent(section, editor.innerHTML);
   };
 
   return (
     <div>
-      <div className={styles.toolbar}>
-        <button
-          onClick={() => handleStyleChange("bold")}
-          className={styles.boldButton}
-          type="button"
-        >
-          B
-        </button>
-        <button
-          onClick={() => handleStyleChange("italic")}
-          className={styles.italicButton}
-          type="button"
-        >
-          I
-        </button>
-        <button
-          onClick={() => handleStyleChange("underline")}
-          className={styles.underlineButton}
-          type="button"
-        >
-          U
-        </button>
-        <button
-          onClick={() => handleStyleChange("strikeThrough")}
-          className={styles.strikeButton}
-          type="button"
-        >
-          S
-        </button>
-        <button onClick={() => handleColorChange("#ff0000")} type="button">
-          Red
-        </button>
-        <button onClick={() => handleBgColorChange("#ffff00")} type="button">
-          Yellow BG
-        </button>
-        {/* 폰트 크기 변경은 필요하면 추가 구현 가능 */}
-      </div>
-      <div
-        ref={editorRef}
-        contentEditable
-        placeholder="계약 세부사항을 입력하세요"
-        className={styles.editor}
-        onInput={handleInput}
-        spellCheck={false}
-      />
+      {Object.keys(sectionTitles).map((section) => (
+        <div key={section} style={{ marginBottom: "2rem" }}>
+          <h3>{sectionTitles[section]}</h3>
+
+            {section !== "etc" && (
+              <div>
+                <button
+                  onClick={() => {
+                    setSampleCategory(section); // 클릭한 버튼의 섹션으로 설정
+                    setShowSamplePanel(true);   // 사이드바 열기
+                  }}
+                  style={{
+                    backgroundColor: "#799FC4",
+                    color: "#fff",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "5px",
+                    border: "none",
+                    marginBottom: "10px"
+                  }}
+                >
+                  샘플 문구 보기
+                </button>
+                {showSamplePanel && (
+                <SampleClauseSidebar
+                  onInsert={handleSampleInsert}
+                  onClose={() => setShowSamplePanel(false)}
+                  selectedCategory={sampleCategory}
+                />
+              )}
+              </div>
+            )}
+
+          <div
+            ref={refs[section]}
+            contentEditable
+            placeholder={`${sectionTitles[section]} 내용을 입력하세요`}
+            className={styles.editor}
+            onBlur={() => handleInput(section)}  //사용자가 입력 다 하고 포커스 이동할 때만 처리됨.
+            onDrop={(e) => handleDrop(e, section)}
+            onDragOver={handleDragOver}
+            spellCheck={false}
+            dangerouslySetInnerHTML={{ __html: contentBySection[section] }}
+            style={{
+              border: "1px solid #ccc",
+              minHeight: "120px",
+              padding: "0.5rem",
+              borderRadius: "4px",
+              overflowY: "auto",
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 };

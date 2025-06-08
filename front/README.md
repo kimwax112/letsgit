@@ -70,3 +70,48 @@ src/pages/contract/DetailUI
    계약서작성페이지 더 세세하게 세부사항 내용들 추가 (계약 내용 샘플, 작업 범위 체크란, 개인 정보 동의 체크란, 서명)
 	-개인정보 동의에 체크해야지, 작성저장버튼이 활성화 됨
   -추가로 수정한 관련 페이지: DesignerContractEditor.jsx
+
+*05.26.월*
+1. page2\Mypage\OngoingRequestsPage.jsx
+page2\Mypage\ui\OngoingRequests.jsx
+ :제작관리에 "진행중인 의뢰내역"
+-EditRequestModal.jsx : 수정요청사항 전달 팝업
+-ProgressModal.jsx : 진행도 등록 팝업
+
+2. page2\Mypage\ui\CompletedRequestPage.jsx
+page2\Mypage\CompletedRequest.jsx
+ :제작관리에 "완료된 의뢰 관리"
+
+3. page2\Mypage\ui\EditRequestsPage.jsx
+page2\Mypage\ditRequests.jsx
+ :제작관리에 "내가 보낸 수정요청사항"
+-EditRequestViewModal : 수정요청사항 자세히 보는 팝업
+
+4. src\components\DesignerContractCreate폴더에 있는
+-DesignerContractInputSection.jsx => 계약서 주요 컴포넌트
+-DesignerContractEditor.jsx => 에디터 부분 코드
+-sampleTemplates.jsx(새로 추가함) => 계약조건사항 샘플관련 
+-DesignerContractFileUpload.jsx => 파일업로드 코드
+-DesignerContractCreate.module.css => 계약서 작성 관련 css 모음
+
+5/27일 충돌파일
+front/src/RouterComponent.js,
+front/src/components/DesignerContract/DesignerContractList/DesignerContractList.jsx
+
+*6.3.화*
+1. pages2\Mypage\DMyInfoPage.jsx - 디자이너 마이페이지(내정보의 레이아웃 컴포넌트)
+2.pages2\Mypage\ui\DMyInfo\DMyInfo.jsx - 디자이너 마이페이지(내정보-프로필, 개인정보, 이력사항 컴포넌트들을 다루는 상위 컴포넌트)
+-pages2\Mypage\ui\DMyInfo\DMyInfo.css
+-pages2\Mypage\ui\DMyInfo\ProfileSection.jsx - 디자이너 마이페이지(내정보-프로필 컴포넌트)
+-pages2\Mypage\ui\DMyInfo\PersonalInfoSection.jsx - 디자이너 마이페이지(내정보-개인정보 컴포넌트)
+3. pages2\Mypage\ui\DMyInfo\CaeerSection.jsx - 디자이너 마이페이지(내정보- 이력사항 컴포넌트)
+-pages2\Mypage\ui\DMyInfo\EducationModal.jsx - 이력사항의 학력추가 버튼 모달
+-pages2\Mypage\ui\DMyInfo\CertificateModal.jsx - 이력사항의 자격증추가 버튼 모달 
+4. pages2\Mypage\ui\DesignerReceivedReviews.jsx - 디자이너 마이페이지 작성된 후기 컴포넌트
+-pages2\Mypage\DesignerReceivedReviewsPage.jsx - 작성된 후기 레이아웃
+-pages2\Mypage\ui\DesignerReceivedReviews.css - 
+5. pages2\Mypage\ui\DeliveryPage - 배송조회 본문 부분 컴포넌트
+-pages2\Mypage\DeliveryPage - 디자이너 마이페이지 배송조회 레이아웃
+-pages2\Mypage\ui\DeliveryCard - 배송조회 계약별 배송부분 컴포넌트 조각
+-DeliveryDetailDeliveryDetail - 배송상세보기 버튼 클릭 시, 나오는 페이지(미완성)
+6.components\DesignerContractCreate\DesignerContractEditor.jsx - 디자이너 계약서 작성 샘플문구 카테고리별로(미리보기 미완성)

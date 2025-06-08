@@ -114,6 +114,15 @@ const colorNames = {
   "#0099ff": "하늘",
 };
 
+ //패턴
+const fabricPatterns = [
+  { name: "도트", image: "/image/patterns/dot.jpg" },
+  { name: "스트라이프", image: "/image/patterns/stripe.jpg" },
+  { name: "체크", image: "/image/patterns/check.jpg" },
+  { name: "무지", image: "/image/patterns/plain.jpg" },
+];
+
+
 const getColorName = (hex) => colorNames[hex] || "알 수 없음";
 
 const Fabric = () => {
@@ -124,6 +133,7 @@ const Fabric = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRatios, setSelectedRatios] = useState({});
   const [totalRatio, setTotalRatio] = useState(0);
+  const [selectedPatterns, setSelectedPatterns] = useState({});
 
   const itemsPerPageFirst = 8;
   const itemsPerPageSecond = 4;
@@ -137,6 +147,8 @@ const Fabric = () => {
       const storedFabric = JSON.parse(localStorage.getItem("selectedFabric")) || [];
       const storedColors = JSON.parse(localStorage.getItem("selectedColors")) || {};
       const storedRatios = JSON.parse(localStorage.getItem("selectedRatios")) || {};
+      const storedPatterns = JSON.parse(localStorage.getItem("selectedPatterns")) || {};
+      setSelectedPatterns(storedPatterns);
 
       // 초기 색상 세팅
       const initializedColors = {};
@@ -257,7 +269,7 @@ const Fabric = () => {
           <div className="ColorSelect">
             {selectedItems.length > 0 ? (
               selectedItems.map((fabricItem) => (
-                <div key={fabricItem.id} className="color-select-row" style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "0.9375rem" }}>
+                <div key={fabricItem.id} className="color-select-row" style={{ display: "flex", alignItems: "center", gap: "2.0rem", marginBottom: "0.9375rem" }}>
                   <span className="fabric-name" style={{ minWidth: "4.375rem" }}>{fabricItem.name}</span>
                   <div className="FixedColorPicker">
                     <FixedColorPicker
@@ -265,7 +277,7 @@ const Fabric = () => {
                       initialColor={selectedColors[fabricItem.id]}
                     />
                   </div>
-                  <span className="selected-color-name" style={{ minWidth: "6.875rem" }}>
+                  <span className="selected-color-name" style={{ minWidth: "6.9rem" }}>
                     선택한 색상: {getColorName(selectedColors[fabricItem.id])}
                   </span>
                   <div className="mix-ratio-input" style={{ display: "flex", alignItems: "center" }}>
@@ -280,6 +292,34 @@ const Fabric = () => {
                       style={{ width: "3.75rem", padding: "0.25rem" }}
                     />
                   </div>
+                  <div className="pattern-selector">
+                    {selectedItems.map((item) => (
+                      <div key={item.id}>
+                        <img
+                          src={selectedPatterns[item.id]?.image}
+                          alt="패턴 미리보기"
+                          className="pattern-preview"
+                        />
+                        <select
+                          value={selectedPatterns[item.id]?.name || ""}
+                          onChange={(e) => {
+                            const pattern = fabricPatterns.find(p => p.name === e.target.value);
+                            setSelectedPatterns(prev => {
+                              const updated = { ...prev, [item.id]: pattern };
+                              localStorage.setItem("selectedPatterns", JSON.stringify(updated));
+                              return updated;
+                            });
+                          }}
+                        >
+                          <option value="">패턴 선택</option>
+                          {fabricPatterns.map((p) => (
+                            <option key={p.name} value={p.name}>{p.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+
                 </div>
               ))
             ) : (

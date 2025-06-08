@@ -6,6 +6,7 @@
     border-bottom: 1px solid #e5e7eb; /* gray-200 */
     background-color: #fff;
     transition: background-color 0.2s ease;
+    width : 100%; /*5/24 수정 */
   }
   
   .contract-item:hover {
@@ -96,6 +97,18 @@
     background-color: #fee2e2; /* red-100 */
     color: #ef4444; /* red-600 */
   }
+
+    .contract-status.배송중 {
+    background-color: #efda8d; /* red-100 */
+    color: #000000; /* red-600 */
+  }
+
+    .contract-status.대기중 {
+    background-color: #a7a7a7; /* red-100 */
+    color: #ffffff; /* red-600 */
+  }
+
+
   
   .contract-date {
     font-size: 12px; /* 기존 11px → 12px */

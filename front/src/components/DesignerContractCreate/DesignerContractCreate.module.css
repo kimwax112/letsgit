@@ -79,6 +79,7 @@
 
 .toolbar button {
   background-color: #f0f0f0;
+  color: #222;
 }
 
 /* 툴바 버튼 스타일 */
@@ -163,3 +164,96 @@
     cursor: pointer;
   }
   
+  .colorPicker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  padding: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  display: flex;
+}
+
+/* 샘플문구 사이드바 */
+/* Sidebar 전체 컨테이너 */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #f9f9f9;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+/* 닫기 버튼 */
+.closeButton {
+  float: right;
+  margin-top: 23px;
+}
+
+/* 제목 */
+.title {
+  margin-bottom: 25px;
+}
+
+/* 탭 버튼 감싸는 컨테이너 */
+.tabContainer {
+  margin-bottom: 1rem;
+  white-space: normal;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 탭 버튼 기본 스타일 */
+.tabButton {
+  flex: 1 1 auto;
+  min-width: 80px;
+  font-size: 1rem;
+  margin-bottom: 0;
+  background-color: #ccc;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+/* 탭 버튼 hover 시 */
+.tabButton:hover {
+  background-color: #bbb;
+}
+
+/* 탭 버튼 활성화 */
+.tabButtonActive {
+  background-color: #799fc4;
+}
+
+/* 문구 리스트 스타일 */
+.templateList {
+  list-style: none;
+  padding: 0;
+}
+
+/* 각 문구 항목 버튼 */
+.templateButton {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5rem;
+  width: 100%;
+  text-align: left;
+  color: #444;
+}
+
+.templateButton:hover {
+  background-color: #bbb;
+}

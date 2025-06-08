@@ -9,9 +9,9 @@ import designer from "../../../../assets/desiner.png";
 import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
+import { FaHeart, FaRegHeart } from "react-icons/fa"; // 💡 추가
 
-
-// 하드코딩된 이미지 배열
+// 이미지 배열
 const profileImages = [
   jeans,
   require("../../../../assets/프로필이미지/프로필이미지1.jpg"),
@@ -42,12 +42,12 @@ const portfolioImages = [
   require("../../../../assets/포트폴리오이미지/포트폴리오6.png"),
 ];
 
+// Styled Components
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
   flex-direction: row;
-  max-height: 600px; /* 팝업창 최대 높이 설정 */
+  max-height: 600px;
   overflow-y: auto;
-  
 `;
 
 const ModalContent = styled.div`
@@ -75,14 +75,12 @@ const DesignerImage = styled.img`
 
 const ModalContent2 = styled.img`
   width: 500px;
-  height: 535x;
+  height: 535px;
   display: flex;
   flex: 1;
   border: 2px solid #799fc4;
   border-radius: 15px;
   margin: 20px;
-  justify-content: center;
-  align-items: center;
   object-fit: contain; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 `;
@@ -100,7 +98,6 @@ const PeriodContainer = styled.div`
   font-size: 13px;
   margin: 10px;
   justify-content: flex-start;
-  align-self: flex-start;
   width: 100%;
 `;
 
@@ -118,9 +115,6 @@ const ModalButton2 = styled.button`
   &:hover {
     background-color: #f5f5f5;
   }
-  &:focus {
-    border-color: #799fc4;
-  }
 `;
 
 const ModalButton = styled.button`
@@ -132,9 +126,6 @@ const ModalButton = styled.button`
   &:hover {
     background-color: #f5f5f5;
   }
-  &:focus {
-    border-color: #799fc4;
-  }
 `;
 
 const Container = styled.div`
@@ -143,11 +134,10 @@ const Container = styled.div`
   width: 250px;
   height: 250px;
   background-color: white;
-  border: 0.5px solid;
+  border-radius: 20px;
+  border: 2px solid;
   margin: 30px;
   cursor: pointer;
-  border-radius : 20px;
-  border : solid 2px ;
 `;
 
 const JeansImage = styled.img`
@@ -176,24 +166,34 @@ const CartImage = styled.img`
   width: 100%;
   height: 100%;
 `;
+
+const HeartButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 50px;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  z-index: 2;
+  cursor: pointer;
+`;
+
 const Text = styled.p`
-  font-size : 30px;
-  font-weight : bold;
-  position : relative;
-  z-index : 2;
-  color :rgb(255, 255, 255);
-  text-align : center;
+  font-size: 30px;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  color: rgb(255, 255, 255);
+  text-align: center;
+`;
 
-`
-
+// Component
 export default function Profile({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
-   // 주석 처리: ChoseDesigner.jsx에서 이미 posts와 postsCount를 관리하므로 Profile 컴포넌트에서는 불필요함
-  // const [postsCount, setPostsCount] = useState(0);
-  // const [posts, setPosts] = useState([]);
+  const [liked, setLiked] = useState(false); // 💖 찜 상태 추가
   const navigate = useNavigate();
-  
 
   const clickCart = (e) => {
     e.stopPropagation();
@@ -204,37 +204,44 @@ export default function Profile({ post }) {
     alert("대화방으로 이동합니다");
     navigate("/client/ChatMain");
   };
-  
-  // postnum을 기준으로 이미지 인덱스 계산
+
+  const handleToggleLike = async (e) => {
+    e.stopPropagation(); // 모달 방지
+    try {
+      const response = await fetch(`http://localhost:8081/api/posts/like/${post.postnum}`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setLiked((prev) => !prev);
+      } else {
+        alert("찜하기 실패!");
+      }
+    } catch (error) {
+      console.error("찜하기 오류", error);
+    }
+  };
+
   const imageIndex = Math.abs(post.postnum % profileImages.length);
   const designerImageIndex = Math.abs(post.postnum % designerImages.length);
   const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
-
-  // 주석 처리: ChoseDesigner.jsx에서 이미 fetchPosts를 호출하여 데이터를 가져오므로 중복 호출 방지
-  // const fetchPosts = () => {
-  //   axios.get("http://localhost:8081/api/posts", { withCredentials: true })
-  //     .then(response => {
-  //       setPosts(response.data);
-  //       setPostsCount(response.data.length); 
-  //     })
-  //     .catch(error => console.error("글 목록 불러오기 실패", error));
-  // };
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
 
   return (
     <>
       <Container onClick={() => setIsModalOpen(true)}>
         <div className="border-b py-2">
           <p className="text-sm text-gray-500">{post.author}</p>
-         <Text><p>{post.contents}</p></Text>
-          <p>{post.id}</p>
+          <Text><p>{post.contents}</p></Text>
+          <p>{post.name}</p>
         </div>
         <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
         <CartButton onClick={clickCart}>
           <CartImage src={cart2} alt="cart" />
         </CartButton>
+        <HeartButton onClick={handleToggleLike}>
+          {liked ? <FaHeart color="red" size={24} /> : <FaRegHeart color="gray" size={24} />}
+        </HeartButton>
       </Container>
 
       {isModalOpen && (
@@ -243,8 +250,8 @@ export default function Profile({ post }) {
             <DesignerImage src={designerImages[designerImageIndex]} alt="예시" />
             <h3>{post.author}</h3>
             <p>
-              의류 디자인 경력 약 5년 개인, 협업 디자인 경험도 있습니다. 기존 틀에
-              벗어나 새로운 디자인을 하도록 노력하였습니다.
+              의류 디자인 경력 약 5년 개인, 협업 디자인 경험도 있습니다.
+              기존 틀에 벗어나 새로운 디자인을 하도록 노력하였습니다.
             </p>
             <PeriodContainer>
               <PeriodText>참여기간</PeriodText>
@@ -265,7 +272,7 @@ export default function Profile({ post }) {
               </ModalButton2>
             </PeriodContainer>
           </ModalContent>
-          
+
           <ModalContent2 src={portfolioImages[portfolioImageIndex]} alt="예시이미지" />
           {isRequestPopupOpen && (
             <RequestPopup onClose={() => setIsRequestPopupOpen(false)} />

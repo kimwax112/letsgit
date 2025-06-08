@@ -38,18 +38,47 @@ export default function Header() {
       </Link>
       <div className="Buttons1" style={{ marginLeft: 'auto', fontWeight: 400, fontSize: '16px' }}>
         {clientName} 님, 환영합니다!
-        <button className="ButtonAtLogo" style={{ backgroundColor: '#2C2F31', fontWeight: 400, fontSize: '16px'}} onClick={handleLogout}>
+        <button
+          className="ButtonAtLogo"
+          style={{
+            backgroundColor: '#2C2F31',
+            fontWeight: 400,
+            fontSize: '16px',
+            width: '113.6px',
+            height: '42.79px'
+          }}
+          onClick={handleLogout}
+        >
           로그아웃
         </button>
-        <button className="ButtonAtLogo" style={{ backgroundColor: '#4A6171', fontWeight: 400, fontSize: '16px' }}>
+        <button
+          className="ButtonAtLogo"
+          style={{
+            backgroundColor: '#4A6171',
+            fontWeight: 400,
+            fontSize: '16px',
+            width: '113.6px',
+            height: '42.79px'
+          }}
+        >
           고객센터
         </button>
         <Link to="/client/MyInfo">
-          <button className="ButtonAtLogo" style={{ backgroundColor: '#80A1BE', fontWeight: 400, fontSize: '16px' }}>
+          <button
+            className="ButtonAtLogo"
+            style={{
+              backgroundColor: '#80A1BE',
+              fontWeight: 400,
+              fontSize: '16px',
+              width: '113.6px',
+              height: '42.79px'
+            }}
+          >
             마이페이지
           </button>
         </Link>
       </div>
+
     </div>
   );
 }

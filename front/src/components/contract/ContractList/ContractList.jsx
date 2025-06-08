@@ -11,60 +11,28 @@ const ContractList = ({ mode = "전체" }) => {
   const [statusFilter, setStatusFilter] = useState("전체");
 
   const navigate = useNavigate();
-    
 
-
-useEffect(() => {
-
-  
-  axios.get("http://localhost:8081/client/contract")
-    .then((response) => {
-      console.log("받은 계약 데이터:", response.data);
-      const mappedContracts = response.data.map(contract => ({
-        id: contract.contractId,
-        starredStatus: false,
-        title: contract.contractTitle,
-        clientId: contract.clientId,
-        status: contract.status,
-        date: formatDate(contract.dueDate),
-        preview: contract.preview || "",
-      }));
-      
-
-      setContracts(mappedContracts);
-    })
-    .catch((error) => {
-      console.error("계약 데이터 가져오기 실패:", error);
-    });
-}, []);
-
-  
-// 5/20 병합 한 코드
-// const id = localStorage.getItem("id");
-//   useEffect(() => {
-//     // 처음 컴포넌트 뜰 때 계약 데이터 가져오기
-//     axios.get("http://localhost:8081/client/contract")
-//       .then((response) => {
-//         console.log("받은 계약 데이터:", response.data);
-//         // 받아온 데이터 형태에 맞게 가공 (React에서 필요한 형태로)
-//         const mappedContracts = response.data.map(contract => ({
-//           id: contract.contractId,
-//           starredStatus: false, // 별표 기본 false
-//           title: contract.contractTitle, // 계약 제목 바로 넣기
-//           clientId: contract.clientId,  // client_id → clientId
-//           designerId: contract.designerId,
-//           status: contract.status,
-//           date: formatDate(contract.dueDate),
-//           preview: contract.preview || "",  // preview가 없을 경우 빈 문자열로 기본 설정
-//         }));
-
-//         const filteredByLoginId = mappedContracts.filter(c => c.clientId === id);
-//         setContracts(filteredByLoginId);
-//       })
-//       .catch((error) => {
-//         console.error("계약 데이터 가져오기 실패:", error);
-//       });
-//   }, [id]);
+  useEffect(() => {
+    // 처음 컴포넌트 뜰 때 계약 데이터 가져오기
+    axios.get("http://localhost:8081/client/contract")
+      .then((response) => {
+        console.log("받은 계약 데이터:", response.data);
+        // 받아온 데이터 형태에 맞게 가공 (React에서 필요한 형태로)
+        const mappedContracts = response.data.map(contract => ({
+          id: contract.contractId,
+          starredStatus: false, // 별표 기본 false
+          title: contract.contractTitle, // 계약 제목 바로 넣기
+          clientId: contract.clientId,  // client_id → clientId
+          status: contract.status,
+          date: formatDate(contract.dueDate),
+          preview: contract.preview || "",  // preview가 없을 경우 빈 문자열로 기본 설정
+        }));
+        setContracts(mappedContracts);
+      })
+      .catch((error) => {
+        console.error("계약 데이터 가져오기 실패:", error);
+      });
+  }, []);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";

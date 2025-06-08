@@ -23,8 +23,24 @@ import ContractList from "./components/contract/ContractList/ContractList";
 import ContractSendMessagePage from './pages/contract/ContractSendMessagePage';
 import MessageDetailPage from './pages/contract/MessageDetailPage';
 import GoodSignUp from './pages/Login/GoodSignUp';
-import CanceledPage from "./pages/contract/CanceledPage"
+import CanceledPage from "./pages/contract/CanceledPage";
+import MyProgressPage from "./pages/MyPage/MyProgressPage";
+import WrittenReviewPage from './pages/MyPage/WrittenReviewPage';
 
+import DesignerRequest from "./pages2/Request/DesignerRequest";
+import DesignerRequestPost from "./pages2/Request/DesignerRequestPost"
+import OngoingRequestsPage from "./pages2/Mypage/OngoingRequestsPage";
+import CompletedRequestPage from "./pages2/Mypage/CompletedRequestPage";
+import EditRequestsPage from "./pages2/Mypage/EditRequestsPage";
+import DesignerContractList from "./components/DesignerContract/DesignerContractList/DesignerContractList";
+import DContractDetail from "./components/DesignerContract/DesignerContractList/DContractDetail";
+import DMyInfoPage from "./pages2/Mypage/DMyInfoPage";
+import DeliveryPage from "./pages2/Mypage/DeliveryPage";
+import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
+import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
+import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
+import DeliveryRegister from "./pages2/Mypage/ui/Delivery/DeliveryRegister";
+import DeliveryTracking from "./pages2/Mypage/ui/Delivery/DeliveryTracking";
 
 const RouterComponent = () => {
   
@@ -73,8 +89,8 @@ const RouterComponent = () => {
               <Route path="ContractSendMessagePage/:id" element={<ContractSendMessagePage />} />
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
               <Route path="CanceledPage" element={<CanceledPage /> } />
-             
-              
+              <Route path="MyProgressPage" element={<MyProgressPage />} />
+              <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
             </Routes>
           </ClientLayout>
         }
@@ -91,7 +107,20 @@ const RouterComponent = () => {
             <Route path="Portfolio" element={<Portfolio />} />
             <Route path="DesignerContractManage" element={<DesignerContractManagePage />}/>
             <Route path="DesignerContractCreate" element={<DesignerContractCreatePage />}/>
-         
+            <Route path="DesignerRequest" element={<DesignerRequest /> } />
+            <Route path="DesignerRequestPost" element={<DesignerRequestPost />} />
+            <Route path="OngoingRequests" element={<OngoingRequestsPage/>}/>
+            <Route path="CompletedRequest" element={<CompletedRequestPage/>}/>
+            <Route path="EditRequests" element={<EditRequestsPage/>}/>
+            <Route path="DContractDetail" element={<DContractDetail/>}/>
+            <Route path="DesignerContractList" element={<DesignerContractList/>}/>
+            <Route path="designer/contract/:roomId" element={<DContractDetail/>}/>
+            <Route path="DMyInfo" element={<DMyInfoPage/>}/>
+            <Route path="Delivery" element={<DeliveryPage/>}/>
+            <Route path="DesignerReceivedReviews" element={<DesignerReceivedReviewsPage />} />
+            <Route path="Delivery/detail" element={<DeliveryDetail />} />
+            <Route path="delivery/register/:contractId" element={<DeliveryRegister />} />
+            <Route path="delivery/tracking/:contractId" element={<DeliveryTracking />} />
            </Routes>
         </DesignerLayout>
       } />
