@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const Overlay = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ const ModalContainer = styled.div`
   padding: 2rem;
   width: 40rem;
   height: 15rem;
-  box-shadow: 0 0.3125rem 0.9375rem rgba(0,0,0,0.2); /* 5px 15px -> 0.3125rem 0.9375rem */
+  box-shadow: 0 0.3125rem 0.9375rem rgba(0,0,0,0.2);
   position: relative;
 `;
 
@@ -31,8 +32,8 @@ const Header = styled.div`
 const Title = styled.h2`
   margin: 0;
   font-size: 1.5rem;
-  border-bottom: 0.125rem solid #799fc4;  /* 2px -> 0.125rem */
-  padding-bottom: 0.3rem;        
+  border-bottom: 0.125rem solid #799fc4;
+  padding-bottom: 0.3rem;
 `;
 
 const CloseButton = styled.button`
@@ -121,32 +122,63 @@ const ConfirmButton = styled.button`
 
 // 작업 단계 리스트
 const steps = [
-  { label: "디자인하기", image: "/image/Progress/sketch.png" },
-  { label: "뜨개질하기", image: "/image/Progress/knitting.png" },
-  { label: "마감하기", image: "/image/Progress/successful.png" },
-  { label: "포장하기", image: "/image/Progress/package.png" },
+  { label: "디자인하기", value: 0, image: "/image/Progress/sketch.png" },
+  { label: "뜨개질하기", value: 1, image: "/image/Progress/knitting.png" },
+  { label: "마감하기", value: 2, image: "/image/Progress/successful.png" },
+  { label: "포장하기", value: 3, image: "/image/Progress/package.png" },
 ];
 
-export default function ProgressModal({ onClose }) {
-  const [activeStep, setActiveStep] = useState(0); // 현재 활성화된 단계 인덱스
-  const [confirmStep, setConfirmStep] = useState(null); // 변경하려는 단계 인덱스 (확인 팝업용)
+export default function ProgressModal({ onClose, initialStep = 0, contract, onStepUpdated }) {
+  const [activeStep, setActiveStep] = useState(initialStep);
+  const [confirmStep, setConfirmStep] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // 버튼 클릭 시 팝업 띄우기 (활성화 가능 단계만)
+  // initialStep 변경 시 activeStep 동기화
+  useEffect(() => {
+    setActiveStep(initialStep);
+  }, [initialStep]);
+
   const handleStepButtonClick = (index) => {
     if (index !== activeStep) {
       setConfirmStep(index);
     }
   };
 
-  // 확인 버튼 클릭
-  const handleConfirm = () => {
-    setActiveStep(confirmStep);
-    setConfirmStep(null);
+  const handleConfirm = async () => {
+    setLoading(true);
+    setError(null);
+    console.log("실제로 전송될 contractId:", contract.contractId);
+
+    if (!contract || contract.contractId === undefined || contract.contractId === null) {
+      setError("계약 정보를 찾을 수 없습니다. (계약 ID 누락)");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:8081/api/progress", {
+        contractId: contract.contractId,
+        status: steps[confirmStep].label,
+        step: steps[confirmStep].value,  // 서버에서 step도 받도록 하려면 같이 보냅니다
+      });
+
+      setActiveStep(confirmStep);
+      setConfirmStep(null);
+      if (onStepUpdated) {
+        onStepUpdated(confirmStep);
+      }
+    } catch (err) {
+      setError("진행 상황 업데이트에 실패했습니다. 관리자에게 문의하세요.");
+      console.error("진행 상황 업데이트 오류:", err.response ? err.response.data : err.message, err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // 취소 버튼 클릭
   const handleCancel = () => {
     setConfirmStep(null);
+    setError(null);
   };
 
   return (
@@ -154,30 +186,33 @@ export default function ProgressModal({ onClose }) {
       <ModalContainer>
         <Header>
           <Title>작업 진행도 관리</Title>
-          <CloseButton onClick={onClose}>×</CloseButton>
+          <CloseButton onClick={onClose} disabled={loading}>×</CloseButton>
         </Header>
 
         <StepContainer>
           {steps.map((step, index) => {
-            const grayscale = index !== activeStep;
-            const active = index === activeStep; // 활성 상태 여부
+            const grayscale = index > activeStep;
+            const active = index === activeStep;
 
             return (
-                <React.Fragment key={index}>
+              <React.Fragment key={index}>
                 <StepItem>
-                    <StepImage src={step.image} alt={step.label} grayscale={grayscale} />
-                    <StepButton
+                  <StepImage src={step.image} alt={step.label} grayscale={grayscale} />
+                  <StepButton
                     active={active}
                     onClick={() => handleStepButtonClick(index)}
-                    >
+                    disabled={loading || index < activeStep}
+                  >
                     {step.label}
-                    </StepButton>
+                  </StepButton>
                 </StepItem>
                 {index < steps.length - 1 && <Arrow>→</Arrow>}
-                </React.Fragment>
+              </React.Fragment>
             );
-            })}
+          })}
         </StepContainer>
+
+        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
         {confirmStep !== null && (
           <ConfirmOverlay>
@@ -187,8 +222,10 @@ export default function ProgressModal({ onClose }) {
                 진행사항을 업데이트 하시겠습니까?
               </p>
               <ConfirmButtons>
-                <ConfirmButton confirm onClick={handleConfirm}>확인</ConfirmButton>
-                <ConfirmButton onClick={handleCancel}>취소</ConfirmButton>
+                <ConfirmButton $isConfirm onClick={handleConfirm} disabled={loading}>
+                  {loading ? "처리 중..." : "확인"}
+                </ConfirmButton>
+                <ConfirmButton onClick={handleCancel} disabled={loading}>취소</ConfirmButton>
               </ConfirmButtons>
             </ConfirmBox>
           </ConfirmOverlay>

@@ -30,16 +30,23 @@ const DesignerNavbar = () => {
         {/* 기본 메뉴 */}
         <div className="nav-links">
           <div className="dropdown">
-            <Link to="/designer/DesignerRequest" onClick={() => setIsMenuOpen(false)}>
-                의뢰 찾기
+            <a href="#">의뢰 찾기</a>
+            <div className="dropdown-menu">
+              <Link to="/designer/DesignerRequest" onClick={() => setIsMenuOpen(false)}>
+                의뢰 검색
               </Link>
-            
-              
-            
+            </div>
           </div>
           <div className="dropdown">
             <a href="#">제작 관리</a>
-            
+            <div className="dropdown-menu">
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+                의뢰 등록하기
+              </Link>
+              <Link to="/" onClick={() => setIsMenuOpen(false)}>
+                디자이너 고르기
+              </Link>
+            </div>
           </div>
           <div className="dropdown">
             <a href="#">계약 관리</a>

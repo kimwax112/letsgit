@@ -13,6 +13,15 @@ public class Contract {
     private String contractTitle;
     private Integer starredStatus;  // 변경: Boolean → Integer
     private String contractContent;  // CLOB → String으로 매핑, 필요시 Clob으로 변경 가능
+    private int step;  // 또는 int step;
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
     
     public int getContractId() {
         return contractId;

@@ -25,25 +25,22 @@ public class UserController {
     // 로그인 API (세션 저장)
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody User loginUser, HttpSession session) {
-        User user = userService.login(loginUser.getId(), loginUser.getPasswd());
+        User user = userService.login(loginUser.getUsername(), loginUser.getPassword());
 
         if (user != null) {
-            session.setAttribute("id", user.getId());
+            session.setAttribute("username", user.getUsername());
             session.setAttribute("usertype", user.getUsertype());
+            session.setAttribute("name", user.getName()); 
 
             sessionManager.addSession(session);
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "로그인 성공!");
-            response.put("id", user.getId());
+            response.put("username", user.getUsername());
             response.put("usertype", user.getUsertype());
             response.put("name", user.getName());
 
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(401).body(null);
         }
-    }
 
     // 회원가입
     @PostMapping("/signup")
@@ -108,11 +105,11 @@ public class UserController {
     // 세션 존재 여부 확인
     @GetMapping("/checkSession")
     public ResponseEntity<?> checkSession(HttpSession session) {
-        String id = (String) session.getAttribute("id");
-        System.out.println("세션에서 가져온 ID: " + id);
+        String username = (String) session.getAttribute("username");
+        System.out.println("세션에서 가져온 usernmae: " + username);
 
-        if (id != null) {
-            return ResponseEntity.ok(Map.of("id", id));
+        if (username != null) {
+            return ResponseEntity.ok(Map.of("username", username));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인 필요"));
         }
@@ -121,13 +118,13 @@ public class UserController {
     // 현재 로그인된 사용자 ID 조회
     @GetMapping("/current-user")
     public ResponseEntity<Map<String, String>> getCurrentUser(HttpSession session) {
-        String id = (String) session.getAttribute("id");
-        System.out.println("세션에서 가져온 ID: " + id);
+        String username = (String) session.getAttribute("username");
+        System.out.println("세션에서 가져온 username: " + username);
 
         Map<String, String> response = new HashMap<>();
 
-        if (id != null) {
-            response.put("id", id);
+        if (username != null) {
+            response.put("username", username);
             return ResponseEntity.ok(response);
         } else {
             response.put("error", "사용자 정보가 없습니다.");

@@ -34,10 +34,17 @@ export function RequestLayOut({ children }) {
     gap: 10px;
     margin-top: 20px;
     justify-content: center;
+<<<<<<< HEAD
     padding:25px 0; /* 여백 추가 */
     background-color: white; /* 바탕색 */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
     border-radius: 8px; /* 모서리 둥글게 */
+=======
+    padding:25px 0;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+>>>>>>> feature/sj
   `;
 
   const PageButton = styled.div`
@@ -81,6 +88,7 @@ export function RequestLayOut({ children }) {
 }
 
 export default function Request() {
+<<<<<<< HEAD
    const [requestItems, setRequestItems] = useState([]);
 
   // localStorage에서 requestData 가져오기
@@ -118,8 +126,45 @@ export default function Request() {
           <>
          
           </>
+=======
+  const [requestItems, setRequestItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get("http://localhost:8081/api/requests")
+      .then(response => {
+        setRequestItems(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("API 요청 실패:", err);
+        setError("데이터를 불러오는 데 실패했습니다.");
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <>
+      <ContentHeader children="의뢰 등록하기" />
+      <RequestLayOut>
+        {loading && <p>로딩 중...</p>}
+        {error && <p style={{color: "red"}}>{error}</p>}
+        {!loading && !error && (
+          requestItems.length > 0 ? (
+            requestItems.map((item, index) => (
+              <ItemBox key={item.requestId || index} data={item} />
+            ))
+          ) : (
+            <p>의뢰 목록이 없습니다.</p>
+          )
+>>>>>>> feature/sj
         )}
       </RequestLayOut>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/sj

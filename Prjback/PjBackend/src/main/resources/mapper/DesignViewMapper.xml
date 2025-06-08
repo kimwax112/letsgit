@@ -8,7 +8,7 @@
 <select id="getDesignsByUser" parameterType="String" resultType="com.example.Loginpj.model.UserDesign">
   SELECT
     design_id AS "designId",
-    id AS "id",
+    USERNAME AS "username",
     clothing_type AS "clothingType",
     fabric AS "fabricJson",
     sizee AS "size",
@@ -17,7 +17,7 @@
     created_at AS "createdAt",
     category AS "category"
   FROM user_design
-  WHERE id = #{id}
+  WHERE USERNAME = #{username}
 </select>
 
 </mapper>

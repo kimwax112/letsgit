@@ -5,8 +5,8 @@
 
 <mapper namespace="com.example.Loginpj.mapper.UserMapper">
     <resultMap id="UserResultMap" type="com.example.Loginpj.model.User">
-        <result property="id" column="id"/>
-        <result property="passwd" column="passwd"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
         <result property="email" column="email"/>
         <result property="usertype" column="usertype"/>
         <result property="birthdate" column="birthdate"/>
@@ -16,14 +16,14 @@
     </resultMap>
 
     <select id="findById" resultMap="UserResultMap">
-        SELECT id, passwd, email, usertype, birthdate, tel, name, gender 
+        SELECT username, password, email, usertype, birthdate, tel, name, gender 
         FROM user_info 
-        WHERE id = #{id, jdbcType=VARCHAR} 
+        WHERE username = #{username, jdbcType=VARCHAR} 
     </select>
 
     <insert id="insertUser" parameterType="com.example.Loginpj.model.User">
-        INSERT INTO user_info (id, passwd, email, usertype, birthdate, tel, name, gender)
-        VALUES (#{id, jdbcType=VARCHAR}, #{passwd}, #{email}, #{usertype, jdbcType=VARCHAR}, #{birthdate}, #{tel}, #{name}, #{gender})
+        INSERT INTO user_info (username, password, email, usertype, birthdate, tel, name, gender)
+        VALUES (#{username, jdbcType=VARCHAR}, #{password}, #{email}, #{usertype, jdbcType=VARCHAR}, #{birthdate}, #{tel}, #{name}, #{gender})
     </insert>
 
 </mapper>

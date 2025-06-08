@@ -12,7 +12,7 @@ public class UserService {
     private UserMapper userMapper;
 
     public boolean createUser(User user) {
-        if (userMapper.findById(user.getId()) != null) {
+        if (userMapper.findById(user.getUsername()) != null) {
             return false; // 아이디 중복
         }
         userMapper.insertUser(user);
@@ -20,11 +20,11 @@ public class UserService {
     }
     
 
-    public User login(String id, String passwd) {
-        User user = userMapper.findById(id); // findById 사용
+    public User login(String username, String password) {
+        User user = userMapper.findById(username); // findById 사용
         System.out.println("User fetched from DB: " + user);
 
-        if (user != null && user.getPasswd().equals(passwd)) {
+        if (user != null && user.getPassword().equals(password)) {
             return user; // 로그인 성공
         }
         return null; // 로그인 실패

@@ -17,12 +17,12 @@ public class UserDesignService {
         userDesignMapper.insertUserDesign(userDesign);
     }
 
-    public List<UserDesign> getUserDesignsById(String id) {
-        return userDesignMapper.findByUserId(id);
+    public List<UserDesign> getUserDesignsById(String username) {
+        return userDesignMapper.findByUserId(username);
     }
 
-    public boolean updateUserDesignSize(String id, String size) {
-        int updatedRows = userDesignMapper.updateSizeByUserId(id, size);
+    public boolean updateUserDesignSize(String username, String size) {
+        int updatedRows = userDesignMapper.updateSizeByUserId(username, size);
         return updatedRows > 0;
     }
 }

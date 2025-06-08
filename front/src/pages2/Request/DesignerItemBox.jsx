@@ -33,8 +33,7 @@ const InnerBox = styled.div`
   background-color: #F6F2F2;
   width: 87%;
   height: 45%;
-  border: 0.5px solid;
-  border-color: #EBE5E5;
+  border: 0.5px solid #EBE5E5;
   border-radius: 20px;
   margin-top: 10px;
   padding: 5px;
@@ -96,12 +95,66 @@ const Text2 = styled.div`
   color: #6B6565;
 `;
 
-export default function DesignerItemBox({ children,data }) {
+const LikeButton = styled.button`
+  margin-top: 10px;
+  padding: 6px 14px;
+  background-color: #a0cfff;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #e03e5d;
+  }
+`;
+
+export default function DesignerItemBox({ data }) {
   const navigate = useNavigate();
-  
+  const [liked, setLiked] = useState(false);
 
   const handleClick = () => {
-    navigate('/designer/DesignerRequestPost' , {state : {requestData : data }});
+    // DesignerRequestPost로 데이터를 넘길 때도 requestId 사용
+    navigate('/designer/DesignerRequestPost', { state: { requestData: data } }); // data 객체 자체를 넘기므로 data.requestId는 내부에서 사용
+  };
+
+  const handleLike = async (e) => {
+    e.stopPropagation();
+
+    console.log("DesignerItemBox - data:", data);
+    console.log("DesignerItemBox - data.requestId:", data?.requestId); // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
+
+    // data.requestId가 유효한지 여기서 한 번 더 확인
+    if (!data?.requestId) { // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
+        alert("의뢰 ID를 찾을 수 없습니다. 찜하기 실패.");
+        return; // ID가 없으면 여기서 중단
+    }
+
+    try {
+      const res = await fetch("http://localhost:8081/designer/favorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", 
+        body: JSON.stringify({ 
+          requestId: data.requestId // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
+        }),
+      });
+
+      if (res.ok) {
+        setLiked(true);
+        alert("찜 완료!");
+      } else if (res.status === 401) { 
+        alert("로그인이 필요합니다.");
+      } else {
+        const errorText = await res.text();
+        alert(`찜 실패: ${errorText}`);
+      }
+    } catch (err) {
+      console.error("찜 요청 실패:", err);
+      alert("서버 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -109,18 +162,21 @@ export default function DesignerItemBox({ children,data }) {
       <InnerBox />
       <DescriptionContainer>
         <TagContainer>
-          <Tag>{data?.categoryTags}</Tag>
-        
+          <Tag>{data?.categoryTags || "태그"}</Tag>
         </TagContainer>
-        <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
+        <Text>{data?.title || "의뢰 제목을 입력해주세요."}</Text>
         <Profile>
           <Circle>
             <ProfileImage src={designerImage} alt="디자이너 프로필" />
           </Circle>
           홍길동
         </Profile>
-        <Text2>{data?.amount || "10000원"}</Text2>
-        <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 2주"}</Text2>
+        <Text2>{data?.amount || "0원"}</Text2>
+        <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 미정"}</Text2>
+
+        <LikeButton onClick={handleLike} liked={liked}>
+          {liked ? "❤️ 찜 완료" : "🤍 찜하기"}
+        </LikeButton>
       </DescriptionContainer>
     </ItemBoxContainer>
   );

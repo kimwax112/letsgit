@@ -30,3 +30,4 @@ DetailList.jsx
 
 Clothes.jsx 등
 
+ㅁㄴㅇㄹ

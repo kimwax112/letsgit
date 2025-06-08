@@ -39,9 +39,13 @@ import DeliveryPage from "./pages2/Mypage/DeliveryPage";
 import DeliveryDetail from "./pages2/Mypage/ui/Delivery/DeliveryDetail";
 import dummyDeliveries from './pages2/Mypage/ui/Delivery/dummyDeliveries';
 import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviewsPage";
+<<<<<<< HEAD
 import ClothesTest from "./pages/selfdesign/Template/Size/ClothesPants/ClothesTest";
 import DeliveryRegister from "./pages2/Mypage/ui/Delivery/DeliveryRegister";
 import DeliveryTracking from "./pages2/Mypage/ui/Delivery/DeliveryTracking";
+=======
+import FavoriteRequests from './backTest/FavoriteRequests';
+>>>>>>> feature/sj
 
 const RouterComponent = () => {
   
@@ -91,8 +95,9 @@ const RouterComponent = () => {
               <Route path="ContractDetailPage" element={<ContractDetailPage />} />
               <Route path="CanceledPage" element={<CanceledPage /> } />
               <Route path="MyProgressPage" element={<MyProgressPage />} />
-              <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
               <Route path="ClothesText" element={<ClothesTest/>} />
+              <Route path="progress-history" element={<MyProgressPage />} />
+              <Route path="WrittenReviewPage" element={<WrittenReviewPage />} />
             </Routes>
           </ClientLayout>
         }
@@ -123,6 +128,15 @@ const RouterComponent = () => {
             <Route path="Delivery/detail" element={<DeliveryDetail />} />
             <Route path="delivery/register/:contractId" element={<DeliveryRegister />} />
             <Route path="delivery/tracking/:contractId" element={<DeliveryTracking />} />
+            {/* <Route path="DContractDetail" element={<DContractDetail/>}/> */}
+            <Route path="DesignerContractList" element={<DesignerContractList/>}/>
+            <Route path="contract-detail/:contractId" element={<DContractDetail/>}/>
+            <Route path="DMyInfo" element={<DMyInfoPage/>}/>
+            <Route path="Delivery" element={<DeliveryPage/>}/>
+            <Route path="/designer/delivery/:contractId" element={<DeliveryDetail data={dummyDeliveries} />} />
+            <Route path="DesignerReceivedReviews" element={<DesignerReceivedReviewsPage />} />
+            <Route path="DesignerRequest" element={<DesignerRequest />} />
+            <Route path="/FavoriteRequests" element={<FavoriteRequests />} />
            </Routes>
         </DesignerLayout>
       } />

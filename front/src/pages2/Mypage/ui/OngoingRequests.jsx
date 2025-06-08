@@ -1,60 +1,44 @@
 import React, { useEffect, useState } from "react";
 import ProgressModal from "./ProgressModal";
 import EditRequestModal from "./EditRequestModal";
-
-// 예시용 비동기 데이터 함수 (실제로는 API 요청으로 교체 예정)
-const fetchContracts = async () => {
-  // 실제론 백엔드에서 불러오는 API 호출
-  // const response = await fetch('/api/contracts');
-  // return await response.json();
-
-  // 더미 데이터 (작성한 계약서들)
-  return [
-    {
-      id: 1,
-      title: "디자인 작업 의뢰서 #1",
-      date: "2025-05-01",
-      progress: 50,
-      hasEditRequest: true,
-    },
-    {
-      id: 2,
-      title: "로고 제작 의뢰서 #2",
-      date: "2025-04-20",
-      progress: 30,
-      hasEditRequest: false,
-    },
-    {
-      id: 3,
-      title: "웹 페이지 UI 리디자인 #3",
-      date: "2025-03-15",
-      progress: 80,
-      hasEditRequest: true,
-    },
-  ];
-};
+import axios from "axios";
 
 export default function OngoingRequests() {
   const [contracts, setContracts] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("전체");
-  const [showModal, setShowModal] = useState(false);
+  const [selectedProgressContract, setSelectedProgressContract] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
 
   useEffect(() => {
     const loadContracts = async () => {
-      const data = await fetchContracts();
-      setContracts(data);
+      try {
+        const response = await axios.get("http://localhost:8081/client/contract");
+        console.log("백엔드에서 받은 계약 데이터:", response.data);
+        setContracts(response.data);
+      } catch (error) {
+        console.error("계약 데이터를 불러오는 중 오류 발생:", error);
+      }
     };
     loadContracts();
   }, []);
 
   const filteredContracts = contracts.filter((contract) => {
-    if (search && !contract.title.includes(search)) return false;
+    if (search && !contract.requestTitle?.includes(search)) return false;
+
+    if (!contract.dueDate) {
+      console.warn("Invalid dueDate for contract:", contract);
+      return false;
+    }
 
     const now = new Date();
-    const contractDate = new Date(contract.date);
+    const contractDate = new Date(contract.dueDate);
+
+    if (isNaN(contractDate)) {
+      console.warn("Invalid dueDate format for contract:", contract.dueDate);
+      return false;
+    }
 
     if (filter === "1개월") {
       const oneMonthAgo = new Date(now);
@@ -104,7 +88,7 @@ export default function OngoingRequests() {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {filteredContracts.map((contract) => (
           <li
-            key={contract.id}
+            key={contract.contractId}
             style={{
               backgroundColor: "#fff",
               border: "1px solid #ccc",
@@ -127,34 +111,30 @@ export default function OngoingRequests() {
                 ✏️
               </span>
               <div>
-                <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-                  {contract.title}
-                </div>
-                <div style={{ color: "#666", fontSize: "0.9rem" }}>
-                  {contract.date}
-                </div>
+              <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
+                {contract.contractTitle ?? "제목 없음"}
               </div>
+              <div style={{ color: "#666", fontSize: "0.9rem" }}>
+                {new Date(contract.dueDate).toLocaleDateString("ko-KR")}
+              </div>
+            </div>
             </div>
 
             {/* 오른쪽 버튼들 */}
             <div style={{ display: "flex", gap: "0.5rem" }}>
-               <div>
-                <button
-                    style={{
-                    backgroundColor: "#799FC4",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "0.3rem",
-                    padding: "0.5rem 1rem",
-                    cursor: "pointer",
-                    }}
-                    onClick={() => setShowModal(true)}
-                >
-                    진행도 등록
-                </button>
-
-                {showModal && <ProgressModal onClose={() => setShowModal(false)} />}
-                </div>
+              <button
+                style={{
+                  backgroundColor: "#799FC4",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "0.3rem",
+                  padding: "0.5rem 1rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => setSelectedProgressContract(contract)}
+              >
+                진행도 등록
+              </button>
               <button
                 style={{
                   backgroundColor: "#4a6171",
@@ -165,9 +145,9 @@ export default function OngoingRequests() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                    setSelectedContract(contract);
-                    setShowEditModal(true);
-                    }}
+                  setSelectedContract(contract);
+                  setShowEditModal(true);
+                }}
               >
                 수정 요청사항 전달
               </button>
@@ -175,14 +155,39 @@ export default function OngoingRequests() {
           </li>
         ))}
       </ul>
-        {/* ✅ 수정 요청사항 모달 */}
-            {showEditModal && selectedContract && (
-            <EditRequestModal
-                onClose={() => setShowEditModal(false)}
-                designerName="윤디" // 또는 로그인 사용자 이름
-                requestTitle={selectedContract.title}
-            />
-            )}
+
+      {/* 진행도 모달 */}
+    {selectedProgressContract && (
+        <ProgressModal
+          onClose={() => setSelectedProgressContract(null)}
+          contract={selectedProgressContract}
+          initialStep={
+            // progress가 0~100으로 저장돼 있으면 25단위로 나누어 step 계산
+            selectedProgressContract.progress
+              ? Math.floor(selectedProgressContract.progress / 25-1)
+              : 0
+          }
+          onStepUpdated={(stepIndex) => {
+            setContracts((prev) =>
+              prev.map((c) =>
+                c.contractId === selectedProgressContract.contractId
+                  ? { ...c, progress: (stepIndex + 1) * 25 }
+                  : c
+              )
+            );
+          }}
+        />
+      )}
+
+
+      {/* 수정 요청사항 모달 */}
+      {showEditModal && selectedContract && (
+        <EditRequestModal
+          onClose={() => setShowEditModal(false)}
+          designerName="윤디"
+          requestTitle={selectedContract.requestTitle}
+        />
+      )}
     </div>
   );
 }

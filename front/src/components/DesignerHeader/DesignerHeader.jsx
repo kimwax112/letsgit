@@ -7,14 +7,6 @@ import { useState, useEffect} from "react";
 
 export default function DesignerHeader() {
   const navigate = useNavigate();
-  const [designerName, setDesignerName] = useState("");
-
-  useEffect(() => {
-    const name = localStorage.getItem("name") || "Sample";
-    setDesignerName(name);
-  }, []);
-
-
   const handleLogout = async () => {
     try {
         const response = await fetch("http://localhost:8081/api/logout", {
@@ -23,9 +15,6 @@ export default function DesignerHeader() {
         });
 
         if (response.ok) {
-            localStorage.removeItem("id");
-            localStorage.removeItem("name");
-            localStorage.removeItem("usertype");
             navigate("/"); // ✅ 로그인 페이지로 이동
         } else {
             console.error("로그아웃 실패:", await response.text());
@@ -40,7 +29,8 @@ export default function DesignerHeader() {
         <img src="/image/image.png" alt="이미지없음" />
       </Link>
       <div className="Buttons1" style={{ marginLeft: 'auto', fontWeight: 400, fontSize: '16px' }}>
-        {designerName} 디자이너님, 환영합니다!
+        {/* {designerName} 디자이너님, 환영합니다! */}
+        Sample 디자이너님, 환영합니다!
         <button className="ButtonAtLogo" style={{ backgroundColor: '#2C2F31', fontWeight: 400, fontSize: '16px'}} onClick={handleLogout}>
           로그아웃
         </button>

@@ -8,18 +8,26 @@ import Room from "./ui/Room";
 import ItemBox from "./ui/ItemBox";
 import ModalContent from "../Request/ui/ModalContent";
 import { useChat } from "./ui/useChat";
+<<<<<<< HEAD
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import './ui/ChatRoom.css';
 import axios from "axios";
 import RequestBar from "../../components/RequestBar/RequestBar";
 
+=======
+import { useEffect, useState } from "react";
+import axios from "axios";
+>>>>>>> feature/sj
 const CustomModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   width: 700px;
   height: 800px;
+<<<<<<< HEAD
   
+=======
+>>>>>>> feature/sj
 `;
 
 const CustomModalHeader = styled.div`
@@ -37,9 +45,16 @@ const ItemBoxContainer = styled.div`
   background-color: white;
   display: flex;
   flex-wrap: wrap;
+<<<<<<< HEAD
   justify-content: center;
   gap: 50px;
   
+=======
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 20px;
+>>>>>>> feature/sj
 `;
 
 const ReportButton = styled.button`
@@ -79,6 +94,7 @@ const ButtonWrapper = styled.div`
   { name: "Annette Black", message: "I dont eat, so I dont have a favorite food.", time: "2023-11-09" },
 ];*/
 
+<<<<<<< HEAD
 function formatDate(dateString) {
   if (!dateString) return ""; // Return empty string if dateString is falsy
   const d = new Date(dateString);
@@ -91,6 +107,13 @@ function formatDate(dateString) {
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
   useEffect(() => {
+=======
+
+
+function ChatMain() {
+  const [chatData, setChatData] = useState([]);
+useEffect(() => {
+>>>>>>> feature/sj
   axios
     .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
     .then((res) => {
@@ -110,8 +133,11 @@ function ChatMain() {
     })
     .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
 }, []);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> feature/sj
   const {
     filteredChats,
     recentSearches,
@@ -128,7 +154,10 @@ function ChatMain() {
     isSuccessPopupOpen,
     popupMessage,
     bottomRef,
+<<<<<<< HEAD
     setMessages,
+=======
+>>>>>>> feature/sj
     handleSearch,
     handleRecentSearchClick,
     handleProfileClick,
@@ -147,6 +176,7 @@ function ChatMain() {
     handleConfirmNo,
     setModalOpen,
     setModalOpen2,
+<<<<<<< HEAD
     addRequestMessage,
     handleItemSelect, // 클릭시 디자인된 의류 블러움
     handleRequestselect, // 클릭시 의뢰 블러움
@@ -194,6 +224,10 @@ function ChatMain() {
       });
   }, []);
 
+=======
+  } = useChat(chatData);
+  
+>>>>>>> feature/sj
   return (
     <>
       <StyleSheet />
@@ -211,6 +245,7 @@ function ChatMain() {
           onRecentSearchClick={handleRecentSearchClick}
         />
         {filteredChats.length > 0 ? (
+<<<<<<< HEAD
           filteredChats.map((chat, index) => {
             
             return (
@@ -252,13 +287,58 @@ function ChatMain() {
         ) : (
           <p>검색 결과가 없습니다.</p>
         )}
+=======
+  filteredChats.map((chat, index) => {
+    console.log("chat 내용 확인:", chat);
+    return (
+      <ChatProfile
+        key={index}
+        chat={chat}
+        id={chat.id}
+        creator={chat.creator}
+        name={chat.name}
+        message={chat.message}
+        time={chat.time}
+        onClick={() => handleProfileClick(chat)}
+        extraContent={
+          currentView === "report" ? (
+            <ButtonWrapper>
+              <BlockButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBlockClick(chat.name);
+                }}
+              >
+                차단
+              </BlockButton>
+              <ReportButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleReportClick(chat.name);
+                }}
+              >
+                신고
+              </ReportButton>
+            </ButtonWrapper>
+          ) : null
+        }
+      />
+    );
+  })
+) : (
+  <p>검색 결과가 없습니다.</p>
+)}
+>>>>>>> feature/sj
 
         {isModalOpen && (
           <Room
             roomId={selectedRoomId}
             selectedUser={selectedUser}
             messages={messages}
+<<<<<<< HEAD
             setMessages={setMessages}
+=======
+>>>>>>> feature/sj
             isSideMenuOpen={isSideMenuOpen}
             onClose={handleCloseModal}
             onMenuClick={handleMenuClick}
@@ -283,10 +363,14 @@ function ChatMain() {
           <CustomModal onClose={() => setModalOpen(false)}>
             <CustomModalHeader>디자인 불러오기</CustomModalHeader>
             <ItemBoxContainer>
+<<<<<<< HEAD
               <ItemBox text1="맨투맨1231" text2="(Sweatshirt)"
             onClick={(item) => handleItemSelect(item)} // 여기서 (item) 정의
             
               />
+=======
+              <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
+>>>>>>> feature/sj
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
               <ItemBox text1="맨투맨" text2="(Sweatshirt)" />
@@ -298,6 +382,7 @@ function ChatMain() {
         )}
         {modalOpen2 && (
           <CustomModal onClose={() => setModalOpen2(false)}>
+<<<<<<< HEAD
             <CustomModalHeader
             
             >의뢰 불러오기 </CustomModalHeader>
@@ -310,6 +395,10 @@ function ChatMain() {
               
             ))}
             
+=======
+            <CustomModalHeader>의뢰 불러오기 </CustomModalHeader>
+            <ModalContent />
+>>>>>>> feature/sj
           </CustomModal>
         )}
       </ChatLayout>
@@ -318,6 +407,17 @@ function ChatMain() {
 }
 //아래께 채팅창 말풍선 CSS임 #dcf8c6
 const styles = `
+<<<<<<< HEAD
+=======
+  .message.sent {
+    background-color:#dcf8c6;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 5px;
+    max-width: 70%;
+    position: relative;
+  }
+>>>>>>> feature/sj
 
   .message.sent::after {
     content: '';

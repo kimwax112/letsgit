@@ -11,9 +11,9 @@ public interface UserDesignMapper {
     void insertUserDesign(UserDesign userDesign);
 
     // 특정 사용자 디자인 조회 (SELECT)
-    List<UserDesign> findByUserId(String id);
+    List<UserDesign> findByUserId(String username);
 
     // 특정 사용자의 사이즈 업데이트 (XML에서 관리)
-    int updateSizeByUserId(@Param("id") String id, @Param("size") String size);
+    int updateSizeByUserId(@Param("username") String username, @Param("size") String size);
 }
 

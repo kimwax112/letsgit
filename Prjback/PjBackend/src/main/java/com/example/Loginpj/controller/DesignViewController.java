@@ -22,18 +22,16 @@ public class DesignViewController {
 
     @PostMapping("/mydesigns")
     public List<UserDesign> getMyDesigns(@RequestBody Map<String, String> request) {
-        String id = request.get("id");
-        
-        System.out.println("💡 전달받은 ID: " + id); // ✅ 추가
-
-        if (id == null) {
+        String username = request.get("username"); // "id" 대신 "username"으로 받기
+        System.out.println("💡 전달받은 username: " + username);
+        if (username == null) {
             return new ArrayList<>();
         }
+        List<UserDesign> result = designService.getDesignsByUser(username); // service 메서드에 username 전달
+        System.out.println("🎯 불러온 디자인 수: " + result.size());
+        return result;
+    }
 
 //        return designService.getDesignsByUser(id);
 //    }
-        List<UserDesign> result = designService.getDesignsByUser(id);
-        System.out.println("🎯 불러온 디자인 수: " + result.size()); // ✅ 추가
-        return result;
     }
-}

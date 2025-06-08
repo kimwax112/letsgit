@@ -2,34 +2,76 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// export default function Header() {
+//   const navigate = useNavigate();
+//   const [clientName, setClientName] = useState("");
+
+//   useEffect(() => {
+//     const fetchSession = async () => {
+//       try {
+//         const res = await fetch("http://localhost:8081/api/user", {
+//           credentials: "include",
+//         });
+//         if (res.ok) {
+//           const data = await res.json();
+//           setClientName(data.name);
+//           // 필요하다면 localStorage에 동기화도 가능
+//         } else {
+//           // 세션 없으면 localStorage 초기화
+//           localStorage.removeItem("name");
+//           localStorage.removeItem("id");
+//           localStorage.removeItem("usertype");
+//           setClientName(""); 
+//         }
+//       } catch (err) {
+//         console.error("세션 확인 실패", err);
+//       }
+//     };
+  
+//     fetchSession();
+//   }, []);
+  
+
+//   const handleLogout = async () => {
+//     try {
+//       const response = await fetch("http://localhost:8081/api/logout", {
+//         method: "POST",
+//         credentials: "include",
+//       }); 
+
+//       if (response.ok) {
+//         localStorage.removeItem("id");
+//         localStorage.removeItem("name");
+//         localStorage.removeItem("usertype");
+
+//         setClientName("");
+//         navigate("/");
+//       } else {
+//         console.error("로그아웃 실패:", await response.text());
+//       }
+//     } catch (error) {
+//       console.error("로그아웃 요청 오류:", error);
+//     }
+//   };
+
 export default function Header() {
   const navigate = useNavigate();
-  const [clientName, setClientName] = useState("");
-
-  useEffect(() => {
-    // localStorage에서 의뢰인 이름 가져오기
-    const name = localStorage.getItem("name") || "Sample";
-    setClientName(name);
-  }, []);
-
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8081/api/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+        const response = await fetch("http://localhost:8081/api/logout", {
+            method: "POST",
+            credentials: "include", // ✅ 세션 유지
+        });
 
-      if (response.ok) {
-        localStorage.removeItem("name");
-        localStorage.removeItem("usertype");
-        navigate("/");
-      } else {
-        console.error("로그아웃 실패:", await response.text());
-      }
+        if (response.ok) {
+            navigate("/"); // ✅ 로그인 페이지로 이동
+        } else {
+            console.error("로그아웃 실패:", await response.text());
+        }
     } catch (error) {
-      console.error("로그아웃 요청 오류:", error);
+        console.error("로그아웃 요청 오류:", error);
     }
-  };
+};
 
   return (
     <div className="LogoStuff" style={{ fontFamily: "'Pretendard', sans-serif" }}>
@@ -37,48 +79,20 @@ export default function Header() {
         <img src="/image/image.png" alt="이미지없음" />
       </Link>
       <div className="Buttons1" style={{ marginLeft: 'auto', fontWeight: 400, fontSize: '16px' }}>
-        {clientName} 님, 환영합니다!
-        <button
-          className="ButtonAtLogo"
-          style={{
-            backgroundColor: '#2C2F31',
-            fontWeight: 400,
-            fontSize: '16px',
-            width: '113.6px',
-            height: '42.79px'
-          }}
-          onClick={handleLogout}
-        >
+         Sample 님, 환영합니다!
+        {/* {clientName} 님, 환영합니다! */}
+        <button className="ButtonAtLogo" style={{ backgroundColor: '#2C2F31', fontWeight: 400, fontSize: '16px'}} onClick={handleLogout}>
           로그아웃
         </button>
-        <button
-          className="ButtonAtLogo"
-          style={{
-            backgroundColor: '#4A6171',
-            fontWeight: 400,
-            fontSize: '16px',
-            width: '113.6px',
-            height: '42.79px'
-          }}
-        >
+        <button className="ButtonAtLogo" style={{ backgroundColor: '#4A6171', fontWeight: 400, fontSize: '16px' }}>
           고객센터
         </button>
         <Link to="/client/MyInfo">
-          <button
-            className="ButtonAtLogo"
-            style={{
-              backgroundColor: '#80A1BE',
-              fontWeight: 400,
-              fontSize: '16px',
-              width: '113.6px',
-              height: '42.79px'
-            }}
-          >
+          <button className="ButtonAtLogo" style={{ backgroundColor: '#80A1BE', fontWeight: 400, fontSize: '16px' }}>
             마이페이지
           </button>
         </Link>
       </div>
-
     </div>
   );
 }

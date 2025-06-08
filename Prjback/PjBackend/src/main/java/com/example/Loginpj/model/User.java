@@ -4,8 +4,8 @@ package com.example.Loginpj.model;
 public class User {
 
 
-	private String id;
-	private String passwd;
+	private String username;
+	private String password;
 	private String email;
 	private String usertype;
 	private String birthdate;
@@ -37,11 +37,11 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getId() {
-		return id;
+	public String getUsername() {
+		return username;
 	}
-	public String getPasswd() {
-		return passwd;
+	public String getPassword() {
+		return password;
 	}
 	public String getEmail() {
 		return email;
@@ -50,11 +50,11 @@ public class User {
 		return usertype;
 	}
 	//setter
-	public void setId(String id) {
-		this.id= id;
+	public void setUsername(String username) {
+		this.username= username;
 	}
-	public void setPasswd(String passwd) {
-		this.passwd= passwd;
+	public void setPassword(String password) {
+		this.password= password;
 	}
 	public void setEmail(String email) {
 		this.email= email;
@@ -66,8 +66,8 @@ public class User {
 	@Override
 	public String toString() {
 	    return "User{" +
-	            "id='" + id + '\'' +
-	            ", password='" + passwd + '\'' +
+	            "username='" + username + '\'' +
+	            ", password='" + password + '\'' +
 	            ", email='" + email + '\'' +
 	            ", usertype='" + usertype + '\'' +
 	            ", birthdate='" + birthdate + '\'' +

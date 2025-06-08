@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DesignViewMapper {
-	public List<UserDesign> getDesignsByUser(String id);
+	public List<UserDesign> getDesignsByUser(String username);
 }

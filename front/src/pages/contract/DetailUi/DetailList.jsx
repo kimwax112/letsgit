@@ -28,12 +28,11 @@ function formatDate(dateString) {
 
 export default function DetailList({ contractId, contract, onToggleStar }) {
   const [contractData, setContractData] = useState(contract);
-  const navigate = useNavigate(); // 추가: ChatGPT
-  const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
-  const [isEditorSent, setIsEditorSent] = useState(false);  // 추가: 작성완료 눌렀는지 추적
-  const [contractMessage, setSendMessage] = useState(); //보낸 메시지 동적으로 관리되는 변수 
+  const navigate = useNavigate();
+  const [editorContent, setEditorContent] = useState(""); 
+  const [isEditorSent, setIsEditorSent] = useState(false);  
   const [agreeMessage, setAgreeMessage] = useState('');
-  const [showModal, setShowModal] = useState(false); // ✅ 모달 표시 여부
+  const [showModal, setShowModal] = useState(false); 
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -80,12 +79,11 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
     window.print();
   };
 
-  // ✅ 계약 승인 요청 함수
   const handleApproveContract = async () => {
     if (agreeMessage !== "계약 내용을 확인하였으며 동의합니다.") {
-    alert("정확한 문구를 입력해 주세요.");
-    return;
-  }
+      alert("정확한 문구를 입력해 주세요.");
+      return;
+    }
 
     try {
       const response = await axios.put(`http://localhost:8081/client/contract/approve`, {
@@ -99,52 +97,50 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
         setContractData(updated.data);
         setShowModal(false);
       }
-      
     } catch (err) {
       console.error("계약 승인 실패:", err);
       alert("서버 오류로 계약을 승인할 수 없습니다.");
     }
   };
 
-  if (!contractData || !contractData.contractTitle) {
-    return <div>계약서 데이터를 찾을 수 없습니다.</div>;
-  }
-  const handleSendRequest = () => {
-    // 작성완료를 누르지 않았거나 내용이 비어 있으면 동작하지 않음
+  const handleEditorSend = (content) => {
+    if (content.trim() !== "") {
+      setEditorContent(content);
+      setIsEditorSent(true);
+    }
+  };
+
+  const handleSendRequest = async () => {
     if (!isEditorSent || editorContent.trim() === "") {
       alert("메시지를 작성하고 작성완료를 눌러주세요.");
       return;
     }
-    navigate('/client/Chatmain', 
-      { state: { messageText: editorContent, sendMessage : contractMessage,
-      sourcePage: "OtherPage", 
-     } });
+
+    const messagePayload = {
+      content: editorContent,
+      clientId: contractData.clientId,
+      contractId: contractId,
+      sentTime: new Date().toISOString()
+    };
+
+    try {
+      const response = await axios.post("http://localhost:8081/api/request-messages/send", messagePayload);
+      if (response.status === 200) {
+        alert("요청 메시지를 성공적으로 보냈습니다!");
+        setEditorContent("");
+        setIsEditorSent(false);
+        //navigate("/client/ContractSendMessagePage"); // ✅ 메시지 목록 페이지로 이동
+      }
+    } catch (error) {
+      console.error("메시지 전송 실패:", error);
+      alert("메시지 전송 중 오류가 발생했습니다.");
+    }
   };
 
-  
-const handleEditorSend = (content) => {  //요청보내기 누를때 저장되는 객체 구조  (content) == MyEditor에서 입력한 메시지 매개변수로 전달
-  if (content.trim() !== "") {
-    setEditorContent(content); // content == 입력한 메시지  상태 업데이트 editorContent에 입력된 메시지저장, isEditorsent를 true로 설정하여 "요청보내기"버튼 활성화준비"
-    setIsEditorSent(true);
-    // contractMessage 설정: 메시지와 계약 정보 조합
-    const newMessage = { //newMessage를 생성하여 메시지 내용(conent), 생성시간(time), 계약정보(contract), 고유(id)포함
-      
-      id: `msg-${Date.now()}`, // 예: "msg-1715995680000" (2025-05-18 10:28 KST)
-      content: content,  //실제 전송할 메시지 텍스트 
-      time: new Date().toLocaleTimeString(), // 메시지 생성 시각
-      contract: {...contractData, content : content} //기존계약 정보 (contractDate)를 복제한뒤 conetn 필드를 추가해 함꼐 전달할 수 있게 합니다.
-    };
-    setSendMessage(newMessage);
- //contractMessage` 상태에 newMessage 객체를 저장합니다
-    localStorage.setItem(
-      "dratfRequest",
-      JSON.stringify({
-        editorContent: content,
-        contractMessage: newMessage
-  })
-);
+  if (!contractData || !contractData.contractTitle) {
+    return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
-};
+
   return (
     <div className="Detailcontainer">
       <div className="Detailtitle">
@@ -190,25 +186,25 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
       </div>
 
       <div className="Editor">
-      <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
+        <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor>
       </div>
 
       <div className="Detailfooter">
-      <div className="DetailButton"><NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI></div>
         <div className="DetailButton">
-          {/* ✅ 모달 표시 버튼 */}
+          <NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}>요청보내기</NextButtonUI>
+        </div>
+        <div className="DetailButton">
           <NextButtonUI onClick={() => setShowModal(true)}>동의하기</NextButtonUI>
         </div>
         <Button>작성취소</Button>
         <Button>저장</Button>
       </div>
 
-      {/* ✅ 동의 입력 모달 */}
       {showModal && (
         <div style={modalStyle.overlay}>
           <div style={modalStyle.modal}>
             <h3>계약 승인 확인</h3>
-            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다'를 입력해주세요.</h5>
+            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다.'를 입력해주세요.</h5>
             <input
               type="text"
               value={agreeMessage}
@@ -227,7 +223,7 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
   );
 }
 
-// ✅ 모달 스타일
+// 모달 스타일
 const modalStyle = {
   overlay: {
     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,

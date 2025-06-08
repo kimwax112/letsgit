@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserDesign {
     private Long designId;
-    private String id;
+    private String username;
     private String clothingType;
 
     // DB에서 JSON 문자열로 받아올 필드
@@ -69,12 +69,12 @@ public class UserDesign {
         this.designId = designId;
     }
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getClothingType() {

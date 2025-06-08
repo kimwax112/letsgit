@@ -35,9 +35,12 @@ export default function Welcome(onSignupClick) {
             navigate("/client/Cosmain");
         } else {
 <<<<<<< HEAD
+<<<<<<< HEAD
           console.log("login response ▶", data);
 =======
 >>>>>>> b83ea9ed981e469429f98dbf50ae54d41f45f15c
+=======
+>>>>>>> feature/sj
             navigate("/ChatRoomList"); // 기본 페이지
         }
     } catch (error) {

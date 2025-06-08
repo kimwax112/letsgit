@@ -13,7 +13,7 @@ public class DesignViewService {
     @Autowired
     private DesignViewMapper designViewMapper;
 
-    public List<UserDesign> getDesignsByUser(String id) {
-        return designViewMapper.getDesignsByUser(id);
+    public List<UserDesign> getDesignsByUser(String username) {
+        return designViewMapper.getDesignsByUser(username);
     }
 }
