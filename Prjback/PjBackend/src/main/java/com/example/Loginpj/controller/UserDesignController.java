@@ -62,17 +62,10 @@ public class UserDesignController {
 
     @PostMapping("/add")
     public ResponseEntity<Object> addUserDesign(@RequestBody UserDesign userDesign, HttpSession session) {
-<<<<<<< HEAD
-        String id = (String) session.getAttribute("id");
-        System.out.println("🔍 세션에서 가져온 ID: " + id);
-
-        if (id == null || id.isEmpty()) {
-=======
         String username = (String) session.getAttribute("username");
         System.out.println("🔍 세션에서 가져온 username: " + username);
 
         if (username == null || username.isEmpty()) {
->>>>>>> feature/sj
             return ResponseEntity.status(401).body(Map.of("message", "❌ 로그인 후 이용해주세요."));
         }
 
@@ -84,11 +77,7 @@ public class UserDesignController {
             return ResponseEntity.badRequest().body(Map.of("message", "❌ 색상 데이터가 없습니다."));
         }
 
-<<<<<<< HEAD
-        userDesign.setId(id); // 세션에서 가져온 id를 설정
-=======
         userDesign.setUsername(username); 
->>>>>>> feature/sj
         userDesignService.saveUserDesign(userDesign);
         return ResponseEntity.ok(Map.of("message", "✅ 디자인 저장 완료!"));
     }
