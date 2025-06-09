@@ -78,52 +78,47 @@ export function RequestLayOut({ children }) {
 
 export default function DesignerRequest({ headerText = "의뢰 찾기" }) {
   const [requestItems, setRequestItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
 
-  // 백엔드 API에서 데이터 가져오기
+  // localStorage에서 requestData 가져오기
   useEffect(() => {
-    axios.get("http://localhost:8081/api/requests")
-      .then(response => {
-        setRequestItems(response.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("API 요청 실패:", err);
-        setError("데이터를 불러오는 데 실패했습니다.");
-        setLoading(false);
-      });
+    const storedData = localStorage.getItem("requestData");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (Array.isArray(parsedData)) {
+          setRequestItems(parsedData);
+        }
+      } catch (error) {
+        console.error("requestData 파싱 오류:", error);
+      }
+    }
   }, []);
 
-  // 검색어 필터링
+  // 검색어로 requestItems 필터링
   const filteredItems = requestItems.filter((item) =>
     item.title && item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <>
-      <div className="designerrequest-header">
+    
+      <div  className="designerrequest-header">
         <h1>{headerText}</h1>
-        <div>
-          <SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        </div>
+        <div><SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} /></div>
       </div>
-
-      {loading && <p>로딩 중...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {!loading && !error && (
-        <RequestLayOut>
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item, index) => (
-              <DesignerItemBox key={item.requestId || index} data={item} />
-            ))
-          ) : (
-            <p>검색 결과가 없습니다.</p>
-          )}
-        </RequestLayOut>
-      )}
+      
+      <RequestLayOut>
+        
+        {filteredItems.length > 0 ? (
+       filteredItems.slice().reverse().map((item, index) => (
+            <DesignerItemBox key={index} data={item} />
+          ))
+        ) : (
+          <p>검색 결과가 없습니다.</p>
+        )}
+      </RequestLayOut>
+    
     </>
   );
 }

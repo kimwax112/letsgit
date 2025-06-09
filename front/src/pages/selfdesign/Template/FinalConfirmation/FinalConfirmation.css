@@ -37,8 +37,8 @@ hr {
 }
 
 .summary-section {
-  max-height: 60vh;
-  overflow-y: auto;
+  max-height: 60vh; /* 예: 화면 높이의 60% 이상 안 커지도록 */
+  overflow-y: auto; /* 내용이 넘치면 스크롤 생성 */
 }
 
 .summary-item {
@@ -49,13 +49,13 @@ hr {
   font-size: 1.1rem;
 }
 
-.summary-label {
+.label {
   font-weight: 600;
   min-width: 8.75rem;
   color: #4a6171;
 }
 
-.summary-value {
+.value {
   flex-grow: 1;
   color: #555;
 }
@@ -117,7 +117,6 @@ hr {
 .submit-btn:disabled {
   background-color: #a0cfff;
   cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .submit-btn:not(:disabled):hover {
@@ -133,7 +132,7 @@ hr {
     flex-direction: column;
     align-items: flex-start;
   }
-  .summary-label {
+  .label {
     min-width: auto;
     margin-bottom: 0.375rem;
   }
@@ -159,7 +158,7 @@ hr {
   margin-bottom: 0.9375rem;
 }
 
-.fabric-list .summary-value {
+.fabric-list .value {
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
@@ -201,8 +200,9 @@ hr {
 }
 
 .finalconfirmation-category-image {
-  display: flex;
-  gap: 1.25rem;
+  display : flex;
+  gap : 1.25rem;
+
 }
 
 .size-values {
@@ -239,4 +239,8 @@ hr {
 .size-value {
   font-weight: 600;
   color: #0077cc;
+}
+
+summary-item size-values {
+  
 }

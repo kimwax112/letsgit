@@ -1,5 +1,5 @@
-import "./MyProgressContent.css"
-import {useState, useEffect} from "react"
+import "./MyProgressContent.css";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import ContractItem from "../../../components/contract/ContractItem/ContractItem";
 

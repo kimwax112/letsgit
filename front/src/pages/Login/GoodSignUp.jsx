@@ -42,13 +42,14 @@ const [signupEmail, setSignupEmail] = useState("");
         }
 
         const data = await response.json(); // JSON 데이터 가져오기
+
         // ✅ usertype에 따라 페이지 이동
         if (data.usertype === "designer") {
             navigate("/designer/DesignerCosMain");
         } else if (data.usertype === "client") {
             navigate("/client/Cosmain");
         } else {
-            navigate("/ChatRoomList"); // 기본 페이지
+            navigate("/"); // 기본 페이지
         }
     } catch (error) {
         console.error("리디렉 요청 오류:", error);

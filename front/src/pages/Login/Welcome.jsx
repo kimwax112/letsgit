@@ -34,9 +34,9 @@ export default function Welcome(onSignupClick) {
         } else if (data.usertype === "client") {
             navigate("/client/Cosmain");
         } else {
-          navigate("/ChatRoomList"); // 기본 fallback 페이지
+          console.log("login response ▶", data);
+            navigate("/"); // 기본 페이지
         }
-
     } catch (error) {
         console.error("로그인 요청 오류:", error);
         setMessage("로그인 요청에 실패했습니다.");

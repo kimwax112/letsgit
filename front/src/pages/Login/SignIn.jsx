@@ -11,7 +11,7 @@ export default function SignIn() {
   };
   return (
     <div>
-      
+
       <div className='divmcover'>
         <div className='loginWrapper'>
         <img src={Logo} alt="로고" className='Logo-Img'/>
@@ -41,7 +41,7 @@ export default function SignIn() {
             <button style = {{marginTop:'10px'}} onClick={() =>handleSelectType('designer')} className='mainbarooo'>
             <img src={Check2} alt="체크" className="check-icon" />디자이너로 가입</button>
 
-           
+
           </div>
 
         </div>

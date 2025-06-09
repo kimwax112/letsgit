@@ -96,6 +96,7 @@ const Text2 = styled.div`
   color: #6B6565;
 `;
 
+
 export default function ItemBox({ children,data }) {
   const navigate = useNavigate();
   

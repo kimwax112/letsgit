@@ -71,6 +71,7 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+
           <div className="dropdown">
             <a href="#">대화방</a>
             <div className="dropdown-menu">

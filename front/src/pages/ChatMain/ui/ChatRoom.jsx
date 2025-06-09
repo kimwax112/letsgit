@@ -74,7 +74,7 @@ const ChatPage = ({ roomId, messages, setMessages }) => {
 
         stompClient.subscribe(`/topic/chat/${roomId}`, (msg) => {
           const receivedMessage = JSON.parse(msg.body);
-          setMessages((prev) => [...prev, receivedMessage]);
+          //setMessages((prev) => [...prev, receivedMessage]);  //텍스트중복
         });
           // 중복 입장 메시지 방지
           // if (receivedMessage.type === "JOIN" && receivedMessage.sender === username && hasJoined.current) {

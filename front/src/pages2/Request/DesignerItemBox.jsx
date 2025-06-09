@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
 import designerImage from "../../assets/desiner.png";
-
+import { useState } from "react";
 // 아이템 박스 컨테이너
 const ItemBoxContainer = styled.div`
   width: 350px;
@@ -33,7 +33,8 @@ const InnerBox = styled.div`
   background-color: #F6F2F2;
   width: 87%;
   height: 45%;
-  border: 0.5px solid #EBE5E5;
+  border: 0.5px solid;
+  border-color: #EBE5E5;
   border-radius: 20px;
   margin-top: 10px;
   padding: 5px;
@@ -111,15 +112,17 @@ const LikeButton = styled.button`
   }
 `;
 
-export default function DesignerItemBox({ data }) {
+
+export default function DesignerItemBox({ children,data }) {
   const navigate = useNavigate();
-  const [liked, setLiked] = useState(false);
+   const [liked, setLiked] = useState(false); //6.9
+
 
   const handleClick = () => {
-    // DesignerRequestPost로 데이터를 넘길 때도 requestId 사용
-    navigate('/designer/DesignerRequestPost', { state: { requestData: data } }); // data 객체 자체를 넘기므로 data.requestId는 내부에서 사용
+    navigate('/designer/DesignerRequestPost' , {state : {requestData : data }});
   };
 
+  ///6.9
   const handleLike = async (e) => {
     e.stopPropagation();
 
@@ -157,23 +160,27 @@ export default function DesignerItemBox({ data }) {
     }
   };
 
+
   return (
     <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
       <InnerBox />
       <DescriptionContainer>
         <TagContainer>
+          {/* <Tag>{data?.categoryTags}</Tag> */}
           <Tag>{data?.categoryTags || "태그"}</Tag>
         </TagContainer>
-        <Text>{data?.title || "의뢰 제목을 입력해주세요."}</Text>
+        {/* <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text> */}
+                <Text>{data?.title || "의뢰 제목을 입력해주세요."}</Text>
+
         <Profile>
+
           <Circle>
             <ProfileImage src={designerImage} alt="디자이너 프로필" />
           </Circle>
           홍길동
         </Profile>
-        <Text2>{data?.amount || "0원"}</Text2>
-        <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 미정"}</Text2>
-
+        <Text2>{data?.amount || "10000원"}</Text2>
+        <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 2주"}</Text2>
         <LikeButton onClick={handleLike} liked={liked}>
           {liked ? "❤️ 찜 완료" : "🤍 찜하기"}
         </LikeButton>
