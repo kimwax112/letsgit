@@ -90,7 +90,29 @@ function formatDate(dateString) {
 
 function ChatMain() {
   const [chatData, setChatData] = useState([]);
+  const location = useLocation(); // useLocation 훅을 사용하여 현재 위치 정보 가져오기
+  // location.state에서 newRoom이 있을 경우 채팅방 데이터 추가
+  // useEffect를 사용하여 컴포넌트가 마운트될 때와 location.state가 변경될 때 실행
+  // location.state가 변경될 때마다 새로운 채팅방이 추가되도록 설정
+  // location.state에서 newRoom이 있을 경우 채팅방 데이터 추가
+
+  /* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
   useEffect(() => {
+  if (location.state?.newRoom) {
+    const newRoom = location.state.newRoom;
+    const newChat = {
+      id: newRoom.id,
+      creator: newRoom.creator,
+      name: newRoom.name,
+      message: newRoom.creator,
+      time: formatDate(newRoom.createdAt || new Date().toISOString())
+    };
+    setChatData(prev => [...prev, newChat]);
+  }
+}, [location.state?.newRoom]);
+*/
+  
+useEffect(() => {
   axios
     .get("http://localhost:8081/api/rooms/list", { withCredentials: true })
     .then((res) => {
@@ -153,7 +175,7 @@ function ChatMain() {
     
   } = useChat(chatData);
 
-  const location = useLocation();
+  
   const hasAddedRequestMessage = useRef(false); // useRef를 사용하여 DetailList 상태를 저장합니다.
   useEffect(() => { // React의 useEffect 훅을 사용하여 컴포넌트 마운트 및 location.state 변경 시 실행.
     const text = location.state?.messageText;

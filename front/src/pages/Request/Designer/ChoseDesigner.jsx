@@ -49,6 +49,7 @@ export default function ChoseDesigner() {
   const fetchPosts = () => {
     axios.get("http://localhost:8081/api/posts", { withCredentials: true })
       .then(response => {
+        console.log("글 목록 불러오기 성공", response.data);
         setPosts(response.data);
         setPostsCount(response.data.length); 
       })

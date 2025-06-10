@@ -8,7 +8,7 @@ export default function ClothesTest({
   chestOffset, setChestOffset,
   bodyLength, setBodyLength,
   armLengthFactor,setArmLengthFactor,
-  upperWidthOffset, setUpperWidthOffset,
+  upperWidthOffset, 
   lowerWidthOffset, setLowerWidthOffset,
   topBodyHeight, setTopBodyHeight,
   resetValues,
@@ -25,15 +25,16 @@ export default function ClothesTest({
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#000';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
+    
 
-    const centerX = canvas.width / 2;
-    const currentCenterX = (100 + 200) / 2;
-    const offsetX = centerX - currentCenterX;
+    const centerX = canvas.width / 2;  // 캔버스 가로 중앙 250 중앙에 오도록 배치 하는거
+    const currentCenterX = (100 + 200) / 2;  // 원래 중심 셔츠 중심(150) 
+    const offsetX = centerX - currentCenterX;  // ->100 픽셀 이동
 
     const neckLeftX = 100 - shoulderOffset+ 38 - upperWidthOffset + offsetX;
-
-    const shoulderLeftBase = { x: 40 + offsetX, y: 120 }; //
+    
+    const shoulderLeftBase = { x: 50 + offsetX, y: 110 }; //x 가 커지고 y가 작아져야 대각선으로 줄어듬 
 
     const sleeveLeftBase = { x: 60 + offsetX, y: 20 };
     const sleeveRightBase = { x: 240 + offsetX, y: 20 };
@@ -43,23 +44,22 @@ export default function ClothesTest({
       y: (50 + shoulderLeftBase.y) / 2,
     };
 
-  
-    
-
+    // Normalize armLengthFactor to range [0, 1] to reduce growth rate
+    const interpFactor = Math.min(armLengthFactor / 7, 5);
 
     const leftShoulder = {
-      x: shoulderLeftBase.x * armLengthFactor + midLeftShoulder.x * (1 - armLengthFactor ),
-      y: shoulderLeftBase.y * armLengthFactor + midLeftShoulder.y * (1 - armLengthFactor ),
+      x: shoulderLeftBase.x * interpFactor + midLeftShoulder.x * (1 - interpFactor ),
+      y: shoulderLeftBase.y * interpFactor + midLeftShoulder.y * (1 - interpFactor ),
     };
 
     const leftSleeve = {
-      x: sleeveLeftBase.x * armLengthFactor + midLeftShoulder.x * (1 - armLengthFactor) ,
-      y: sleeveLeftBase.y * armLengthFactor + midLeftShoulder.y * (1 - armLengthFactor) ,
+      x: sleeveLeftBase.x * interpFactor + midLeftShoulder.x * (1 - interpFactor) ,
+      y: sleeveLeftBase.y * interpFactor + midLeftShoulder.y * (1 - interpFactor) ,
     };
 
     const neckRightX = 200 + shoulderOffset-38 + upperWidthOffset + offsetX;
     
-    const shoulderRightBase = { x: 260 + offsetX, y: 120 };
+    const shoulderRightBase = { x: 250 + offsetX, y: 110 }; //x 가 작아지고 y도 작아져야 대각선으로 줄어듬
     
 
     const midRightShoulder = {
@@ -68,29 +68,30 @@ export default function ClothesTest({
     };
 
     const rightShoulder = {
-      x: shoulderRightBase.x * armLengthFactor + midRightShoulder.x * (1 - armLengthFactor ),
-      y: shoulderRightBase.y * armLengthFactor + midRightShoulder.y * (1 - armLengthFactor ),
+      x: shoulderRightBase.x * interpFactor + midRightShoulder.x * (1 - interpFactor ) ,
+      y: shoulderRightBase.y * interpFactor + midRightShoulder.y * (1 - interpFactor )  ,
     };
 
     const rightSleeve = {
-      x: sleeveRightBase.x * armLengthFactor+ midRightShoulder.x * (1 - armLengthFactor),
-      y: sleeveRightBase.y * armLengthFactor+ midRightShoulder.y * (1 - armLengthFactor),
+      x: sleeveRightBase.x * interpFactor+ midRightShoulder.x * (1 - interpFactor),
+      y: sleeveRightBase.y * interpFactor+ midRightShoulder.y * (1 - interpFactor),
     };
 
     ctx.beginPath();
-    ctx.moveTo(neckLeftX, 50);
+    ctx.moveTo(neckLeftX, 50); 
     ctx.lineTo(leftShoulder.x  , leftShoulder.y);
     ctx.lineTo(leftShoulder.x + 20, leftShoulder.y + 15);
 
     
-    ctx.lineTo(100 - chestOffset+82 + offsetX, 50 + topBodyHeight);
+    ctx.lineTo(100 - chestOffset+82 + offsetX, 50 + topBodyHeight + 30 );
     ctx.lineTo(100 - lowerWidthOffset +90 + offsetX, bodyLength + 130);
     ctx.lineTo(200 + lowerWidthOffset -90 + offsetX, bodyLength + 130);
-    ctx.lineTo(200 + chestOffset-82 + offsetX, 50 + topBodyHeight);
+    ctx.lineTo(200 + chestOffset-82 + offsetX, 50 + topBodyHeight+ 30 );
 
     ctx.lineTo(rightShoulder.x - 20, rightShoulder.y + 15);
     ctx.lineTo(rightShoulder.x, rightShoulder.y);
     ctx.lineTo(neckRightX, 50);
+
     ctx.lineTo(170 + neckXOffset-20 + offsetX+20, 40);
     ctx.quadraticCurveTo(150 + offsetX, neckY+82, 130 - neckXOffset + offsetX, 40);
     ctx.lineTo(neckLeftX, 50);
@@ -270,8 +271,8 @@ export default function ClothesTest({
               <h4>소매 기장</h4>
               <input
                 type="range"
-                min={0}
-                max={6}
+                min={20}
+                max={26}
                 step={0.01}
                 value={armLengthFactor}
                 onChange={(e) => setArmLengthFactor(Number(e.target.value))}
@@ -292,8 +293,8 @@ export default function ClothesTest({
               <h4>암홀(직선)</h4>
               <input
                 type="range"
-                min={40}
-                max={52}
+                min={18}
+                max={30}
                 step={0.25}
                 value={topBodyHeight}
                 onChange={(e) => setTopBodyHeight(Number(e.target.value))}
@@ -301,8 +302,8 @@ export default function ClothesTest({
               />
               <input
                 type="number"
-                min={40}
-                max={52}
+                min={18}
+                max={30}
                 step={0.25}
                 value={topBodyHeight}
                 onChange={handleInputChange(setTopBodyHeight, 10, 100)}

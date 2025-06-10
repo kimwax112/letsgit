@@ -187,8 +187,9 @@ const FinalConfirmation = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [category, selectedSize]);
   
-
-  const handleSubmit = async () => {
+/*
+  const handleSubmit = async () => { /* 템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고
+                                      
     if (!designName.trim()) {
       alert("디자인 이름을 입력해주세요.");
       return;
@@ -235,6 +236,68 @@ const FinalConfirmation = () => {
       setLoading(false);
     }
   };
+  */
+
+  //여기부터 프론트용 테스트용
+  const handleSubmit = async () => { 
+    if (!designName.trim()) {
+      alert("디자인 이름을 입력해주세요.");
+      return;
+    }
+
+    const formattedColors = Object.entries(selectedColors).map(([id, color]) => ({ 
+      id: String(id),
+      color: color,
+    }));
+
+    const finalColor = formattedColors.length > 0 ? formattedColors[0].color : "#ffffff"; 
+
+      // 카테고리에 따라 캔버스 이미지 가져오기 
+    let imageData = null; //나중에 이부분 기존코드에 추가 
+    if (category === "상의") { // 나중에 이부분 기존코드에 추가 
+    imageData = localStorage.getItem("shirtCanvasImage"); // 나중에 이부분 기존코드에 추가 
+    } else if (category === "바지") { //  나중에 이부분 기존코드에 추가 
+    imageData = localStorage.getItem("pantsCanvasImage"); // 나중에 이부분 기존코드에 추가 
+    }
+
+    const finalData = { 
+      designId: Date.now(), // 고유 ID로 현재 타임스탬프 사용 
+      id,
+      designName: designName.trim(),
+      clothingType: selectedItem.item,
+      fabricJson: JSON.stringify(selectedFabric.map(f => f.name)),
+      colorsJson: JSON.stringify(
+        formattedColors.length > 0 ? formattedColors : [{ color: finalColor }]
+      ),
+      size: selectedSize,
+      category: "template",
+      note,
+      imageUrl: imageData, // base64 문자열을 imageUrl로 저장 // 나중에 이부분 기존코드에 추가 
+    createdAt: new Date().toISOString(), 
+    };
+
+    try {
+    setLoading(true);
+    // localStorage에 디자인 데이터 저장
+    const existingDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
+    existingDesigns.push(finalData);
+    localStorage.setItem("mockDesigns", JSON.stringify(existingDesigns));
+      
+    alert("디자인이 성공적으로 저장되었습니다.");
+    // 성공 시 localStorage에서 이미지 제거 (선택 사항)
+    if (category === "상의") {
+      localStorage.removeItem("shirtCanvasImage");
+    } else if (category === "바지") {
+      localStorage.removeItem("pantsCanvasImage");
+    }
+  } catch (error) {
+    alert("오류가 발생했습니다. 다시 시도해주세요.");
+    console.error("Submit error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+//여기까지 프론트용 테스트용
 
   // 이미지 저장 함수
   const saveAsImage = () => {

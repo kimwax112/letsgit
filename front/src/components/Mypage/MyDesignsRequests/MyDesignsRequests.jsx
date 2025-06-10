@@ -16,6 +16,7 @@ const MyDesignsRequests = ({ username: propUsername }) => {
   const [designs, setDesigns] = useState([]);
   const [userFiles, setUserFiles] = useState([]);
   const [orderItems, setOrderItems] = useState([
+    
     { id: 1, client: "홍길동", title: "청바지 전문 디자이너 구해요", category: "바지 > 청바지", style: "캐쥬얼", price: "10만원 이하", deadline: "디자이너와 협의 후 결정", createdAt: "2025/01/01", description: "상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명" },
     { id: 2, client: "김민지", title: "포스터 디자인 의뢰합니다", category: "그래픽 > 포스터", style: "모던, 깔끔한 느낌", price: "15만원 내외", deadline: "2025/04/30까지", createdAt: "2025/03/25", description: "행사용 포스터 디자인 부탁드립니다. 배경은 어두운 톤, 텍스트 강조해주세요." },
     { id: 3, client: "이준호", title: "로고 제작 요청", category: "브랜딩 > 로고", style: "심플, 미니멀", price: "20만원 이하", deadline: "디자이너와 조율", createdAt: "2025/02/15", description: "스타트업 브랜드 로고가 필요합니다. 심볼 중심으로 제작되면 좋겠습니다." },
@@ -49,6 +50,35 @@ const MyDesignsRequests = ({ username: propUsername }) => {
   };
   const colorMap = { "#ff0000": "빨강", "#00ff00": "초록", "#0000ff": "파랑", "#ff9900": "주황", "#0099ff": "하늘" };
 
+useEffect(() => {
+    setUsername("client1004"); //프론트용 테스트용으로 "client1004" 고정 6.10
+  }, []);
+
+  useEffect(() => {  
+    if (username) {
+      console.log("📦 fetchMyDesigns 호출, 현재 username:", username);
+      fetchMyDesigns();
+    }
+  }, [username]);
+
+  const fetchMyDesigns = () => { 
+    try {
+      const mockDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
+      console.log("Raw mockDesigns:", mockDesigns); // 모든 데이터 확인
+      setDesigns(mockDesigns); // username 필터링 제거
+      console.log("🎯 모킹된 디자인 데이터:", mockDesigns);
+    } catch (err) {
+      console.error("❌ 디자인 불러오기 실패", err);
+      setDesigns([]);
+    }
+  };
+  const fetchUserFiles = async () => { 
+    setUserFiles([]); // 패턴 디자인 비활성화
+  }; //프론트용 테스트용 요기까지  6.10
+
+
+  /* 템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 6.10
+  
   useEffect(() => {
     if (!propUsername) {
       const fetchSession = async () => {
@@ -81,7 +111,7 @@ const MyDesignsRequests = ({ username: propUsername }) => {
     }
   }, [username]);
 
-  const fetchMyDesigns = () => {
+  const fetchMyDesigns = () => { 프론트 테스트 하기위해 주석처리 6.10
     if (!username) {
       console.warn("⚠️ 사용자 이름이 없어 디자인을 불러올 수 없습니다.");
       return;
@@ -113,6 +143,7 @@ const MyDesignsRequests = ({ username: propUsername }) => {
       console.error('⚠️ 파일 가져오기 에러:', error);
     }
   };
+템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 요기까지 */
 
   const getColorName = (colorCode) => colorMap[colorCode] || colorCode;
   const closeModal = () => setIsModalOpen(false);
@@ -132,13 +163,16 @@ const MyDesignsRequests = ({ username: propUsername }) => {
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const day = date.getDate().toString().padStart(2, '0');
       const hours = date.getHours().toString().padStart(2, '0');
-      return `<span class="math-inline">\{year\}\-</span>{month}-${day} ${hours}시`;
+      // return `<span class="math-inline">\{year\}\-</span>{month}-${day} ${hours}시`; 6.10
+          return `${year}년 ${month}-${day} ${hours}시`;
     } catch (e) {
       return '';
     }
   };
   const filteredDesigns = designs.filter((item) => item.category === selectedCategory);
+
   const handleTabClick = (tab) => setActiveTab(tab);
+
   const handleCategoryChange = async (event) => {
     const selected = event.target.value;
     setSelectedCategory(selected);
@@ -160,10 +194,12 @@ const MyDesignsRequests = ({ username: propUsername }) => {
       return '';
     }
   };
+
   const handleDesignCardClick = (item) => {
     setSelectedDesignItem(item);
     setIsDesignModalOpen(true);
   };
+
   const handleOrderCardClick = (item) => {
     setSelectedOrderItem(item);
     setIsOrderModalOpen(true);
@@ -203,8 +239,19 @@ const MyDesignsRequests = ({ username: propUsername }) => {
                   <div className="card-container">
                     {filteredDesigns.map((item) => (
                       <div key={item.designId} className="card" onClick={() => handleCardClick(item)}>
+                          {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={item.designName}
+                            className="card-image"
+                            style={{ width: "100%", height: "auto" }}
+                          />
+                        ) : (
+                          <div>이미지 없음</div>
+                        )}
                         <h3>{item.designName}</h3>
                         <p>{item.clothingType}</p>
+                        
                       </div>
                     ))}
                   </div>
@@ -260,6 +307,7 @@ const MyDesignsRequests = ({ username: propUsername }) => {
               <p><strong>원단:</strong> {selectedDesignItem.fabric}</p>
               <p><strong>색상:</strong> {selectedDesignItem.color}</p>
               <p><strong>의류 종류:</strong> {selectedDesignItem.clothingType}</p>
+              
             </div>
           </div>
         </div>
@@ -270,7 +318,16 @@ const MyDesignsRequests = ({ username: propUsername }) => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <span className="close-btn" onClick={closeModal}>&times;</span>
             <h2>{selectedItem.designName}</h2>
-            {/* <img src={selectedItem.imageUrl} alt={selectedItem.designName} className="modal-image" /> */}
+            {selectedItem.imageUrl ? (
+              <img
+                src={selectedItem.imageUrl}
+                alt={selectedItem.designName}
+                className="modal-image"
+                style={{ width: "100%", height: "auto" }}
+              />
+            ) : (
+              <p>이미지 없음</p>
+            )}
             <p><strong>의류 종류:</strong> {selectedItem.clothingType}</p>
             <p><strong>원단:</strong> {parseFabric(selectedItem.fabricJson)}</p>
             <p><strong>사이즈:</strong> {selectedItem.size}</p>
