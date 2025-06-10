@@ -1,47 +1,74 @@
-// FavoriteRequests.jsx (이전에 주신 코드 그대로 유지)
-
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function FavoriteRequests() {
+function FavoriteRequests({ propUsername }) {
+  const [username, setUsername] = useState(propUsername || '');
   const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // 🔐 세션에서 username 가져오기
   useEffect(() => {
-    // 이제 이곳에서 sessionStorage.getItem('designerId')가 null이 아닐 것입니다.
-    const designerId = sessionStorage.getItem('designerId'); 
-    console.log("디자이너 ID (FavoriteRequests):", designerId); 
-
-    if (!designerId) { 
-      console.error("디자이너 ID가 없습니다. (로그인 필요)");
-      // 로그인 페이지로 리다이렉트하는 등의 추가 처리 필요
-      return;
-    }
-
-    axios.get(`http://localhost:8081/designer/favorites/${designerId}`)
-      .then(res => {
-        setFavorites(res.data);
-      })
-      .catch(err => {
-        console.error('찜한 의뢰 목록 불러오기 실패:', err);
-        if (err.response && err.response.status === 401) {
-            alert("찜 목록을 보려면 로그인이 필요합니다.");
-            // 로그인 페이지로 리다이렉트
-        } else {
-            alert("찜 목록을 불러오는 데 실패했습니다.");
+    if (!propUsername) {
+      const fetchSession = async () => {
+        try {
+          const res = await fetch("http://localhost:8081/api/user", {
+            credentials: 'include', // 세션 쿠키 포함
+          });
+          if (!res.ok) throw new Error("세션 없음");
+          const data = await res.json();
+          if (data.username) {
+            console.log("✅ 세션에서 username 획득:", data.username);
+            setUsername(data.username);
+          } else {
+            console.warn("❗ 세션은 있지만 username 없음");
+            setLoading(false);
+          }
+        } catch (err) {
+          console.warn("⚠️ 세션 정보 없음:", err);
+          setLoading(false);
         }
-      });
-  }, []); // 의존성 배열을 비워두면 컴포넌트 마운트 시 한 번만 실행됩니다.
+      };
+      fetchSession();
+    } else {
+      setLoading(false); // props로 username이 주어진 경우 바로 false 처리
+    }
+  }, [propUsername]);
+
+  // 📝 username이 설정되면 찜 목록 요청
+  useEffect(() => {
+    if (!username) return;
+    axios.get(`http://localhost:8081/designer/favorites/${username}`, {
+      withCredentials: true // 세션 쿠키 전달
+    })
+    .then(res => {
+      console.log("📦 찜 목록 응답 데이터:", res.data);
+      setFavorites(res.data);
+    })
+    .catch(err => {
+      console.error('❌ 찜한 의뢰 목록 불러오기 실패:', err);
+      if (err.response && err.response.status === 401) {
+        alert("찜 목록을 보려면 로그인이 필요합니다.");
+      } else {
+        alert("찜 목록을 불러오는 데 실패했습니다.");
+      }
+    });
+  }, [username]);
+
+  // if (loading) {
+  //   return <div>🔄 로그인 확인 중...</div>;
+  // }
 
   return (
     <div>
-      <h2>찜한 의뢰 목록</h2>
+      <h2>❤️ 찜한 의뢰 목록</h2>
       <ul>
-        {favorites.map(item => (
-          // key prop은 각 아이템을 고유하게 식별해야 합니다.
-          // 서버에서 받은 Request 객체에 id 필드가 있는지 확인하세요.
-          // 만약 REQUEST_ID로 온다면 item.REQUEST_ID로 접근하거나 매핑 시 별칭을 지정해야 합니다.
-          <li key={item.id}>{item.title || '제목 없음'}</li> 
-        ))}
+        {favorites.length === 0 ? (
+          <li>찜한 의뢰가 없습니다.</li>
+        ) : (
+          favorites.map(item => (
+            <li key={item.requestId}>{item.title || '제목 없음'}</li>
+          ))
+        )}
       </ul>
     </div>
   );

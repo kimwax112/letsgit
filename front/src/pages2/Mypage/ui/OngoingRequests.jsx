@@ -3,38 +3,6 @@ import ProgressModal from "./ProgressModal";
 import EditRequestModal from "./EditRequestModal";
 import axios from "axios";
 
-// 예시용 비동기 데이터 함수 (실제로는 API 요청으로 교체 예정)
-// const fetchContracts = async () => {
-//   // 실제론 백엔드에서 불러오는 API 호출
-//   // const response = await fetch('/api/contracts');
-//   // return await response.json();
-
-//   // 더미 데이터 (작성한 계약서들)
-//   return [
-//     {
-//       id: 1,
-//       title: "디자인 작업 의뢰서 #1",
-//       date: "2025-05-01",
-//       progress: 50,
-//       hasEditRequest: true,
-//     },
-//     {
-//       id: 2,
-//       title: "로고 제작 의뢰서 #2",
-//       date: "2025-04-20",
-//       progress: 30,
-//       hasEditRequest: false,
-//     },
-//     {
-//       id: 3,
-//       title: "웹 페이지 UI 리디자인 #3",
-//       date: "2025-03-15",
-//       progress: 80,
-//       hasEditRequest: true,
-//     },
-//   ];
-// };
-
 export default function OngoingRequests() {
   const [contracts, setContracts] = useState([]);
   const [search, setSearch] = useState("");
@@ -43,19 +11,11 @@ export default function OngoingRequests() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
 
-  // useEffect(() => {
-  //   const loadContracts = async () => {
-  //     const data = await fetchContracts();
-  //     setContracts(data);
-  //   };
-  //   loadContracts();
-  // }, []);
-
-    useEffect(() => {
+  useEffect(() => {
     const loadContracts = async () => {
       try {
         const response = await axios.get("http://localhost:8081/client/contract");
-        console.log("백엔드에서 받은 계약 데이터:", response.data);
+        console.log("받은 계약 데이터:", response.data);
         setContracts(response.data);
       } catch (error) {
         console.error("계약 데이터를 불러오는 중 오류 발생:", error);
@@ -64,32 +24,7 @@ export default function OngoingRequests() {
     loadContracts();
   }, []);
 
-
-  // const filteredContracts = contracts.filter((contract) => {
-  //   if (search && !contract.title.includes(search)) return false;
-
-  //   const now = new Date();
-  //   const contractDate = new Date(contract.date);
-
-  //   if (filter === "1개월") {
-  //     const oneMonthAgo = new Date(now);
-  //     oneMonthAgo.setMonth(now.getMonth() - 1);
-  //     return contractDate >= oneMonthAgo;
-  //   }
-  //   if (filter === "2개월") {
-  //     const twoMonthsAgo = new Date(now);
-  //     twoMonthsAgo.setMonth(now.getMonth() - 2);
-  //     return contractDate >= twoMonthsAgo;
-  //   }
-  //   if (filter === "3개월") {
-  //     const threeMonthsAgo = new Date(now);
-  //     threeMonthsAgo.setMonth(now.getMonth() - 3);
-  //     return contractDate >= threeMonthsAgo;
-  //   }
-
-  //   return true;
-  // });
-   const filteredContracts = contracts.filter((contract) => {
+  const filteredContracts = contracts.filter((contract) => {
     if (search && !contract.requestTitle?.includes(search)) return false;
 
     if (!contract.dueDate) {
@@ -123,7 +58,6 @@ export default function OngoingRequests() {
 
     return true;
   });
-
 
   return (
     <div style={{ padding: "1rem", maxWidth: "800px", margin: "0 auto" }}>
@@ -178,33 +112,35 @@ export default function OngoingRequests() {
               </span>
               <div>
                 <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-                  {contract.title}
+                  {contract.contractTitle}
                 </div>
                 <div style={{ color: "#666", fontSize: "0.9rem" }}>
-                  {contract.date}
+                  {contract.dueDate}
                 </div>
               </div>
             </div>
 
             {/* 오른쪽 버튼들 */}
             <div style={{ display: "flex", gap: "0.5rem" }}>
-               <div>
+              <div>
                 <button
-                    style={{
+                  style={{
                     backgroundColor: "#799FC4",
                     color: "white",
                     border: "none",
                     borderRadius: "0.3rem",
                     padding: "0.5rem 1rem",
                     cursor: "pointer",
-                    }}
-                    onClick={() => setShowModal(true)}
+                  }}
+                  onClick={() => {
+                    setSelectedContract(contract);
+                    setShowModal(true);
+                  }}
                 >
-                    진행도 등록
+                  진행도 등록
                 </button>
+              </div>
 
-                {showModal && <ProgressModal onClose={() => setShowModal(false)} />}
-                </div>
               <button
                 style={{
                   backgroundColor: "#4a6171",
@@ -215,9 +151,9 @@ export default function OngoingRequests() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                    setSelectedContract(contract);
-                    setShowEditModal(true);
-                    }}
+                  setSelectedContract(contract);
+                  setShowEditModal(true);
+                }}
               >
                 수정 요청사항 전달
               </button>
@@ -225,14 +161,36 @@ export default function OngoingRequests() {
           </li>
         ))}
       </ul>
-        {/* ✅ 수정 요청사항 모달 */}
-            {showEditModal && selectedContract && (
-            <EditRequestModal
-                onClose={() => setShowEditModal(false)}
-                designerName="윤디" // 또는 로그인 사용자 이름
-                requestTitle={selectedContract.title}
-            />
-            )}
+
+      {/* 진행도 등록 모달 */}
+      {showModal && selectedContract && (
+        <ProgressModal
+          onClose={() => {
+            setShowModal(false);
+            setSelectedContract(null);
+          }}
+          contract={selectedContract}
+          initialStep={selectedContract.step || 0} // step 데이터가 없으면 기본값 0
+          onStepUpdated={(updatedStep) => {
+            const updatedContracts = contracts.map((c) =>
+              c.id === selectedContract.id ? { ...c, step: updatedStep } : c
+            );
+            setContracts(updatedContracts);
+          }}
+        />
+      )}
+
+      {/* 수정 요청사항 모달 */}
+      {showEditModal && selectedContract && (
+        <EditRequestModal
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedContract(null);
+          }}
+          designerName="윤디" // 예시 이름 (로그인 사용자로 교체 가능)
+          requestTitle={selectedContract.contractTitle}
+        />
+      )}
     </div>
   );
 }
