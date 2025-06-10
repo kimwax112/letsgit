@@ -214,6 +214,13 @@ export default function Profile({ post }) {
     alert("장바구니에 추가되었습니다!");
   };
 
+  
+  const ChatEvent = () => {
+    alert("대화방으로 이동합니다");
+    navigate("/client/ChatMain");
+  };
+
+  /*/* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
   const ChatEvent = async (postnum) => {
   let room;
   try {
@@ -242,6 +249,8 @@ export default function Profile({ post }) {
     state: { newRoom: room }
   });
 };
+*/
+
 /* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
 const ChatEvent = async (postnum) => {
   let room;
