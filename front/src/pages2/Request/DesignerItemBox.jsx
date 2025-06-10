@@ -1,8 +1,7 @@
-import React from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
 import designerImage from "../../assets/desiner.png";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 // 아이템 박스 컨테이너
 const ItemBoxContainer = styled.div`
   width: 350px;
@@ -113,42 +112,66 @@ const LikeButton = styled.button`
 `;
 
 
-export default function DesignerItemBox({ children,data }) {
+export default function DesignerItemBox({ children, data, propUsername }) {
   const navigate = useNavigate();
-   const [liked, setLiked] = useState(false); //6.9
+  const [liked, setLiked] = useState(false);
+  const [username, setUsername] = useState(propUsername || "");
 
+  useEffect(() => {
+    if (!propUsername) {
+      const fetchSession = async () => {
+        try {
+          const res = await fetch("http://localhost:8081/api/user", {
+            credentials: "include",
+          });
+          if (!res.ok) throw new Error("세션 없음");
+          const data = await res.json();
+          if (data.username) {
+            console.log("✅ 세션에서 username 획득:", data.username);
+            setUsername(data.username);
+          } else {
+            console.warn("❗ 세션은 있지만 username 없음");
+          }
+        } catch (err) {
+          console.warn("⚠️ 세션 정보 없음:", err);
+        }
+      };
+      fetchSession();
+    } else {
+      setUsername(propUsername);
+    }
+  }, [propUsername]);
 
   const handleClick = () => {
-    navigate('/designer/DesignerRequestPost' , {state : {requestData : data }});
+    navigate("/designer/DesignerRequestPost", { state: { requestData: data } });
   };
 
-  ///6.9
   const handleLike = async (e) => {
     e.stopPropagation();
 
     console.log("DesignerItemBox - data:", data);
-    console.log("DesignerItemBox - data.requestId:", data?.requestId); // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
+    console.log("DesignerItemBox - data.requestId:", data?.requestId);
 
-    // data.requestId가 유효한지 여기서 한 번 더 확인
-    if (!data?.requestId) { // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
-        alert("의뢰 ID를 찾을 수 없습니다. 찜하기 실패.");
-        return; // ID가 없으면 여기서 중단
+    if (!data?.requestId) {
+      alert("의뢰 ID를 찾을 수 없습니다. 찜하기 실패.");
+      return;
     }
 
     try {
       const res = await fetch("http://localhost:8081/designer/favorite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", 
-        body: JSON.stringify({ 
-          requestId: data.requestId // ⭐⭐⭐ 여기가 변경되었습니다! ⭐⭐⭐
+        credentials: "include",
+        body: JSON.stringify({
+          requestId: data.requestId,
+          username, // 필요하다면 username도 같이 보내세요
         }),
       });
 
       if (res.ok) {
         setLiked(true);
         alert("찜 완료!");
-      } else if (res.status === 401) { 
+      } else if (res.status === 401) {
         alert("로그인이 필요합니다.");
       } else {
         const errorText = await res.text();
@@ -160,25 +183,22 @@ export default function DesignerItemBox({ children,data }) {
     }
   };
 
-
   return (
-    <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
+    <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}>
       <InnerBox />
       <DescriptionContainer>
         <TagContainer>
-          {/* <Tag>{data?.categoryTags}</Tag> */}
           <Tag>{data?.categoryTags || "태그"}</Tag>
         </TagContainer>
-        {/* <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text> */}
-                <Text>{data?.title || "의뢰 제목을 입력해주세요."}</Text>
+        <Text>{data?.title || "의뢰 제목을 입력해주세요."}</Text>
 
         <Profile>
-
           <Circle>
             <ProfileImage src={designerImage} alt="디자이너 프로필" />
           </Circle>
-          홍길동
+          {username || "홍길동"}
         </Profile>
+
         <Text2>{data?.amount || "10000원"}</Text2>
         <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 2주"}</Text2>
         <LikeButton onClick={handleLike} liked={liked}>

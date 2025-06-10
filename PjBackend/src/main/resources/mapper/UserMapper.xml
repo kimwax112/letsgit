@@ -8,7 +8,7 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="email" column="email"/>
-        <result property="usertype" column="usertype"/>
+        <result property="userType" column="usertype"/>
         <result property="birthdate" column="birthdate"/>
         <result property="tel" column="tel"/>
         <result property="name" column="name"/>
@@ -23,7 +23,7 @@
 
     <insert id="insertUser" parameterType="com.example.Loginpj.model.User">
         INSERT INTO user_info (username, password, email, usertype, birthdate, tel, name, gender)
-        VALUES (#{username, jdbcType=VARCHAR}, #{password}, #{email}, #{usertype, jdbcType=VARCHAR}, #{birthdate}, #{tel}, #{name}, #{gender})
+        VALUES (#{username, jdbcType=VARCHAR}, #{password}, #{email}, #{userType, jdbcType=VARCHAR}, #{birthdate}, #{tel}, #{name}, #{gender})
     </insert>
 
 </mapper>

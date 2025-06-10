@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import { DropDown, Tag, ImageUploader, NextButtonUI, RequestPopup } from "../../../components";
 import { TextInputUIManager, TagManager, Modal } from "../../../utils";
@@ -149,18 +150,36 @@ export default function RequestWriting() {
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
 
-  // 데이터 디버깅 로그
-  const handleOpenModal = () => {
-    console.log("Data before opening modal:", {
+  const [imageUrls, setImageUrls] = useState(["", "", ""]);  // 이미지 URL 저장용
+
+const onImageUpload = (index, url) => {
+  setImageUrls(prev => {
+    const newUrls = [...prev];
+    newUrls[index] = url;
+    return newUrls;
+  });
+};
+
+const handleSubmit = async () => {
+  try {
+    const response = await axios.post("http://localhost:8081/api/requests", {
       title,
-      categoryTags,
+      categoryTags: categoryTags.join(","),  // 배열을 콤마 구분 문자열로 변환
       style,
       amount,
       deadline,
       description,
+      image1Url: imageUrls[0] || "",
+      image2Url: imageUrls[1] || "",
+      image3Url: imageUrls[2] || ""
     });
-    setIsModalOpen(true);
-  };
+    console.log("요청 성공:", response.data);
+    alert("의뢰가 등록되었습니다!");
+  } catch (error) {
+    console.error("요청 실패:", error);
+    alert("의뢰 등록에 실패했습니다.");
+  }
+};
 
   return (
     <Container>
@@ -261,11 +280,9 @@ export default function RequestWriting() {
         </DetailAndUploadWrapper>
 
         <Footer>
-          <NextButtonUI onClick={handleOpenModal}>의뢰 등록</NextButtonUI>
+          <NextButtonUI onClick={handleSubmit}>의뢰 등록</NextButtonUI>  {/* handleSubmit 으로 변경 */}
           <NextButtonUI to="/client/Request">취소</NextButtonUI>
-          <NextButtonUI onClick={() => alert("임시 저장되었습니다!")}>
-            임시 저장
-          </NextButtonUI>
+          <NextButtonUI onClick={() => alert("임시 저장되었습니다!")}>임시 저장</NextButtonUI>
         </Footer>
       </Wrapper>
 

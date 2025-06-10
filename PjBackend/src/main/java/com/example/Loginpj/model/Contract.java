@@ -6,14 +6,27 @@ public class Contract {
     private int contractId;
     private int requestId;
     private String designerId;
-    private Date dueDate;  // 변경: String → Date
+    private Date dueDate;
     private int requestFee;
     private String status;
     private String clientId;
     private String contractTitle;
-    private Integer starredStatus;  // 변경: Boolean → Integer
-    private String contractContent;  // CLOB → String으로 매핑, 필요시 Clob으로 변경 가능
-    
+    private Integer starredStatus;
+    private String contractContent;
+
+    // --- 진행도(step) 필드 추가 ---
+    private Integer step; // contract_progress 테이블의 STEP 컬럼과 매핑
+
+    // --- step 필드의 Getter와 Setter ---
+    public Integer getStep() {
+        return step;
+    }
+
+    public void setStep(Integer step) {
+        this.step = step;
+    }
+
+    // --- 기존 필드들의 Getter와 Setter ---
     public int getContractId() {
         return contractId;
     }
@@ -71,11 +84,11 @@ public class Contract {
     }
 
     public Integer getStarredStatus() {
-        return starredStatus;  // 변경: Boolean → Integer
+        return starredStatus;
     }
 
     public void setStarredStatus(Integer starredStatus) {
-        this.starredStatus = starredStatus;  // 변경: Boolean → Integer
+        this.starredStatus = starredStatus;
     }
 
     public String getContractContent() {
