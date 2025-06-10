@@ -10,6 +10,7 @@ import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
 import { FaHeart, FaRegHeart } from "react-icons/fa"; // 💡 추가
+import axios from "axios";
 
 // 이미지 배열
 const profileImages = [
@@ -188,6 +189,17 @@ const Text = styled.p`
   text-align: center;
 `;
 
+  // 날짜를 "YYYY.MM.DD" 형식으로 변환하는 유틸 6.9
+function formatDate(dateString) {
+  if (!dateString) return "";
+  const d = new Date(dateString);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}.${month}.${day}`;
+}
+
+
 // Component
 export default function Profile({ post }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -195,15 +207,64 @@ export default function Profile({ post }) {
   const [liked, setLiked] = useState(false); // 💖 찜 상태 추가
   const navigate = useNavigate();
 
+
+
   const clickCart = (e) => {
     e.stopPropagation();
     alert("장바구니에 추가되었습니다!");
   };
 
-  const ChatEvent = () => {
-    alert("대화방으로 이동합니다");
-    navigate("/client/ChatMain");
+  const ChatEvent = async (postnum) => {
+  let room;
+  try {
+    // 1) 기존 방 조회
+    let res = await axios.get(`/api/rooms/post/${postnum}`,
+  { withCredentials: true });
+    room = res.data;
+  } catch (err) {
+    if (err.response?.status === 404) {
+      // 2) 방이 없으면 새로 생성
+      const createRes = await axios.post(
+        "/api/rooms",
+        { postId: postnum },
+        { withCredentials: true }
+      );
+      room = createRes.data;
+    } else {
+      console.error("방 조회/생성 오류", err);
+      return alert("채팅방 진입 중 오류가 발생했습니다.");
+    }
+  }
+
+ 
+  // 3) 채팅화면으로 이동
+    navigate(`/client/ChatMain/${room.id}`, {
+    state: { newRoom: room }
+  });
+};
+/* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
+const ChatEvent = async (postnum) => {
+  let room;
+
+  // ——— 더미 데이터로 바로 뿌려보기 ———
+  // axios 호출 없이 더미 방 객체 생성
+  room = {
+    id: "dummy-room-3",   // 이동할 때 사용할 방 고유 ID
+    creater : "dummyUser", // 방 생성자
+    postId: postnum,        // 포스트 번호
+    name: `더미 채팅방 #${postnum}`,
+    participants: [],       // 필요하다면 여기에 유저 리스트 등 추가
+    createdAt: new Date().toISOString()
   };
+
+
+  // 3) 채팅화면으로 이동
+  navigate(`/client/ChatMain/`, {
+    state: { newRoom: room }
+  });
+};
+*/
+
 
   const handleToggleLike = async (e) => {
     e.stopPropagation(); // 모달 방지
@@ -236,6 +297,7 @@ export default function Profile({ post }) {
           <p>{post.name}</p>
         </div>
         <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
+        {/* 6.10 <JeansImage src={post.image} alt="프로필 이미지" /> */} 
         <CartButton onClick={clickCart}>
           <CartImage src={cart2} alt="cart" />
         </CartButton>
@@ -263,7 +325,9 @@ export default function Profile({ post }) {
             </PeriodContainer>
             <PeriodContainer>
               <ImgaeContainer src={chat} alt="대화하기" />
-              <ModalButton onClick={ChatEvent}>대화하기</ModalButton>
+                <ModalButton onClick={(e) => { e.stopPropagation(); ChatEvent(post.num); }}>
+              대화하기
+            </ModalButton>
             </PeriodContainer>
             <PeriodContainer>
               <ImgaeContainer src={request} alt="의뢰신청하기 " />

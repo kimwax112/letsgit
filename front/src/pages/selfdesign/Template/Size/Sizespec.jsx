@@ -12,20 +12,20 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
   const [shoulderOffset, setShoulderOffset] = useState(38);
   const [chestOffset, setChestOffset] = useState(82);
   const [bodyLength, setBodyLength] = useState(67);
-  const [armLengthFactor, setArmLengthFactor] = useState(0);
+  const [armLengthFactor, setArmLengthFactor] = useState(20);
   const [upperWidthOffset, setUpperWidthOffset] = useState(0);
   const [lowerWidthOffset, setLowerWidthOffset] = useState(90);
-  const [topBodyHeight, setTopBodyHeight] = useState(40);
+  const [topBodyHeight, setTopBodyHeight] = useState(18);
 
   // 초기 행 데이터 배열
   const initialRows = [
     { category: "A", label: "총 기장", values: [65, 67, 69, 71, 73, 75, 77], type: "highlight", key: "bodyLength" },
     { category: "B", label: "가슴 단면", values: [82, 86, 90, 94, 98, 102, 106], type: "highlight", key: "chestOffset" },
     { category: "C", label: "밑단 단면", values: [90, 94, 98, 102, 106, 110, 114], type: "highlight", key: "lowerWidthOffset" },
-    { category: "D", label: "소매 기장", values: [0, 1, 2, 3, 4, 5, 6], type: "highlight", key: "armLengthFactor" },
+    { category: "D", label: "소매 기장", values: [20, 21, 22, 23, 24, 25, 26], type: "highlight", key: "armLengthFactor" },
     { category: "E", label: "어깨 단면", values: [38, 40, 42, 44, 46, 48, 50], type: "normal", key: "shoulderOffset" },
     { category: "F", label: "허리 단면", values: [70, 72, 74, 76, 78, 80, 82], type: "normal" },
-    { category: "G", label: "암홀 (직선)", values: [40, 42, 44, 46, 48, 50, 52], type: "normal", key: "topBodyHeight" },
+    { category: "G", label: "암홀 (직선)", values: [18, 20, 22, 24, 26, 28, 30], type: "normal", key: "topBodyHeight" },
     { category: "J", label: "목 파임", values: [18, 19, 20, 21, 22, 23, 24], type: "normal", key: "neckY" },
     { category: "K", label: "목 너비", values: [15, 16, 17, 18, 19, 20, 21], type: "normal", key: "neckXOffset" },
   ];
@@ -47,10 +47,10 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
     setShoulderOffset(38);
     setChestOffset(82);
     setBodyLength(67);
-    setArmLengthFactor(0);
-    setUpperWidthOffset(0);
+    setArmLengthFactor(20);
+    
     setLowerWidthOffset(90);
-    setTopBodyHeight(40);
+    setTopBodyHeight(18);
   };
 
   useEffect(() => {
