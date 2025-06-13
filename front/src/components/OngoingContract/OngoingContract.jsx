@@ -1,49 +1,75 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";  // useNavigate 추가
 import "./OngoingContract.css";
 
 const OngoingContract = () => {
-    const contracts = [
-        {
-            id: 1,
-            title: "봄 셔츠 제작 계약",
-            content: "셔츠 디자인 최종본 확정\n납기일: 5월 30일\n계약금 지급 완료",
-            link: "/contract/1",
-        },
-        {
-            id: 2,
-            title: "여름 원피스 샘플 계약",
-            content: "샘플 원단 확정\n1차 샘플 제작 중\n피드백 대기 중",
-            link: "/contract/2",
-        },
-        {
-            id: 3,
-            title: "겨울 코트 협업 계약",
-            content: "디자인 초안 3종 논의 예정\n회의 일정: 5월 15일\n계약금 미지급",
-            link: "/contract/3",
-        },
-    ];
+  const [contracts, setContracts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <>
-            {contracts.map(contract => (
-                <div key={contract.id} className="GoingContent">
-                    <h3 className="GoingContent-title">{contract.title}</h3>
-                    <p className="GoingContent-text">
-                        {contract.content.split("\n").map((line, index) => (
-                            <span key={index}>
-                                {line}
-                                <br />
-                            </span>
-                        ))}
-                    </p>
-                    <Link to={contract.link}>
-                        <button className="GoingContent-btn">자세히 보기</button>
-                    </Link>
-                </div>
-            ))}
-        </>
-    );
+  const navigate = useNavigate(); // 추가
+
+  useEffect(() => {
+    const fetchContracts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8081/client/contract");
+
+        // 필요한 데이터로 매핑
+        const mappedContracts = response.data.map((contract) => ({
+          id: contract.contractId,
+          title: contract.contractTitle,
+          preview: contract.preview || "(미리보기 없음)",
+        }));
+
+        setContracts(mappedContracts.slice(0, 3)); // 3개만 저장
+      } catch (error) {
+        console.error("계약 불러오기 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContracts();
+  }, []);
+
+  if (loading) return <p>불러오는 중...</p>;
+
+  if (contracts.length === 0) {
+    return <p className="no-contract">아직 계약이 없습니다.</p>;
+  }
+
+  // 자세히 보기 클릭 시 이동 함수
+  const handleDetailClick = (id) => {
+    navigate(`/client/contract/${id}`);
+  };
+
+  return (
+    <>
+      {contracts.map((selectedContract) => (
+        <div key={selectedContract.id} className="GoingContent">
+          <h3 className="GoingContent-title">{selectedContract.title}</h3>
+          <p
+            className={`GoingContent-text ${
+              !selectedContract.preview || selectedContract.preview === "(미리보기 없음)"
+                ? "no-preview"
+                : ""
+            }`}
+          >
+            {selectedContract.preview && selectedContract.preview !== "(미리보기 없음)"
+              ? selectedContract.preview
+              : "미리보기가 준비 중입니다."}
+          </p>
+          {/* Link 대신 onClick으로 navigate 사용 */}
+          <button
+            className="GoingContent-btn"
+            onClick={() => handleDetailClick(selectedContract.id)}
+          >
+            자세히 보기
+          </button>
+        </div>
+      ))}
+    </>
+  );
 };
 
 export default OngoingContract;
