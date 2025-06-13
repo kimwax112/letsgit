@@ -3,13 +3,15 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const ReportContainer = styled.div`
-  width: 50%;
-  margin: 0 auto;
+  width: 60%;
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  background-color: white;
-  height: 60vh;
-  margin-top: 50px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   gap: 20px;
 `;
 
@@ -31,7 +33,7 @@ const ReportContent1 = styled.input`
 `;
 
 const ReportContent2 = styled.textarea`
-  width: 100%;
+  width: 98%;
   height: 35vh;
   background-color: white;
   border: 0.5px solid;
@@ -101,6 +103,35 @@ const NoButton = styled(ConfirmButton)`
   }
 `;
 
+const CharCount = styled.div`
+  text-align: right;
+  font-size: 14px;
+  color: #666;
+`;
+
+const ButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const BackButton = styled(ReportButton)`
+  background-color: #9dbdd5;
+  &:hover {
+    background-color: #444;
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);  // 어두운 반투명 배경
+  z-index: 999;
+`;
+
 export default function ReportPage() {
   const [reportReason, setReportReason] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -136,22 +167,32 @@ export default function ReportPage() {
       <ReportContainer>
         <Text>사용자 신고</Text>
         <ReportContent1 type="text" value={reportedName} readOnly />
+        
         <ReportContent2
           placeholder="신고 사유"
           value={reportReason}
           onChange={(e) => setReportReason(e.target.value)}
+          maxLength={2000}
         />
-        <ReportButton onClick={handleSubmit}>신고</ReportButton>
+        <CharCount>{reportReason.length}/2000</CharCount>
+
+        <ButtonRow>
+          <ReportButton onClick={handleSubmit}>신고</ReportButton>
+          <BackButton onClick={() => navigate(-1)}>뒤로가기</BackButton>
+        </ButtonRow>
       </ReportContainer>
 
       {isConfirmOpen && (
-        <ConfirmModal>
-          <ConfirmMessage>해당 사용자를 신고하시겠습니까?</ConfirmMessage>
-          <ConfirmButtonWrapper>
-            <YesButton onClick={handleConfirmYes}>예</YesButton>
-            <NoButton onClick={handleConfirmNo}>아니요</NoButton>
-          </ConfirmButtonWrapper>
-        </ConfirmModal>
+        <>
+          <ModalOverlay />
+          <ConfirmModal>
+            <ConfirmMessage>해당 사용자를 신고하시겠습니까?</ConfirmMessage>
+            <ConfirmButtonWrapper>
+              <YesButton onClick={handleConfirmYes}>예</YesButton>
+              <NoButton onClick={handleConfirmNo}>아니요</NoButton>
+            </ConfirmButtonWrapper>
+          </ConfirmModal>
+        </>
       )}
     </>
   );
