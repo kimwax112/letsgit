@@ -44,9 +44,6 @@ export default function DesignerHeader() {
         <button className="ButtonAtLogo" style={{ backgroundColor: '#2C2F31', fontWeight: 400, fontSize: '16px'}} onClick={handleLogout}>
           로그아웃
         </button>
-        <button className="ButtonAtLogo" style={{ backgroundColor: '#4A6171', fontWeight: 400, fontSize: '16px' }}>
-          고객센터
-        </button>
         <Link to="/designer/DMyPage">
           <button className="ButtonAtLogo" style={{ backgroundColor: '#80A1BE', fontWeight: 400, fontSize: '16px' }}>
             마이페이지

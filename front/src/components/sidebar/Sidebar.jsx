@@ -6,7 +6,7 @@ const Sidebar = ({ activePage }) => {
     <div className="final-confirmation-container">
       {/* 왼쪽 카테고리 */}
       <aside className="sidebar">
-        <h3>사이트 제공 템플릿으로 디자인</h3>
+        <h3>템플릿으로 디자인</h3>
         <hr />
         <ul>
           {[ "의류 종류 선택", "원단 선택", "사이즈 스펙 입력", "최종 확인" ].map((text, index) => {

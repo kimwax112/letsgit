@@ -8,6 +8,7 @@ import SideMenuBar from "../../../components/sidebar/SideMenuBar";
 import axios from "axios";
 import {useState, useEffect, navigate} from "react";
 import {SearchBar2, NextButtonUI } from '../../../components';
+
 // 전체 레이아웃을 감싸는 컨테이너
 const MainContainer = styled.div`
   display: flex;
