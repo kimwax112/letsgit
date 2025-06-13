@@ -75,7 +75,7 @@ const DesignerNavbar = () => {
           <div className="dropdown-section">
             <h3>의뢰 찾기</h3>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              사이트 제공 템플릿
+              템플릿으로 디자인
             </Link>
             <Link to="/" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드

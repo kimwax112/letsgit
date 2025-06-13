@@ -33,7 +33,7 @@ const Navbar = () => {
             <a href="#">직접 의류 디자인</a>
             <div className="dropdown-menu">
               <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
-                사이트 제공 템플릿
+                템플릿으로 디자인
               </Link>
               <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
                 디자인 파일 업로드
@@ -87,7 +87,7 @@ const Navbar = () => {
           <div className="dropdown-section">
             <h3>직접 의류 디자인</h3>
             <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
-              사이트 제공 템플릿
+              템플릿으로 디자인
             </Link>
             <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드
