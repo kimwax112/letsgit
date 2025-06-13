@@ -38,9 +38,6 @@ const Navbar = () => {
               <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
                 디자인 파일 업로드
               </Link>
-              <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
-                브랜드 디자인 검색
-              </Link>
             </div>
           </div>
           <div className="dropdown">
@@ -62,12 +59,6 @@ const Navbar = () => {
               </Link>
               <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
                 계약 수정 건의
-              </Link>
-              <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
-                계약 해지 요청
-              </Link>
-              <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
               </Link>
             </div>
           </div>
@@ -101,9 +92,6 @@ const Navbar = () => {
             <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드
             </Link>
-            <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
-              브랜드 디자인 검색
-            </Link>
           </div>
           <div className="dropdown-section">
             <h3>제작 의뢰 맡기기</h3>
@@ -121,12 +109,6 @@ const Navbar = () => {
             </Link>
             <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
               계약 수정 건의
-            </Link>
-            <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
-              계약 해지 요청
-            </Link>
-            <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
-              환불 요청
             </Link>
           </div>
           <div className="dropdown-section">

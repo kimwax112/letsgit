@@ -53,9 +53,6 @@ const DesignerNavbar = () => {
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약 해지 요청
               </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
-              </Link>
             </div>
           </div>
           <div className="dropdown">
@@ -83,9 +80,6 @@ const DesignerNavbar = () => {
             <Link to="/" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드
             </Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              브랜드 디자인 검색
-            </Link>
           </div>
           <div className="dropdown-section">
             <h3>제작 관리</h3>
@@ -106,9 +100,6 @@ const DesignerNavbar = () => {
               </Link>
               <Link to="/" onClick={() => setIsMenuOpen(false)}>
                 계약 해지 요청
-              </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
               </Link>
           </div>
           <div className="dropdown-section">
