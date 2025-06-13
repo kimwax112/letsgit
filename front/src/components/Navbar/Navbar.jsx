@@ -98,7 +98,7 @@ const Navbar = () => {
             <Link to="/client/request" onClick={() => setIsMenuOpen(false)}>
               의뢰 등록하기
             </Link>
-            <Link to="/client/designer" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/ChoseDesigner" onClick={() => setIsMenuOpen(false)}>
               디자이너 고르기
             </Link>
           </div>
@@ -128,10 +128,10 @@ const Navbar = () => {
             <Link to="/client/MyDesignsRequests" onClick={() => setIsMenuOpen(false)}>
               디자인&의뢰
             </Link>
-            <Link to="" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/MyProgressPage" onClick={() => setIsMenuOpen(false)}>
               진행내역 조회
             </Link>
-            <Link to="" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/WrittenReviewPage" onClick={() => setIsMenuOpen(false)}>
               작성한 후기
             </Link>
             <Link to="/client/FavoriteDesigners" onClick={() => setIsMenuOpen(false)}>
