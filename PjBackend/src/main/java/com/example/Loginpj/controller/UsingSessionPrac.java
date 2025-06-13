@@ -99,7 +99,16 @@ public class UsingSessionPrac {
         }
     }
 
+    @GetMapping("/like/check/{postnum}")
+    public ResponseEntity<Boolean> checkIfLiked(@PathVariable Long postnum, HttpSession session) {
+        String clientId = (String) session.getAttribute("username");
 
+        if (clientId == null) {
+            return ResponseEntity.status(401).body(false);
+        }
 
+        boolean isLiked = postService.isWishlisted(clientId, postnum);
+        return ResponseEntity.ok(isLiked);
+    }
 
 }
