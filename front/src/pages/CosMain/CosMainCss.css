@@ -175,11 +175,14 @@ body {
     background-color: #E4E9EF;
     display: flex;
     align-items: center;
+    justify-content: center; /* 중앙 정렬 */
     gap: 1.25rem;
+    padding: 0 2rem; /* 좌우 여백 */
 }
 
 .RecommendedDesign-Sell2 {
-    margin-left: 9.375rem;
+    margin-left: 0; 
+    max-width: 25rem; 
 }
 
 .RecommendedDesign-Sell3 {
@@ -247,7 +250,7 @@ body {
 .detail-button {
   margin-top: 0.625rem;
   background: #9ABCD4;
-  width: 6.25rem;
+  width: 7.0rem;
   height: 2.8125rem;
   border: none;
   color: #fff;

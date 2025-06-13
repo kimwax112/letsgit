@@ -29,6 +29,8 @@ function ChatMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  console.log("렌더링된 채팅 리스트:", filteredChats);  // 여기
+
   const handleSearch = (term) => {
     if (term) {
       const filtered = chatData.filter((chat) =>
