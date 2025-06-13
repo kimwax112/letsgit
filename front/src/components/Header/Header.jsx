@@ -51,18 +51,6 @@ export default function Header() {
         >
           로그아웃
         </button>
-        <button
-          className="ButtonAtLogo"
-          style={{
-            backgroundColor: '#4A6171',
-            fontWeight: 400,
-            fontSize: '16px',
-            width: '113.6px',
-            height: '42.79px'
-          }}
-        >
-          고객센터
-        </button>
         <Link to="/client/MyInfo">
           <button
             className="ButtonAtLogo"

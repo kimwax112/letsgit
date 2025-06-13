@@ -33,13 +33,10 @@ const Navbar = () => {
             <a href="#">직접 의류 디자인</a>
             <div className="dropdown-menu">
               <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
-                사이트 제공 템플릿
+                템플릿으로 디자인
               </Link>
               <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
                 디자인 파일 업로드
-              </Link>
-              <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
-                브랜드 디자인 검색
               </Link>
             </div>
           </div>
@@ -62,12 +59,6 @@ const Navbar = () => {
               </Link>
               <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
                 계약 수정 건의
-              </Link>
-              <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
-                계약 해지 요청
-              </Link>
-              <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
               </Link>
             </div>
           </div>
@@ -96,13 +87,10 @@ const Navbar = () => {
           <div className="dropdown-section">
             <h3>직접 의류 디자인</h3>
             <Link to="/client/clothes" onClick={() => setIsMenuOpen(false)}>
-              사이트 제공 템플릿
+              템플릿으로 디자인
             </Link>
             <Link to="/client/Upload" onClick={() => setIsMenuOpen(false)}>
               디자인 파일 업로드
-            </Link>
-            <Link to="/client/BrandDP" onClick={() => setIsMenuOpen(false)}>
-              브랜드 디자인 검색
             </Link>
           </div>
           <div className="dropdown-section">
@@ -121,12 +109,6 @@ const Navbar = () => {
             </Link>
             <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
               계약 수정 건의
-            </Link>
-            <Link to="/client/cancel" onClick={() => setIsMenuOpen(false)}>
-              계약 해지 요청
-            </Link>
-            <Link to="/client/refund" onClick={() => setIsMenuOpen(false)}>
-              환불 요청
             </Link>
           </div>
           <div className="dropdown-section">

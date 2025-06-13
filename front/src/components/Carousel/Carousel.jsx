@@ -4,28 +4,21 @@ import './Carousel.css'; // 스타일 시트
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const features = [
-    {
-      title: '브랜드 디자인으로 검색',
-      description: '선호하는 브랜드의 디자인을 검색하여 옷을 디자인하세요.',
-      link: '/client/BrandDP',
-      image: '/image/banner-brand search.png',  // 실제 이미지 경로로 수정
-      backgroundColor: '#E0F6FF', // 브랜드 디자인 배경색
-    },
-    {
-      title: '디자인 파일 업로드',
-      description: '나만의 디자인 파일을 업로드하여 옷을 디자인하세요.',
-      link: '/client/file-upload',
-      image: '/image/banner-design file.png', // 실제 이미지 경로로 수정
-      backgroundColor: '#DAFFF1', // 브랜드 디자인 배경색
-    },
-    {
-      title: '사이트 제공 템플릿',
-      description: '사이트에서 제공하는 템플릿을 선택하여 쉽게 디자인하세요.',
-      link: '/client/clothes',
-      image: '/image/banner-templet.png', // 실제 이미지 경로로 수정
-      backgroundColor: '#F3E7FF', // 브랜드 디자인 배경색
-    },
-  ];
+  {
+    title: '디자인 파일 업로드',
+    description: '나만의 디자인 파일을 업로드하여 옷을 디자인하세요.',
+    link: '/client/file-upload',
+    image: '/image/banner-design file.png',
+    backgroundColor: '#DAFFF1',
+  },
+  {
+    title: '템플릿으로 디자인',
+    description: '사이트에서 제공하는 템플릿을 선택하여 쉽게 디자인하세요.',
+    link: '/client/clothes',
+    image: '/image/banner-templet.png',
+    backgroundColor: '#F3E7FF',
+  },
+];
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % features.length);

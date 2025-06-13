@@ -133,21 +133,31 @@ const Container = styled.div`
   display: flex;
   position: relative;
   width: 250px;
-  height: 250px;
+  height: 280px;
   background-color: white;
-  border-radius: 20px;
-  border: 2px solid;
+  border-radius: 0.3125rem;
+  border: none;
   margin: 30px;
   cursor: pointer;
+  box-shadow: 0 0.3125rem 0.3125rem rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const ImageWrapper = styled.div`
+  width: 250px;
+  height: 190px;
+  overflow: hidden;
+  border-radius: 0.3125rem 0.3125rem 0 0;
+  position: relative;
 `;
 
 const JeansImage = styled.img`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 250px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 `;
 
 const CartButton = styled.button`
@@ -171,22 +181,55 @@ const CartImage = styled.img`
 const HeartButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 50px;
-  width: 30px;
-  height: 30px;
-  background: none;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
   border: none;
-  z-index: 2;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   cursor: pointer;
+
+  &:hover svg {
+    color: rgba(128, 128, 128, 0.5); /* 연한 회색빛 */
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
-const Text = styled.p`
-  font-size: 30px;
-  font-weight: bold;
-  position: relative;
-  z-index: 2;
-  color: rgb(255, 255, 255);
+const Title = styled.h3`
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 1.5rem 0 4px;
+  color: #4a6171;
   text-align: center;
+`;
+
+const DesignerSuffix = styled.span`
+  font-size: 1.2rem;      /* 조금 작게 */
+  font-weight: 600;     /* 얇게 */
+  color: #4a6171;
+  margin-left: 4px;     /* id와 간격 */
+`;
+
+const ContentText = styled.p`
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  margin: 0 10px 5px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 `;
 
   // 날짜를 "YYYY.MM.DD" 형식으로 변환하는 유틸 6.9
@@ -341,19 +384,18 @@ const ChatEvent = async (postnum) => {
   return (
     <>
       <Container onClick={() => setIsModalOpen(true)}>
-        <div className="border-b py-2">
-          <p className="text-sm text-gray-500">{post.author}</p>
-          <Text><p>{post.contents}</p></Text>
-          <p>{post.name}</p>
-        </div>
-        <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
-        {/* 6.10 <JeansImage src={post.image} alt="프로필 이미지" /> */} 
-        <CartButton onClick={clickCart}>
-          <CartImage src={cart2} alt="cart" />
-        </CartButton>
-        <HeartButton onClick={handleToggleLike}>
-          {liked ? <FaHeart color="red" size={24} /> : <FaRegHeart color="gray" size={24} />}
-        </HeartButton>
+        <ImageWrapper>
+          <JeansImage src={profileImages[imageIndex]} alt="프로필 이미지" />
+          <HeartButton onClick={handleToggleLike}>
+            {liked ? <FaHeart color="red" size={24} /> : <FaRegHeart color="gray" size={24} />}
+          </HeartButton>
+        </ImageWrapper>
+
+        <Title>
+          {post.id}
+          <DesignerSuffix>디자이너님</DesignerSuffix>
+        </Title>
+        <ContentText>{post.contents}</ContentText>
       </Container>
 
       {isModalOpen && (
@@ -370,8 +412,8 @@ const ChatEvent = async (postnum) => {
               <PeriodText>2025.01 - 2025.01</PeriodText>
             </PeriodContainer>
             <PeriodContainer>
-              <ImgaeContainer src={cart2} alt="장바구니에 넣기" />
-              <ModalButton onClick={clickCart}>장바구니에 넣기</ModalButton>
+              {/*<ImgaeContainer src={cart2} alt="장바구니에 넣기" />
+              <ModalButton onClick={clickCart}>장바구니에 넣기</ModalButton>*/}
             </PeriodContainer>
             <PeriodContainer>
               <ImgaeContainer src={chat} alt="대화하기" />

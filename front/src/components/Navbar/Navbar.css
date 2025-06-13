@@ -10,14 +10,15 @@
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
+  position: relative; /* 추가 */
 }
 
 /* 메뉴바 */
 .nav-menu {
+  height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
 }
 
 /* 전체 메뉴 버튼 */
@@ -55,7 +56,7 @@
   color: white;
   font-size: 1.25rem !important;
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 1rem; 
   display: inline-block;
 }
 
@@ -63,11 +64,9 @@
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.95); /* 반투명 흰색 */
-  padding: 0.75rem 1rem;
+  left: 50%; 
+  transform: translateX(-50%); 
   min-width: 220px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   display: none;
   flex-direction: column;
   z-index: 1000;
@@ -83,9 +82,11 @@
 }
 
 .dropdown-menu a:hover {
-  border-radius: 4px;
+  background-color: #9dbbd5; 
+  color: white;         
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-
 /* 드롭다운 호버 시 메뉴 표시 */
 .dropdown:hover .dropdown-menu {
   display: flex;
@@ -93,11 +94,20 @@
 
 /* 전체 메뉴 드롭다운 컨테이너 (햄버거 메뉴 눌렀을 때) */
 .dropdown-container {
+  position: absolute;
+  top: 100%;
+  left: 50%; /* 화면의 가운데 정렬 시작 */
+  transform: translateX(-45%); /* 정확히 가운데로 맞춤 */
+  background-color: #9dbbd5;
+  width: 900px; /* 원하는 너비 */
   padding: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
   border-top: 2px solid #fff;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 12px 12px;
 }
 
 .dropdown-section h3 {
@@ -118,4 +128,20 @@
   background-color: #f2f2f2;
   padding-left: 0.5rem;
   border-radius: 4px;
+}
+
+.dropdown-menu a,
+.dropdown-section a {
+  color: #34312E;
+  text-decoration: none;
+  padding: 0.6rem 0.4rem;
+  font-size: 1.2rem;
+  transition: background-color 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.dropdown-menu a:focus,
+.dropdown-section a:focus {
+  outline: none;
 }
