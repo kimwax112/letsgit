@@ -82,14 +82,15 @@ export default function DesignerReceivedReviews() {
   };
 
   const addComment = (reviewId) => {
-    if (!newCommentText[reviewId]?.trim()) return;
+    const text = newCommentText[reviewId]?.trim();
+    if (!text) return;
 
     setComments((prev) => {
       const updated = { ...prev };
-      if (!updated[reviewId]) updated[reviewId] = [];
-      updated[reviewId].push(newCommentText[reviewId].trim());
+      updated[reviewId] = [...(updated[reviewId] || []), text]; //같은 댓글 2개 달리는거 해결
       return updated;
     });
+
     setNewCommentText((prev) => ({ ...prev, [reviewId]: '' }));
   };
 
