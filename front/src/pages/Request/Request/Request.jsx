@@ -70,12 +70,12 @@ export function RequestLayOut({ children }) {
           {children}
         </Content>
 
-        {/* 페이지네이션 추가 */}
+        {/* 페이지네이션 추가
         <PaginationContainer>
           <PageButton className="active">1</PageButton>
           <PageButton>2</PageButton>
           <PageButton>3</PageButton>
-        </PaginationContainer>
+        </PaginationContainer> */}
       </Container>
     </>
   );

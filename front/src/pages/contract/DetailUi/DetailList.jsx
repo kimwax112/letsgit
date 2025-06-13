@@ -176,13 +176,19 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
 
       <div className="DetailContent">
         <div className="left">
-          <p style={{ fontSize: '32px', fontWeight: 'bold' }}>{contractData.contractTitle}</p>
-          <p><img src={jeans} alt="사진" /></p>
-          <p>디자이너: {contractData.designerId || "미지정"}</p>
-          <p>의뢰인: {contractData.clientId || "미지정"}</p>
-          <p>원단: {contractData.material || "미지정"}</p>
-          <p>공장: {contractData.factory || "미지정"}</p>
-          <p>기간: {contractData.deadline ? `${formatDate(contractData.deadline)}까지` : "2025.2.25까지"}</p>
+          <p style={{ fontSize: '30px', fontWeight: 'bold' }}>{contractData.contractTitle}</p>
+          <div className="image-info-wrapper">
+            <div className="image-container">
+              <img src={jeans} alt="사진" />
+            </div>
+            <div className="info-container">
+              <p>디자이너: {contractData.designerId || "미지정"}</p>
+              <p>의뢰인: {contractData.clientId || "미지정"}</p>
+              <p>원단: {contractData.material || "미지정"}</p>
+              <p>공장: {contractData.factory || "미지정"}</p>
+              <p>기간: {contractData.deadline ? `${formatDate(contractData.deadline)}까지` : "2025.2.25까지"}</p>
+            </div>
+          </div>
         </div>
         <div className="right">
           <p>계약 작성 시간: {formatDate(contractData.createdAt) || "2025.01.01"}</p>
@@ -190,18 +196,22 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
       </div>
 
       <div className="Editor">
-      <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor> {/* 추가: ChatGPT */}
+        <div className="EditorInner">
+          <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor>
+        </div>
       </div>
 
       <div className="Detailfooter">
-      <div className="DetailButton"><NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI></div>
+        <div className="DetailButton">
+          <NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI>
+        </div>
         <div className="DetailButton">
           {/* ✅ 모달 표시 버튼 */}
           <NextButtonUI onClick={() => setShowModal(true)}>동의하기</NextButtonUI>
         </div>
-        <Button>작성취소</Button>
-        <Button>저장</Button>
-      </div>
+          <Button>작성취소</Button>
+          <Button>저장</Button>
+        </div>
 
       {/* ✅ 동의 입력 모달 */}
       {showModal && (
@@ -230,20 +240,36 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
 // ✅ 모달 스타일
 const modalStyle = {
   overlay: {
-    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex',
-    justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+    position: 'fixed',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
   },
   modal: {
-    background: 'white', padding: '20px', borderRadius: '8px',
-    width: '400px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+    background: 'white',
+    padding: '1.25rem', 
+    borderRadius: '0.5rem', 
+    width: '25rem', 
+    boxShadow: '0 0.25rem 0.5rem rgba(0,0,0,0.2)', 
   },
   button: {
-    padding: '8px 16px', marginRight: '8px', backgroundColor: '#007BFF',
-    color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer',
+    padding: '0.5rem 1rem', 
+    marginRight: '0.5rem', 
+    backgroundColor: '#007BFF',
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.25rem',
+    cursor: 'pointer',
   },
   cancelButton: {
-    padding: '8px 16px', backgroundColor: '#ccc',
-    color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer',
+    padding: '0.5rem 1rem', 
+    backgroundColor: '#ccc',
+    color: 'black',
+    border: 'none',
+    borderRadius: '0.25rem', 
+    cursor: 'pointer',
   }
 };
