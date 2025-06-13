@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import cart2 from "../../../../assets/cart2.png";
 import chat from "../../../../assets/대화.png";
@@ -273,10 +273,49 @@ const ChatEvent = async (postnum) => {
   });
 };
 */
-
+  useEffect(() => {
+    async function fetchLiked() {
+      try {
+        const res = await fetch(`http://localhost:8081/api/posts/like/check/${post.postnum}`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.ok) {
+          const isLiked = await res.json();
+          setLiked(isLiked);
+        }
+      } catch (error) {
+        console.error("찜 상태 확인 오류", error);
+      }
+    }
+    fetchLiked();
+  }, [post.postnum]);
 
   const handleToggleLike = async (e) => {
-    e.stopPropagation(); // 모달 방지
+  e.stopPropagation();
+
+  if (liked) {
+    // 찜 해제 확인창
+    const confirmUnlike = window.confirm("찜 해제를 하시겠습니까?");
+    if (!confirmUnlike) return;
+
+    // 찜 해제 API 호출
+    try {
+      const response = await fetch(`http://localhost:8081/api/posts/unlike/${post.postnum}`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setLiked(false);
+      } else {
+        alert("찜 해제 실패!");
+      }
+    } catch (error) {
+      console.error("찜 해제 오류", error);
+    }
+  } else {
+    // 찜하기 API 호출
     try {
       const response = await fetch(`http://localhost:8081/api/posts/like/${post.postnum}`, {
         method: "POST",
@@ -284,14 +323,16 @@ const ChatEvent = async (postnum) => {
       });
 
       if (response.ok) {
-        setLiked((prev) => !prev);
+        setLiked(true);
       } else {
         alert("찜하기 실패!");
       }
     } catch (error) {
       console.error("찜하기 오류", error);
     }
-  };
+  }
+};
+
 
   const imageIndex = Math.abs(post.postnum % profileImages.length);
   const designerImageIndex = Math.abs(post.postnum % designerImages.length);
