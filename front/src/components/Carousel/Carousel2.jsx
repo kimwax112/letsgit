@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Carousel2.css'; // 스타일 시트
 
-const Carousel2 = ({ selectedItem }) => {
+const Carousel2 = ({selectedItem }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // 버전2의 슬라이드 내용물
