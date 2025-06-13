@@ -169,7 +169,7 @@ const Fabric = () => {
       // 초기 혼합율 세팅
       const initializedRatios = {};
       fabricItemsData.forEach(item => {
-        initializedRatios[item.id] = storedRatios[item.id] ?? 0;  //초기값 0으로 지정
+        initializedRatios[item.id] = storedRatios[item.id] ?? 0;  //혼합률 초기값 0으로 지정
       });
       setSelectedRatios(initializedRatios);
 
