@@ -95,12 +95,6 @@ useEffect(() => {
     });
 }, []);
 
-
-
-
-
-
-
   
 // 5/20 병합 한 코드
 // const id = localStorage.getItem("id");
@@ -221,64 +215,111 @@ const handleStarClick = (star) => {
       />
       {filteredContracts.length > 0 ? (
         filteredContracts.map((contract) => (
-          <div style={{display: "flex"}}key={contract.id} > 
-          <ContractItem
-          
-            // key={contract.id}  // contract.id를 key로 사용
-            contract={contract}
-            onToggleStar={() => handleToggleStar(contract.id)}
-            onClick={() => handleClick(contract)}
-            onStatusChange={handleStatusChange}
-          />
-           {contract.status === "완료" && (
-            <button style={{marginRight: "auto"}} onClick={() => openReviewModal(contract)}>
-             계약<br/>종료
-            </button>
-          )}
-        </div>
+          <div
+            key={contract.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%", 
+              boxSizing: "border-box",
+            }}
+          >
+            <ContractItem
+              contract={contract}
+              onToggleStar={() => handleToggleStar(contract.id)}
+              onClick={() => handleClick(contract)}
+              onStatusChange={handleStatusChange}
+            />
+            <div style={{ width: "70px", display: "flex", justifyContent: "flex-end" }}>
+              {contract.status === "완료" && (
+                <button
+                  style={{
+                    whiteSpace: "pre-line",
+                    padding: "6px 10px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    marginLeft: "0px", // 진짜 바로 붙이기!
+                    height: "fit-content",
+                  }}
+                  onClick={() => openReviewModal(contract)}
+                >
+                  계약<br />종료
+                </button>
+              )}
+            </div>
+          </div>
         ))
       ) : (
         <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>
       )}
-{isModalOpen && selectedContract && (
-        <ReviewModal onClick={closeReviewModal}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
-      <div style={{display : "flex" ,gap : "12px", flexDirection : "column"}} className="contractlist-modal">
-            <h2>계약 제목: {selectedContract.title}</h2>
-            <p>계약 상태: {selectedContract.status}</p>
-            <p>만료일: {selectedContract.date}</p>
-            <p>미리보기: {selectedContract.preview}</p>
-            <StarWrapper>
-  {[1, 2, 3, 4, 5].map((star) => (
-    <Star
-      key={star}
-      filled={star <= rating}
-      onClick={() => handleStarClick(star)}
-    >
-      ★
-    </Star>
-  ))}
-</StarWrapper>
-       <textarea
-          style={{ width: "80%",
-                   height: "400px",
-                  resize: "none",
-                   borderRadius : "12px" ,
-                    border : "2px solid rgba(16, 133, 249, 0.5)" ,
-                     fontSize : "20px",
-                    padding : "10px",
-                    fontWeight : "bold" }}
+      
+      {isModalOpen && selectedContract && (
+  <ReviewModal onClick={closeReviewModal}>
+    <ModalContent onClick={(e) => e.stopPropagation()}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", 
+          gap: "8px",     
+          padding: "20px",
+        }}
+        className="contractlist-modal"
+      >
+        <h2 style={{ margin: 0 }}>{selectedContract.title}</h2>
+        <p style={{ margin: 0 }}>계약 상태: {selectedContract.status}</p>
+        <p style={{ margin: 0 }}>만료일: {selectedContract.date}</p>
+        <p style={{ margin: 0 }}>미리보기: {selectedContract.preview}</p>
+
+        <StarWrapper>
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star
+              key={star}
+              filled={star <= rating}
+              onClick={() => handleStarClick(star)}
+            >
+              ★
+            </Star>
+          ))}
+        </StarWrapper>
+
+        <textarea
+          style={{
+            width: "80%",
+            height: "300px",
+            resize: "none",
+            borderRadius: "12px",
+            border: "2px solid rgba(16, 133, 249, 0.5)",
+            fontSize: "16px", 
+            padding: "10px",
+            fontWeight: "normal", 
+          }}
           value={value}
           onChange={handleChange}
-      />
-          <div className="contractlist-buttoncontainer">
-            <button style={{width : "100px" , marginRight : "auto"}} onClick={closeReviewModal}>닫기</button>
-            <button style={{ width: "100px" ,margin : "12px" }} onClick={handleSubmitReview}>저장</button>
-          </div>
+        />
+
+        <div
+          className="contractlist-buttoncontainer"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end", 
+            width: "80%",
+            marginTop: "12px",
+            gap: "8px", 
+          }}
+        >
+          <button style={{ width: "100px" }} onClick={closeReviewModal}>
+            닫기
+          </button>
+          <button style={{ width: "100px" }} onClick={handleSubmitReview}>
+            저장
+          </button>
         </div>
-          </ModalContent>
-        </ReviewModal>
-      )}
+      </div>
+    </ModalContent>
+  </ReviewModal>
+)}
     </div>
   );
 };

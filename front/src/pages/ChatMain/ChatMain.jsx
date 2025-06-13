@@ -1,3 +1,5 @@
+//의뢰인 대화방
+
 import React from "react";
 import styled from "styled-components";
 import ChatLayout from "./ui/ChatLayout";
@@ -262,7 +264,6 @@ useEffect(() => {
                           handleReportClick(chat.name);
                         }}
                       >
-                       'styles.css'
                         신고
                       </ReportButton>
                     </ButtonWrapper>
