@@ -117,29 +117,22 @@ const DesignerContractEditor = ({ contractData, setContractData }) => {
     const data = e.dataTransfer.getData("text/plain");
     if (!data) return;
 
-    let parsed;
-    try {
-      parsed = JSON.parse(data);
-    } catch {
-      parsed = { text: data };
-    }
-
-    const { text } = parsed;
-
     const editor = refs[section].current;
     if (!editor) return;
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+    editor.focus(); // 섹션 focus 보장
 
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    const textNode = document.createTextNode(text || "");
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(editor);
+    range.collapse(false); // 끝으로 이동
+
+    const textNode = document.createTextNode(data);
     range.insertNode(textNode);
 
+    // 커서 위치 조정
     range.setStartAfter(textNode);
     range.setEndAfter(textNode);
-
     selection.removeAllRanges();
     selection.addRange(range);
 

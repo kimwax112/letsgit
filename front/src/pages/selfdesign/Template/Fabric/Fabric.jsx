@@ -139,6 +139,15 @@ const Fabric = () => {
   const itemsPerPageSecond = 4;
 
   useEffect(() => {
+  if (process.env.NODE_ENV === "development") {
+    localStorage.removeItem("selectedFabric");
+    localStorage.removeItem("selectedRatios");
+    localStorage.removeItem("selectedColors");
+    localStorage.removeItem("selectedPatterns");
+  }
+}, []);
+
+  useEffect(() => {
     try {
       const clothing = JSON.parse(localStorage.getItem("selectedClothing"));
       const category = clothing?.category || null;
@@ -160,7 +169,7 @@ const Fabric = () => {
       // 초기 혼합율 세팅
       const initializedRatios = {};
       fabricItemsData.forEach(item => {
-        initializedRatios[item.id] = storedRatios[item.id] ?? "";
+        initializedRatios[item.id] = storedRatios[item.id] ?? 0;  //혼합률 초기값 0으로 지정
       });
       setSelectedRatios(initializedRatios);
 

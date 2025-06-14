@@ -145,7 +145,7 @@ export default function DesignerSidebar() {
 
   // 제작관리 관련 서브경로 배열 선언 (컴포넌트 안에)
   const productionSubPaths = [
-    "/designer/production/history",
+    "/designer/ProductionList",  
     "/designer/OngoingRequests",
     "/designer/CompletedRequest",
     "/designer/EditRequests"
@@ -179,8 +179,8 @@ export default function DesignerSidebar() {
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
           <Link
-            to="/designer/MyInfo"
-            className={`${styles.link} ${location.pathname === "/designer/MyInfo" ? styles.active : ""}`}
+            to="/designer/DMyInfo"
+            className={`${styles.link} ${location.pathname === "/designer/DMyInfo" ? styles.active : ""}`}
           >
             내 정보
           </Link>
@@ -195,10 +195,18 @@ export default function DesignerSidebar() {
         </li>
         <li className={styles.menuItem}>
           <Link
-            to="/designer/ContractDelivery"
-            className={`${styles.link} ${location.pathname === "/designer/ContractDelivery" ? styles.active : ""}`}
+            to="/designer/Delivery"
+            className={`${styles.link} ${location.pathname === "/designer/Delivery" ? styles.active : ""}`}
           >
-            계약조회 & 배송내역
+            배송내역
+          </Link>
+        </li>
+        <li className={styles.menuItem}>
+          <Link
+            to="/designer/DesignerReceivedReviews"
+            className={`${styles.link} ${location.pathname === "/designer/DesignerReceivedReviews" ? styles.active : ""}`}
+          >
+            작성된 후기
           </Link>
         </li>
         <li className={styles.menuItem}>
@@ -223,9 +231,9 @@ export default function DesignerSidebar() {
             <ul className={styles.subMenu}>
               <li>
                 <Link
-                  to="/designer/production/history"
+                  to="/designer/ProductionList"
                   className={`${styles.subLink} ${
-                    location.pathname === "/designer/production/history" ? styles.subActive : ""
+                    location.pathname === "/designer/ProductionList" ? styles.subActive : ""
                   }`}
                 >
                   제작내역

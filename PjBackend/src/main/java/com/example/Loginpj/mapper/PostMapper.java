@@ -5,6 +5,7 @@ import com.example.Loginpj.model.wishlist_client;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 @Mapper
@@ -19,4 +20,5 @@ public interface PostMapper {
 
     void removeFromWishlist(wishlist_client wishlist);
 
+    boolean existsByClientIdAndPostnum(@Param("clientId") String clientId, @Param("postnum") Long postnum);
 }

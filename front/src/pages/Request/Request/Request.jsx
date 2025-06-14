@@ -64,7 +64,7 @@ const filteredItems = requestItems.filter((item) =>
         
  
         {filteredItems.length > 0 ? (
-          // requestData가 있으면 동적으로 ItemBox 렌더링
+          // requestData가 있으면 동적으로 ItemBox 렌더링d
           filteredItems.slice().reverse().map((item, index) => (
             <ItemBox key={index} data={item} /> 
             //props으로 "http://localhost:8081/api/requests"받아온 item data객체로 받음 

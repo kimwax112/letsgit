@@ -39,14 +39,6 @@ const MyDesignsRequests = ({ username: propUsername }) => {
       { id: 9, name: '재킷', description: '봄에 입기 좋은 재킷', image: '/images/재킷.jpg', date: '2025-04-05', size: 'S', designName: '카멜 재킷', fabric: '폴리에스터 100%', color: '카멜', clothingType: '자켓' },
       { id: 10, name: '블라우스', description: '여성스러운 디자인의 블라우스', image: '/images/블라우스.jpg', date: '2025-03-12', size: 'M', designName: '레이스 블라우스', fabric: '면 100%', color: '화이트', clothingType: '블라우스' },
     ],
-    brand: [
-      { id: 1, name: '바지', description: '바지 설명', image: '/images/바지.jpg', date: '2025-03-28', size: 'L', designName: '슬랙스 팬츠', fabric: '폴리 100%', color: '차콜그레이', clothingType: '바지' },
-      { id: 2, name: '원피스1', description: '원피스1 설명', image: '/images/원피스1.jpg', date: '2025-03-30', size: 'M', designName: '플라워 원피스', fabric: '쉬폰', color: '화이트', clothingType: '원피스' },
-      { id: 3, name: '원피스2', description: '원피스2 설명', image: '/images/원피스2.jpg', date: '2025-04-01', size: 'S', designName: '레이스 원피스', fabric: '면 70%, 폴리 30%', color: '베이지', clothingType: '원피스' },
-      { id: 4, name: '청바지', description: '편안한 착용감의 청바지', image: '/images/청바지.jpg', date: '2025-03-20', size: 'M', designName: '슬림핏 청바지', fabric: '면 100%', color: '진청', clothingType: '바지' },
-      { id: 5, name: '레더 재킷', description: '스타일리시한 레더 재킷', image: '/images/레더재킷.jpg', date: '2025-02-15', size: 'L', designName: '모던 레더 재킷', fabric: '소가죽 100%', color: '검정', clothingType: '자켓' },
-      { id: 6, name: '원피스2', description: '원피스2 설명', image: '/images/원피스2.jpg', date: '2025-04-01', size: 'S', designName: '레이스 원피스', fabric: '면 70%, 폴리 30%', color: '베이지', clothingType: '원피스' },
-    ],
   };
   const colorMap = { "#ff0000": "빨강", "#00ff00": "초록", "#0000ff": "파랑", "#ff9900": "주황", "#0099ff": "하늘" };
 
@@ -61,6 +53,7 @@ useEffect(() => {
     }
   }, [username]);
 
+  
   const fetchMyDesigns = () => { 
     try {
       const mockDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
@@ -227,8 +220,7 @@ useEffect(() => {
             <div className="dropdown">
               <select onChange={handleCategoryChange} value={selectedCategory}>
                 <option value="template">템플릿 디자인</option>
-                <option value="pattern">의류 패턴 설계도 디자인</option>
-                <option value="brand">브랜드 샘플 디자인</option>
+                <option value="pattern">디자인 파일 업로드</option>
               </select>
             </div>
             <div className="card-container">

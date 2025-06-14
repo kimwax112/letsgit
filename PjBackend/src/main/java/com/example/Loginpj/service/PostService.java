@@ -40,5 +40,9 @@ public class PostService {
     public void removeFromWishlist(wishlist_client wishlist) {
         postMapper.removeFromWishlist(wishlist);
     }
+    
+    public boolean isWishlisted(String clientId, Long postnum) {
+        return postMapper.existsByClientIdAndPostnum(clientId, postnum);
+    }
 
 }

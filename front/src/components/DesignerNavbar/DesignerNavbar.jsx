@@ -38,7 +38,7 @@ const DesignerNavbar = () => {
             
           </div>
           <div className="dropdown">
-            <a href="#">제작 관리</a>
+            <a href="/designer/OngoingRequests">제작 관리</a>
             
           </div>
           <div className="dropdown">
@@ -49,12 +49,6 @@ const DesignerNavbar = () => {
               </Link>
               <Link to="/designer/DesignerContractManage" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
-              </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                계약 해지 요청
-              </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
               </Link>
             </div>
           </div>
@@ -77,23 +71,14 @@ const DesignerNavbar = () => {
         <div className="dropdown-container">
           <div className="dropdown-section">
             <h3>의뢰 찾기</h3>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              사이트 제공 템플릿
-            </Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              디자인 파일 업로드
-            </Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              브랜드 디자인 검색
+            <Link to="/designer/DesignerRequest" onClick={() => setIsMenuOpen(false)}>
+              의뢰 찾아보기
             </Link>
           </div>
           <div className="dropdown-section">
             <h3>제작 관리</h3>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              의뢰 등록하기
-            </Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              디자이너 고르기
+            <Link to="/designer/OngoingRequests" onClick={() => setIsMenuOpen(false)}>
+              진행중인 의뢰내역
             </Link>
           </div>
           <div className="dropdown-section">
@@ -103,12 +88,6 @@ const DesignerNavbar = () => {
               </Link>
               <Link to="/designer/DesignerContractManage" onClick={() => setIsMenuOpen(false)}>
                 계약서 관리
-              </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                계약 해지 요청
-              </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                환불 요청
               </Link>
           </div>
           <div className="dropdown-section">

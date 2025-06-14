@@ -42,5 +42,16 @@
         DELETE FROM wishlist_client
         WHERE client_id = #{clientId} AND postnum = #{postnum}
     </delete>
+    
+    <!-- 이미 찜했는지 여부 확인 (boolean 리턴용) -->
+	<select id="existsByClientIdAndPostnum" resultType="boolean">
+	    SELECT CASE 
+	        WHEN COUNT(*) > 0 THEN 1 
+	        ELSE 0 
+	    END
+	    FROM wishlist_client
+	    WHERE client_id = #{clientId} AND postnum = #{postnum}
+	</select>
+
 
 </mapper>

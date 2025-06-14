@@ -21,6 +21,24 @@
     margin-top: 2.2rem; /* 35px → 약 2.2rem */
 }
 
+.GoingContent-text {
+  max-height: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  white-space: normal;
+  min-height: 80px;
+}
+
+.GoingContent-text.no-preview {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 .GoingContent-text span {
     font-family: 'Noto Sans KR';
     font-size: 1.0rem; /* 조금 작게 */

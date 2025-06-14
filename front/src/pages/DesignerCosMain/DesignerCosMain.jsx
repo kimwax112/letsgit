@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DesignerCosMain.css";
+import axios from "axios";
 import DesignerBanner from "../../components/DesignerCosmain/DesignerBanner/DesignerBanner";
 import ProcessSteps from "../../components/DesignerCosmain/ProcessSteps/ProcessSteps";
 import PortfolioList from "../../components/DesignerCosmain/PortfolioList/PortfolioList";
@@ -17,8 +18,34 @@ const DesignerMain = () => {
   
 
   useEffect(() => {
-    setShowPopup(true);
-  }, []);
+  async function checkPortfolio() {
+    try {
+      // 1. 로그인한 유저 정보 받아오기
+      const userRes = await axios.get("http://localhost:8081/api/user", { withCredentials: true });
+      const user = userRes.data;
+
+      if (!user || !user.id) {
+        setShowPopup(false);
+        return;
+      }
+
+      // 2. 유저 ID로 posts 조회
+      const postsRes = await axios.get(`http://localhost:8081/api/posts?userId=${user.username}`, { withCredentials: true });
+
+      // 3. 포트폴리오 없으면 팝업 띄우기
+      if (!postsRes.data || postsRes.data.length === 0) {
+        setShowPopup(true);
+      } else {
+        setShowPopup(false);
+      }
+    } catch (error) {
+      console.error("포트폴리오 조회 실패", error);
+      setShowPopup(false);
+    }
+  }
+
+  checkPortfolio();
+}, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
