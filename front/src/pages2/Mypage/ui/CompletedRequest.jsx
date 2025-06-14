@@ -60,7 +60,7 @@ export default function CompletedRequest() {
 
   return (
     <div style={{ padding: "1rem", maxWidth: "800px", margin: "0 auto" }}>
-      <h1 style={{ marginBottom: "1.5rem" }}>완료된 의뢰내역</h1>
+      <h1 style={{ marginBottom: "1.5rem" }}>완료된 의뢰 관리</h1>
 
       {/* 검색 + 필터 */}
       <div style={{ marginBottom: "1.5rem", display: "flex", gap: "1rem" }}>
