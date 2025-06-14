@@ -10,6 +10,8 @@ import {SearchBar2, NextButtonUI } from '../../../components';
 import RequestLayOut from "../Request/RequestLayOut";
 import SearchRequest from "../../../pages2/Request/SearchRequest";
 
+
+
 // 전체 레이아웃을 감싸는 컨테이너
 const MainContainer = styled.div`
   display: flex;
