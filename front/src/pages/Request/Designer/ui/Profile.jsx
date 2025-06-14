@@ -301,27 +301,8 @@ const ReviewContainer = styled.div`
     font-size: 0.95rem;
   }
 `;
-const DesignerSuffix = styled.span`
-  font-size: 1.2rem;      /* 조금 작게 */
-  font-weight: 600;     /* 얇게 */
-  color: #4a6171;
-  margin-left: 4px;     /* id와 간격 */
-`;
 
-const ContentText = styled.p`
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #555;
-  text-align: center;
-  margin: 0 10px 5px;
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-break: break-word;
-`;
+
 
 const DesignerSuffix = styled.span`
   font-size: 1.2rem;      /* 조금 작게 */
