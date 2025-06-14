@@ -51,7 +51,8 @@ const TagContainer = styled.div`
 
 const Tag = styled.div`
   background-color: #bfd7ee;
-  width: 50px;
+  width: auto;
+  min-width : 50px;
   height: 20px;
   border: 0.5px solid;
   border-radius: 15px;
@@ -97,26 +98,52 @@ const Text2 = styled.div`
 `;
 
 
-export default function ItemBox({ children,data }) {
+export default function ItemBox({ children,data = {} }) {
   const navigate = useNavigate();
+
+    const {
+    categoryTags = [],
+    style = "",
+    amount = "",
+    deadline = "",
+  } = data;
+
+  // categoryTags를 안전하게 배열로 변환
+  const safeTags = Array.isArray(categoryTags)
+    ? categoryTags
+    : typeof categoryTags === "string" && categoryTags
+    ? categoryTags.split(",").map(tag => tag.trim())
+    : [];
+
+  console.log("Safe tags:", safeTags);
   
 
   const handleClick = () => {
     navigate('/client/RequestPost' , {state : {requestData : data }});
   };
 
+    // 디버깅 로그 추가
+  console.log("ItemBox data:", data);
+  console.log("ItemBox categoryTags:", data?.categoryTags);
+  console.log("ItemBox requestId:", data?.requestId);
+
   return (
     <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
       <InnerBox />
       <DescriptionContainer>
-        <TagContainer>
-          <Tag>{data?.categoryTags}</Tag>
-          <Tag>{data?.categoryTags}</Tag>
+          <TagContainer>
+          {safeTags.length > 0 ? (
+            safeTags.map((tag, index) => (
+              <Tag key={index}>{`${tag}`}</Tag>
+            ))
+          ) : (
+            <Tag>태그 없음</Tag>
+          )}
         </TagContainer>
         <Text>{data?.title || "청바지 잘하시는 디자이너 찾습니다."} </Text>
         <Profile>
           <Circle>
-            <ProfileImage src={designerImage} alt="디자이너 프로필" />
+            <ProfileImage src={designerImage} alt="의뢰인 프로필 " />
           </Circle>
           홍길동
         </Profile>

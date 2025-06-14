@@ -137,7 +137,7 @@ const canvasRef = useRef(null);
   
 
   return (
-    <div className="canvas-adjust" style={{ textAlign: 'center', marginTop: '2rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+    <div className="canvas-adjust" style={{ textAlign: 'center' }}>
       <div className="size-spec-layout">
         <div className="size-spec-container">
       
@@ -257,10 +257,10 @@ const canvasRef = useRef(null);
                 onClick={resetValues}
                 style={{
                   marginTop: '2rem',
-                  backgroundColor: '#007bff',
+                  backgroundColor: 'rgb(157, 187, 213)',
                   color: 'white',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '20px',
                   cursor: 'pointer',
                   fontSize: '1rem',
                   width: "100%",

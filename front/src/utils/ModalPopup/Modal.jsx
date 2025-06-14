@@ -26,6 +26,20 @@ const ModalContainer = styled.div`
   position: relative;
 `;
 
+
+const CloseButtonWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px; /* 클릭 영역 확장 */
+  height: 60px; /* 클릭 영역 확장 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10001;
+`;
+
 const CloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -35,15 +49,27 @@ const CloseButton = styled.button`
   font-size: 20px;
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 0;
-  &:hover {
+  padding: 10px;
+ &:hover {
     background: #333;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+    padding: 12px;
   }
 `;
 
@@ -52,14 +78,9 @@ export default function Modal({ onClose, children, className, showCloseButton = 
     <Overlay>
       <ModalContainer className={className}>
         {showCloseButton && (
-          <CloseButton
-            onClick={() => {
-              console.log("X 버튼 클릭됨!");
-              onClose();
-            }}
-          >
-            X
-          </CloseButton>
+          <CloseButtonWrapper onClick={() => onClose()}>
+            <CloseButton>X</CloseButton>
+          </CloseButtonWrapper>
         )}
         {children}
       </ModalContainer>

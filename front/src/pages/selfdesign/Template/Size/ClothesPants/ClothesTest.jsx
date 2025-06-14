@@ -137,7 +137,7 @@ export default function ClothesTest({
   };
 
   return (
-    <div className="canvas-adjust" style={{ textAlign: 'center', marginTop: '2rem', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+    <div className="canvas-adjust" style={{ textAlign: 'center', }}>
       <div className="size-spec-layout">
         <div className="size-spec-container">
           <canvas
@@ -151,7 +151,7 @@ export default function ClothesTest({
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr 1fr',
-              gap: '1.5rem',
+              gap: '5px',
               marginTop: '2rem',
               justifyItems: 'center',
             }}
@@ -331,14 +331,16 @@ export default function ClothesTest({
                 onChange={handleInputChange(setLowerWidthOffset, 0, 50)}
                 style={{ width: 70, marginLeft: 10 }}
               />
-              <button
+             
+            </div>
+             <button
                 onClick={resetValues}
                 style={{
                   marginTop: '2rem',
-                  backgroundColor: '#007bff',
+                  backgroundColor: 'rgb(157, 187, 213)',
                   color: 'white',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '20px',
                   cursor: 'pointer',
                   fontSize: '1rem',
                   width: "100%",
@@ -346,7 +348,6 @@ export default function ClothesTest({
               >
                 초기화
               </button>
-            </div>
           </div>
         </div>
       </div>

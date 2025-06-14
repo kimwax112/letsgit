@@ -211,8 +211,8 @@ function SizeBottom({ selectedSize, setSelectedSize }) {
 
 
   return (
-    <div className="table-container2">
-      <div className="left-section">
+    <div style={{justifyContent : "center"}} className="table-container2">
+      
 
     <PantsOutlineCanvas
           waistWidth={waistWidth}
@@ -227,78 +227,13 @@ function SizeBottom({ selectedSize, setSelectedSize }) {
           setHemWidth={setHemWidth}
           resetValues={resetValues}
         />
-      {/* 상단 이미지 */}
-      <div  className="controll-container2">
-      {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-      {/* {rows.find((row) => row.category === "A") && ( */}
-        
-          {/* <SizeControllerRow
-             row={rows.find((row) => row.category === "A")}
-             rowIndex={rows.findIndex((row) => row.category === "A")}
-             onIncrement={handleIncrementRow}
-             onDecrement={handleDecrementRow}
-               className="size-controller-row2" // 페이지 전용 스타일
 
-          >        
-      )}
-      */}
-
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {/* {rows.find((row) => row.category === "B") && (
-       
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "B")}
-            rowIndex={rows.findIndex((row) => row.category === "B")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-            className="size-controller-row2" // 페이지 전용 스타일
-          /> 
-      )} */}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {/* {rows.find((row) => row.category === "C") && (
-       
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "C")}
-            rowIndex={rows.findIndex((row) => row.category === "C")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-            className="size-controller-row2" // 페이지 전용 스타일
-          />
-      )} */}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {/* {rows.find((row) => row.category === "D") && (
-      
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "D")}
-            rowIndex={rows.findIndex((row) => row.category === "D")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-            className="size-controller-row2" // 페이지 전용 스타일
-          />
-      )} */}
-       {/* "총 기장"에 대한 별도의 증감 컨트롤러 (이미지 바로 아래에 위치) */}
-       {/* {rows.find((row) => row.category === "E") && (
-          <SizeControllerRow
-            row={rows.find((row) => row.category === "E")}
-            rowIndex={rows.findIndex((row) => row.category === "E")}
-            onIncrement={handleIncrementRow}
-            onDecrement={handleDecrementRow}
-            className="size-controller-row2" // 페이지 전용 스타일
-          />
-      )} */}
-      </div>
-      <div className="imgContainer">
-      {/* <img style={{ width: "500px", }} src="/image/pants.png" alt="이미지가 없습니다" /> */}
-      
-      </div>
-</div>      
-  
 
 
       
 
       {/* 사이즈 스펙 테이블 */}
-      <div className="right-section">
+      <div className="size-right-section">
       <table className="sizespec-table">
         <thead>
         <tr>

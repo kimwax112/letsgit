@@ -41,7 +41,7 @@ const Content = () => {
             {/* 옷 이미지 & 치수 테이블 */}
             <div className="design-preview">
                 <img src="/image/size.png" alt="옷 치수 이미지" />
-                <table>
+                <div className="design-table">
                     <thead>
                         <tr>
                             <th colSpan="2">단위(cm)</th>
@@ -105,7 +105,7 @@ const Content = () => {
                         <td colspan="7">디자인 / 디테일 선택 후, 별도 산출</td>
                     </tr>
                 </tbody>
-                </table>
+                </div>
             </div>
 
             {/* 버튼 */}

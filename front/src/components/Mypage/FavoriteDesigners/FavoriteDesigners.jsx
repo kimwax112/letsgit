@@ -16,7 +16,7 @@ export default function FavoriteDesigners() {
           method: "GET",
           credentials: "include",
         });
-
+          console.log(res.data);
         if (res.ok) {
           const data = await res.json(); // [{ postnum, id, contents }]
           setDesigners(data);
