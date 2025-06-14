@@ -6,6 +6,8 @@ import html2canvas from "html2canvas";
 import SizeBottom from "../Size/SizeBottom";
 import Sizespec from "../Size/Sizespec";
 import ClothesTest from "../Size/ClothesPants/ClothesTest";
+import { useNavigate } from "react-router-dom";
+import MyDesignsRequests from '../../../../components/Mypage/MyDesignsRequests/MyDesignsRequests';
 const getColorName = (hex) => {
   const colorMap = {
     "#ff0000": "빨강",
@@ -51,6 +53,7 @@ const FinalConfirmation = () => {
 
   const [category, setCategory] = useState(null);
   
+  const navigate = useNavigate();
      // localStorage에서 선택된 카테고리 읽기
       useEffect(() => {
         const storedClothing = localStorage.getItem("selectedClothing");
@@ -284,6 +287,7 @@ const FinalConfirmation = () => {
     localStorage.setItem("mockDesigns", JSON.stringify(existingDesigns));
       
     alert("디자인이 성공적으로 저장되었습니다.");
+    navigate("/client/MyDesignsRequests")
     // 성공 시 localStorage에서 이미지 제거 (선택 사항)
     if (category === "상의") {
       localStorage.removeItem("shirtCanvasImage");
@@ -391,6 +395,7 @@ const FinalConfirmation = () => {
           <hr />
 
           {/* 캡처할 영역 전체를 감싸는 ref */}
+          
           <section className="summary-section" ref={captureRef}>
             
             {/* 디자인 이름 입력란 - 제일 위로 이동 */}
@@ -446,7 +451,7 @@ const FinalConfirmation = () => {
                   {selectedSize && sizeValues.length > 0 && (
                     <div className="summary-item size-values">
                       <span className="label">사이즈 스펙 ({selectedSize}):</span>
-                      <div className="value">
+                      <div className="list-value">
                         <ul className="size-list">
                           {sizeLabels.map((label, index) => (
                             <li key={index} className="size-item">
@@ -468,7 +473,11 @@ const FinalConfirmation = () => {
             </div>
 
             {/* 메모 입력란 */}
-            <div className="summary-item note-input">
+            
+            
+          {/* 선택된 사이즈의 values 렌더링 */}
+           
+           <div className="summary-item note-input">
               <label htmlFor="note" className="label">
                 메모 또는 요청사항:
               </label>
@@ -481,10 +490,8 @@ const FinalConfirmation = () => {
                 style={{ width: "100%" }}
               />
             </div>
-            
-          {/* 선택된 사이즈의 values 렌더링 */}
-           
           </section>
+          
 
           <footer className="footer">
             <button

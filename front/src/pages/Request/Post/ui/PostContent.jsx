@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import image from "../../../../assets/image51.png"
 const Container = styled.section`
   display: flex;
   align-items: center;
@@ -52,17 +52,50 @@ const StyledImage = styled.img`
 `;
 
 /* 라벨 배열 예시 */
-const labels = ["카테고리", "원하는 스타일", "원하는 금액"];
+// 라벨과 데이터 키 매핑
+const labelConfigs = [
+  {
+    label: "카테고리",
+    dataKey: "categoryTags",
+    format: (value) => (Array.isArray(value) ? value.join(", ") : value || ""),
+  },
+  {
+    label: "원하는 스타일",
+    dataKey: "style",
+    format: (value) => value || "",
+  },
+  {
+    label: "원하는 금액",
+    dataKey: "amount",
+    format: (value) => value || "",
+  },
+];
 
-export default function PostContent({data}) {
+export default function PostContent({data = {} }) {
+
+ const {
+    requestId = "",
+    title = "",
+    categoryTags = "",
+    style = "",
+    amount = "",
+    deadline = "",
+    description = "",
+    image1Url = "",
+    image2Url = "", // 오타 수정
+    image3Url = "",
+    selectedItem = [null]
+  } = data;
+
   return (
     <Container>
       <LeftSection>
         <Title>{data?.title || "청바지 무릎부분 센스있게 작성하실 분 구합니다!"}</Title>
         <SubTitle>
-          {labels.map((label, i) => (
+          {labelConfigs.map(({label, dataKey, format }, i) => (
             <React.Fragment key={i}>
-              {label}
+              {label} : {format(data[dataKey])}
+              
               <Asterisk>*</Asterisk>
             </React.Fragment>
           ))}
@@ -70,7 +103,10 @@ export default function PostContent({data}) {
       </LeftSection>
 
       <RightSection>
-        <StyledImage src="image/image51.png" alt="이미지가 없습니다" />
+       <StyledImage
+        src={selectedItem.imageUrl || image}  alt="이미지가 없습니다"/> {/*의뢰작성에서 디자인한 이미지 선택했으면imageUrl 이미지 표시  */}
+        
+       
       </RightSection>
     </Container>
   );

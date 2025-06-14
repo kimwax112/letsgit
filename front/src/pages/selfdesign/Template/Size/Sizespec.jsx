@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Sizespeccss.css";
 import { SizeController, SizeControllerRow } from "../../../../components";
 import ClothesTest from "./ClothesPants/ClothesTest";
-
+import "./Sizespec.css"
 function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
@@ -48,7 +48,6 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
     setChestOffset(82);
     setBodyLength(67);
     setArmLengthFactor(20);
-    
     setLowerWidthOffset(90);
     setTopBodyHeight(18);
   };
@@ -199,9 +198,6 @@ function Sizespec({ selectedSize, setSelectedSize = () => {} }) {
         setTopBodyHeight={setTopBodyHeight}
         resetValues={resetValues}
       />
-      <div className="imgContainer">
-        {/* 상단 이미지 및 컨트롤러 생략 */}
-      </div>
 
       <table className="sizespec-table">
         <thead>

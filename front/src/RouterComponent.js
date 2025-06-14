@@ -42,6 +42,7 @@ import DesignerReceivedReviewsPage from "./pages2/Mypage/DesignerReceivedReviews
 import ClothesTest from "./pages/selfdesign/Template/Size/ClothesPants/ClothesTest";
 import DeliveryRegister from "./pages2/Mypage/ui/Delivery/DeliveryRegister";
 import DeliveryTracking from "./pages2/Mypage/ui/Delivery/DeliveryTracking";
+import FavoritePage from "./pages2/Mypage/FavoritePage";
 import FavoriteRequests from "./components/Request/FavoriteRequests"; 
 import ProductionListPage from "./pages2/Mypage/ProductionListPage";
 
@@ -125,6 +126,7 @@ const RouterComponent = () => {
             <Route path="Delivery/detail" element={<DeliveryDetail />} />
             <Route path="delivery/register/:contractId" element={<DeliveryRegister />} />
             <Route path="delivery/tracking/:contractId" element={<DeliveryTracking />} />
+            <Route path="FavoritePage" element={<FavoritePage />}/>
             <Route path="FavoriteRequests" element={<FavoriteRequests />} />
             <Route path="ProductionList" element={<ProductionListPage/>}/>
            </Routes>

@@ -37,8 +37,8 @@ hr {
 }
 
 .summary-section {
-  max-height: 60vh; /* 예: 화면 높이의 60% 이상 안 커지도록 */
-  overflow-y: auto; /* 내용이 넘치면 스크롤 생성 */
+  height: 100%; /* 예: 화면 높이의 60% 이상 안 커지도록 */
+  
 }
 
 .summary-item {
@@ -47,9 +47,13 @@ hr {
   align-items: center;
   gap: 0.9375rem;
   font-size: 1.1rem;
+  margin-top : 20px;
+      overflow: auto
 }
 
 .label {
+    flex-shrink: 0; /* 항상 보이도록 고정 */
+
   font-weight: 600;
   min-width: 8.75rem;
   color: #4a6171;
@@ -98,7 +102,7 @@ hr {
 }
 
 .footer {
-  margin-top: auto;
+  
   text-align: right;
 }
 
@@ -163,6 +167,7 @@ hr {
   flex-wrap: wrap;
   gap: 1.25rem;
   justify-content: flex-start;
+  height : 300px;
 }
 
 .fabric-img {
@@ -206,17 +211,18 @@ hr {
 }
 
 .size-values {
-  margin-top: 16px;
   background: #f9f9f9;
   border-radius: 12px;
-  padding: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  
 }
 
 .size-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow-y: auto;
 }
 
 .size-item {
@@ -225,6 +231,7 @@ hr {
   padding: 10px 0;
   border-bottom: 1px solid #e0e0e0;
   font-size: 20px;
+  
 }
 
 .size-item:last-child {
@@ -241,6 +248,14 @@ hr {
   color: #0077cc;
 }
 
-summary-item size-values {
-  
+.list-value {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    justify-content: flex-start;
+    height: 300px;
+    overflow-y: auto;
+}
+.summary-item.note-input {
+margin-top : 10px;
 }

@@ -56,7 +56,7 @@ export default function PostContent2({data}) {
     <Container>
     <Text>{data?.deadline || "희망 마감기한"}</Text>
     <ButtonContainer>
-    <ButtonCategory deadline={data.amount}/>
+    <ButtonCategory deadline={data.deadline}/>
     </ButtonContainer>
     </Container>
     

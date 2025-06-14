@@ -5,8 +5,26 @@ import { DropDown, Tag, ImageUploader, NextButtonUI, RequestPopup } from "../../
 import { TextInputUIManager, TagManager, Modal } from "../../../utils";
 import dress from "../../../assets/dress.png";
 import MyEditor from "./ui/MyEditor";
-
+import { useEffect } from "react";
+import MydesignerPopup from "./MydesignerPopup";
+import { useLocation } from "react-router-dom";
 const CustomRequestPopup = styled(RequestPopup)``;
+
+const CustomMydesignModal = styled(Modal)`
+  
+
+  
+  height : 700px;
+  
+  
+  background-color : white;
+  width : 700px;
+  overflow: auto;
+  padding : 20px;
+  
+  
+`;
+
 
 const Container = styled.div`
   max-width: 1000px;
@@ -136,12 +154,46 @@ const UploadContainer = styled.div`
   margin-left: 22%;
 `;
 
-export default function RequestWriting() {
+const MydesignContainer = styled.div`
+  background-color: #f9f9f9; // 검정 대신 밝은 배경으로 변경
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  width: 100%;
+  max-width: 500px;
+  color: #333;
+
+  img {
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+
+  h3 {
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+`;
+
+export default function RequestWriting({username: propUsername}) {
   const [enteredTags, setEnteredTags] = useState([]);
   const options = ["2025-05-01", "2025-06-01", "2025-07-01"];
   const options2 = ["미니멀", "캐주얼", "포멀"];
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [MyDesignModal, setIsModal] = useState(false);
+    const [isMyDesignModal, setIsMyDesignModal] = useState(false);
   const [files, setFiles] = useState({});
   const [title, setTitle] = useState("");
   const [categoryTags, setCategoryTags] = useState([]);
@@ -151,6 +203,13 @@ export default function RequestWriting() {
   const [description, setDescription] = useState("");
 
   const [imageUrls, setImageUrls] = useState(["", "", ""]);  // 이미지 URL 저장용
+  const [username, setUsername] = useState(propUsername);
+    const [designs, setDesigns] = useState([]);
+    const [userFiles, setUserFiles] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('template');
+    const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
+
+    const navigate = useLocation();
 
 const onImageUpload = (index, url) => {
   setImageUrls(prev => {
@@ -160,8 +219,98 @@ const onImageUpload = (index, url) => {
   });
 };
 
+  const handleFileChange = (index, event) => {
+    const newFiles = [...files];
+    newFiles[index] = event.target.files[0];
+    setFiles(newFiles);
+  };
+
+
+  
+useEffect(() => {
+    if (!propUsername) {
+      const fetchSession = async () => {
+        try {
+          const res = await fetch("http://localhost:8081/api/user", {
+            credentials: 'include',
+          });
+          if (!res.ok) throw new Error("세션 없음");
+          const data = await res.json();
+          if (data.username) {
+            console.log("✅ 세션에서 username 획득:", data.username);
+            setUsername(data.username);
+          } else {
+            console.warn("❗ 세션은 있지만 username 없음");
+          }
+        } catch (err) {
+          console.warn("⚠️ 세션 정보 없음:", err);
+        }
+      };
+      fetchSession();
+    }
+  }, [propUsername]);
+
+  useEffect(() => {
+    if (username) {
+      console.log("📦 fetchMyDesigns 호출, 현재 username:", username);
+      fetchMyDesigns();
+      console.log("📂 fetchUserFiles 호출, 현재 username:", username);
+      fetchUserFiles();
+    }
+  }, [username]);
+
+  // const fetchMyDesigns = () => { 
+  //   if (!username) {
+  //     console.warn("⚠️ 사용자 이름이 없어 디자인을 불러올 수 없습니다.");
+  //     return;
+  //   }
+  //   axios.post('http://localhost:8081/api/designs/mydesigns', { username })
+  //     .then((res) => {
+  //       console.log('🎯 받은 디자인 데이터:', res.data);
+  //       setDesigns(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error('❌ 디자인 불러오기 실패', err);
+  //     });
+  // };
+
+  // const fetchUserFiles = async () => {
+  //   if (!username) {
+  //     console.error('🛑 사용자 이름이 없어 파일을 가져올 수 없습니다.');
+  //     return;
+  //   }
+  //   try {
+  //     const response = await fetch(`http://localhost:8081/files/userimg?username=${username}`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setUserFiles(data);
+  //     } else {
+  //       console.error('❌ 파일 가져오기 실패:', response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error('⚠️ 파일 가져오기 에러:', error);
+  //   }
+  // };
+
+    const fetchMyDesigns = () => { 
+      try {
+        const mockDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
+        console.log("Raw mockDesigns:", mockDesigns); // 모든 데이터 확인
+        setDesigns(mockDesigns); // username 필터링 제거
+        console.log("🎯 모킹된 디자인 데이터:", mockDesigns);
+      } catch (err) {
+        console.error("❌ 디자인 불러오기 실패", err);
+        setDesigns([]);
+      }
+    };
+    const fetchUserFiles = async () => { 
+      setUserFiles([]); // 패턴 디자인 비활성화
+    }; //프론트용 테스트용 요기까지  6.10
+
+
 const handleSubmit = async () => {
   try {
+    
     const response = await axios.post("http://localhost:8081/api/requests", {
       title,
       categoryTags: categoryTags.join(","),  // 배열을 콤마 구분 문자열로 변환
@@ -169,17 +318,42 @@ const handleSubmit = async () => {
       amount,
       deadline,
       description,
+      selectedItem, //6.14 선택된 나의 디자인 카드 아이템 api 벡엔드 엔드포인트 필요해요 
       image1Url: imageUrls[0] || "",
       image2Url: imageUrls[1] || "",
       image3Url: imageUrls[2] || ""
     });
     console.log("요청 성공:", response.data);
     alert("의뢰가 등록되었습니다!");
+    
   } catch (error) {
     console.error("요청 실패:", error);
-    alert("의뢰 등록에 실패했습니다.");
+    alert("의뢰 등록에 실패했습니다.",error.message);
   }
 };
+
+
+const filteredDesigns = designs.filter((item) => item.category === selectedCategory);
+
+  //카테고리 바꾸는 이벤트 
+  const handleCategoryChange = async (event) => {
+    const selected = event.target.value;
+    setSelectedCategory(selected);
+
+    if (selected === 'pattern') {
+      await fetchUserFiles();
+    } else if (selected === 'template') {
+      setUserFiles([]);
+      fetchMyDesigns();
+    } else {
+      setUserFiles([]);
+    }
+  };
+  //나의 디자인 하기 클릭하면 발생하는이벤트 
+   const handleCardClick = (item) => {
+    setSelectedItem(item);
+    setIsMyDesignModal(false);
+  };
 
   return (
     <Container>
@@ -233,19 +407,54 @@ const handleSubmit = async () => {
 
           <Content>
             <RequiredLabel required>희망 마감기한</RequiredLabel>
-            <DropDown
+            {/* <DropDown
               options={options}
               defaultSelected={deadline || "선택하세요"}
               onChange={(value) => {
                 console.log("Deadline selected:", value);
-                setDeadline(value);
+                setDeadline(value); */}
+                <input
+              type="date"
+              value={deadline}
+              onChange={(e) => {
+                console.log("Deadline selected:", e.target.value);
+                setDeadline(e.target.value);
+              }}
+                            style={{
+                width: "500px",
+                padding: "10px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
               }}
             />
           </Content>
 
           <Content>
+            
             <RequiredLabel>내가 제작한 스타일</RequiredLabel>
-            <button onClick={() => setIsModal(true)}>선택하세요</button>
+            <button onClick={() => setIsMyDesignModal(true)}>선택하세요</button>
+          </Content>
+
+            <Content>
+            <RequiredLabel>
+              <MydesignContainer>
+    {selectedItem ? (
+      <>
+        {selectedItem.imageUrl ? (
+          <img src={selectedItem.imageUrl} alt={selectedItem.designName} />
+        ) : (
+          <p>이미지 없음</p>
+        )}
+        <h3>{selectedItem.designName}</h3>
+        <p>{selectedItem.clothingType}</p>
+      </>
+    ) : (
+      <p>디자인을 선택하세요</p>
+    )}
+  </MydesignContainer>
+            </RequiredLabel>
+            
           </Content>
         </HeaderWrapper>
 
@@ -273,9 +482,24 @@ const handleSubmit = async () => {
           />
 
           <UploadContainer>
-            <CustomUpload id="upload1" files={files} setFiles={setFiles} />
-            <CustomUpload id="upload2" files={files} setFiles={setFiles} />
-            <CustomUpload id="upload3" files={files} setFiles={setFiles} />
+           <CustomUpload
+              id="upload1"
+              files={files}
+              setFiles={setFiles}
+              onImageUpload={onImageUpload}
+            />
+            <CustomUpload
+              id="upload2"
+              files={files}
+              setFiles={setFiles}
+              onImageUpload={onImageUpload}
+            />
+            <CustomUpload
+              id="upload3"
+              files={files}
+              setFiles={setFiles}
+              onImageUpload={onImageUpload}
+            />
           </UploadContainer>
         </DetailAndUploadWrapper>
 
@@ -301,7 +525,44 @@ const handleSubmit = async () => {
         />
 
       )}
-      {MyDesignModal && <Modal onClose={() => setIsModal(false)} />}
+        {isMyDesignModal && (
+  <CustomMydesignModal  onClose={() => setIsMyDesignModal(false)}>
+    <div className="dropdown">
+      <select onChange={handleCategoryChange} value={selectedCategory}>
+        <option value="template">템플릿 디자인</option>
+        <option value="pattern">의류 패턴 설계도 디자인</option>
+        <option value="brand">브랜드 샘플 디자인</option>
+      </select>
+    </div>
+
+    <div>
+      {selectedCategory === 'template' && (
+        filteredDesigns.length === 0 ? (
+          <p>해당 카테고리에 저장된 디자인이 없습니다.</p>
+        ) : (
+          <div style={{justifyContent : "center"}} className="card-container">
+            {filteredDesigns.map((item) => (
+              <div key={item.designId} className="card" onClick={() => handleCardClick(item)}>
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.designName}
+                    className="card-image"
+                    style={{ width: "100%", height: "auto" }}
+                  />
+                ) : (
+                  <div>이미지 없음</div>
+                )}
+                <h3>{item.designName}</h3>
+                <p>{item.clothingType}</p>
+              </div>
+            ))}
+          </div>
+        )
+      )}
+    </div>
+  </CustomMydesignModal>
+)}    
     </Container>
   );
 }

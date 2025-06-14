@@ -135,6 +135,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from './DesignerSidebar.module.css';
+import FavoritePage from '../FavoritePage';
 
 export default function DesignerSidebar() {
   const location = useLocation();
@@ -272,8 +273,8 @@ export default function DesignerSidebar() {
           )}
           <li className={styles.menuItem}>
           <Link
-            to="/designer/FavoriteRequests"
-            className={`${styles.link} ${location.pathname === "/designer/FavoriteRequests" ? styles.active : ""}`}
+            to="/designer/FavoritePage"
+            className={`${styles.link} ${location.pathname === "/designer/FavoritePage" ? styles.active : ""}`}
           >
             찜한 의뢰 목록
           </Link>

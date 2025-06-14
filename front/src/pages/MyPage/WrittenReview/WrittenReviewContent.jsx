@@ -176,6 +176,7 @@ export default function WrittenReviewContent() {
   // 현재 편집 중인 계약 객체 찾기
   const editingContract = contracts.find((contract) => contract.contractId === editingContractId);
 
+  
 
   return (
     <div className="writtenreviewcontent-container">

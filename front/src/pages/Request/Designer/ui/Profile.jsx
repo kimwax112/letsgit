@@ -47,8 +47,9 @@ const portfolioImages = [
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
   flex-direction: row;
-  max-height: 600px;
-  overflow-y: auto;
+  
+  height : 800px;
+  
 `;
 
 const ModalContent = styled.div`
@@ -63,7 +64,27 @@ const ModalContent = styled.div`
   padding: 20px;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  
 `;
+
+const ModalContent3 = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 2px solid #799fc4;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 20px;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  min-height: 0;
+  max-height: 70vh;
+  overflow-y: auto; /* 필요할 때만 스크롤바 표시 */
+`;
+
+
 
 const DesignerImage = styled.img`
   margin: 0 auto;
@@ -72,24 +93,59 @@ const DesignerImage = styled.img`
   height: auto;
   object-fit: contain;
   margin-top: 10px; 
+  background-color : black;
 `;
 
-const ModalContent2 = styled.img`
+const ImageCarouselContainer = styled.div`
+  position: relative;
   width: 500px;
   height: 535px;
-  display: flex;
-  flex: 1;
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
   border: 2px solid #799fc4;
   border-radius: 15px;
-  margin: 20px;
-  object-fit: contain; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
 `;
+const CarouselImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+`;
+const NavButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 2;
+  &:hover { background: rgba(0,0,0,0.7); }
+`;
+
+const PrevButton = styled(NavButton)` left: 8px; `;
+const NextButton = styled(NavButton)` right: 8px; `;
+
+const PageIndicator = styled.div`
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px 0;
+  border-radius: 8px;
+  z-index: 2;
+`;
+
 
 const ImgaeContainer = styled.img`
   width: 10%;
   object-fit: contain;
 `;
+
 
 const PeriodContainer = styled.div`
   display: flex;
@@ -209,6 +265,63 @@ const Title = styled.h3`
   color: #4a6171;
   text-align: center;
 `;
+const Modalcontainer = styled.div`
+  display : flex;
+  flex-direction : column;
+  
+  
+`
+
+const ReviewContainer = styled.div`
+  width: 80%;
+  margin: 10px auto;
+  padding: 16px;
+  background-color: #f9fcfe;
+  border: 1px solid #799fc4;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #345c74;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+`;
+const DesignerSuffix = styled.span`
+  font-size: 1.2rem;      /* 조금 작게 */
+  font-weight: 600;     /* 얇게 */
+  color: #4a6171;
+  margin-left: 4px;     /* id와 간격 */
+`;
+
+const ContentText = styled.p`
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  margin: 0 10px 5px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+`;
 
 const DesignerSuffix = styled.span`
   font-size: 1.2rem;      /* 조금 작게 */
@@ -244,13 +357,22 @@ function formatDate(dateString) {
 
 
 // Component
-export default function Profile({ post }) {
+export default function Profile({ post, reviews }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
   const [liked, setLiked] = useState(false); // 💖 찜 상태 추가
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const navigate = useNavigate();
 
+  const portfolioList = portfolioImages;
+  const prevImage = (e) => { e.stopPropagation(); setCarouselIndex(i => (i === 0 ? portfolioList.length - 1 : i - 1)); };
+  const nextImage = (e) => { e.stopPropagation(); setCarouselIndex(i => (i === portfolioList.length - 1 ? 0 : i + 1)); };
 
+ const {
+    reviewnum = "",
+    id = "",
+    reviewcontent = [null],
+  } = reviews;
 
   const clickCart = (e) => {
     e.stopPropagation();
@@ -262,6 +384,9 @@ export default function Profile({ post }) {
     alert("대화방으로 이동합니다");
     navigate("/client/ChatMain");
   };
+
+
+  const matchedReview = reviews.find((review) => review.id === post.id);
 
   /*/* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
   const ChatEvent = async (postnum) => {
@@ -379,7 +504,7 @@ const ChatEvent = async (postnum) => {
 
   const imageIndex = Math.abs(post.postnum % profileImages.length);
   const designerImageIndex = Math.abs(post.postnum % designerImages.length);
-  const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
+  // const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
 
   return (
     <>
@@ -402,37 +527,71 @@ const ChatEvent = async (postnum) => {
         <PortfoilModalContainer onClose={() => setIsModalOpen(false)}>
           <ModalContent>
             <DesignerImage src={designerImages[designerImageIndex]} alt="예시" />
-            <h3>{post.author}</h3>
-            <p>
-              의류 디자인 경력 약 5년 개인, 협업 디자인 경험도 있습니다.
-              기존 틀에 벗어나 새로운 디자인을 하도록 노력하였습니다.
-            </p>
+            
+            <h3>{post.id}</h3>
+              <p>
+             {post.contents}
+              </p>
+            
             <PeriodContainer>
               <PeriodText>참여기간</PeriodText>
-              <PeriodText>2025.01 - 2025.01</PeriodText>
+              <PeriodText>2025.01 ~ 2025.01</PeriodText>
+              {/*{post.data}  참여기간 api 받아오는데이터 필요해요*/}
             </PeriodContainer>
+
             <PeriodContainer>
               {/*<ImgaeContainer src={cart2} alt="장바구니에 넣기" />
               <ModalButton onClick={clickCart}>장바구니에 넣기</ModalButton>*/}
             </PeriodContainer>
+
             <PeriodContainer>
               <ImgaeContainer src={chat} alt="대화하기" />
                 <ModalButton onClick={(e) => { e.stopPropagation(); ChatEvent(post.num); }}>
               대화하기
             </ModalButton>
             </PeriodContainer>
+
             <PeriodContainer>
               <ImgaeContainer src={request} alt="의뢰신청하기 " />
               <ModalButton2 onClick={() => setIsRequestPopupOpen(true)}>
                 의뢰신청하기
               </ModalButton2>
             </PeriodContainer>
+            
           </ModalContent>
-
-          <ModalContent2 src={portfolioImages[portfolioImageIndex]} alt="예시이미지" />
+          <Modalcontainer>
+          <ImageCarouselContainer>
+            <PrevButton onClick={prevImage}>&lt;</PrevButton>
+            <CarouselImage
+              src={portfolioImages[carouselIndex]}
+              alt={`포트폴리오 이미지 ${carouselIndex + 1}`}
+            />
+            <NextButton onClick={nextImage}>&gt;</NextButton>
+            <PageIndicator>
+              {carouselIndex + 1} / {portfolioList.length}
+            </PageIndicator>
+          </ImageCarouselContainer>
+          <ModalContent3>  
+            {/* choseDesigner에서 axios.get("/mock-review.json")에서 받아오는고 */}
+              <h4>작성된 리뷰</h4>
+              {matchedReview && matchedReview.reviewcontent && matchedReview.reviewcontent.length > 0 ? (
+                matchedReview.reviewcontent.map((comment, idx) => (
+                  <ReviewContainer key={idx}>
+                  <strong>{matchedReview.id}</strong>: {comment}
+                  </ReviewContainer>
+                ))
+              ) : (
+                <ReviewContainer>
+                  <p>리뷰가 없습니다.</p>
+                </ReviewContainer>
+              )}
+            </ModalContent3>
+          </Modalcontainer>
           {isRequestPopupOpen && (
             <RequestPopup onClose={() => setIsRequestPopupOpen(false)} />
           )}
+          
+          
         </PortfoilModalContainer>
       )}
     </>
