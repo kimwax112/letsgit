@@ -60,6 +60,13 @@ public class UsingSessionPrac {
         post.setContents(contents);
         post.setPostnum(System.currentTimeMillis());
 
+        // 디버깅 로그 추가
+        System.out.println("Received contents: " + contents);
+        System.out.println("Image1: " + (image1 != null ? image1.getOriginalFilename() : "null"));
+        System.out.println("Image2: " + (image2 != null ? image2.getOriginalFilename() : "null"));
+        System.out.println("Image3: " + (image3 != null ? image3.getOriginalFilename() : "null"));
+        System.out.println("Image4: " + (image4 != null ? image4.getOriginalFilename() : "null"));
+
         // C:/Portfolio 디렉토리에 이미지 저장
         Path portfolioDir = Paths.get("C:/Portfolio");
         if (!Files.exists(portfolioDir)) {
@@ -77,24 +84,32 @@ public class UsingSessionPrac {
                 Path filePath = portfolioDir.resolve(fileName);
                 image1.transferTo(filePath.toFile());
                 post.setImage1("/api/posts/view/" + fileName);
+            } else {
+                post.setImage1(null);
             }
             if (image2 != null && !image2.isEmpty()) {
                 String fileName = System.currentTimeMillis() + "_" + image2.getOriginalFilename();
                 Path filePath = portfolioDir.resolve(fileName);
                 image2.transferTo(filePath.toFile());
                 post.setImage2("/api/posts/view/" + fileName);
+            } else {
+                post.setImage2(null);
             }
             if (image3 != null && !image3.isEmpty()) {
                 String fileName = System.currentTimeMillis() + "_" + image3.getOriginalFilename();
                 Path filePath = portfolioDir.resolve(fileName);
                 image3.transferTo(filePath.toFile());
                 post.setImage3("/api/posts/view/" + fileName);
+            } else {
+                post.setImage3(null);
             }
             if (image4 != null && !image4.isEmpty()) {
                 String fileName = System.currentTimeMillis() + "_" + image4.getOriginalFilename();
                 Path filePath = portfolioDir.resolve(fileName);
                 image4.transferTo(filePath.toFile());
                 post.setImage4("/api/posts/view/" + fileName);
+            } else {
+                post.setImage4(null);
             }
         } catch (IOException e) {
             return ResponseEntity.status(500).body("파일 업로드 실패: " + e.getMessage());
