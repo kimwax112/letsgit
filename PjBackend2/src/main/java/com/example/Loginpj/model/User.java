@@ -7,7 +7,7 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private String usertype;
+	private String userType;
 	private String birthdate;
 	private String tel;
 	private String name;
@@ -46,8 +46,8 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-	public String getUsertype() {
-		return usertype;
+	public String getUserType() {
+		return userType;
 	}
 	//setter
 	public void setUsername(String username) {
@@ -59,8 +59,8 @@ public class User {
 	public void setEmail(String email) {
 		this.email= email;
 	}
-	public void setUserType(String usertype) {
-		this.usertype= usertype;
+	public void setUserType(String userType) {
+		this.userType= userType;
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class User {
 	            "username='" + username + '\'' +
 	            ", password='" + password + '\'' +
 	            ", email='" + email + '\'' +
-	            ", usertype='" + usertype + '\'' +
+	            ", usertype='" + userType + '\'' +
 	            ", birthdate='" + birthdate + '\'' +
 	            ", tel='" + tel + '\'' +
 	            ", name='" + name + '\'' +

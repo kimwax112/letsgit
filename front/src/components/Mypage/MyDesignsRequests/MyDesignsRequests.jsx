@@ -45,7 +45,28 @@ const MyDesignsRequests = ({ username: propUsername }) => {
 useEffect(() => {
     setUsername("client1004"); //프론트용 테스트용으로 "client1004" 고정 6.10
   }, []);
+useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/current-user', {
+          method: 'GET',
+          credentials: 'include',  // 쿠키를 포함시켜 세션을 전달
+        });
+          if (response.ok) {
+          const data = await response.json();
+          console.log(data.username);
+          setUsername(data.username);  // 로그인한 사용자 이름을 상태에 저장
+        } else {
+          console.error('로그인된 사용자가 없습니다.');
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 실패:', error);
+      }
+    };
+    
 
+    fetchUsername();
+  }, []);
   useEffect(() => {  
     if (username) {
       console.log("📦 fetchMyDesigns 호출, 현재 username:", username);
@@ -65,9 +86,25 @@ useEffect(() => {
       setDesigns([]);
     }
   };
-  const fetchUserFiles = async () => { 
-    setUserFiles([]); // 패턴 디자인 비활성화
-  }; //프론트용 테스트용 요기까지  6.10
+   const fetchUserFiles = async () => {
+    if (!username) {
+      console.error('사용자 정보가 없습니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8081/files/userimg?username=${username}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setUserFiles(data);
+      } else {
+        console.error('파일 가져오기 실패');
+      }
+    } catch (error) {
+      console.error('파일 가져오기 에러:', error);
+    }
+  };
 
 
   /* 템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 6.10
@@ -189,7 +226,10 @@ useEffect(() => {
   };
 
   const handleDesignCardClick = (item) => {
-    setSelectedDesignItem(item);
+    setSelectedDesignItem({
+    ...item,
+    image: `http://localhost:8081/files/view/${item.fileName}`
+  });
     setIsDesignModalOpen(true);
   };
 
@@ -292,13 +332,13 @@ useEffect(() => {
             <span className="close-btn" onClick={closeDesignModal}>&times;</span>
             <h2>{selectedDesignItem.name}</h2>
             <p className="modal-date">{selectedDesignItem.date}</p>
-            <img src={selectedDesignItem.image} alt={selectedDesignItem.name} className="modal-image" />
             <div className="modal-details">
-              <p><strong>사이즈:</strong> {selectedDesignItem.size}</p>
-              <p><strong>디자인 이름:</strong> {selectedDesignItem.designName}</p>
+              <p><img src={selectedDesignItem.image} alt={"임시"} className="modal-image" /></p>
+              <p><strong>작성일:</strong> {selectedDesignItem.uploadedAt}</p>
+              {/*<p><strong>디자인 이름:</strong> {selectedDesignItem.designName}</p>
               <p><strong>원단:</strong> {selectedDesignItem.fabric}</p>
               <p><strong>색상:</strong> {selectedDesignItem.color}</p>
-              <p><strong>의류 종류:</strong> {selectedDesignItem.clothingType}</p>
+              <p><strong>의류 종류:</strong> {selectedDesignItem.clothingType}</p>*/}
               
             </div>
           </div>
