@@ -114,14 +114,14 @@ export function useChat(initialChats) {
         });
 
         // ✅ 입장 메시지 전송
-        stompClient.publish({
+        /*stompClient.publish({
           destination: `/app/chat.addUser/${roomId}`,
           body: JSON.stringify({
             sender: username,
             content: `${username} 님이 입장하셨습니다.`,
             type: "JOIN",
           }),
-        });
+        });*/
         setConnected(true);
       },
       onDisconnect: () => {

@@ -21,8 +21,13 @@
     <delete id="deleteChatRoom" parameterType="long">
         DELETE FROM chat_rooms WHERE id = #{id}
     </delete>
-     <delete id="deleteMessagesByRoomId" parameterType="long">
-  		DELETE FROM chat_messages WHERE roomId = #{roomId}
-	</delete>
+
+    <delete id="deleteMessagesByRoomId" parameterType="long">
+        DELETE FROM chat_messages WHERE roomId = #{roomId}
+    </delete>
+
+    <select id="findByCreator" parameterType="string" resultType="ChatRoom">
+        SELECT * FROM chat_rooms WHERE creator = #{creator} ORDER BY created_at DESC
+    </select>
 
 </mapper>

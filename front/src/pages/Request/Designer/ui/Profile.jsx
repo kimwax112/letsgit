@@ -9,8 +9,9 @@ import designer from "../../../../assets/desiner.png";
 import { Modal } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
-import { FaHeart, FaRegHeart } from "react-icons/fa"; // 💡 추가
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import axios from "axios";
+import Room from "../../../ChatMain/ui/Room"; // Room.jsx 임포트
 
 // 이미지 배열
 const profileImages = [
@@ -43,13 +44,11 @@ const portfolioImages = [
   require("../../../../assets/포트폴리오이미지/포트폴리오6.png"),
 ];
 
-// Styled Components
+// Styled Components (원본과 동일, 생략된 부분은 그대로 유지)
 const PortfoilModalContainer = styled(Modal)`
   display: flex;
   flex-direction: row;
-  
-  height : 800px;
-  
+  height: 800px;
 `;
 
 const ModalContent = styled.div`
@@ -64,7 +63,6 @@ const ModalContent = styled.div`
   padding: 20px;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-  
 `;
 
 const ModalContent3 = styled.div`
@@ -81,10 +79,8 @@ const ModalContent3 = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
   min-height: 0;
   max-height: 70vh;
-  overflow-y: auto; /* 필요할 때만 스크롤바 표시 */
+  overflow-y: auto;
 `;
-
-
 
 const DesignerImage = styled.img`
   margin: 0 auto;
@@ -92,8 +88,8 @@ const DesignerImage = styled.img`
   max-width: 150px;
   height: auto;
   object-fit: contain;
-  margin-top: 10px; 
-  background-color : black;
+  margin-top: 10px;
+  background-color: black;
 `;
 
 const ImageCarouselContainer = styled.div`
@@ -106,26 +102,35 @@ const ImageCarouselContainer = styled.div`
   border-radius: 15px;
   overflow: hidden;
 `;
+
 const CarouselImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
 `;
+
 const NavButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   padding: 8px;
   cursor: pointer;
   z-index: 2;
-  &:hover { background: rgba(0,0,0,0.7); }
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
 `;
 
-const PrevButton = styled(NavButton)` left: 8px; `;
-const NextButton = styled(NavButton)` right: 8px; `;
+const PrevButton = styled(NavButton)`
+  left: 8px;
+`;
+
+const NextButton = styled(NavButton)`
+  right: 8px;
+`;
 
 const PageIndicator = styled.div`
   position: absolute;
@@ -140,12 +145,10 @@ const PageIndicator = styled.div`
   z-index: 2;
 `;
 
-
 const ImgaeContainer = styled.img`
   width: 10%;
   object-fit: contain;
 `;
-
 
 const PeriodContainer = styled.div`
   display: flex;
@@ -163,23 +166,21 @@ const PeriodText = styled.p`
   color: #333;
 `;
 
-const ModalButton2 = styled.button`
-  all: unset;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
-
 const ModalButton = styled.button`
   all: unset;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
 
+const ModalButton2 = styled.button`
+  all: unset;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
   &:hover {
     background-color: #f5f5f5;
   }
@@ -216,24 +217,6 @@ const JeansImage = styled.img`
   display: block;
 `;
 
-const CartButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 2;
-`;
-
-const CartImage = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
 const HeartButton = styled.button`
   position: absolute;
   top: 10px;
@@ -248,11 +231,9 @@ const HeartButton = styled.button`
   justify-content: center;
   padding: 0;
   cursor: pointer;
-
   &:hover svg {
-    color: rgba(128, 128, 128, 0.5); /* 연한 회색빛 */
+    color: rgba(128, 128, 128, 0.5);
   }
-
   &:focus {
     outline: none;
   }
@@ -265,12 +246,11 @@ const Title = styled.h3`
   color: #4a6171;
   text-align: center;
 `;
+
 const Modalcontainer = styled.div`
-  display : flex;
-  flex-direction : column;
-  
-  
-`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ReviewContainer = styled.div`
   width: 80%;
@@ -281,19 +261,16 @@ const ReviewContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-
   strong {
     display: block;
     margin-bottom: 8px;
     color: #345c74;
     font-size: 1rem;
   }
-
   p {
     margin: 0;
     color: #333;
@@ -302,13 +279,11 @@ const ReviewContainer = styled.div`
   }
 `;
 
-
-
 const DesignerSuffix = styled.span`
-  font-size: 1.2rem;      /* 조금 작게 */
-  font-weight: 600;     /* 얇게 */
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #4a6171;
-  margin-left: 4px;     /* id와 간격 */
+  margin-left: 4px;
 `;
 
 const ContentText = styled.p`
@@ -326,7 +301,7 @@ const ContentText = styled.p`
   word-break: break-word;
 `;
 
-  // 날짜를 "YYYY.MM.DD" 형식으로 변환하는 유틸 6.9
+// 날짜를 "YYYY.MM.DD" 형식으로 변환하는 유틸
 function formatDate(dateString) {
   if (!dateString) return "";
   const d = new Date(dateString);
@@ -336,99 +311,85 @@ function formatDate(dateString) {
   return `${year}.${month}.${day}`;
 }
 
-
 // Component
 export default function Profile({ post, reviews }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
-  const [liked, setLiked] = useState(false); // 💖 찜 상태 추가
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false); // 채팅 모달 상태 추가
+  const [liked, setLiked] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [selectedRoomId, setSelectedRoomId] = useState(null); // 선택된 채팅방 ID
+  const [messages, setMessages] = useState([]); // 채팅 메시지 상태
   const navigate = useNavigate();
+  const bottomRef = React.createRef(); // 메시지 스크롤용 ref
 
   const portfolioList = portfolioImages;
-  const prevImage = (e) => { e.stopPropagation(); setCarouselIndex(i => (i === 0 ? portfolioList.length - 1 : i - 1)); };
-  const nextImage = (e) => { e.stopPropagation(); setCarouselIndex(i => (i === portfolioList.length - 1 ? 0 : i + 1)); };
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCarouselIndex((i) => (i === 0 ? portfolioList.length - 1 : i - 1));
+  };
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCarouselIndex((i) => (i === portfolioList.length - 1 ? 0 : i + 1));
+  };
 
- const {
-    reviewnum = "",
-    id = "",
-    reviewcontent = [null],
-  } = reviews;
+  const { reviewnum = "", id = "", reviewcontent = [null] } = reviews;
 
   const clickCart = (e) => {
     e.stopPropagation();
     alert("장바구니에 추가되었습니다!");
   };
 
-  
-  const ChatEvent = () => {
-    alert("대화방으로 이동합니다");
-    navigate("/client/ChatMain");
-  };
-
-
-  const matchedReview = reviews.find((review) => review.id === post.id);
-
-  /*/* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
-  const ChatEvent = async (postnum) => {
-  let room;
+  // '대화하기' 버튼 클릭 시 호출되는 함수
+  // Profile.jsx 내 ChatEvent 함수
+const ChatEvent = async (e) => {
+  e.stopPropagation();
   try {
-    // 1) 기존 방 조회
-    let res = await axios.get(`/api/rooms/post/${postnum}`,
-  { withCredentials: true });
-    room = res.data;
-  } catch (err) {
-    if (err.response?.status === 404) {
-      // 2) 방이 없으면 새로 생성
-      const createRes = await axios.post(
-        "/api/rooms",
-        { postId: postnum },
-        { withCredentials: true }
-      );
-      room = createRes.data;
-    } else {
-      console.error("방 조회/생성 오류", err);
-      return alert("채팅방 진입 중 오류가 발생했습니다.");
+    // 세션에서 현재 사용자 ID 가져오기
+    const sessionResponse = await axios.get("http://localhost:8081/api/user", {
+      withCredentials: true,
+    });
+    const currentUserId = sessionResponse.data.username;
+    if (!currentUserId) {
+      throw new Error("로그인이 필요합니다.");
     }
+
+    // 백엔드 API 호출로 채팅방 생성 또는 조회
+    const response = await axios.post(
+      "http://localhost:8081/api/rooms/create",
+      {
+        creator: post.id, // 디자이너 ID
+        participant: currentUserId, // 현재 사용자 ID
+        name: `${post.id}와의 채팅방`, // 디자이너 ID + "와의 채팅방"
+      },
+      { withCredentials: true }
+    );
+
+    // 응답에서 roomId 추출
+    const roomId = response.data.roomId;
+    if (!roomId) {
+      throw new Error("채팅방 ID를 받지 못했습니다.");
+    }
+
+    // 채팅방 ID 설정 및 모달 열기
+    setSelectedRoomId(roomId);
+    setIsChatModalOpen(true);
+  } catch (error) {
+    console.error("채팅방 생성/연결 실패:", error);
+    alert(error.message || "채팅방을 열 수 없습니다.");
   }
-
- 
-  // 3) 채팅화면으로 이동
-    navigate(`/client/ChatMain/${room.id}`, {
-    state: { newRoom: room }
-  });
 };
-*/
 
-/* 디자이너고르기에서 id에 맞게 채팅방으로 이동되고 채팅방 생성되게 하는거 하다가 안한거
-const ChatEvent = async (postnum) => {
-  let room;
-
-  // ——— 더미 데이터로 바로 뿌려보기 ———
-  // axios 호출 없이 더미 방 객체 생성
-  room = {
-    id: "dummy-room-3",   // 이동할 때 사용할 방 고유 ID
-    creater : "dummyUser", // 방 생성자
-    postId: postnum,        // 포스트 번호
-    name: `더미 채팅방 #${postnum}`,
-    participants: [],       // 필요하다면 여기에 유저 리스트 등 추가
-    createdAt: new Date().toISOString()
-  };
-
-
-  // 3) 채팅화면으로 이동
-  navigate(`/client/ChatMain/`, {
-    state: { newRoom: room }
-  });
-};
-*/
   useEffect(() => {
     async function fetchLiked() {
       try {
-        const res = await fetch(`http://localhost:8081/api/posts/like/check/${post.postnum}`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await fetch(
+          `http://localhost:8081/api/posts/like/check/${post.postnum}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
         if (res.ok) {
           const isLiked = await res.json();
           setLiked(isLiked);
@@ -441,51 +402,50 @@ const ChatEvent = async (postnum) => {
   }, [post.postnum]);
 
   const handleToggleLike = async (e) => {
-  e.stopPropagation();
-
-  if (liked) {
-    // 찜 해제 확인창
-    const confirmUnlike = window.confirm("찜 해제를 하시겠습니까?");
-    if (!confirmUnlike) return;
-
-    // 찜 해제 API 호출
-    try {
-      const response = await fetch(`http://localhost:8081/api/posts/unlike/${post.postnum}`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        setLiked(false);
-      } else {
-        alert("찜 해제 실패!");
+    e.stopPropagation();
+    if (liked) {
+      const confirmUnlike = window.confirm("찜 해제를 하시겠습니까?");
+      if (!confirmUnlike) return;
+      try {
+        const response = await fetch(
+          `http://localhost:8081/api/posts/unlike/${post.postnum}`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          setLiked(false);
+        } else {
+          alert("찜 해제 실패!");
+        }
+      } catch (error) {
+        console.error("찜 해제 오류", error);
       }
-    } catch (error) {
-      console.error("찜 해제 오류", error);
-    }
-  } else {
-    // 찜하기 API 호출
-    try {
-      const response = await fetch(`http://localhost:8081/api/posts/like/${post.postnum}`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        setLiked(true);
-      } else {
-        alert("찜하기 실패!");
+    } else {
+      try {
+        const response = await fetch(
+          `http://localhost:8081/api/posts/like/${post.postnum}`,
+          {
+            method: "POST",
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          setLiked(true);
+        } else {
+          alert("찜하기 실패!");
+        }
+      } catch (error) {
+        console.error("찜하기 오류", error);
       }
-    } catch (error) {
-      console.error("찜하기 오류", error);
     }
-  }
-};
+  };
 
+  const matchedReview = reviews.find((review) => review.id === post.id);
 
   const imageIndex = Math.abs(post.postnum % profileImages.length);
   const designerImageIndex = Math.abs(post.postnum % designerImages.length);
-  // const portfolioImageIndex = Math.abs(post.postnum % portfolioImages.length);
 
   return (
     <>
@@ -496,7 +456,6 @@ const ChatEvent = async (postnum) => {
             {liked ? <FaHeart color="red" size={24} /> : <FaRegHeart color="gray" size={24} />}
           </HeartButton>
         </ImageWrapper>
-
         <Title>
           {post.id}
           <DesignerSuffix>디자이너님</DesignerSuffix>
@@ -508,57 +467,41 @@ const ChatEvent = async (postnum) => {
         <PortfoilModalContainer onClose={() => setIsModalOpen(false)}>
           <ModalContent>
             <DesignerImage src={designerImages[designerImageIndex]} alt="예시" />
-            
             <h3>{post.id}</h3>
-              <p>
-             {post.contents}
-              </p>
-            
+            <p>{post.contents}</p>
             <PeriodContainer>
               <PeriodText>참여기간</PeriodText>
               <PeriodText>2025.01 ~ 2025.01</PeriodText>
-              {/*{post.data}  참여기간 api 받아오는데이터 필요해요*/}
             </PeriodContainer>
-
-            <PeriodContainer>
-              {/*<ImgaeContainer src={cart2} alt="장바구니에 넣기" />
-              <ModalButton onClick={clickCart}>장바구니에 넣기</ModalButton>*/}
-            </PeriodContainer>
-
             <PeriodContainer>
               <ImgaeContainer src={chat} alt="대화하기" />
-                <ModalButton onClick={(e) => { e.stopPropagation(); ChatEvent(post.num); }}>
-              대화하기
-            </ModalButton>
+              <ModalButton onClick={ChatEvent}>대화하기</ModalButton>
             </PeriodContainer>
-
             <PeriodContainer>
-              <ImgaeContainer src={request} alt="의뢰신청하기 " />
+              <ImgaeContainer src={request} alt="의뢰신청하기" />
               <ModalButton2 onClick={() => setIsRequestPopupOpen(true)}>
                 의뢰신청하기
               </ModalButton2>
             </PeriodContainer>
-            
           </ModalContent>
           <Modalcontainer>
-          <ImageCarouselContainer>
-            <PrevButton onClick={prevImage}>&lt;</PrevButton>
-            <CarouselImage
-              src={portfolioImages[carouselIndex]}
-              alt={`포트폴리오 이미지 ${carouselIndex + 1}`}
-            />
-            <NextButton onClick={nextImage}>&gt;</NextButton>
-            <PageIndicator>
-              {carouselIndex + 1} / {portfolioList.length}
-            </PageIndicator>
-          </ImageCarouselContainer>
-          <ModalContent3>  
-            {/* choseDesigner에서 axios.get("/mock-review.json")에서 받아오는고 */}
+            <ImageCarouselContainer>
+              <PrevButton onClick={prevImage}>{"<"}</PrevButton>
+              <CarouselImage
+                src={portfolioImages[carouselIndex]}
+                alt={`포트폴리오 이미지 ${carouselIndex + 1}`}
+              />
+              <NextButton onClick={nextImage}>{">"}</NextButton>
+              <PageIndicator>
+                {carouselIndex + 1} / {portfolioList.length}
+              </PageIndicator>
+            </ImageCarouselContainer>
+            <ModalContent3>
               <h4>작성된 리뷰</h4>
               {matchedReview && matchedReview.reviewcontent && matchedReview.reviewcontent.length > 0 ? (
                 matchedReview.reviewcontent.map((comment, idx) => (
                   <ReviewContainer key={idx}>
-                  <strong>{matchedReview.id}</strong>: {comment}
+                    <strong>{matchedReview.id}</strong>: {comment}
                   </ReviewContainer>
                 ))
               ) : (
@@ -568,12 +511,35 @@ const ChatEvent = async (postnum) => {
               )}
             </ModalContent3>
           </Modalcontainer>
-          {isRequestPopupOpen && (
-            <RequestPopup onClose={() => setIsRequestPopupOpen(false)} />
-          )}
-          
-          
+          {isRequestPopupOpen && <RequestPopup onClose={() => setIsRequestPopupOpen(false)} />}
         </PortfoilModalContainer>
+      )}
+
+      {isChatModalOpen && (
+        <Room
+          roomId={selectedRoomId}
+          selectedUser={post.id} // 디자이너 ID를 selectedUser로 전달
+          messages={messages}
+          setMessages={setMessages}
+          isSideMenuOpen={false} // 초기 사이드 메뉴 상태
+          onClose={() => setIsChatModalOpen(false)} // 모달 닫기
+          onMenuClick={() => {}} // 사이드 메뉴 토글 (필요 시 구현)
+          onCloseSideMenu={() => {}} // 사이드 메뉴 닫기
+          onKeyDown={() => {}} // 메시지 입력 처리 (필요 시 구현)
+          onCompositionStart={() => {}} // IME 입력 시작
+          onCompositionEnd={() => {}} // IME 입력 종료
+          setModalOpen={() => {}} // 디자인 불러오기 모달
+          setModalOpen2={() => {}} // 의뢰 불러오기 모달
+          onBlock={() => {}} // 차단 기능
+          onReport={() => {}} // 신고 기능
+          isConfirmOpen={false} // 확인 모달 상태
+          confirmMessage="" // 확인 메시지
+          onConfirmYes={() => {}} // 확인 예
+          onConfirmNo={() => {}} // 확인 아니오
+          isSuccessPopupOpen={false} // 성공 팝업 상태
+          popupMessage="" // 성공 팝업 메시지
+          bottomRef={bottomRef} // 스크롤 ref
+        />
       )}
     </>
   );
