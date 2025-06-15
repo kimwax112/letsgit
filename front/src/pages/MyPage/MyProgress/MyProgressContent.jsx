@@ -4,20 +4,33 @@ import axios from "axios";
 import ContractItem from "../../../components/contract/ContractItem/ContractItem";
 
 const statusImages = {
-  "대기중": "/image/대기중.png",
-  "배송중": "/image/배송중.png",
-  "진행중": "/image/진행중.png",
-  "완료": "/image/완료됨.png",
+  "디자인하기": "/image/대기중.png",
+  "뜨개질하기": "/image/배송중.png",
+  "마감하기": "/image/진행중.png",
+  "포장하기": "/image/완료됨.png",
 };
 
-const allStatuses = ["대기중", "진행중", "배송중", "완료"];
+const allStatuses = ["디자인하기", "뜨개질하기", "마감하기", "포장하기"];
 
-export default function MyProgressContent({ mode = "전체", username: propUsername }) {
+export default function MyProgressContent({ mode = "전체", username: propUsername,refreshFlag }) {
   const [username, setUsername] = useState(propUsername);
   const [contracts, setContracts] = useState([]);
   const [statusFilter, setStatusFilter] = useState("전체");
   const [searchTerm, setSearchTerm] = useState("");
+  const [update, stepUpdated]= useState("")
 
+
+
+async function fetchContracts() {
+  try {
+    const res = await axios.get(
+      `http://localhost:8081/api/progress/client/contracts/${username}`
+    );
+    setContracts(res.data.map(/* 가공 */));
+  } catch (err) {
+    console.error("계약 데이터 가져오기 실패", err);
+  }
+}
   useEffect(() => {
     if (!propUsername) {
       const fetchSession = async () => {
@@ -38,28 +51,40 @@ export default function MyProgressContent({ mode = "전체", username: propUsern
     }
   }, [propUsername]);
 
+   // ➋ contracts 불러오는 함수
+  async function fetchContracts() {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8081/api/progress/client/contracts/${username}`
+      );
+      // data가 배열인지 확인
+      if (!Array.isArray(data)) {
+        console.error("서버 응답이 배열이 아닙니다:", data);
+        return;
+      }
+      // 실제로 map에 콜백을 넘겨줘야 합니다
+      const mapped = data.map((c) => ({
+        id: c.contractId,
+        title: c.contractTitle,
+        step: c.step != null ? c.step - 1 : 0,
+        status: allStatuses[c.step - 1] || allStatuses[0],
+        date: c.dueDate ? c.dueDate.split("-").join(".") : "",
+        starredStatus: c.starredStatus === 1,
+        preview: c.contractContent || "",
+      }));
+      setContracts(mapped);
+    } catch (err) {
+      console.error("계약 데이터 가져오기 실패", err);
+    }
+  }
+
+  // ➌ username 또는 refreshFlag 바뀔 때마다 재조회
   useEffect(() => {
-    if (!username) return;
-
-    axios
-      .get(`http://localhost:8081/api/progress/client/contracts/${username}`)
-      .then((response) => {
-        const mappedContracts = response.data.map((contract) => ({
-          id: contract.contractId,
-          title: contract.contractTitle,
-          step: contract.step || 0,
-          status: allStatuses[contract.step] || "대기중", // fallback
-          date: formatDate(contract.dueDate),
-          starredStatus: contract.starredStatus === 1,
-          preview: contract.contractContent || "",
-        }));
-        setContracts(mappedContracts);
-      })
-      .catch((error) => {
-        console.error("계약 데이터 가져오기 실패:", error);
-      });
-  }, [username]);
-
+    if (username) {
+      fetchContracts();
+    }
+  }, [username, refreshFlag]);
+  
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const [year, month, day] = dateStr.split("-");
@@ -94,8 +119,9 @@ export default function MyProgressContent({ mode = "전체", username: propUsern
               filteredContracts.map((contract) => (
                 <div key={contract.id} className="contract-with-images">
                   <ContractItem
+                    key={contract.contractId}
                     contract={contract}
-                    onToggleStar={() => handleToggleStar(contract.id)}
+                    onToggleStar={() => handleToggleStar(contract.contractId)}
                   />
                   <div className="status-image-container">
                     <div className="status-images">
