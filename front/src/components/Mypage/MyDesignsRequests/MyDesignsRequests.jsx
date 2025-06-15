@@ -141,7 +141,7 @@ useEffect(() => {
     }
   }, [username]);
 
-  const fetchMyDesigns = () => { //프론트 테스트 하기위해 주석처리 6.10
+  /*const fetchMyDesigns = () => { //프론트 테스트 하기위해 주석처리 6.10
     if (!username) {
       console.warn("⚠️ 사용자 이름이 없어 디자인을 불러올 수 없습니다.");
       return;
@@ -154,9 +154,9 @@ useEffect(() => {
       .catch((err) => {
         console.error('❌ 디자인 불러오기 실패', err);
       });
-  };
+  };*/
 
-  const fetchUserFiles = async () => {
+  /*const fetchUserFiles = async () => {
     if (!username) {
       console.error('🛑 사용자 이름이 없어 파일을 가져올 수 없습니다.');
       return;
@@ -172,7 +172,7 @@ useEffect(() => {
     } catch (error) {
       console.error('⚠️ 파일 가져오기 에러:', error);
     }
-  };
+  };*/
 /*템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 요기까지 */
 
   const getColorName = (colorCode) => colorMap[colorCode] || colorCode;
