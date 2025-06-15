@@ -29,7 +29,7 @@ public class UserController {
 
         if (user != null) {
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("usertype", user.getUsertype());
+            session.setAttribute("usertype", user.getUserType());
             session.setAttribute("name", user.getName()); // 추가
 
             sessionManager.addSession(session);
@@ -37,7 +37,7 @@ public class UserController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "로그인 성공!");
             response.put("username", user.getUsername());
-            response.put("usertype", user.getUsertype());
+            response.put("usertype", user.getUserType());
             response.put("name", user.getName());
 
             return ResponseEntity.ok(response);

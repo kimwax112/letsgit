@@ -28,7 +28,7 @@ const Footer = styled.div`
   display: flex;
   margin: 0 auto;
   margin: 80px;
-  justify-content: flex-end;  
+  justify-content: flex-end;
   gap: 10px;
 `;
 
@@ -119,39 +119,55 @@ export default function Portfolio() {
   const [inputValue, setInputValue] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
-  const [name, setName] = useState("");
   const [contents, setContent] = useState("");
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
 
-  const itemsPerView = 3;
-  const totalItems = 5;
+  const itemsPerView = 4; // 최대 4개 이미지 지원
+  const totalItems = 4;
   const maxIndex = Math.max(0, totalItems - itemsPerView);
 
   useEffect(() => {
     axios.get("http://localhost:8081/api/user", { withCredentials: true })
       .then(response => {
         if (response.data.name) {
-          setName(response.data.name);
+          setInputValue(response.data.name);
         }
       })
       .catch(error => console.error("로그인 상태 확인 실패", error));
   }, []);
 
   const handleSubmit = async (e) => {
-    e?.preventDefault();
-    if (!contents.trim()) return;
+  e?.preventDefault();
+  if (!contents.trim()) return;
 
-    try {
-      await axios.post("http://localhost:8081/api/posts", { contents }, { withCredentials: true });
-      setContent("");
-      fetchPosts();
-      alert('포트폴리오 작성 완료!');
-      navigate('/designer/Dmypage');
-    } catch (error) {
-      console.error("글 작성 실패", error);
-    }
-  };
+  const formData = new FormData();
+  formData.append("contents", contents);
+  if (files.upload1) formData.append("image1", files.upload1.file);
+  if (files.upload2) formData.append("image2", files.upload2.file);
+  if (files.upload3) formData.append("image3", files.upload3.file);
+  if (files.upload4) formData.append("image4", files.upload4.file);
+
+  // 디버깅: FormData 내용 확인
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value, value instanceof File);
+  }
+
+  try {
+    await axios.post("http://localhost:8081/api/posts/with-images", formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    setContent("");
+    setFiles({});
+    fetchPosts();
+    alert("포트폴리오 작성 완료!");
+    navigate("/designer/Dmypage");
+  } catch (error) {
+    console.error("글 작성 실패", error);
+    alert("포트폴리오 작성 실패: " + error.message);
+  }
+};
 
   const fetchPosts = () => {
     axios.get("http://localhost:8081/api/posts", { withCredentials: true })
@@ -212,7 +228,6 @@ export default function Portfolio() {
                 <CustomUpload id="upload2" files={files} setFiles={setFiles} />
                 <CustomUpload id="upload3" files={files} setFiles={setFiles} />
                 <CustomUpload id="upload4" files={files} setFiles={setFiles} />
-                <CustomUpload id="upload5" files={files} setFiles={setFiles} />
               </CarouselTrack>
 
               {currentIndex < maxIndex && (
