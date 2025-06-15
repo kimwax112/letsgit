@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./DesignerContractCreate.module.css";
 
-const DesignerContractInputSection = ({ contractData, setContractData }) => {
+const DesignerContractInputSection = ({ contractData, setContractData, handleFeeChange }) => {
   // 계약 의뢰
   const handleContractTitleChange = (e) => {
     setContractData({ ...contractData, contractTitle: e.target.value });
@@ -85,11 +85,11 @@ const DesignerContractInputSection = ({ contractData, setContractData }) => {
         </label>
         <div className={styles.moneyWrapper}>
           <input
-            type="number"
-            value={contractData.requestFee || ""} // 빈 문자열로 기본값 설정
+            type="text"
+            value={contractData.requestFee || ""}
             placeholder="계약금을 입력하세요"
             className={styles.moneyInput}
-            onChange={handleRequestFeeChange}
+            onChange={handleFeeChange}
           />
           <span className={styles.moneyUnit}>₩</span>
         </div>
