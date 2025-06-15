@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import RequestPopup from "../../Request/ui/RequestPopup";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import axios from "axios";
-import Room from "../../../ChatMain/ui/Room"; // Room.jsx 임포트
+import Room from "../../../ChatMain/ui/Room";
+import { useChat } from "../../../ChatMain/ui/useChat"; // useChat 훅 임포트
 
 // 이미지 배열
 const profileImages = [
@@ -311,75 +312,132 @@ function formatDate(dateString) {
   return `${year}.${month}.${day}`;
 }
 
-// Component
 export default function Profile({ post, reviews }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
-  const [isChatModalOpen, setIsChatModalOpen] = useState(false); // 채팅 모달 상태 추가
   const [liked, setLiked] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [selectedRoomId, setSelectedRoomId] = useState(null); // 선택된 채팅방 ID
-  const [messages, setMessages] = useState([]); // 채팅 메시지 상태
+  const [chatData, setChatData] = useState([]); // 채팅방 데이터
   const navigate = useNavigate();
-  const bottomRef = React.createRef(); // 메시지 스크롤용 ref
 
-  const portfolioList = portfolioImages;
-  const prevImage = (e) => {
+  // useChat 훅 초기화
+  const {
+    filteredChats,
+    recentSearches,
+    isModalOpen: isChatModalOpen,
+    selectedRoomId,
+    selectedUser,
+    isSideMenuOpen,
+    messages,
+    modalOpen,
+    modalOpen2,
+    currentView,
+    isConfirmOpen,
+    confirmMessage,
+    isSuccessPopupOpen,
+    popupMessage,
+    bottomRef,
+    setMessages,
+    handleSearch,
+    handleRecentSearchClick,
+    handleProfileClick,
+    handleCloseModal,
+    handleMenuClick,
+    handleCloseSideMenu,
+    handleKeyDown,
+    handleCompositionStart,
+    handleCompositionEnd,
+    handleSidebarLinkClick,
+    handleBlockClick,
+    handleReportClick,
+    handleSideMenuBlock,
+    handleSideMenuReport,
+    handleConfirmYes,
+    handleConfirmNo,
+    setModalOpen,
+    setModalOpen2,
+    addRequestMessage,
+    handleItemSelect,
+    handleRequestselect,
+  } = useChat(chatData);
+
+  // 채팅방 데이터 초기화
+  useEffect(() => {
+    const fetchChatData = async () => {
+      try {
+        const sessionResponse = await axios.get("http://localhost:8081/api/user", {
+          withCredentials: true,
+        });
+        const currentUserId = sessionResponse.data.username;
+        if (!currentUserId) throw new Error("로그인이 필요합니다.");
+
+        // 디자이너와의 채팅방 조회
+        const response = await axios.get("http://localhost:8081/api/rooms/list", {
+          withCredentials: true,
+        });
+        const rooms = response.data
+          .filter((room) => room.creator === post.id || room.participant === post.id)
+          .map((room) => ({
+            id: room.id,
+            creator: room.creator,
+            name: room.name,
+            message: room.creator,
+            time: formatDate(room.createdAt || new Date().toISOString()),
+          }));
+        setChatData(rooms);
+      } catch (error) {
+        console.error("채팅방 데이터 가져오기 실패:", error);
+      }
+    };
+    fetchChatData();
+  }, [post.id]);
+
+  // "대화하기" 버튼 클릭 시 채팅방 생성 또는 선택
+  const ChatEvent = async (e) => {
     e.stopPropagation();
-    setCarouselIndex((i) => (i === 0 ? portfolioList.length - 1 : i - 1));
-  };
-  const nextImage = (e) => {
-    e.stopPropagation();
-    setCarouselIndex((i) => (i === portfolioList.length - 1 ? 0 : i + 1));
-  };
+    try {
+      const sessionResponse = await axios.get("http://localhost:8081/api/user", {
+        withCredentials: true,
+      });
+      const currentUserId = sessionResponse.data.username;
+      if (!currentUserId) throw new Error("로그인이 필요합니다.");
 
-  const { reviewnum = "", id = "", reviewcontent = [null] } = reviews;
+      // 기존 채팅방 확인
+      const existingRoom = chatData.find(
+        (room) => room.creator === post.id || room.participant === post.id
+      );
 
-  const clickCart = (e) => {
-    e.stopPropagation();
-    alert("장바구니에 추가되었습니다!");
-  };
-
-  // '대화하기' 버튼 클릭 시 호출되는 함수
-  // Profile.jsx 내 ChatEvent 함수
-const ChatEvent = async (e) => {
-  e.stopPropagation();
-  try {
-    // 세션에서 현재 사용자 ID 가져오기
-    const sessionResponse = await axios.get("http://localhost:8081/api/user", {
-      withCredentials: true,
-    });
-    const currentUserId = sessionResponse.data.username;
-    if (!currentUserId) {
-      throw new Error("로그인이 필요합니다.");
+      if (existingRoom) {
+        // 기존 채팅방이 있으면 선택
+        handleProfileClick(existingRoom);
+      } else {
+        // 새 채팅방 생성
+        const response = await axios.post(
+          "http://localhost:8081/api/rooms/create",
+          {
+            creator: post.id,
+            participant: currentUserId,
+            name: `${post.id}와의 채팅방`,
+          },
+          { withCredentials: true }
+        );
+        const newRoom = {
+          id: response.data.roomId,
+          creator: post.id,
+          name: `${post.id}와의 채팅방`,
+          message: post.id,
+          time: formatDate(new Date().toISOString()),
+        };
+        setChatData((prev) => [...prev, newRoom]);
+        handleProfileClick(newRoom);
+      }
+    } catch (error) {
+      console.error("채팅방 생성/연결 실패:", error);
+      handleConfirmYes("error", error.message || "채팅방을 열 수 없습니다.");
     }
+  };
 
-    // 백엔드 API 호출로 채팅방 생성 또는 조회
-    const response = await axios.post(
-      "http://localhost:8081/api/rooms/create",
-      {
-        creator: post.id, // 디자이너 ID
-        participant: currentUserId, // 현재 사용자 ID
-        name: `${post.id}와의 채팅방`, // 디자이너 ID + "와의 채팅방"
-      },
-      { withCredentials: true }
-    );
-
-    // 응답에서 roomId 추출
-    const roomId = response.data.roomId;
-    if (!roomId) {
-      throw new Error("채팅방 ID를 받지 못했습니다.");
-    }
-
-    // 채팅방 ID 설정 및 모달 열기
-    setSelectedRoomId(roomId);
-    setIsChatModalOpen(true);
-  } catch (error) {
-    console.error("채팅방 생성/연결 실패:", error);
-    alert(error.message || "채팅방을 열 수 없습니다.");
-  }
-};
-
+  // 찜 상태 확인
   useEffect(() => {
     async function fetchLiked() {
       try {
@@ -442,8 +500,17 @@ const ChatEvent = async (e) => {
     }
   };
 
-  const matchedReview = reviews.find((review) => review.id === post.id);
+  const portfolioList = portfolioImages;
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCarouselIndex((i) => (i === 0 ? portfolioList.length - 1 : i - 1));
+  };
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCarouselIndex((i) => (i === portfolioList.length - 1 ? 0 : i + 1));
+  };
 
+  const matchedReview = reviews.find((review) => review.id === post.id);
   const imageIndex = Math.abs(post.postnum % profileImages.length);
   const designerImageIndex = Math.abs(post.postnum % designerImages.length);
 
@@ -518,27 +585,27 @@ const ChatEvent = async (e) => {
       {isChatModalOpen && (
         <Room
           roomId={selectedRoomId}
-          selectedUser={post.id} // 디자이너 ID를 selectedUser로 전달
+          selectedUser={selectedUser || post.id}
           messages={messages}
           setMessages={setMessages}
-          isSideMenuOpen={false} // 초기 사이드 메뉴 상태
-          onClose={() => setIsChatModalOpen(false)} // 모달 닫기
-          onMenuClick={() => {}} // 사이드 메뉴 토글 (필요 시 구현)
-          onCloseSideMenu={() => {}} // 사이드 메뉴 닫기
-          onKeyDown={() => {}} // 메시지 입력 처리 (필요 시 구현)
-          onCompositionStart={() => {}} // IME 입력 시작
-          onCompositionEnd={() => {}} // IME 입력 종료
-          setModalOpen={() => {}} // 디자인 불러오기 모달
-          setModalOpen2={() => {}} // 의뢰 불러오기 모달
-          onBlock={() => {}} // 차단 기능
-          onReport={() => {}} // 신고 기능
-          isConfirmOpen={false} // 확인 모달 상태
-          confirmMessage="" // 확인 메시지
-          onConfirmYes={() => {}} // 확인 예
-          onConfirmNo={() => {}} // 확인 아니오
-          isSuccessPopupOpen={false} // 성공 팝업 상태
-          popupMessage="" // 성공 팝업 메시지
-          bottomRef={bottomRef} // 스크롤 ref
+          isSideMenuOpen={isSideMenuOpen}
+          onClose={handleCloseModal}
+          onMenuClick={handleMenuClick}
+          onCloseSideMenu={handleCloseSideMenu}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
+          setModalOpen={setModalOpen}
+          setModalOpen2={setModalOpen2}
+          onBlock={handleSideMenuBlock}
+          onReport={handleSideMenuReport}
+          isConfirmOpen={isConfirmOpen}
+          confirmMessage={confirmMessage}
+          onConfirmYes={handleConfirmYes}
+          onConfirmNo={handleConfirmNo}
+          isSuccessPopupOpen={isSuccessPopupOpen}
+          popupMessage={popupMessage}
+          bottomRef={bottomRef}
         />
       )}
     </>

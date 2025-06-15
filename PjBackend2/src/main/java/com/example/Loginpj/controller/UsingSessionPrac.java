@@ -7,7 +7,12 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -17,24 +22,86 @@ public class UsingSessionPrac {
     @Autowired
     private PostService postService;
 
+    // 기존 글 생성 (JSON 기반)
     @PostMapping
     public ResponseEntity<String> createPost(@RequestBody PostWhat post, HttpSession session) {
-
-    	String name = (String) session.getAttribute("username");
+        String name = (String) session.getAttribute("username");
 
         if (name == null) {
             return ResponseEntity.status(401).body("로그인이 필요합니다.");
         }
         
         post.setId(name);
-        
-        // postnum 생성 (예: 현재 시간을 이용한 고유 번호 생성)
-        long postnum = System.currentTimeMillis();
-        post.setPostnum(postnum);
+        post.setPostnum(System.currentTimeMillis());
         System.out.println("들어오는거: " + post);
 
         postService.createPost(post);
         return ResponseEntity.ok("글이 저장되었습니다.");
+    }
+
+    // 이미지 포함 글 생성 (Multipart 기반)
+    @PostMapping(value = "/with-images", consumes = "multipart/form-data")
+    public ResponseEntity<String> createPostWithImages(
+            @RequestParam("contents") String contents,
+            @RequestParam(value = "image1", required = false) MultipartFile image1,
+            @RequestParam(value = "image2", required = false) MultipartFile image2,
+            @RequestParam(value = "image3", required = false) MultipartFile image3,
+            @RequestParam(value = "image4", required = false) MultipartFile image4,
+            HttpSession session) {
+
+        String name = (String) session.getAttribute("username");
+
+        if (name == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        PostWhat post = new PostWhat();
+        post.setId(name);
+        post.setContents(contents);
+        post.setPostnum(System.currentTimeMillis());
+
+        // C:/Portfolio 디렉토리에 이미지 저장
+        Path portfolioDir = Paths.get("C:/Portfolio");
+        if (!Files.exists(portfolioDir)) {
+            try {
+                Files.createDirectories(portfolioDir);
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body("디렉토리 생성 실패: " + e.getMessage());
+            }
+        }
+
+        // 이미지 업로드 및 경로 설정
+        try {
+            if (image1 != null && !image1.isEmpty()) {
+                String fileName = System.currentTimeMillis() + "_" + image1.getOriginalFilename();
+                Path filePath = portfolioDir.resolve(fileName);
+                image1.transferTo(filePath.toFile());
+                post.setImage1("/api/posts/view/" + fileName);
+            }
+            if (image2 != null && !image2.isEmpty()) {
+                String fileName = System.currentTimeMillis() + "_" + image2.getOriginalFilename();
+                Path filePath = portfolioDir.resolve(fileName);
+                image2.transferTo(filePath.toFile());
+                post.setImage2("/api/posts/view/" + fileName);
+            }
+            if (image3 != null && !image3.isEmpty()) {
+                String fileName = System.currentTimeMillis() + "_" + image3.getOriginalFilename();
+                Path filePath = portfolioDir.resolve(fileName);
+                image3.transferTo(filePath.toFile());
+                post.setImage3("/api/posts/view/" + fileName);
+            }
+            if (image4 != null && !image4.isEmpty()) {
+                String fileName = System.currentTimeMillis() + "_" + image4.getOriginalFilename();
+                Path filePath = portfolioDir.resolve(fileName);
+                image4.transferTo(filePath.toFile());
+                post.setImage4("/api/posts/view/" + fileName);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("파일 업로드 실패: " + e.getMessage());
+        }
+
+        postService.createPost(post);
+        return ResponseEntity.ok("포트폴리오가 저장되었습니다.");
     }
 
     @GetMapping
@@ -42,9 +109,7 @@ public class UsingSessionPrac {
         List<PostWhat> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
-    
-    
- // 찜하기 기능
+
     @PostMapping("/like/{postnum}")
     public ResponseEntity<String> addToWishlist(@PathVariable Long postnum, HttpSession session) {
         String clientId = (String) session.getAttribute("username");
@@ -63,7 +128,6 @@ public class UsingSessionPrac {
         return ResponseEntity.ok("찜 목록에 추가되었습니다.");
     }
 
-    // 마이페이지 - 내가 찜한 포트폴리오 목록 조회
     @GetMapping("/wishlist")
     public ResponseEntity<List<PostWhat>> getWishlist(HttpSession session) {
         String clientId = (String) session.getAttribute("username");
@@ -75,12 +139,12 @@ public class UsingSessionPrac {
         List<PostWhat> wishlist = postService.getWishlistByClient(clientId);
         return ResponseEntity.ok(wishlist);
     }
-    
+
     @PostMapping("/unlike/{postnum}")
     public ResponseEntity<?> unlikePost(@PathVariable Long postnum, HttpSession session) {
         String clientId = (String) session.getAttribute("username"); 
 
-        System.out.println("unlike 요청 - clientId: " + clientId + ", postnum: " + postnum);  // 로그 추가
+        System.out.println("unlike 요청 - clientId: " + clientId + ", postnum: " + postnum);
 
         if (clientId == null) {
             return ResponseEntity.status(401).body("로그인이 필요합니다.");
@@ -94,12 +158,31 @@ public class UsingSessionPrac {
             postService.removeFromWishlist(wishlist);
             return ResponseEntity.ok("찜 해제 완료");
         } catch (Exception e) {
-            e.printStackTrace();  // 전체 에러 로그 확인
+            e.printStackTrace();
             return ResponseEntity.status(500).body("찜 해제 실패: " + e.getMessage());
         }
     }
 
-
-
-
+    // 이미지 제공 API
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<byte[]> viewFile(@PathVariable String fileName) {
+        Path filePath = Paths.get("C:/Portfolio").resolve(fileName).normalize();
+        try {
+            if (Files.exists(filePath) && Files.isReadable(filePath)) {
+                byte[] fileContent = Files.readAllBytes(filePath);
+                String contentType = Files.probeContentType(filePath);
+                if (contentType == null) {
+                    contentType = "application/octet-stream";
+                }
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                        .body(fileContent);
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
