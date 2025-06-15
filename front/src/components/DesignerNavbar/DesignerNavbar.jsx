@@ -58,9 +58,6 @@ const DesignerNavbar = () => {
               <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
                 일반 채팅방
               </Link>
-              <Link to="/" onClick={() => setIsMenuOpen(false)}>
-                사용자 신고/차단
-              </Link>
             </div>
           </div>
         </div>
@@ -95,7 +92,7 @@ const DesignerNavbar = () => {
             <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
               일반 채팅방
             </Link>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
               사용자 신고/차단
             </Link>
           </div>

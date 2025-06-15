@@ -57,7 +57,7 @@ const Navbar = () => {
               <Link to="/client/contract" onClick={() => setIsMenuOpen(false)}>
                 계약서 조회 및 처리
               </Link>
-              <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/client/ContractSendMessagePage" onClick={() => setIsMenuOpen(false)}>
                 계약 수정 건의
               </Link>
             </div>
@@ -68,9 +68,6 @@ const Navbar = () => {
             <div className="dropdown-menu">
               <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
                 일반 채팅방
-              </Link>
-              <Link to="/client/report" onClick={() => setIsMenuOpen(false)}>
-                사용자 신고/차단
               </Link>
             </div>
           </div>
@@ -107,7 +104,7 @@ const Navbar = () => {
             <Link to="/client/contract" onClick={() => setIsMenuOpen(false)}>
               계약서 조회 및 처리
             </Link>
-            <Link to="/client/modify" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/ContractSendMessagePage" onClick={() => setIsMenuOpen(false)}>
               계약 수정 건의
             </Link>
           </div>
@@ -116,7 +113,7 @@ const Navbar = () => {
             <Link to="/client/ChatMain" onClick={() => setIsMenuOpen(false)}>
               일반 채팅방
             </Link>
-            <Link to="/client/report" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
               사용자 신고/차단
             </Link>
           </div>

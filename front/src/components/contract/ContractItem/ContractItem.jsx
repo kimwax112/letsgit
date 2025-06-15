@@ -2,7 +2,7 @@ import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./ContractItem.css";
 
-const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
+const ContractItem = ({ contract, onToggleStar, onClick, to, style }) => {
   const { starredStatus, title, preview, status, date } = contract;
   const navigate = useNavigate();
 
@@ -12,7 +12,11 @@ const ContractItem = ({ contract, onToggleStar, onClick, to }) => {
   };
 
   return (
-    <div className="contract-item" onClick={onClick || handleClick}>
+    <div
+      className="contract-item"
+      onClick={onClick || handleClick}
+      style={style} 
+    >
       <div className="contract-left">
         <div className="contract-star" onClick={(e) => e.stopPropagation()}>
           <Star

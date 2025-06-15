@@ -42,9 +42,9 @@ const MyDesignsRequests = ({ username: propUsername }) => {
   };
   const colorMap = { "#ff0000": "빨강", "#00ff00": "초록", "#0000ff": "파랑", "#ff9900": "주황", "#0099ff": "하늘" };
 
-useEffect(() => {
-    setUsername("client1004"); //프론트용 테스트용으로 "client1004" 고정 6.10
-  }, []);
+// useEffect(() => {
+//     setUsername("client1004"); //프론트용 테스트용으로 "client1004" 고정 6.10
+//   }, []);
 
   useEffect(() => {  
     if (username) {
@@ -54,24 +54,24 @@ useEffect(() => {
   }, [username]);
 
   
-  const fetchMyDesigns = () => { 
-    try {
-      const mockDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
-      console.log("Raw mockDesigns:", mockDesigns); // 모든 데이터 확인
-      setDesigns(mockDesigns); // username 필터링 제거
-      console.log("🎯 모킹된 디자인 데이터:", mockDesigns);
-    } catch (err) {
-      console.error("❌ 디자인 불러오기 실패", err);
-      setDesigns([]);
-    }
-  };
-  const fetchUserFiles = async () => { 
-    setUserFiles([]); // 패턴 디자인 비활성화
-  }; //프론트용 테스트용 요기까지  6.10
+  // const fetchMyDesigns = () => { 
+  //   try {
+  //     const mockDesigns = JSON.parse(localStorage.getItem("mockDesigns") || "[]");
+  //     console.log("Raw mockDesigns:", mockDesigns); // 모든 데이터 확인
+  //     setDesigns(mockDesigns); // username 필터링 제거
+  //     console.log("🎯 모킹된 디자인 데이터:", mockDesigns);
+  //   } catch (err) {
+  //     console.error("❌ 디자인 불러오기 실패", err);
+  //     setDesigns([]);
+  //   }
+  // };
+  // const fetchUserFiles = async () => { 
+  //   setUserFiles([]); // 패턴 디자인 비활성화
+  // }; //프론트용 테스트용 요기까지  6.10
 
 
   /* 템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 6.10
-  
+  */
   useEffect(() => {
     if (!propUsername) {
       const fetchSession = async () => {
@@ -104,7 +104,7 @@ useEffect(() => {
     }
   }, [username]);
 
-  const fetchMyDesigns = () => { 프론트 테스트 하기위해 주석처리 6.10
+  const fetchMyDesigns = () => { //프론트 테스트 하기위해 주석처리 6.10
     if (!username) {
       console.warn("⚠️ 사용자 이름이 없어 디자인을 불러올 수 없습니다.");
       return;
@@ -136,7 +136,7 @@ useEffect(() => {
       console.error('⚠️ 파일 가져오기 에러:', error);
     }
   };
-템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 요기까지 */
+/*템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 요기까지 */
 
   const getColorName = (colorCode) => colorMap[colorCode] || colorCode;
   const closeModal = () => setIsModalOpen(false);
