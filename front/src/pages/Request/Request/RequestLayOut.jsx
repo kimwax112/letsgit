@@ -62,11 +62,11 @@ export default function RequestLayOut({ children }) {
     <Container>
       <ContentHeaderWrapper />
       <Content>{children}</Content>
-      <PaginationContainer>
+      {/* <PaginationContainer>
         <PageButton className="active">1</PageButton>
         <PageButton>2</PageButton>
         <PageButton>3</PageButton>
-      </PaginationContainer>
+      </PaginationContainer> */}
     </Container>
   );
 }

@@ -5,6 +5,7 @@ import ContractItem from "../ContractItem/ContractItem";
 import ContractSearchAndFilter from "../ContractSearchAndFilter/ContractSearchAndFilter";
 import "./ContractList.css";
 import styled from 'styled-components';
+
 const ReviewModal = styled.div`
   position: fixed;
   top: 0;
@@ -79,7 +80,7 @@ useEffect(() => {
         {
           id: "99",
           starredStatus: false,
-          title: "완료용  계약 데이터",
+          title: "완료용 계약 데이터",
           clientId: "dummy-client",
           status: "완료",
           date: "2025.01.01",
@@ -203,8 +204,6 @@ const handleStarClick = (star) => {
   }
 };
 
-  
-
   return (
     <div>
       <ContractSearchAndFilter
@@ -213,34 +212,46 @@ const handleStarClick = (star) => {
         statusFilter={statusFilter}
         setStatusFilter={setStatusFilter}
       />
-      {filteredContracts.length > 0 ? (
-        filteredContracts.map((contract) => (
-          <div
-            key={contract.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%", 
-              boxSizing: "border-box",
-            }}
-          >
-            <ContractItem
-              contract={contract}
-              onToggleStar={() => handleToggleStar(contract.id)}
-              onClick={() => handleClick(contract)}
-              onStatusChange={handleStatusChange}
-            />
-            <div style={{ width: "70px", display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center", // 가로 가운데 정렬
+          alignItems: "center",     // 세로 가운데 정렬
+          flexDirection: "column",  // 자식들을 세로로 나열
+          minHeight: "100vh",       // 화면 전체 높이 기준으로 가운데 정렬
+          width: "100%",
+        }}
+      >
+        {filteredContracts.length > 0 ? (
+          filteredContracts.map((contract) => (
+            <div
+              key={contract.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1px",
+                width: "800px", // 리스트 아이템 고정 너비
+                marginBottom: "5px",
+                flexShrink: 0,
+              }}
+            >
+              <ContractItem
+                contract={contract}
+                onToggleStar={() => handleToggleStar(contract.id)}
+                onClick={() => handleClick(contract)}
+                onStatusChange={handleStatusChange}
+                style={{ flexGrow: 1, margin: 0, padding: 15 }}
+              />
               {contract.status === "완료" && (
                 <button
                   style={{
-                    whiteSpace: "pre-line",
                     padding: "6px 10px",
                     fontWeight: "bold",
                     cursor: "pointer",
-                    marginLeft: "0px", // 진짜 바로 붙이기!
-                    height: "fit-content",
+                    height: "105px",
+                    margin: 0,
+                    border: "none",
+                    flexShrink: 0,
                   }}
                   onClick={() => openReviewModal(contract)}
                 >
@@ -248,11 +259,11 @@ const handleStarClick = (star) => {
                 </button>
               )}
             </div>
-          </div>
-        ))
-      ) : (
-        <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>
-      )}
+          ))
+        ) : (
+          <p className="no-contracts-message">조건에 맞는 계약이 없습니다.</p>
+        )}
+      </div>
       
       {isModalOpen && selectedContract && (
   <ReviewModal onClick={closeReviewModal}>
