@@ -5,49 +5,54 @@
 
 <mapper namespace="com.example.Loginpj.mapper.UserDesignMapper">
 
-<select id="findByUserId" parameterType="string" resultType="com.example.Loginpj.model.UserDesign">
-  SELECT
-    design_id AS designId,
-    username,
-    clothing_type AS clothingType,
-    fabric AS fabricJson,
-    sizee AS size,
-    design_name AS designName,
-    colors AS colorsJson,
-    created_at AS createdAt,
-    category
-  FROM
-    user_design
-  WHERE
-    username = #{username}
-</select>
+  <!-- ✅ 명시적 ResultMap 추가 -->
+  <resultMap id="UserDesignMap" type="com.example.Loginpj.model.UserDesign">
+    <result property="designId" column="design_id"/>
+    <result property="username" column="username"/>
+    <result property="clothingType" column="clothing_type"/>
+    <result property="fabricJson" column="fabric"/>
+    <result property="size" column="sizee"/>
+    <result property="designName" column="design_name"/>
+    <result property="colorsJson" column="colors"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="category" column="category"/>
+   	<result property="designImageBase64" column="design_image_base64" jdbcType="CLOB"/> 
+  </resultMap>
 
+  <!-- SELECT: 사용자 디자인 조회 -->
+  <select id="findByUserId" parameterType="string" resultMap="UserDesignMap">
+    SELECT * FROM user_design
+    WHERE username = #{username}
+  </select>
+
+  <!-- INSERT: 사용자 디자인 등록 -->
   <insert id="insertUserDesign" parameterType="com.example.Loginpj.model.UserDesign">
-    <selectKey keyProperty="designId" resultType="long" order="BEFORE">
-      SELECT user_design_seq.NEXTVAL FROM dual
-    </selectKey>
+  <selectKey keyProperty="designId" resultType="long" order="BEFORE">
+    SELECT user_design_seq.NEXTVAL FROM dual
+  </selectKey>
+  INSERT INTO user_design (
+    design_id, username, clothing_type, fabric, sizee,
+    design_name, colors, created_at, category, design_image_base64
+  )
+  VALUES (
+    #{designId, jdbcType=NUMERIC},
+    #{username, jdbcType=VARCHAR},
+    #{clothingType, jdbcType=VARCHAR},
+    #{fabricInsertJson, jdbcType=VARCHAR},
+    #{size, jdbcType=VARCHAR},
+    #{designName, jdbcType=VARCHAR},
+    #{colorsInsertJson, jdbcType=CLOB},
+    SYSDATE,
+    #{category, jdbcType=VARCHAR},
+    <![CDATA[#{designImageBase64, jdbcType=CLOB}]]>
+  )
+</insert>
 
-    INSERT INTO user_design (
-      design_id,
-      username,
-      clothing_type,
-      fabric,
-      sizee,
-      design_name,
-      colors,
-      created_at,
-      category
-    ) VALUES (
-      #{designId, jdbcType=NUMERIC},
-      #{username, jdbcType=VARCHAR},
-      #{clothingType, jdbcType=VARCHAR},
-      #{fabricInsertJson, jdbcType=VARCHAR},
-      #{size, jdbcType=VARCHAR},
-      #{designName, jdbcType=VARCHAR},
-      #{colorsInsertJson, jdbcType=CLOB},
-      SYSDATE,
-      #{category, jdbcType=VARCHAR}
-    )
-  </insert>
+
+  <!-- SELECT: designId로 단일 디자인 조회 -->
+  <select id="findById" parameterType="long" resultMap="UserDesignMap">
+    SELECT * FROM user_design
+    WHERE design_id = #{designId}
+  </select>
 
 </mapper>

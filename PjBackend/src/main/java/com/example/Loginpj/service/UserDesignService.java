@@ -25,4 +25,9 @@ public class UserDesignService {
         int updatedRows = userDesignMapper.updateSizeByUserId(username, size);
         return updatedRows > 0;
     }
+    
+    public UserDesign getDesignById(Long designId) {
+        return userDesignMapper.findById(designId);
+    }
+
 }

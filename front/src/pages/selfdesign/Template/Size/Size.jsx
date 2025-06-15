@@ -27,17 +27,36 @@ const Size = () => {
   const handleSave = async () => {
     if (!selectedSize) {
       alert("사이즈를 선택하시오");
-    } else {
-      // 선택한 사이즈를 세션에 저장
+      return;
+    }
+
+    try {
+      // 선택된 사이즈를 세션에 저장
       sessionStorage.setItem("selectedSize", selectedSize);
-      
-      try {
-        alert(`${selectedSize} 사이즈가 선택되었습니다.`);
-        navigate("/client/FinalConfirmation");
-      } catch (error) {
-        console.error("저장 실패:", error);
-        alert("저장에 실패했습니다.");
+
+      // 캔버스 이미지(localStorage에서 가져오기)
+      const canvasImage = localStorage.getItem("shirtCanvasImage");
+
+      if (canvasImage) {
+        // 세션에 이미지 저장 (다음 페이지에서 확인 가능하도록)
+        sessionStorage.setItem("shirtCanvasImage", canvasImage);
+
+        // 👉 또는 서버에 저장하고 싶다면 (예: Spring Boot 백엔드)
+        /*
+        await axios.post("/api/save-canvas", {
+          size: selectedSize,
+          image: canvasImage,  // base64 string
+        });
+        */
+      } else {
+        console.warn("캔버스 이미지가 localStorage에 존재하지 않습니다.");
       }
+
+      alert(`${selectedSize} 사이즈가 선택되었습니다.`);
+      navigate("/client/FinalConfirmation");
+    } catch (error) {
+      console.error("저장 실패:", error);
+      alert("저장에 실패했습니다.");
     }
   };
 
