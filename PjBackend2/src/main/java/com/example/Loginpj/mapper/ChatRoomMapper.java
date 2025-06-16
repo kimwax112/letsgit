@@ -10,7 +10,6 @@ public interface ChatRoomMapper {
     List<ChatRoom> getAllChatRooms();
     ChatRoom getChatRoomById(Long id);
     void deleteMessagesByRoomId(Long id);
-
     void deleteChatRoom(Long id);
+    ChatRoom findByCreator(String creator); // creator로 채팅방 조회
 }
-
