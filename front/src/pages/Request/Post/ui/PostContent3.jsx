@@ -8,14 +8,27 @@ const Container = styled.div`
 `;
 
 const DetailBox = styled.div`
-  aspect-ratio: 1 / 1;
-  width: auto;
-  background-color: white;
-  border: 2px solid;
-  padding: 10px;
-  font-size: 16px;
-`;
+  flex : 0.8;
+   width: 100%;                   /* 반응형 대응 */
+  max-width: 400px;   
+  height: 200px; 
+  background-color: #ffffff;     /* 깔끔한 흰색 배경 */
+  border: 1px solid #e0e0e0;     /* 연한 회색 테두리 */
+  border-radius: 12px;           /* 둥근 모서리 */
+  /* 폰트 스타일링 */
+  
+  font-weight: 500;              /* 중간 굵기 */
+  font-size: 1.125rem;           /* 18px 정도 */
+  line-height: 1.6;              /* 행간 여유 */
+  letter-spacing: 0.5px;         /* 글자 사이 약간 띄우기 */
+  color: rgb(58, 159, 232);      /* 차분한 텍스트 컬러 */
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05); /* 미묘한 입체감 */
 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 부드러운 그림자 */
+  white-space: pre-wrap;         /* 줄바꿈 유지 */
+  word-break: break-word;        /* 단어가 길어도 줄바꿈 */
+  
+`;
 const TextArea = styled.textarea`
   aspect-ratio: 1 / 1;
   width: 100%;
@@ -25,6 +38,7 @@ const TextArea = styled.textarea`
   padding: 10px;
   font-size: 16px;
   resize: none;
+  
 `;
 
 const ButtonContainer = styled.div`
@@ -47,6 +61,10 @@ const ButtonDetailContainer = styled.button`
   cursor: pointer;
   margin-bottom: 10px;
 `;
+
+const Text = styled.div`
+margin : 20px;
+`
 
 export default function PostCotent3({ data = {} }) {
     const {
@@ -183,7 +201,9 @@ export default function PostCotent3({ data = {} }) {
           placeholder="상세설명을 입력하세요"
         />
       ) : (
-        <DetailBox>{data?.description || "수정하기"}</DetailBox>
+        <DetailBox>
+          <Text>{data?.description || "수정하기"}</Text>
+          </DetailBox>
       )}
       
     </Container>

@@ -8,6 +8,8 @@ import MyEditor from "./ui/MyEditor";
 import { useEffect } from "react";
 import MydesignerPopup from "./MydesignerPopup";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";  // 🔧 변경
+import RequestEditor from "./ui/RequestEditor";
 const CustomRequestPopup = styled(RequestPopup)``;
 
 const CustomMydesignModal = styled(Modal)`
@@ -208,8 +210,9 @@ export default function RequestWriting({username: propUsername}) {
     const [userFiles, setUserFiles] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('template');
     const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
+  const [rawAmount, setRawAmount] = useState("");
 
-    const navigate = useLocation();
+    const navigate = useNavigate();
 
 const onImageUpload = (index, url) => {
   setImageUrls(prev => {
@@ -219,11 +222,18 @@ const onImageUpload = (index, url) => {
   });
 };
 
+
+
+
   const handleFileChange = (index, event) => {
     const newFiles = [...files];
     newFiles[index] = event.target.files[0];
     setFiles(newFiles);
   };
+
+  
+
+  
 
 
   
@@ -309,6 +319,9 @@ useEffect(() => {
 
 
 const handleSubmit = async () => {
+    const sanitized = description.replace(/<script[^>]*>[\s\S]*?<\/script>|<style[^>]*>[\s\S]*?<\/style>|<!--[\s\S]*?-->|<[^>]+>/gi,'').trim();
+      console.log('폼 제출 직전 description:', description);
+
   try {
     
     const response = await axios.post("http://localhost:8081/api/requests", {
@@ -317,17 +330,18 @@ const handleSubmit = async () => {
       style,
       amount,
       deadline,
-      description,
+      description : sanitized,
       selectedItem, //6.14 선택된 나의 디자인 카드 아이템 api 벡엔드 엔드포인트 필요해요 
       image1Url: imageUrls[0] || "",
       image2Url: imageUrls[1] || "",
       image3Url: imageUrls[2] || ""
     });
-    console.log("요청 성공:", response.data);
+    console.log("의뢰등록 성공 :", response.data);
     alert("의뢰가 등록되었습니다!");
+    navigate('/client/request')
     
   } catch (error) {
-    console.error("요청 실패:", error);
+    console.error("의뢰등록 요청실패 :", error);
     alert("의뢰 등록에 실패했습니다.",error.message);
   }
 };
@@ -473,13 +487,22 @@ const filteredDesigns = designs.filter((item) => item.category === selectedCateg
               )}
             </TagList>
           </Detail>
-
-          <MyEditor
+  <RequestEditor
+        value={description}
+        onChange={(html) => {
+          console.log('에디터 onChange:', html);
+          setDescription(html);
+        }}
+      />
+              
+          {/* <MyEditor
             onSendMessage={(text) => {
               console.log("Description updated:", text);
               setDescription(text);
             }}
-          />
+          
+          /> */}
+          
 
           <UploadContainer>
            <CustomUpload

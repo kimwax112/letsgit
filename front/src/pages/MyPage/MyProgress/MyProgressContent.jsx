@@ -5,8 +5,8 @@ import ContractItem from "../../../components/contract/ContractItem/ContractItem
 
 const statusImages = {
   "디자인하기": "/image/대기중.png",
-  "뜨개질하기": "/image/배송중.png",
-  "마감하기": "/image/진행중.png",
+  "뜨개질하기": "/image/진행중.png",
+  "마감하기": "/image/배송중.png",
   "포장하기": "/image/완료됨.png",
 };
 
@@ -19,7 +19,10 @@ export default function MyProgressContent({ mode = "전체", username: propUsern
   const [searchTerm, setSearchTerm] = useState("");
   const [update, stepUpdated]= useState("")
 
-
+  useEffect(() => {
+  if (!username) return;
+  fetchContracts();  
+}, [username, stepUpdated]);  // ➋ stepUpdated가 바뀌면 다시 불러오기
 
 async function fetchContracts() {
   try {
