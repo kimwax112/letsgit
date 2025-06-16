@@ -218,7 +218,7 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
         <div style={modalStyle.overlay}>
           <div style={modalStyle.modal}>
             <h3>계약 승인 확인</h3>
-            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다'를 입력해주세요.</h5>
+            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다.'를 입력해주세요.</h5>
             <input
               type="text"
               value={agreeMessage}

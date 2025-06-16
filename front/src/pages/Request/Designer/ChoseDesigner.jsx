@@ -2,12 +2,15 @@ import React from "react";
 import Profile from "./ui/Profile";
 import Search from "./ui/Search";
 import styled from "styled-components";
-import { RequestLayOut } from "../Request/Request";
 import ContentHeader from "../ui/ContentHeader";
 import SideMenuBar from "../../../components/sidebar/SideMenuBar";
 import axios from "axios";
 import {useState, useEffect, navigate} from "react";
 import {SearchBar2, NextButtonUI } from '../../../components';
+import RequestLayOut from "../Request/RequestLayOut";
+import SearchRequest from "../../../pages2/Request/SearchRequest";
+
+
 
 // 전체 레이아웃을 감싸는 컨테이너
 const MainContainer = styled.div`
@@ -42,13 +45,15 @@ export default function ChoseDesigner() {
   const [postsCount, setPostsCount] = useState(0);  // 개수를 저장할 상태 추가
     const [posts, setPosts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    
 
+const [review, setReview] = useState([]);
 
     const handleSearchTermChange = (newSearchTerm) => {
       setSearchTerm(newSearchTerm);
     };
   const fetchPosts = () => {
-    axios.get("http://localhost:8081/api/posts", { withCredentials: true })
+    axios.get("http://localhost:8081/api/posts", { withCredentials: true }) 
       .then(response => {
         console.log("글 목록 불러오기 성공", response.data);
         setPosts(response.data);
@@ -59,26 +64,69 @@ export default function ChoseDesigner() {
   useEffect(() => {
     fetchPosts();
   }, []);
-  const filteredPosts = posts.filter(
-    (post) => post.id.toString().includes(searchTerm) // post.id가 searchTerm을 포함하는 경우만 필터링
-  );
+
+
+  console.log("posts:", posts);
+console.log("searchTerm:", searchTerm);
+
+  const fetchReview = () => {
+      axios.get("/mock-review.json") //public/mock-review.json
+      // axios.get("http://localhost:8081/api/review", { withCredentials: true }) //벡엔드 api 주소에 review가없어서 주석처리했어요 
+      .then(response => {
+        console.log("글 후기 목록 불러오기 성공", response.data);
+        setReview(response.data);
+        
+      })
+      .catch(error => console.error("글 후기 목록 불러오기 실패", error));
+  };
+  useEffect(() => {
+    fetchReview();
+  }, []);
+
+
+
+  
+// 검색어 공백 제거 및 소문자 변환 엔터하면 검색 돼는걸루 
+    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+    // id 필드를 기준으로 필터링
+    const filteredItems = trimmedSearchTerm
+        ? posts.filter(
+              (post) =>
+                  typeof post.id === "string" &&
+                  post.id.toLowerCase().includes(trimmedSearchTerm)
+          )
+        : posts;
+
+    // 디버깅 로그
+    useEffect(() => {
+        console.log("검색어:", searchTerm);
+        console.log("정리된 검색어:", trimmedSearchTerm);
+        console.log("필터링된 항목:", filteredItems);
+    }, [searchTerm, filteredItems]);
+
+    
   return (
     <>
    
-    <ContentHeader children="디자이너 찾기" />
+    
     {/*<SearchBar2 onSearchTermChange={handleSearchTermChange} />*/}
+
     <RequestLayOut>
+      <div style={{display : "flex", alignItems:"center" }}><h1>디자이너찾기 </h1>
+      <SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} children={"디자이너검색"} /></div>
       <MainContainer>
         <Sidebar>
           <Search />
           <SideMenuBar />
         </Sidebar>
-        <Content>
-        {filteredPosts.map((post, index) => (
-            <Profile key={index} post={post} />
-          ))}
-         
-          
+       <Content>
+      {filteredItems.length > 0 ? (
+        filteredItems.map((post) => (
+          <Profile key={post.postnum} post={post} reviews={review} />
+          ))
+        ) : (
+            <p>찾으시는 ID가 없습니다.</p>
+          )}
         </Content>
       </MainContainer>
     </RequestLayOut>

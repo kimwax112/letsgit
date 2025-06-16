@@ -1,20 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+const itemContainer = styled`
 
+`
 const Container = styled.div`
-  width: 67.1875rem;  /* 1070px */
-  height: 25rem;  /* 400px */
+  
+  width: 80%;
+  
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 3.125rem;  /* 50px */
+  gap:10px;
   padding: 1.875rem 3.125rem;  /* 30px 50px */
   border: 0.05rem solid black;  /* 0.8px */
   position: relative;
 `;
 
 const ItemBox = styled.div`
-  width: 13.125rem;  /* 210px */
-  height: 16.25rem;  /* 260px */
+  width: 16.125rem;  /* 210px */
+  height: 19.25rem;  /* 260px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,6 +69,7 @@ const NextButton = styled.button`
 
 const ItemsContainer = ({ items, activeTab, selectedItem, setSelectedItem }) => {
   return (
+    <itemContainer>
     <Container>
       {items[activeTab]?.map((item, index) => (
         <ItemBox
@@ -83,6 +87,7 @@ const ItemsContainer = ({ items, activeTab, selectedItem, setSelectedItem }) => 
         </ItemBox>
       ))}
     </Container>
+    </itemContainer>
   );
 };
 

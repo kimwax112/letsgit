@@ -50,7 +50,7 @@ const TagContainer = styled.div`
 
 const Tag = styled.div`
   background-color: #bfd7ee;
-  width: 50px;
+  width: auto;
   height: 20px;
   border: 0.5px solid;
   border-radius: 15px;
