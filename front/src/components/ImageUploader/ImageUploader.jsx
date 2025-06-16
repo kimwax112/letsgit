@@ -48,60 +48,18 @@ const RemoveButton = styled.button`
   font-size: 1rem;
 `;
 
-export default function ImageUploader({ className, id, files, setFiles, onImageUpload }) {
+export default function ImageUploader({ className, id, files, setFiles }) {
   const inputRef = useRef();
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const previewUrl = URL.createObjectURL(file);
-    setFiles((prev) => ({ ...prev, [id]: { file, preview: previewUrl, serverUrl: null } }));
+    setFiles((prev) => ({ ...prev, [id]: { file, preview: previewUrl } }));
 
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await fetch('http://localhost:8081/files/upload', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Upload failed: ${response.status} ${errorText}`);
-      }
-
-      // 서버 응답 처리 (JSON 또는 텍스트)
-      let uploadedUrl;
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const data = await response.json();
-        uploadedUrl = data.url;
-      } else {
-        uploadedUrl = await response.text();
-      }
-
-      setFiles((prev) => ({
-        ...prev,
-        [id]: { file, preview: previewUrl, serverUrl: uploadedUrl },
-      }));
-
-      // 부모 컴포넌트에 서버 URL 전달
-      if (onImageUpload) {
-        onImageUpload(id.replace('upload', '') - 1, uploadedUrl);
-      }
-    } catch (error) {
-      console.error('Image upload failed:', error);
-      
-      alert('이미지 업로드에 실패했습니다: ' + error.message);
-      URL.revokeObjectURL(previewUrl);
-      setFiles((prev) => {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      });
-    }
+    // 파일 선택 후 입력 초기화
+    inputRef.current.value = null;
   };
 
   const removeFile = () => {
@@ -112,10 +70,6 @@ export default function ImageUploader({ className, id, files, setFiles, onImageU
       delete updated[id];
       return updated;
     });
-    // 부모 컴포넌트에 URL 제거 알림
-    if (onImageUpload) {
-      onImageUpload(id.replace('upload', '') - 1, '');
-    }
   };
 
   const handleClick = () => inputRef.current.click();
