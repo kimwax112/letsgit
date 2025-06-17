@@ -16,24 +16,35 @@
     <result property="image1Url" column="image1_url" />
     <result property="image2Url" column="image2_url" />
     <result property="image3Url" column="image3_url" />
+    
+    <result property="username" column="username" />
+    <result property="requesterName" column="name" />
   </resultMap>
 
   <select id="findAll" resultMap="RequestResultMap">
-    SELECT * FROM request ORDER BY request_id
-  </select>
+  SELECT r.request_id, r.title, r.category_tags, r.style, r.amount, r.deadline, r.description,
+         r.image1_url, r.image2_url, r.image3_url, r.username, u.name
+    FROM request r
+    LEFT JOIN user_info u ON r.username = u.username
+   ORDER BY r.request_id
+</select>
 
   <select id="findById" parameterType="long" resultMap="RequestResultMap">
-    SELECT * FROM request WHERE request_id = #{requestId}
-  </select>
+  SELECT r.request_id, r.title, r.category_tags, r.style, r.amount, r.deadline, r.description,
+         r.image1_url, r.image2_url, r.image3_url, r.username, u.name
+    FROM request r
+    LEFT JOIN user_info u ON r.username = u.username
+   WHERE r.request_id = #{requestId}
+</select>
 
   <insert id="insert" parameterType="com.example.Loginpj.model.Request" useGeneratedKeys="false">
-    INSERT INTO request (
-      request_id, title, category_tags, style, amount, deadline, description, image1_url, image2_url, image3_url
-    )
-    VALUES (
-      request_seq.nextval, #{title}, #{categoryTags}, #{style}, #{amount}, #{deadline}, #{description}, #{image1Url}, #{image2Url}, #{image3Url}
-    )
-  </insert>
+  INSERT INTO request (
+    request_id, title, category_tags, style, amount, deadline, description, image1_url, image2_url, image3_url, username
+  )
+  VALUES (
+    request_seq.nextval, #{title}, #{categoryTags}, #{style}, #{amount}, #{deadline}, #{description}, #{image1Url}, #{image2Url}, #{image3Url}, #{username}
+  )
+</insert>
 
   <update id="update" parameterType="com.example.Loginpj.model.Request">
     UPDATE request
@@ -53,5 +64,14 @@
   <delete id="deleteById" parameterType="long">
     DELETE FROM request WHERE request_id = #{requestId}
   </delete>
+  
+  <select id="findByUsername" parameterType="string" resultMap="RequestResultMap">
+    SELECT r.request_id, r.title, r.category_tags, r.style, r.amount, r.deadline, r.description,
+           r.image1_url, r.image2_url, r.image3_url, r.username, u.name
+      FROM request r
+      LEFT JOIN user_info u ON r.username = u.username
+     WHERE r.username = #{username}
+     ORDER BY r.request_id DESC
+  </select>
 
 </mapper>

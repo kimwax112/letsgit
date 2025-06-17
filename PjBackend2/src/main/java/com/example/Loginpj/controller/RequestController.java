@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Loginpj.model.Request;
@@ -57,5 +58,14 @@ public class RequestController {
         int result = service.delete(id);
         if (result == 1) return ResponseEntity.ok("Request deleted successfully");
         else return ResponseEntity.status(500).body("Failed to delete request");
+    }
+    
+    @GetMapping("/user")
+    public ResponseEntity<List<Request>> getByUsername(@RequestParam String username) {
+        List<Request> requests = service.getByUsername(username);
+        if (requests.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(requests);
     }
 }
