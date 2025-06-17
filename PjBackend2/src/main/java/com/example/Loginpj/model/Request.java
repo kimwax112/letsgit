@@ -10,11 +10,21 @@ public class Request {
     private String description;
     private String image1Url;
     private String image2Url;
-    private String image3Url;
+    private String image3Url;   
+    private String username; //user_info테이블에 있는 username을 join하기 위해 추가 
+    private String requesterName; // user_info.name을 담을 필드
 
     public Request() {}
 
-    public Request(Long requestId, String title, String categoryTags, String style, String amount, String deadline,
+    public String getRequesterName() {
+		return requesterName;
+	}
+
+	public void setRequesterName(String requesterName) {
+		this.requesterName = requesterName;
+	}
+
+	public Request(Long requestId, String title, String categoryTags, String style, String amount, String deadline,
                    String description, String image1Url, String image2Url, String image3Url) {
         this.requestId = requestId;
         this.title = title;
@@ -28,7 +38,15 @@ public class Request {
         this.image3Url = image3Url;
     }
 
-    public Long getRequestId() {
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Long getRequestId() {
         return requestId;
     }
     public void setRequestId(Long requestId) {

@@ -34,7 +34,7 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   const [contractMessage, setSendMessage] = useState(); //보낸 메시지 동적으로 관리되는 변수 
   const [agreeMessage, setAgreeMessage] = useState('');
   const [showModal, setShowModal] = useState(false); // ✅ 모달 표시 여부
-
+  
   useEffect(() => {
     const fetchContract = async () => {
       try {
@@ -109,18 +109,44 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   if (!contractData || !contractData.contractTitle) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
-  const handleSendRequest = () => {
-    // 작성완료를 누르지 않았거나 내용이 비어 있으면 동작하지 않음
-    if (!isEditorSent || editorContent.trim() === "") {
-      alert("메시지를 작성하고 작성완료를 눌러주세요.");
-      return;
-    }
-    navigate('/client/Chatmain', 
-      { state: { messageText: editorContent, sendMessage : contractMessage,
-      sourcePage: "OtherPage", 
-     } });
-  };
 
+  const handleSendRequest = async () => {  // async 추가
+  if (!isEditorSent || editorContent.trim() === "") {
+    alert("메시지를 작성하고 작성완료를 눌러주세요.");
+    return;
+  }
+
+  const messagePayload = {
+  messageId: contractMessage?.id,
+  content: editorContent,
+  contractId: contractId,
+  clientId: contractData?.clientId,     // 추가
+  designerId: contractData?.designerId, // 추가
+  time: contractMessage?.time,
+};
+
+
+  try {
+    const response = await axios.post("http://localhost:8081/api/request-messages/send", messagePayload);
+
+    if (response.status === 200) {
+      alert("요청 메시지를 성공적으로 보냈습니다!");
+      setEditorContent("");
+      setIsEditorSent(false);
+      // 필요하면 페이지 이동
+      // navigate("/client/ContractSendMessagePage");
+    }
+  } catch (error) {
+    console.error("메시지 전송 실패:", error);
+    alert("메시지 전송 중 오류가 발생했습니다.");
+  }
+
+  // 메시지 전송 후 이동
+  navigate('/client/Chatmain', 
+    { state: { messageText: editorContent, sendMessage : contractMessage,
+      sourcePage: "OtherPage", 
+    } });
+};
   
 const handleEditorSend = (content) => {  //요청보내기 누를때 저장되는 객체 구조  (content) == MyEditor에서 입력한 메시지 매개변수로 전달
   if (content.trim() !== "") {
@@ -145,6 +171,7 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
 );
   }
 };
+
   return (
     <div className="Detailcontainer">
       <div className="Detailtitle">
@@ -218,7 +245,7 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
         <div style={modalStyle.overlay}>
           <div style={modalStyle.modal}>
             <h3>계약 승인 확인</h3>
-            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다'를 입력해주세요.</h5>
+            <h5>계약을 동의하면 '계약 내용을 확인하였으며 동의합니다.'를 입력해주세요.</h5>
             <input
               type="text"
               value={agreeMessage}

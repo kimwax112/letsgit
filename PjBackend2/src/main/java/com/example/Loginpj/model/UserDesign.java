@@ -22,6 +22,8 @@ public class UserDesign {
     private String designName;
     private Date createdAt;
     private String category;
+    
+    private String designImageBase64;
 
     // 실제로 프론트에서 사용할 List 형태의 getter
     @JsonIgnore
@@ -133,6 +135,14 @@ public class UserDesign {
         this.category = category;
     }
 
+    public String getDesignImageBase64() {
+        return designImageBase64;
+    }
+    
+    public void setDesignImageBase64(String designImageBase64) {
+        this.designImageBase64 = designImageBase64;
+    }
+    
     // 저장용 JSON 문자열 반환 (insert 시 사용)
     @JsonIgnore
     public String getFabricInsertJson() {
