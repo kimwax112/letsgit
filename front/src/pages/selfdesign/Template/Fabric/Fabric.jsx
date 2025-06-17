@@ -1,9 +1,11 @@
 // Fabric.jsx
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Fabric.css";
 import { Sidebar, BreadCrumb, FabricItem, FixedColorPicker } from "../../../../components";
 import NextButtonWithPopup from "../../../../components/Popup/NextButtonWithPopup";
+import PrevButton from "../../../../components/Popup/PrevButton";
 
 // 원단 데이터 + 사용 가능 카테고리 추가
 const fabricItemsData = [
@@ -134,6 +136,8 @@ const Fabric = () => {
   const [selectedRatios, setSelectedRatios] = useState({});
   const [totalRatio, setTotalRatio] = useState(0);
   const [selectedPatterns, setSelectedPatterns] = useState({});
+
+  const navigate = useNavigate();
 
   const itemsPerPageFirst = 8;
   const itemsPerPageSecond = 4;
@@ -345,7 +349,9 @@ const Fabric = () => {
             </div>
           </div>
 
-          <div className="footer">
+          <div className="footer" style={{ display: "flex", gap: "1.5rem" }}>
+            <PrevButton onClick={() => navigate("/client/clothes")} />
+
             <NextButtonWithPopup
               selectedItems={selectedItems.map((item) => ({
                 name: item.name,

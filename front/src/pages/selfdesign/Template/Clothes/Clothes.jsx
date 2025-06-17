@@ -211,7 +211,7 @@ const Clothes = () => {
             <NextButtonWithPopup
               selectedItems={selectedItem ? [selectedItem] : []}
               nextRoute="/client/fabric"
-              onNext={handleNext}
+              showDetail={false}  // ⬅ 이게 핵심!
             />
           </div>
         </div>

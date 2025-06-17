@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import NextButtonUI from "../NextButton/NextButton";
 import Popup from "./Popup"; // Popup 컴포넌트는 앞서 제공한 예제 참조
 
-const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
+const NextButtonWithPopup = ({ selectedItems, nextRoute, showDetail = true }) => {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -31,13 +31,19 @@ const NextButtonWithPopup = ({ selectedItems, nextRoute }) => {
           onCancel={() => setIsPopupOpen(false)}
           onConfirm={handleConfirm}
         >
-        <ul>
-          {selectedItems.map((item, index) => (
-            <li key={index}>
-              {item.name} - {item.color ?? "미정"} ({item.ratio !== null && item.ratio !== undefined ? `${item.ratio}%` : "미정"})
-            </li>
-          ))}
-        </ul>
+          <ul>
+            {selectedItems.map((item, index) => (
+              <li key={index}>
+                {item.name}
+                {showDetail && (
+                  <>
+                    {" - "}
+                    {item.color ?? "미정"} ({item.ratio != null ? `${item.ratio}%` : "미정"})
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
         </Popup>
       )}
     </>
