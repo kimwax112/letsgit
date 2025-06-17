@@ -35,4 +35,8 @@ public class RequestService {
     public int delete(Long id) {
         return mapper.deleteById(id);
     }
+    
+    public List<Request> getByUsername(String username) {
+        return mapper.findByUsername(username);
+    }
 }

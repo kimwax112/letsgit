@@ -281,6 +281,7 @@ export default function RequestWriting({ username: propUsername }) {
   const handleSubmit = async () => {
     try {
       const response = await axios.post("http://localhost:8081/api/requests", {
+        username, 
         title,
         categoryTags: categoryTags.join(","),
         style,
