@@ -1,17 +1,20 @@
 /* 전체 컨테이너 크기 늘리기 */
 .canvas-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* 컨텐츠가 위쪽에 정렬되도록 */
-    position: relative;  /* 컨테이너 안의 요소들이 절대 위치로 쌓일 수 있게 */
-    width: 1000px;  /* 넓이 증가 */
-    height: 600px;  /* 높이 증가 */
-    background: #f0f0f0;
-    border-radius: 10px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
-    padding: 20px;
-  }
+  position: absolute; /* fixed도 가능 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 중앙 정렬 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 1000px;
+  height: 600px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+}
   
   /* 캔버스 */
   canvas {
@@ -23,6 +26,7 @@
     position: relative; /* 다른 요소들이 이 위에 쌓일 수 있도록 */
     margin-top: 50px;
     margin-left: 20px;
+    margin-right: 20px;
   }
   
   
@@ -51,26 +55,29 @@
     right: 10px; /* 오른쪽에 위치 */
   }
   
-  /* 선 굵기 조절 (왼쪽 세로 정렬) */
-  .toolbar-line-width {
-    top: 50%; /* 캔버스 세로 중간 */
-    left: 10px; /* 왼쪽 가장자리에 위치 */
-    transform: translateY(-50%) rotate(-90deg);  /* 세로로 회전 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    height: 150px;  /* 슬라이드 크기 */
-  }
-  
+/* 선 굵기 조절 (왼쪽 세로 정렬) */
+.toolbar-line-width {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+
+.vertical-slider-wrapper {
+  transform: rotate(-90deg);
+  display: flex;
+  align-items: center;
+}
+
+/* 슬라이더 자체는 기본형 유지 */
 .vertical-slider {
-    -webkit-appearance: slider-vertical; /* 크롬, 사파리 등에서 세로 슬라이드 */
-    writing-mode: bt-lr; /* 세로 슬라이드 모드 */
-    height: 150px; /* 세로 슬라이더 높이 설정 */
-    transform: rotate(90deg); /* 세로로 회전 */
-    margin-top: 5px;
-    margin-left: 10px; /* 왼쪽으로 조금 띄우기 */
-  }
+  width: 150px;
+  height: auto;
+}
   
   /* 버튼 기본 스타일 */
   button {

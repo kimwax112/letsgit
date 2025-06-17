@@ -314,6 +314,15 @@ body{
   margin-top: 4px;
 }
 
+.pattern-selector img {
+  transform: translateY(9px);
+  height: 38px;
+}
+
+.pattern-selector select {
+  transform: translateY(-4px);
+}
+
 .pattern-preview {
   width: 12.5rem;
   height: 2.0rem;
