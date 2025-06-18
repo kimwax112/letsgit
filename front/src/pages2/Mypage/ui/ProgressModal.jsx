@@ -178,7 +178,6 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
         status: steps[confirmStep].label,
         step: steps[confirmStep].value,  // 서버에서 step도 받도록 하려면 같이 보냅니다
       });
-      setActiveStep(stepIndex); //6.15
       onStepUpdated?.(stepIndex);//6.15
 
       setActiveStep(confirmStep);

@@ -5,12 +5,12 @@ import ContractItem from "../../../components/contract/ContractItem/ContractItem
 
 const statusImages = {
   "디자인하기": "/image/대기중.png",
-  "뜨개질하기": "/image/진행중.png",
+  "본뜨기": "/image/진행중.png",
   "마감하기": "/image/배송중.png",
   "포장하기": "/image/완료됨.png",
 };
 
-const allStatuses = ["디자인하기", "뜨개질하기", "마감하기", "포장하기"];
+const allStatuses = ["디자인하기", "본뜨기", "마감하기", "포장하기"];
 
 export default function MyProgressContent({ mode = "전체", username: propUsername,refreshFlag }) {
   const [username, setUsername] = useState(propUsername);
@@ -60,6 +60,8 @@ async function fetchContracts() {
       const { data } = await axios.get(
         `http://localhost:8081/api/progress/client/contracts/${username}`
       );
+      console.log("서버 응답이 배열", data);
+
       // data가 배열인지 확인
       if (!Array.isArray(data)) {
         console.error("서버 응답이 배열이 아닙니다:", data);

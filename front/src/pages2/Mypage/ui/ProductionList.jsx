@@ -103,6 +103,7 @@ export default function ProductionList() {
   useEffect(() => {
     const fetchContracts = async () => {
       try {
+        
         const response = await axios.get("http://localhost:8081/client/contract");
         console.log("제작 내역 데이터:", response.data);
         setContracts(response.data);

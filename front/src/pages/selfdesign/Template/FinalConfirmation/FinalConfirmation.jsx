@@ -313,16 +313,58 @@ const FinalConfirmation = () => {
   const [designName, setDesignName] = useState("");
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");  // 메모 상태 추가
-  
-
-  
-
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]; 
   const [rows, setRows] = useState([]);
   const [sizeValues, setSizeValues] = useState([]); // 선택된 사이즈의 values 배열
   const id = sessionStorage.getItem("id") || localStorage.getItem("id");
    
   const [sizeLabels, setSizeLabels] = useState([]);
+  const [username, setUsername] = useState(null);  // 상태로 username 관리
+    const [selectedRatios, setSelectedRatios] = useState({});
+
+
+  
+  useEffect(() => {
+  // … username 체크 로직 생략 …
+
+  // 저장된 혼합율 가져오기
+  const storedRatiosJson =
+    sessionStorage.getItem("selectedRatios") ||
+    localStorage.getItem("selectedRatios");
+  if (storedRatiosJson) {
+    try {
+      const parsed = JSON.parse(storedRatiosJson);
+      setSelectedRatios(parsed);
+    } catch (e) {
+      console.error("selectedRatios 파싱 오류:", e);
+    }
+  }
+}, [username]);
+
+  // 로그인 세션을 백엔드에서 받아와 sessionStorage에 저장 + 상태 세팅
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("http://localhost:8081/api/checkSession", {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          sessionStorage.setItem("username", data.username);
+          setUsername(data.username);
+        } else {
+          alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+          window.location.href = "/login";
+        }
+      } catch (error) {
+        console.error("세션 확인 오류:", error);
+        alert("로그인 세션 확인 중 오류가 발생했습니다.");
+        window.location.href = "/login";
+      }
+    };
+
+    fetchSession();
+  }, []);
 
 
   // 저장할 영역 ref
@@ -707,7 +749,12 @@ const FinalConfirmation = () => {
                       <img src={f.imageSrc} alt={f.name} className="fabric-img" />
                       <div className="fabric-info">
                         <div className="fabric-name">{f.name}</div>
-                        <div>혼합율: {f.mixingRatio || 0}%</div>
+                        <div>원단별 혼합율</div>
+                         <div>
+          혼합율: {selectedRatios[f.id] !== undefined 
+            ? `${selectedRatios[f.id]}%` 
+            : "0%"}
+        </div>
                         <div>
                           색상:{" "}
                           <ColorCircle

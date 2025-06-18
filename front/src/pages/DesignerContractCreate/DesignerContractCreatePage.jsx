@@ -24,6 +24,8 @@ const DesignerContractCreatePage = ({ clientId }) => {
     starredStatus: 0,
     contractContent: "",
     signature: "",
+    step: 1,
+    
   });
 
   const [contentBySection, setContentBySection] = useState({

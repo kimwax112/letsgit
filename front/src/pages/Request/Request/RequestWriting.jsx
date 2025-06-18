@@ -188,14 +188,13 @@ const MydesignContainer = styled.div`
 export default function RequestWriting({ username: propUsername }) {
   const [enteredTags, setEnteredTags] = useState([]);
   const options = ["2025-05-01", "2025-06-01", "2025-07-01"];
-  const options2 = ["미니멀", "캐주얼", "포멀"];
+  const options2 = ["미니멀", "캐주얼", "포멀","아메카지","스트리트웨어","락시크","빈티지/레트로" ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMyDesignModal, setIsMyDesignModal] = useState(false);
   const [files, setFiles] = useState({});
   const [title, setTitle] = useState("");
   const [categoryTags, setCategoryTags] = useState([]);
   const [style, setStyle] = useState("");
-  const [amount, setAmount] = useState("");
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrls, setImageUrls] = useState(["", "", ""]);
@@ -207,6 +206,10 @@ export default function RequestWriting({ username: propUsername }) {
   const [rawAmount, setRawAmount] = useState("");
   const [loading, setLoading] = useState(true);
 
+    const [amount, setAmount] = useState("");
+
+
+  
     const navigate = useNavigate();
 
   const onImageUpload = (index, url) => {
