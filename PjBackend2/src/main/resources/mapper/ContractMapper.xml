@@ -16,8 +16,8 @@
       client_id AS clientId,
       contract_title AS contractTitle,
       starred_status AS starredStatus,
-      contract_content AS contractContent
-    FROM contracts
+      contract_content AS contractContent,
+      TO_CHAR(created_at, 'YYYY-MM-DD') AS createdAt  FROM contracts
   </select>
 
   <select id="selectContractById" resultType="com.example.Loginpj.model.Contract">
@@ -31,8 +31,8 @@
       client_id AS clientId,
       contract_title AS contractTitle,
       starred_status AS starredStatus,
-      contract_content AS contractContent
-    FROM contracts
+      contract_content AS contractContent,
+      TO_CHAR(created_at, 'YYYY-MM-DD') AS createdAt  FROM contracts
     WHERE contract_id = #{id}
   </select>
 
@@ -53,23 +53,34 @@
       client_id,
       contract_title,
       starred_status,
-      contract_content
-    ) VALUES (
+      contract_content,
+      created_at  ) VALUES (
       CONTRACT_SEQ.NEXTVAL,
       REQUEST_SEQ.NEXTVAL,
       #{designerId},
-      SYSDATE,
-      #{requestFee},
+      #{dueDate},  #{requestFee},
       #{status},
       #{clientId},
       #{contractTitle},
       #{starredStatus},
-      #{contractContent, jdbcType=CLOB}
-    )
+      #{contractContent, jdbcType=CLOB},
+      SYSDATE      )
   </insert>
 
   <select id="selectContractsByDesigner" resultType="com.example.Loginpj.model.Contract">
-    SELECT * FROM contracts WHERE designer_id = #{designerId}
+    SELECT 
+      contract_id AS contractId,
+      request_id AS requestId,
+      designer_id AS designerId,
+      TO_CHAR(due_date, 'YYYY-MM-DD') AS dueDate,
+      request_fee AS requestFee,
+      status,
+      client_id AS clientId,
+      contract_title AS contractTitle,
+      starred_status AS starredStatus,
+      contract_content AS contractContent,
+      TO_CHAR(created_at, 'YYYY-MM-DD') AS createdAt  FROM contracts 
+    WHERE designer_id = #{designerId}
   </select>
 
   <update id="updateContractStatus">
@@ -79,4 +90,3 @@
   </update>
 
 </mapper>
-

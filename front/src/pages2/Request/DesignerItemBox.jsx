@@ -196,7 +196,7 @@ export default function DesignerItemBox({ children, data, propUsername }) {
           <Circle>
             <ProfileImage src={designerImage} alt="디자이너 프로필" />
           </Circle>
-          {username || "홍길동"}
+          {data.requesterName || "홍길동"}
         </Profile>
 
         <Text2>{data?.amount || "10000원"}</Text2>
