@@ -142,7 +142,7 @@ const Canvas = ({ backgroundImage,imageSrc,onSave }) => {
         credentials: "include",
       });
   
-      alert("이미지가 서버에 저장되었습니다?");
+      alert("이미지가 서버에 저장되었습니다");
     } catch (error) {
       console.error('이미지 업로드 실패:', error);
       alert("이미지 업로드 실패!");
