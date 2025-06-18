@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import styled from "styled-components";
+
 import { DropDown, Tag, ImageUploader, NextButtonUI, RequestPopup } from "../../../components";
 import { TextInputUIManager, TagManager, Modal } from "../../../utils";
 import dress from "../../../assets/dress.png";
 import MyEditor from "./ui/MyEditor";
 import MydesignerPopup from "./MydesignerPopup";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";  // 🔧 변경
+import RequestEditor from "./ui/RequestEditor";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CustomRequestPopup = styled(RequestPopup)``;
 
@@ -195,12 +200,13 @@ export default function RequestWriting({ username: propUsername }) {
   const [description, setDescription] = useState("");
   const [imageUrls, setImageUrls] = useState(["", "", ""]);
   const [username, setUsername] = useState(propUsername);
-  const [designs, setDesigns] = useState([]);
-  const [userFiles, setUserFiles] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('template');
-  const [selectedItem, setSelectedItem] = useState(null);
+    const [designs, setDesigns] = useState([]);
+    const [userFiles, setUserFiles] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('template');
+    const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
+  const [rawAmount, setRawAmount] = useState("");
 
-  const navigate = useLocation();
+    const navigate = useNavigate();
 
   const onImageUpload = (index, url) => {
     setImageUrls(prev => {
@@ -210,13 +216,22 @@ export default function RequestWriting({ username: propUsername }) {
     });
   };
 
+
+
+
   const handleFileChange = (index, event) => {
     const newFiles = [...files];
     newFiles[index] = event.target.files[0];
     setFiles(newFiles);
   };
 
-  useEffect(() => {
+  
+
+  
+
+
+  
+useEffect(() => {
     if (!propUsername) {
       const fetchSession = async () => {
         try {
@@ -278,29 +293,37 @@ export default function RequestWriting({ username: propUsername }) {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post("http://localhost:8081/api/requests", {
-        title,
-        categoryTags: categoryTags.join(","),
-        style,
-        amount,
-        deadline,
-        description,
-        selectedItem,
-        image1Url: imageUrls[0] || "",
-        image2Url: imageUrls[1] || "",
-        image3Url: imageUrls[2] || ""
-      });
-      console.log("요청 성공:", response.data);
-      alert("의뢰가 등록되었습니다!");
-    } catch (error) {
-      console.error("요청 실패:", error);
-      alert("의뢰 등록에 실패했습니다.", error.message);
-    }
-  };
 
-  const filteredDesigns = designs.filter((item) => item.category === selectedCategory);
+const handleSubmit = async () => {
+    const sanitized = description.replace(/<script[^>]*>[\s\S]*?<\/script>|<style[^>]*>[\s\S]*?<\/style>|<!--[\s\S]*?-->|<[^>]+>/gi,'').trim();
+      console.log('폼 제출 직전 description:', description);
+
+  try {
+    
+    const response = await axios.post("http://localhost:8081/api/requests", {
+      title,
+      categoryTags: categoryTags.join(","),  // 배열을 콤마 구분 문자열로 변환
+      style,
+      amount,
+      deadline,
+      description : sanitized,
+      selectedItem, //6.14 선택된 나의 디자인 카드 아이템 api 벡엔드 엔드포인트 필요해요 
+      image1Url: imageUrls[0] || "",
+      image2Url: imageUrls[1] || "",
+      image3Url: imageUrls[2] || ""
+    });
+    console.log("의뢰등록 성공 :", response.data);
+    alert("의뢰가 등록되었습니다!");
+    navigate('/client/request')
+    
+  } catch (error) {
+    console.error("의뢰등록 요청실패 :", error);
+    alert("의뢰 등록에 실패했습니다.",error.message);
+  }
+};
+
+
+const filteredDesigns = designs.filter((item) => item.category === selectedCategory);
 
   const handleCategoryChange = async (event) => {
     const selected = event.target.value;
@@ -447,13 +470,22 @@ export default function RequestWriting({ username: propUsername }) {
               )}
             </TagList>
           </Detail>
-
-          <MyEditor
+  <RequestEditor
+        value={description}
+        onChange={(html) => {
+          console.log('에디터 onChange:', html);
+          setDescription(html);
+        }}
+      />
+              
+          {/* <MyEditor
             onSendMessage={(text) => {
               console.log("Description updated:", text);
               setDescription(text);
             }}
-          />
+          
+          /> */}
+          
 
           <UploadContainer>
             <CustomUpload

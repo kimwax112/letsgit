@@ -5,7 +5,7 @@ import Sidebar from "./ui/Sidebar";
 import Content from "./ui/Content";
 import { ImageUploader, NextButtonUI } from "../../components";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
 
 // 전체 레이아웃
@@ -53,13 +53,17 @@ const Text = styled.p`
   font-weight: bold;
   margin-left: 10px;
 `;
-
-const Textinput = styled.input`
+const TextAreaInput = styled.textarea`
   border: none;
   font-size: 18px;
   font-weight: bold;
-  margin-left: 10px;
   opacity: 0.7;
+  width: 100%;
+  height : 300px;
+  resize: vertical;       /* 세로로만 리사이즈 가능 */
+  
+
+  
 `;
 
 const UploadContainer = styled.div`
@@ -97,6 +101,7 @@ const LeftArrow = styled(ArrowButton)`
 
 const RightArrow = styled(ArrowButton)`
   right: 10px;
+
 `;
 
 const CustomUpload = styled(ImageUploader)`
@@ -122,10 +127,31 @@ export default function Portfolio() {
   const [contents, setContent] = useState("");
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  
 
   const itemsPerView = 4; // 최대 4개 이미지 지원
   const totalItems = 4;
-  const maxIndex = Math.max(0, totalItems - itemsPerView);
+  const maxIndex = Math.max(1, totalItems - itemsPerView);
+
+  const { state } = useLocation();
+  const editPost = state?.editPost; // 편집할 포스트 데이터
+  //수정하기 모드일 때 기존 파일 URL로 files 초기화
+  useEffect(() => {
+    if (editPost?.files) {
+      const initialFiles = editPost.files.reduce((acc, url, idx) => {
+        acc[`upload${idx + 1}`] = { file: null, preview: url }; // preview는 URL
+        return acc;
+      }, {});
+      setFiles(initialFiles);
+    }
+  }, [editPost]);
+  //수정하기 모드일 때 content 초기화
+  useEffect(() => {
+  if (editPost?.contents !== undefined) {
+    setContent(editPost.contents);
+  }
+}, [editPost]);
+
 
   useEffect(() => {
     axios.get("http://localhost:8081/api/user", { withCredentials: true })
@@ -169,6 +195,56 @@ export default function Portfolio() {
   }
 };
 
+{/*
+const handleSubmit = async (e) => {
+  e?.preventDefault();
+  if (!contents.trim()) return;
+
+  const formData = new FormData();
+  formData.append("contents", contents);
+  if (files.upload1) formData.append("image1", files.upload1.file);
+  if (files.upload2) formData.append("image2", files.upload2.file);
+  if (files.upload3) formData.append("image3", files.upload3.file);
+  if (files.upload4) formData.append("image4", files.upload4.file);
+
+  try {
+    if (editPost) {
+      // ─────────── 수정 모드 ───────────
+      await axios.patch(
+        `http://localhost:8081/api/posts/${editPost.postnum}`,  // PATCH URL
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      alert("포트폴리오 수정 완료!");
+    } else {
+      // ─────────── 생성 모드 ───────────
+      await axios.post(
+        "http://localhost:8081/api/posts/with-images",
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      alert("포트폴리오 작성 완료!");
+    }
+
+    // 상태 초기화 & 목록 새로고침
+    setContent("");
+    setFiles({});
+    fetchPosts();
+    navigate("/designer/Dmypage");
+  } catch (error) {
+    console.error("글 작성/수정 실패:", error);
+    alert("요청 실패: " + error.message);
+  }
+};
+*/}
+
+
   const fetchPosts = () => {
     axios.get("http://localhost:8081/api/posts", { withCredentials: true })
       .then(response => setPosts(response.data))
@@ -187,6 +263,8 @@ export default function Portfolio() {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
   };
 
+
+
   const itemWidthVh = 20;
   const gapPx = 20;
   const containerWidthPx = 600;
@@ -198,6 +276,8 @@ export default function Portfolio() {
     ? -(trackWidthPx - containerWidthPx)
     : -(currentIndex * totalItemWidthPx);
 
+  
+
   return (
     <Layout>
       <Left>
@@ -207,7 +287,7 @@ export default function Portfolio() {
         <Content>
           <PortfolioExplain>
             <Text>포트폴리오 설명</Text>
-            <Textinput
+            <TextAreaInput
               value={contents}
               onChange={(e) => setContent(e.target.value)}
               placeholder="주로하는 프로젝트의 목적 주로 만드는 옷과 스타일을 설명해주세요"
@@ -253,6 +333,7 @@ export default function Portfolio() {
               }}
               onClick={handleSubmit}
             />
+              {editPost ? "수정 완료" : "작성 완료"}
           </Footer>
         </Content>
       </Right>

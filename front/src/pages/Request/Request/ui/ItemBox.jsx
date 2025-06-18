@@ -145,7 +145,7 @@ export default function ItemBox({ children,data = {} }) {
           <Circle>
             <ProfileImage src={designerImage} alt="의뢰인 프로필 " />
           </Circle>
-          홍길동
+          {data.requesterName || "홍길동"}
         </Profile>
         <Text2>{data?.amount || "10000원"}</Text2>
         <Text2>{data?.deadline ? `희망기한 ${data.deadline}` : "희망기한 2주"}</Text2>

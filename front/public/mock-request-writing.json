@@ -6,7 +6,7 @@
   "deadline": "2025-06-14",
   "description": "심플한 디자인의 여성 캐주얼 의류 요청",
 
-  "selectedItem": { //템플릿으로 디자인한 데이터
+  "selectedItem": { 
     "designId": 1,
     "designName": "심플 원피스",
     "clothingType": "원피스",

@@ -14,7 +14,7 @@ const Container = styled.section`
 `;
 
 const LeftSection = styled.div`
-  flex: 1;
+  flex: 2;
   text-align: center;
   margin-top: 40px;
 `;

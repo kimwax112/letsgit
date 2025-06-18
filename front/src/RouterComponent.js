@@ -129,6 +129,7 @@ const RouterComponent = () => {
             <Route path="FavoritePage" element={<FavoritePage />}/>
             <Route path="FavoriteRequests" element={<FavoriteRequests />} />
             <Route path="ProductionList" element={<ProductionListPage/>}/>
+            <Route path="ChatMain" element={<ChatMain />} />
            </Routes>
         </DesignerLayout>
       } />

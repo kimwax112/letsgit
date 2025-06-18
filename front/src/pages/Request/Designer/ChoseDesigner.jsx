@@ -66,7 +66,7 @@ const [review, setReview] = useState([]);
   }, []);
 
 
-  console.log("posts:", posts);
+console.log("posts:", posts);
 console.log("searchTerm:", searchTerm);
 
   const fetchReview = () => {
