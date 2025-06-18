@@ -66,6 +66,44 @@ const Text = styled.div`
 margin : 20px;
 `
 
+
+const ImgItem = styled.img`
+  width: 100%;
+  aspect-ratio: 1 / 1;                   /* 정사각형 */
+  object-fit: cover;                     /* 비율 유지하며 잘라내기 */
+  border-radius: 8px;
+  background: #f0f0f0;
+`;
+
+
+const ImgContainer1 = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  
+  gap: 8px;
+  margin-top: 16px;
+
+  /* 최소 높이와 경계선으로 빈 영역을 시각화 */
+  min-height: 150px;
+  padding: 8px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  position: relative;
+
+  /* 자식이 하나도 없을 때만 placeholder 보여주기 */
+  &:empty::before {
+    content: "이미지를 업로드 해주세요";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888;
+    font-size: 1rem;
+    pointer-events: none;
+  }
+`;
+
+
 export default function PostCotent3({ data = {} }) {
     const {
     requestId="",
@@ -80,6 +118,32 @@ export default function PostCotent3({ data = {} }) {
   const [editedDescription, setEditedDescription] = useState(data?.description || "");
   const [requests, setRequests] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [images, setImages] = useState([]);     // (1) 이미지 상태 추가
+
+  // (2) requestId가 바뀔 때마다 API 호출해서 이미지 URL 배열 추출
+  useEffect(() => {
+    if (!requestId) return;
+
+    axios
+      .get("/mock-requestpostImage.json")
+      // .get("http://localhost:8081/api/requests", { withCredentials: true })
+      .then((res) => {
+        // 예시: 응답 데이터가 [{requestId, image1Url, image2Url, …}, …] 형태라 가정
+        console.log(res.data)
+        const req = res.data.find((r) => r.requestId === requestId);
+        if (req) {
+          const urls = [
+            req.image1Url,
+            req.image2Url,
+            req.image3Url,
+
+          ].filter((u) => u);           // null·undefined·빈문자열 제거
+          setImages(urls.slice(0, 3));    // 최대 3
+        }
+      })
+      .catch((err) => console.error("이미지 로드 실패:", err));
+  }, [requestId]);
+
 
 
   // 디버깅 로그
@@ -204,7 +268,22 @@ export default function PostCotent3({ data = {} }) {
         <DetailBox>
           <Text>{data?.description || "수정하기"}</Text>
           </DetailBox>
+     
       )}
+      <ImgContainer1>
+  {images.map((src, idx) => (
+    <ImgItem
+      key={idx}
+      src={src}
+      alt={`요청 이미지 ${idx + 1}`}
+      onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+    />
+  ))}
+</ImgContainer1>
+
+      
+
+      
       
     </Container>
   );

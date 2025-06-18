@@ -48,9 +48,7 @@ export default function DesignerRequestPost(onUpdateDescription) {
         
 
       </Content>
-         <div style={{display : "flex" , justifyContent : "center", alignItems : "center", margin : "20px"}}className="designerrequestpost-footer">
-          <button style={{width : "200px",height : "50px", }}>의뢰신청하기</button>
-        </div>
+       
     </>
   );
 }
