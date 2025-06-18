@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import styled from "styled-components";
+
 import { DropDown, Tag, ImageUploader, NextButtonUI, RequestPopup } from "../../../components";
 import { TextInputUIManager, TagManager, Modal } from "../../../utils";
 import dress from "../../../assets/dress.png";
@@ -9,6 +10,8 @@ import MydesignerPopup from "./MydesignerPopup";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";  // 🔧 변경
 import RequestEditor from "./ui/RequestEditor";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CustomRequestPopup = styled(RequestPopup)``;
 
