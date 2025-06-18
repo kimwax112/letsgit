@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 추가: ChatGPT
+import { useNavigate } from 'react-router-dom';
 import './DetailList.css';
 import MyEditor from '../../Request/Request/ui/MyEditor';
 import jeans from '../../../assets/jeans.png';
@@ -9,8 +9,6 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import share from '../../../assets/share.png';  
 import print from '../../../assets/print.png';
 import axios from 'axios';
-import ContractSendMessagePage from '../ContractSendMessagePage';
-import { use } from 'react';
 
 const Button = styled(NextButtonUI)`
   background-color: #d5d5d5;
@@ -26,14 +24,47 @@ function formatDate(dateString) {
   return `${year}.${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')}`;
 }
 
+// 계약 내용 보기 편하게 렌더링하는 함수 + 한글 라벨 매핑
+const labelMap = {
+  basic: '기본 조항',
+  copyright: '저작권',
+  cancellation: '해지',
+  security: '보안',
+  dispute: '분쟁 해결',
+  etc: '기타'
+};
+
+function renderContractContent(jsonString) {
+  if (!jsonString) return <p>내용이 없습니다.</p>;
+
+  let contentObj = null;
+  try {
+    contentObj = JSON.parse(jsonString);
+  } catch (error) {
+    return <p>계약 내용 파싱 오류</p>;
+  }
+
+  return (
+    <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5', marginTop: '8px' }}>
+      {Object.entries(contentObj).map(([key, value]) => (
+        value ? (
+          <p key={key}>
+            <strong>{labelMap[key] || key}:</strong> {value}
+          </p>
+        ) : null
+      ))}
+    </div>
+  );
+}
+
 export default function DetailList({ contractId, contract, onToggleStar }) {
   const [contractData, setContractData] = useState(contract);
-  const navigate = useNavigate(); // 추가: ChatGPT
-  const [editorContent, setEditorContent] = useState(""); // 추가: ChatGPT
-  const [isEditorSent, setIsEditorSent] = useState(false);  // 추가: 작성완료 눌렀는지 추적
-  const [contractMessage, setSendMessage] = useState(); //보낸 메시지 동적으로 관리되는 변수 
+  const navigate = useNavigate();
+  const [editorContent, setEditorContent] = useState("");
+  const [isEditorSent, setIsEditorSent] = useState(false);
+  const [contractMessage, setSendMessage] = useState();
   const [agreeMessage, setAgreeMessage] = useState('');
-  const [showModal, setShowModal] = useState(false); // ✅ 모달 표시 여부
+  const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
     const fetchContract = async () => {
@@ -80,12 +111,11 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
     window.print();
   };
 
-  // ✅ 계약 승인 요청 함수
   const handleApproveContract = async () => {
     if (agreeMessage !== "계약 내용을 확인하였으며 동의합니다.") {
-    alert("정확한 문구를 입력해 주세요.");
-    return;
-  }
+      alert("정확한 문구를 입력해 주세요.");
+      return;
+    }
 
     try {
       const response = await axios.put(`http://localhost:8081/client/contract/approve`, {
@@ -110,67 +140,60 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
     return <div>계약서 데이터를 찾을 수 없습니다.</div>;
   }
 
-  const handleSendRequest = async () => {  // async 추가
-  if (!isEditorSent || editorContent.trim() === "") {
-    alert("메시지를 작성하고 작성완료를 눌러주세요.");
-    return;
-  }
-
-  const messagePayload = {
-  messageId: contractMessage?.id,
-  content: editorContent,
-  contractId: contractId,
-  clientId: contractData?.clientId,     // 추가
-  designerId: contractData?.designerId, // 추가
-  time: contractMessage?.time,
-};
-
-
-  try {
-    const response = await axios.post("http://localhost:8081/api/request-messages/send", messagePayload);
-
-    if (response.status === 200) {
-      alert("요청 메시지를 성공적으로 보냈습니다!");
-      setEditorContent("");
-      setIsEditorSent(false);
-      // 필요하면 페이지 이동
-      // navigate("/client/ContractSendMessagePage");
+  const handleSendRequest = async () => {
+    if (!isEditorSent || editorContent.trim() === "") {
+      alert("메시지를 작성하고 작성완료를 눌러주세요.");
+      return;
     }
-  } catch (error) {
-    console.error("메시지 전송 실패:", error);
-    alert("메시지 전송 중 오류가 발생했습니다.");
-  }
 
-  // 메시지 전송 후 이동
-  navigate('/client/Chatmain', 
-    { state: { messageText: editorContent, sendMessage : contractMessage,
-      sourcePage: "OtherPage", 
-    } });
-};
-  
-const handleEditorSend = (content) => {  //요청보내기 누를때 저장되는 객체 구조  (content) == MyEditor에서 입력한 메시지 매개변수로 전달
-  if (content.trim() !== "") {
-    setEditorContent(content); // content == 입력한 메시지  상태 업데이트 editorContent에 입력된 메시지저장, isEditorsent를 true로 설정하여 "요청보내기"버튼 활성화준비"
-    setIsEditorSent(true);
-    // contractMessage 설정: 메시지와 계약 정보 조합
-    const newMessage = { //newMessage를 생성하여 메시지 내용(conent), 생성시간(time), 계약정보(contract), 고유(id)포함
-      
-      id: `msg-${Date.now()}`, // 예: "msg-1715995680000" (2025-05-18 10:28 KST)
-      content: content,  //실제 전송할 메시지 텍스트 
-      time: new Date().toLocaleTimeString(), // 메시지 생성 시각
-      contract: {...contractData, content : content} //기존계약 정보 (contractDate)를 복제한뒤 conetn 필드를 추가해 함꼐 전달할 수 있게 합니다.
+    const messagePayload = {
+      messageId: contractMessage?.id,
+      content: editorContent,
+      contractId: contractId,
+      clientId: contractData?.clientId,
+      designerId: contractData?.designerId,
+      time: contractMessage?.time,
     };
-    setSendMessage(newMessage);
- //contractMessage` 상태에 newMessage 객체를 저장합니다
-    localStorage.setItem(
-      "dratfRequest",
-      JSON.stringify({
-        editorContent: content,
-        contractMessage: newMessage
-  })
-);
-  }
-};
+
+    try {
+      const response = await axios.post("http://localhost:8081/api/request-messages/send", messagePayload);
+
+      if (response.status === 200) {
+        alert("요청 메시지를 성공적으로 보냈습니다!");
+        setEditorContent("");
+        setIsEditorSent(false);
+      }
+    } catch (error) {
+      console.error("메시지 전송 실패:", error);
+      alert("메시지 전송 중 오류가 발생했습니다.");
+    }
+
+    navigate('/client/Chatmain', 
+      { state: { messageText: editorContent, sendMessage : contractMessage,
+        sourcePage: "OtherPage", 
+      } });
+  };
+  
+  const handleEditorSend = (content) => {
+    if (content.trim() !== "") {
+      setEditorContent(content);
+      setIsEditorSent(true);
+      const newMessage = {
+        id: `msg-${Date.now()}`,
+        content: content,
+        time: new Date().toLocaleTimeString(),
+        contract: {...contractData, content : content}
+      };
+      setSendMessage(newMessage);
+      localStorage.setItem(
+        "dratfRequest",
+        JSON.stringify({
+          editorContent: content,
+          contractMessage: newMessage
+        })
+      );
+    }
+  };
 
   return (
     <div className="Detailcontainer">
@@ -211,14 +234,14 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
             <div className="info-container">
               <p>디자이너: {contractData.designerId || "미지정"}</p>
               <p>의뢰인: {contractData.clientId || "미지정"}</p>
-              <p>원단: {contractData.material || "미지정"}</p>
-              <p>공장: {contractData.factory || "미지정"}</p>
-              <p>기간: {contractData.deadline ? `${formatDate(contractData.deadline)}까지` : "2025.2.25까지"}</p>
+              <p>계약 내용:</p>
+              {renderContractContent(contractData.contractContent)}
+              <p>기간: {contractData.dueDate ? `${formatDate(contractData.dueDate)}까지` : "2025.2.25까지"}</p>
             </div>
           </div>
         </div>
         <div className="right">
-          <p>계약 작성 시간: {formatDate(contractData.createdAt) || "2025.01.01"}</p>
+          <p>계약 작성 시간: {contractData.createdAt ? formatDate(contractData.createdAt) : '미지정'}</p>
         </div>
       </div>
 
@@ -233,14 +256,12 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
           <NextButtonUI onClick={handleSendRequest} disabled={!isEditorSent}  >요청보내기</NextButtonUI>
         </div>
         <div className="DetailButton">
-          {/* ✅ 모달 표시 버튼 */}
           <NextButtonUI onClick={() => setShowModal(true)}>동의하기</NextButtonUI>
         </div>
           <Button>작성취소</Button>
           <Button>저장</Button>
         </div>
 
-      {/* ✅ 동의 입력 모달 */}
       {showModal && (
         <div style={modalStyle.overlay}>
           <div style={modalStyle.modal}>
@@ -264,7 +285,6 @@ const handleEditorSend = (content) => {  //요청보내기 누를때 저장되�
   );
 }
 
-// ✅ 모달 스타일
 const modalStyle = {
   overlay: {
     position: 'fixed',
@@ -292,11 +312,11 @@ const modalStyle = {
     cursor: 'pointer',
   },
   cancelButton: {
-    padding: '0.5rem 1rem', 
-    backgroundColor: '#ccc',
-    color: 'black',
+    padding: '0.5rem 1rem',
+    backgroundColor: '#6c757d',
+    color: 'white',
     border: 'none',
-    borderRadius: '0.25rem', 
+    borderRadius: '0.25rem',
     cursor: 'pointer',
   }
 };

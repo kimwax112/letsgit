@@ -3,19 +3,19 @@ import styled from "styled-components";
 
 const TabsWrapper = styled.ul`
   display: flex;
-  width: 73.25rem; /* 1171px / 16 = 73.25rem */
+  width: 100%; 
   list-style: none;
   padding: 0;
   margin: 0;
-  border-bottom: 0.125rem solid #ddd; /* 2px / 16 = 0.125rem */
+  border-bottom: 0.125rem solid #ddd; 
   text-align: center;
 
   li {
-    width: 8.75rem; /* 140px / 16 = 8.75rem */
-    padding: 0.625rem 0.9375rem; /* 10px / 16 = 0.625rem, 15px / 16 = 0.9375rem */
+    width: 8.75rem;
+    padding: 0.625rem 0.9375rem;
     cursor: pointer;
-    border-radius: 0.9375rem 0.9375rem 0 0; /* 15px / 16 = 0.9375rem */
-    border: 0.05rem solid black; /* 0.8px / 16 = 0.05rem */
+    border-radius: 0.9375rem 0.9375rem 0 0; 
+    border: 0.05rem solid black; 
     border-bottom: none;
     background-color: #fff;
     font-weight: bold;

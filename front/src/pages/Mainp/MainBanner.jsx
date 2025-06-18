@@ -1,38 +1,50 @@
-// MainBanner.js
 import React, { useState, useEffect } from "react";
-import { Carousel, Carousel2 } from "../../components";// 첫 번째 배너 컴포넌트, 두 번째 배너 컴포넌트
+import axios from "axios";
+import { Carousel, Carousel2 } from "../../components";
 
-
-const MainBanner = ({ selectedItem }) => {
+const MainBanner = () => {
   const [bannerVersion, setBannerVersion] = useState(1);
+  const [designs, setDesigns] = useState([]);
+  const [userFiles, setUserFiles] = useState([]);
 
   useEffect(() => {
     const randomVersion = Math.random() < 0.5 ? 1 : 2;
     setBannerVersion(randomVersion);
+
+    fetchMyDesigns();
+    fetchUserFiles();
   }, []);
 
-    const bannerItems = [
-    {
-      title: '최신 디자인 보러가기: 디자인 파일 업로드',
-      description: '업로드한 파일로 제작된 디자인을 확인해보세요!',
-      link: '/client/clothing-order',
-      imageUrl: '/image/banner2-fileuploaddesign.png',
-      designName: '(제목)원피스 디자인했던거 ㆍ 2025.02.11',
-      backgroundColor: '#DAFFF1',
-    },
-    {
-      title: selectedItem?.title || '최신 디자인 보러가기: 템플릿으로 디자인',
-      description: selectedItem?.description || '템플릿을 이용해 제작한 디자인들을 살펴보세요!',
-      link: selectedItem?.link || '/client/customer-support',
-      imageUrl: selectedItem?.imageUrl || '/image/banner2-templatedesign.png',
-      designName: selectedItem?.designName || '(제목)살랑 원피스 디자인들 ㆍ 2025.02.11',
-      backgroundColor: selectedItem?.backgroundColor || '#F3E7FF',
-    },
-  ];
+  const fetchMyDesigns = async () => {
+    const res = await axios.post("http://localhost:8081/api/designs/mydesigns", {
+      username: sessionStorage.getItem("username")
+    });
+    setDesigns(res.data);
+  };
+
+  const fetchUserFiles = async () => {
+    const res = await fetch(`http://localhost:8081/files/userimg?username=${sessionStorage.getItem("username")}`);
+    const data = await res.json();
+    setUserFiles(data);
+  };
+
+  const getLatestItem = (items, dateField) => {
+    if (!items || items.length === 0) return null;
+    return items
+      .slice()
+      .sort((a, b) => new Date(b[dateField]) - new Date(a[dateField]))[0];
+  };
+
+  const latestTemplate = getLatestItem(designs, "createdAt");
+  const latestUpload = getLatestItem(userFiles, "uploadedAt");
 
   return (
     <>
-      {bannerVersion === 1 ? <Carousel /> : <Carousel2 selectedItem={selectedItem} />}
+      {bannerVersion === 1 ? (
+        <Carousel />
+      ) : (
+        <Carousel2 latestTemplate={latestTemplate} latestUpload={latestUpload} />
+      )}
     </>
   );
 };

@@ -313,8 +313,11 @@ const FinalConfirmation = () => {
   const [designName, setDesignName] = useState("");
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");  // 메모 상태 추가
+<<<<<<< ours
 
   
+=======
+>>>>>>> theirs
   
 
   
@@ -325,6 +328,7 @@ const FinalConfirmation = () => {
   const id = sessionStorage.getItem("id") || localStorage.getItem("id");
    
   const [sizeLabels, setSizeLabels] = useState([]);
+<<<<<<< ours
   const [username, setUsername] = useState(null);  // 상태로 username 관리
     const [selectedRatios, setSelectedRatios] = useState({});
 
@@ -371,6 +375,8 @@ const FinalConfirmation = () => {
 
     fetchSession();
   }, []);
+=======
+>>>>>>> theirs
 
 
   // 저장할 영역 ref
@@ -755,12 +761,16 @@ const FinalConfirmation = () => {
                       <img src={f.imageSrc} alt={f.name} className="fabric-img" />
                       <div className="fabric-info">
                         <div className="fabric-name">{f.name}</div>
+<<<<<<< ours
                         <div>원단별 혼합율</div>
                          <div>
           혼합율: {selectedRatios[f.id] !== undefined 
             ? `${selectedRatios[f.id]}%` 
             : "0%"}
         </div>
+=======
+                        <div>혼합율: {f.mixingRatio || 0}%</div>
+>>>>>>> theirs
                         <div>
                           색상:{" "}
                           <ColorCircle

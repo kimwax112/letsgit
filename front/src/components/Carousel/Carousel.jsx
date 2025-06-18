@@ -7,7 +7,7 @@ const Carousel = () => {
   {
     title: '디자인 파일 업로드',
     description: '나만의 디자인 파일을 업로드하여 옷을 디자인하세요.',
-    link: '/client/file-upload',
+    link: "/client/Upload",
     image: '/image/banner-design file.png',
     backgroundColor: '#DAFFF1',
   },

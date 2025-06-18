@@ -194,13 +194,16 @@ export default function Upload({ onUploadSuccess }) {
         
         {/* 그림판 팝업 */}
         {showCanvas && (
-  <div className="canvasPopup">
-    <div className="canvasPopupContent">
-      <Canvas backgroundImage={selectedImage} onSave={handleImageSave} /> {/* 선택한 이미지 배경 적용 */}
-      <button className="closebtn" onClick={() => setShowCanvas(false)}>닫기</button>
-    </div>
-  </div>
-)}
+          <div className="canvasPopup">
+            <div className="canvasPopupContent">
+              {/* canvas만 스크롤 되게 하고, 닫기 버튼은 항상 아래에 있게 */}
+              <div className="canvasArea">
+                <Canvas backgroundImage={selectedImage} onSave={handleImageSave} />
+              </div>
+              <button className="closebtn" onClick={() => setShowCanvas(false)}>닫기</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

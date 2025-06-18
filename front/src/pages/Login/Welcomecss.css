@@ -1,101 +1,103 @@
-.mainbaroo{
-    color:#fff;
-    background-color: #799FC4;
-    border:none;
-    padding: 10px 30px;
-    width: 450px;
-    height: 55px;
-  }
-
-  .divmm{
-    text-align: center;  
-
-  }
-
-  .divm-wrapperr {
-    display: flex; 
-    justify-content: center;
-    height: auto;
-    
+.mainbaroo {
+  color: #fff;
+  background-color: #799FC4;
+  border: none;
+  padding: 0.625rem 1.875rem; /* 10px 30px */
+  width: 28.125rem; /* 450px */
+  height: 3.4375rem; /* 55px */
 }
-  .mainbaroo2{
-    border-radius: 10px;
-    color:#5C5C5C;
-    background-color: #9DBBD5;
-    border:none;
-    padding: 5px;
-    
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #ffcc00; /* 예시 배경색 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-  }
 
-.MenuBarr{
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    margin-top: 6px;
+.divmm {
+  text-align: center;
 }
-.MenuBarr > nav > ul > li{
-    /*background-color: red;*/
-    list-style: none;
-    justify-content: center;
-    line-height: 20px;
-    text-align:center;
-    display: inline-block;
+
+.divm-wrapperr {
+  display: flex;
+  justify-content: center;
+  height: auto;
 }
-/*.MenuBar > nav > ul > li:not(:last-child) {
-    border-right: 2px solid white;
-}*/
+
+.mainbaroo2 {
+  border-radius: 50%; /* 둥근 원 모양 */
+  color: #5C5C5C;
+  background-color: #ffcc00; /* 예시 배경색 */
+  border: none;
+  padding: 0.3125rem; /* 5px */
+  width: 3.125rem; /* 50px */
+  height: 3.125rem; /* 50px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MenuBarr {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.375rem; /* 6px */
+}
+
+.MenuBarr > nav > ul > li {
+  list-style: none;
+  justify-content: center;
+  line-height: 1.25rem; /* 20px */
+  text-align: center;
+  display: inline-block;
+}
+
 .MenuBarr > nav > ul > li:not(:last-child) {
-    border-right: 2px solid black;
+  border-right: 0.125rem solid black; /* 2px */
 }
-.MenuBarr > nav > ul > li > a{
-    width: 100px;
-    text-decoration: none;
-    display: block;
-    color: black;
-    font-size:10px;
-    font-weight:bold;
 
+.MenuBarr > nav > ul > li > a {
+  width: 6.25rem; /* 100px */
+  text-decoration: none;
+  display: block;
+  color: black;
+  font-size: 0.625rem; /* 10px */
+  font-weight: bold;
 }
+
 .extra-sectionn {
-    width: 600px;
-    text-align: center;
-    padding: 10px;
-    margin-top: 30px;  
+  width: 37.5rem; /* 600px */
+  text-align: center;
+  padding: 0.625rem; /* 10px */
+  margin-top: 1.875rem; /* 30px */
 }
 
 .extra-sectionn-btn {
-    display: flex;
-    flex-direction: row; /* 가로 방향으로 정렬 */
-    justify-content: center; /* 가로로 중앙 정렬 */
-    align-items: center; /* 세로로 중앙 정렬 */
-    padding: 20px;
-    gap: 10px; /* 버튼 사이의 간격 */
-  }  
-
-.loginWrapper{
-    border-color: black;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    background-color: white;
-    
-    width: 600px;
-    height: auto;
-    min-height: 600px;
-    margin : 0 auto;
-    margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem; /* 20px */
+  gap: 0.625rem; /* 10px */
 }
-.loginput{
-    width:450px;
-    height:50px;
-    margin: 3px;
-    border-radius: 10px;
-    border: 1px solid #535353;
+
+.loginWrapper {
+  border-color: black;
+  border-radius: 0.625rem; /* 10px */
+  box-shadow: 0.125rem 0.125rem 0.3125rem rgba(0, 0, 0, 0.2); /* 2px 2px 5px */
+  background-color: white;
+  width: 37.5rem; /* 600px */
+  height: auto;
+  min-height: 37.5rem; /* 600px */
+  margin: 0 auto;
+  margin-top: 6.25rem; /* 100px */
+}
+
+.loginput1 {
+  width: 28.4375rem; /* 455px */
+  height: 3.125rem; /* 50px */
+  margin: 0.1875rem; /* 3px */
+  border-radius: 0.3125rem; /* 5px */
+  border: 1px solid #ccc;
+}
+
+.loginput2 {
+  width: 28.75rem; /* 460px */
+  height: 3.4375rem; /* 55px */
+  margin: 0.1875rem; /* 3px */
+  border-radius: 0.3125rem; /* 5px */
+  border: 1px solid #ccc;
 }

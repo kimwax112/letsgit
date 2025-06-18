@@ -9,7 +9,10 @@ export default function OngoingRequests() {
   const [filter, setFilter] = useState("전체");
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedContract, setSelectedContract] = useState(null);
+  //const [selectedContract, setSelectedContract] = useState(null);
+  
+  const [selectedContractId, setSelectedContractId] = useState(null);
+  const selectedContract = contracts.find(c => c.id === selectedContractId);
 
   useEffect(() => {
     const loadContracts = async () => {
@@ -133,7 +136,7 @@ export default function OngoingRequests() {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    setSelectedContract(contract);
+                    setSelectedContractId(contract.id);
                     setShowModal(true);
                   }}
                 >
@@ -151,7 +154,7 @@ export default function OngoingRequests() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  setSelectedContract(contract);
+                  setSelectedContractId(contract.id);
                   setShowEditModal(true);
                 }}
               >
@@ -165,12 +168,13 @@ export default function OngoingRequests() {
       {/* 진행도 등록 모달 */}
       {showModal && selectedContract && (
         <ProgressModal
+          key={selectedContract.id}
           onClose={() => {
             setShowModal(false);
-            setSelectedContract(null);
+            setSelectedContractId(null);
           }}
-          contract={selectedContract}
-          initialStep={selectedContract.step || 0} // step 데이터가 없으면 기본값 0
+          contract={{...selectedContract}}
+          initialStep={selectedContract.step || 0}
           onStepUpdated={(updatedStep) => {
             const updatedContracts = contracts.map((c) =>
               c.id === selectedContract.id ? { ...c, step: updatedStep } : c
@@ -185,10 +189,10 @@ export default function OngoingRequests() {
         <EditRequestModal
           onClose={() => {
             setShowEditModal(false);
-            setSelectedContract(null);
+            setSelectedContractId(null);
           }}
-          designerName="윤디" // 예시 이름 (로그인 사용자로 교체 가능)
-          requestTitle={selectedContract.contractTitle}
+          contract={selectedContract}
+          // 필요하면 추가 props 넣기
         />
       )}
     </div>

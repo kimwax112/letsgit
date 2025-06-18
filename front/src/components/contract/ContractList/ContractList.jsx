@@ -218,7 +218,6 @@ const handleStarClick = (star) => {
           justifyContent: "center", // 가로 가운데 정렬
           alignItems: "center",     // 세로 가운데 정렬
           flexDirection: "column",  // 자식들을 세로로 나열
-          minHeight: "100vh",       // 화면 전체 높이 기준으로 가운데 정렬
           width: "100%",
         }}
       >

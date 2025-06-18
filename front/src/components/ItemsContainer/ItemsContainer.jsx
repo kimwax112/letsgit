@@ -1,22 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-const itemContainer = styled`
 
-`
+const itemContainer = styled``;
+
 const Container = styled.div`
-  
-  width: 80%;
-  
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap:10px;
+  gap: 30px;
   padding: 1.875rem 3.125rem;  /* 30px 50px */
   border: 0.05rem solid black;  /* 0.8px */
   position: relative;
+  box-sizing: border-box;
 `;
 
 const ItemBox = styled.div`
-  width: 16.125rem;  /* 210px */
+  width: 100%;
+  max-width: 16.125rem;
   height: 19.25rem;  /* 260px */
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ const InnerBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.625rem;  /* 10px */
+  border-radius: 0.625rem; 
   background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;

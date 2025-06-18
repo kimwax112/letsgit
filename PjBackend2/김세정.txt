@@ -158,3 +158,8 @@ ALTER TABLE favorite RENAME COLUMN designer_id_tmp TO designer_id;
 
 6/17 
 ALTER TABLE request ADD username VARCHAR2(200);  --의뢰 아이템 박스에 username표시하기 위해 추가했습니다. 
+
+
+
+6/18 
+ALTER TABLE contracts ADD CREATED_AT DATE DEFAULT SYSDATE;   -- 계약 생성날짜를 저장하기 위해 추가했습니다. 
