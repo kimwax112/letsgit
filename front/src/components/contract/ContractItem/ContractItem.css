@@ -108,6 +108,25 @@
     color: #ffffff; /* red-600 */
   }
 
+ .contract-status.디자인하기 {
+    background-color: #dbeafe; /* blue-100 */
+    color: #2563eb; /* blue-600 */
+  }
+   .contract-status.뜨개질하기 {
+    background-color: #d1fae5; /* green-100 */
+    color: #10b981; /* green-600 */
+  }
+  
+ .contract-status.마감하기 {
+    background-color: #fee2e2; /* red-100 */
+    color: #ef4444; /* red-600 */
+  }
+
+
+    .contract-status.포장하기 {
+    background-color: #a7a7a7; /* red-100 */
+    color: #ffffff; /* red-600 */
+  }
 
   
   .contract-date {
