@@ -8,27 +8,24 @@ const Container = styled.div`
 `;
 
 const DetailBox = styled.div`
-  flex : 0.8;
-   width: 100%;                   /* 반응형 대응 */
-  max-width: 400px;   
-  height: 200px; 
-  background-color: #ffffff;     /* 깔끔한 흰색 배경 */
-  border: 1px solid #e0e0e0;     /* 연한 회색 테두리 */
-  border-radius: 12px;           /* 둥근 모서리 */
-  /* 폰트 스타일링 */
-  
-  font-weight: 500;              /* 중간 굵기 */
-  font-size: 1.125rem;           /* 18px 정도 */
-  line-height: 1.6;              /* 행간 여유 */
-  letter-spacing: 0.5px;         /* 글자 사이 약간 띄우기 */
-  color: rgb(58, 159, 232);      /* 차분한 텍스트 컬러 */
-  text-shadow: 0 1px 1px rgba(0,0,0,0.05); /* 미묘한 입체감 */
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 부드러운 그림자 */
-  white-space: pre-wrap;         /* 줄바꿈 유지 */
-  word-break: break-word;        /* 단어가 길어도 줄바꿈 */
-  
+  flex: 0.8;
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  color: rgb(58, 159, 232);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: pre-wrap;
+  word-break: break-word;
 `;
+
 const TextArea = styled.textarea`
   aspect-ratio: 1 / 1;
   width: 100%;
@@ -38,7 +35,6 @@ const TextArea = styled.textarea`
   padding: 10px;
   font-size: 16px;
   resize: none;
-  
 `;
 
 const ButtonContainer = styled.div`
@@ -63,26 +59,22 @@ const ButtonDetailContainer = styled.button`
 `;
 
 const Text = styled.div`
-margin : 20px;
-`
-
+  margin: 20px;
+`;
 
 const ImgItem = styled.img`
   width: 100%;
-  aspect-ratio: 1 / 1;                   /* 정사각형 */
-  object-fit: cover;                     /* 비율 유지하며 잘라내기 */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   border-radius: 8px;
   background: #f0f0f0;
 `;
 
-
 const ImgContainer1 = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 16px;
-
-  /* 최소 높이와 경계선으로 빈 영역을 시각화 */
   min-height: 150px;
   padding: 8px;
   border: 2px dashed #ccc;
@@ -90,7 +82,6 @@ const ImgContainer1 = styled.div`
   background-color: #fafafa;
   position: relative;
 
-  /* 자식이 하나도 없을 때만 placeholder 보여주기 */
   &:empty::before {
     content: "이미지를 업로드 해주세요";
     position: absolute;
@@ -103,75 +94,38 @@ const ImgContainer1 = styled.div`
   }
 `;
 
-
 export default function PostCotent3({ data = {} }) {
-    const {
-    requestId="",
-    description="",
-    categoryTags = "",
-    style = "",
-    amount = "",
-    deadline = "",
-  } = data;
+  const { requestId = "", description = "" } = data;
 
   const [editMode, setEditMode] = useState(false);
-  const [editedDescription, setEditedDescription] = useState(data?.description || "");
-  const [requests, setRequests] = useState([]);
+  const [editedDescription, setEditedDescription] = useState(description || "");
   const [isSaving, setIsSaving] = useState(false);
-  const [images, setImages] = useState([]);     // (1) 이미지 상태 추가
+  const [images, setImages] = useState([]);
 
-  // (2) requestId가 바뀔 때마다 API 호출해서 이미지 URL 배열 추출
   useEffect(() => {
     if (!requestId) return;
 
     axios
       .get("/mock-requestpostImage.json")
-      // .get("http://localhost:8081/api/requests", { withCredentials: true })
       .then((res) => {
-        // 예시: 응답 데이터가 [{requestId, image1Url, image2Url, …}, …] 형태라 가정
-        console.log(res.data)
         const req = res.data.find((r) => r.requestId === requestId);
         if (req) {
-          const urls = [
-            req.image1Url,
-            req.image2Url,
-            req.image3Url,
-
-          ].filter((u) => u);           // null·undefined·빈문자열 제거
-          setImages(urls.slice(0, 3));    // 최대 3
+          const urls = [req.image1Url, req.image2Url, req.image3Url].filter((u) => u);
+          setImages(urls.slice(0, 3));
         }
       })
       .catch((err) => console.error("이미지 로드 실패:", err));
   }, [requestId]);
 
-
-
-  // 디버깅 로그
   useEffect(() => {
     console.log("PostCotent3 data:", data);
     console.log("RequestId:", requestId);
     console.log("Description:", description);
   }, [data, requestId, description]);
-  
-  // GET /api/requests 호출
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/api/requests", { withCredentials: true })
-      .then((response) => {
-        console.log("Fetched requests:", response.data);
-        setRequests(response.data);
-      })
-      .catch((error) => console.error("목록 조회 실패:", error));
-  }, []);
-
-  // 디버깅 로그
-  console.log("PostCotent3 data:", data);
-  console.log("RequestId:", data?.requestId);
-  console.log("Description:", data?.description);
 
   const handleEditToggle = () => {
     setEditMode(true);
-    setEditedDescription(data?.description || "");
+    setEditedDescription(description || "");
   };
 
   const handleSave = async () => {
@@ -180,8 +134,8 @@ export default function PostCotent3({ data = {} }) {
       return;
     }
 
-    if (!data?.requestId) {
-      alert("요청 ID가 없습니다.",);
+    if (!requestId) {
+      alert("요청 ID가 없습니다.");
       return;
     }
 
@@ -189,35 +143,18 @@ export default function PostCotent3({ data = {} }) {
     try {
       const updatedPost = {
         description: editedDescription,
-        // 최소 본문 테스트
-        // 추가 필드 필요 시:
-        // title: data?.title || "",
-        // categoryTags: data?.categoryTags || "", // 문자열 유지
-        // style: data?.style || "",
-        // amount: data?.amount || "",
-        // deadline: data?.deadline || ""
       };
 
-      console.log("Sending PUT request:", {
-        url: `http://localhost:8081/api/requests/${requestId}`,
-        
+      console.log("Sending PATCH request:", {
+        url: `http://localhost:8081/api/requests/${requestId}/description`,
         data: updatedPost,
-        
       });
-      
 
-      const response = await axios.put(
-        `http://localhost:8081/api/requests/${requestId}`,
+      const response = await axios.patch(
+        `http://localhost:8081/api/requests/${requestId}/description`,
         updatedPost,
         { withCredentials: true }
       );
-
-      // 대안: PATCH
-      // const response = await axios.patch(
-      //   `http://localhost:8081/api/requests/${data.requestId}`,
-      //   updatedPost,
-      //   { withCredentials: true }
-      // );
 
       console.log("서버 응답:", response.data);
       setEditMode(false);
@@ -240,7 +177,7 @@ export default function PostCotent3({ data = {} }) {
 
   const handleCancel = () => {
     setEditMode(false);
-    setEditedDescription(data?.description || "");
+    setEditedDescription(description || "");
   };
 
   return (
@@ -266,25 +203,21 @@ export default function PostCotent3({ data = {} }) {
         />
       ) : (
         <DetailBox>
-          <Text>{data?.description || "수정하기"}</Text>
-          </DetailBox>
-     
+          <Text>{description || "수정하기"}</Text>
+        </DetailBox>
       )}
       <ImgContainer1>
-  {images.map((src, idx) => (
-    <ImgItem
-      key={idx}
-      src={src}
-      alt={`요청 이미지 ${idx + 1}`}
-      onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
-    />
-  ))}
-</ImgContainer1>
-
-      
-
-      
-      
+        {images.map((src, idx) => (
+          <ImgItem
+            key={idx}
+            src={src}
+            alt={`요청 이미지 ${idx + 1}`}
+            onError={(e) => {
+              e.currentTarget.style.visibility = "hidden";
+            }}
+          />
+        ))}
+      </ImgContainer1>
     </Container>
   );
 }

@@ -1,20 +1,12 @@
 package com.example.Loginpj.controller;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.Loginpj.model.Request;
 import com.example.Loginpj.service.RequestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/requests")
@@ -59,7 +51,7 @@ public class RequestController {
         if (result == 1) return ResponseEntity.ok("Request deleted successfully");
         else return ResponseEntity.status(500).body("Failed to delete request");
     }
-    
+
     @GetMapping("/user")
     public ResponseEntity<List<Request>> getByUsername(@RequestParam String username) {
         List<Request> requests = service.getByUsername(username);
@@ -67,5 +59,19 @@ public class RequestController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(requests);
+    }
+
+    @PatchMapping("/{id}/description")
+    public ResponseEntity<String> updateDescription(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        String description = requestBody.get("description");
+        if (description == null || description.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Description cannot be empty");
+        }
+        int result = service.updateDescription(id, description);
+        if (result == 1) {
+            return ResponseEntity.ok("Description updated successfully");
+        } else {
+            return ResponseEntity.status(500).body("Failed to update description");
+        }
     }
 }

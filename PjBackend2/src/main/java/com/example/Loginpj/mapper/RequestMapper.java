@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.Loginpj.model.Request;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface RequestMapper {
@@ -15,4 +16,5 @@ public interface RequestMapper {
     int deleteById(Long requestId);
     
     List<Request> findByUsername(String username);
+    void updateDescription(Map<String, Object> params);
 }
