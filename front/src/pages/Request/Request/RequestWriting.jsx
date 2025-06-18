@@ -205,6 +205,7 @@ export default function RequestWriting({ username: propUsername }) {
     const [selectedCategory, setSelectedCategory] = useState('template');
     const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
   const [rawAmount, setRawAmount] = useState("");
+  const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -217,7 +218,32 @@ export default function RequestWriting({ username: propUsername }) {
   };
 
 
-
+useEffect(() => {
+    if (!propUsername) {
+      const fetchSession = async () => {
+        try {
+          const res = await fetch("http://localhost:8081/api/user", {
+            credentials: 'include', // 세션 쿠키 포함
+          });
+          if (!res.ok) throw new Error("세션 없음");
+          const data = await res.json();
+          if (data.username) {
+            console.log("✅ 세션에서 username 획득:", data.username);
+            setUsername(data.username);
+          } else {
+            console.warn("❗ 세션은 있지만 username 없음");
+            setLoading(false);
+          }
+        } catch (err) {
+          console.warn("⚠️ 세션 정보 없음:", err);
+          setLoading(false);
+        }
+      };
+      fetchSession();
+    } else {
+      setLoading(false); // props로 username이 주어진 경우 바로 false 처리
+    }
+  }, [propUsername]);
 
   const handleFileChange = (index, event) => {
     const newFiles = [...files];
@@ -310,7 +336,8 @@ const handleSubmit = async () => {
       selectedItem, //6.14 선택된 나의 디자인 카드 아이템 api 벡엔드 엔드포인트 필요해요 
       image1Url: imageUrls[0] || "",
       image2Url: imageUrls[1] || "",
-      image3Url: imageUrls[2] || ""
+      image3Url: imageUrls[2] || "",
+      username
     });
     console.log("의뢰등록 성공 :", response.data);
     alert("의뢰가 등록되었습니다!");
