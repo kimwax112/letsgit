@@ -315,12 +315,17 @@ body{
 }
 
 .pattern-selector img {
-  transform: translateY(9px);
   height: 38px;
+  width: 12.5rem;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .pattern-selector select {
-  transform: translateY(-4px);
+  height: 38px;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
 }
 
 .pattern-preview {

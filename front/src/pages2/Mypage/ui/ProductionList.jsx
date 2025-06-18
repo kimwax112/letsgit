@@ -89,8 +89,8 @@ const PageButton = styled.button`
 
 // 단계 정보 정의
 const steps = [
-  { label: "본뜨기", image: "/image/Progress/sketch.png" },
-  { label: "편직", image: "/image/Progress/knitting.png" },
+  { label: "디자인하기", image: "/image/Progress/sketch.png" },
+  { label: "본뜨기", image: "/image/Progress/knitting.png" },
   { label: "마감하기", image: "/image/Progress/successful.png" },
   { label: "포장하기", image: "/image/Progress/package.png" },
 ];

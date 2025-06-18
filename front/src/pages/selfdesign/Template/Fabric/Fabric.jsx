@@ -306,33 +306,28 @@ const Fabric = () => {
                     />
                   </div>
                   <div className="pattern-selector">
-                    {selectedItems.map((item) => (
-                      <div key={item.id}>
-                        <img
-                          src={selectedPatterns[item.id]?.image}
-                          alt="패턴 미리보기"
-                          className="pattern-preview"
-                        />
-                        <select
-                          value={selectedPatterns[item.id]?.name || ""}
-                          onChange={(e) => {
-                            const pattern = fabricPatterns.find(p => p.name === e.target.value);
-                            setSelectedPatterns(prev => {
-                              const updated = { ...prev, [item.id]: pattern };
-                              localStorage.setItem("selectedPatterns", JSON.stringify(updated));
-                              return updated;
-                            });
-                          }}
-                        >
-                          <option value="">패턴 선택</option>
-                          {fabricPatterns.map((p) => (
-                            <option key={p.name} value={p.name}>{p.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                    ))}
+                    <img
+                      src={selectedPatterns[fabricItem.id]?.image}
+                      alt="패턴 미리보기"
+                      className="pattern-preview"
+                    />
+                    <select
+                      value={selectedPatterns[fabricItem.id]?.name || ""}
+                      onChange={(e) => {
+                        const pattern = fabricPatterns.find(p => p.name === e.target.value);
+                        setSelectedPatterns(prev => {
+                          const updated = { ...prev, [fabricItem.id]: pattern };
+                          localStorage.setItem("selectedPatterns", JSON.stringify(updated));
+                          return updated;
+                        });
+                      }}
+                    >
+                      <option value="">패턴 선택</option>
+                      {fabricPatterns.map((p) => (
+                        <option key={p.name} value={p.name}>{p.name}</option>
+                      ))}
+                    </select>
                   </div>
-
                 </div>
               ))
             ) : (
