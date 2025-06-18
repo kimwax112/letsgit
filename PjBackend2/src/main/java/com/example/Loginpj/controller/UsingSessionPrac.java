@@ -5,6 +5,8 @@ import com.example.Loginpj.model.wishlist_client;
 import com.example.Loginpj.service.PostService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -190,7 +192,7 @@ public class UsingSessionPrac {
                     contentType = "application/octet-stream";
                 }
                 return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(contentType))
+                        .contentType(MediaType.parseMediaType(contentType))//미디아파일하고 httpheaders 임포트 잘못됐을수도있따잉
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                         .body(fileContent);
             } else {
