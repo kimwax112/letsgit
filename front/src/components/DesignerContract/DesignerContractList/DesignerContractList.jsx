@@ -158,23 +158,21 @@ const DesignerContractList = () => {
               setSelectedStatus(contract.status); // 기본값 선택
             }}>상태 수정</button>
             {/* 상태 드롭다운 및 저장 */}
-      {editingStatusIndex === index && (
-        <div className="status-edit">
-          {statusOptions.map((status) => (
-            <label key={status}>
-              <input
-                type="radio"
-                name={`status-${index}`}
-                value={status}
-                checked={selectedStatus === status}
-                onChange={() => setSelectedStatus(status)}
-              />
-              {status}
-            </label>
-          ))}
-          <button onClick={() => handleStatusSave(contract.contractId)}>저장</button>
-        </div>
-      )}
+            {editingStatusIndex === index && (
+              <div className="status-edit">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+                <button onClick={() => handleStatusSave(contract.contractId)}>저장</button>
+              </div>
+            )}
           </div>
         </div>
       ))}
