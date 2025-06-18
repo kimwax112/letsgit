@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./DesignerContractCreate.module.css";
 
 const DesignerContractInputSection = ({ contractData, setContractData, handleFeeChange }) => {
+  // 계약 의뢰
   const handleContractTitleChange = (e) => {
     setContractData({ ...contractData, contractTitle: e.target.value });
   };

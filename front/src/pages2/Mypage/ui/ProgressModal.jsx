@@ -123,10 +123,10 @@ const ConfirmButton = styled.button`
 
 // 작업 단계 리스트
 const steps = [
-  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 1 },
-  { label: "뜨개질하기", image: "/image/Progress/knitting.png", value: 2 },
-  { label: "마감하기", image: "/image/Progress/successful.png", value: 3 },
-  { label: "포장하기", image: "/image/Progress/package.png", value: 4 },
+  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 0 },
+  { label: "본뜨기", image: "/image/Progress/knitting.png", value: 1 },
+  { label: "마감하기", image: "/image/Progress/successful.png", value: 2 },
+  { label: "포장하기", image: "/image/Progress/package.png", value: 3 },
 ];
 
 export default function ProgressModal({ onClose, initialStep = 0, contract, onStepUpdated }) {

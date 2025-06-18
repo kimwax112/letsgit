@@ -18,7 +18,14 @@ export default function DesignerBanner() {
       <div className="banner-content">
         <h1><span className="highlight">D</span>esign <span className="highlight">S</span>ai</h1>
         <p>여러 의뢰인들과 협업하며, 자신만의 디자인 세계를 개척해 나가세요!</p>
-        <button className="banner-button">자세히 보기</button>
+        <button
+          className="banner-button"
+          onClick={() => {
+            window.location.href = "/designer/DMyPage";
+          }}
+        >
+          지금 시작하기
+        </button>
       </div>
     </div>
   );

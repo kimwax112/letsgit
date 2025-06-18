@@ -10,7 +10,7 @@
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
-  position: relative; /* 추가 */
+  position: relative;
 }
 
 /* 메뉴바 */
@@ -19,6 +19,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.navbar,
+.nav-menu {
+  overflow: visible; 
+  position: relative; 
 }
 
 /* 전체 메뉴 버튼 */
@@ -40,10 +46,19 @@
 /* 기본 메뉴 */
 .nav-links {
   display: flex;
+  flex-wrap: nowrap;
   gap: 5rem !important;
+  margin-top: 1rem;
   letter-spacing: 0.05em;
   align-items: center;
   font-size: 1.1rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.nav-links a {
+  white-space: nowrap;
 }
 
 /* 드롭다운 전체 구조 */
@@ -144,4 +159,22 @@
 .dropdown-menu a:focus,
 .dropdown-section a:focus {
   outline: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .nav-links a {
+    font-size: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .nav-links a {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .nav-links a {
+    font-size: 0.8rem !important;
+  }
 }

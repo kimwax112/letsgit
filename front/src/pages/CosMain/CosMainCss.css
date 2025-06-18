@@ -97,23 +97,21 @@ body {
 
 .Content-Sell {
     width: 100%;
-    height: 25.9375rem;
+    /*height: 25.9375rem;*/
+    min-height: 25.9375rem;
     text-align: center;
     margin-top: 5rem;
     margin-bottom: 5rem;
-    background-color: #F4F7FA; /* ✅ 배경색 추가 */
-    padding: 2rem 0; /* ✅ 상하 여백 추가로 내용이 너무 붙어있지 않게 */
-    border-radius: 1.25rem; /* ✅ 배경에 부드러운 느낌 추가 */
+    background-color: #F4F7FA; 
+    padding: 2rem 0; 
+    border-radius: 1.25rem; 
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.03);
 }
 
 .Content-Sell2 {
-    margin: 0.625rem auto;
-    border: none;
-    text-align: center;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* 여기서 수정 */
+    justify-content: center;
     align-items: center;
 }
 
