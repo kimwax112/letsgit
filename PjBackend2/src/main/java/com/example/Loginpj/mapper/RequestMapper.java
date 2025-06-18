@@ -13,4 +13,6 @@ public interface RequestMapper {
     int insert(Request request);
     int update(Request request);
     int deleteById(Long requestId);
+    
+    List<Request> findByUsername(String username);
 }

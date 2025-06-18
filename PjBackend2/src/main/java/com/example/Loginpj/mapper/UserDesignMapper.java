@@ -15,5 +15,7 @@ public interface UserDesignMapper {
 
     // 특정 사용자의 사이즈 업데이트 (XML에서 관리)
     int updateSizeByUserId(@Param("username") String username, @Param("size") String size);
+    
+    UserDesign findById(Long designId);
 }
 

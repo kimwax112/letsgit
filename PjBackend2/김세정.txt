@@ -152,3 +152,9 @@ ALTER TABLE favorite DROP COLUMN designer_id;
 
 -- 4. 임시 컬럼 이름을 designer_id로 변경
 ALTER TABLE favorite RENAME COLUMN designer_id_tmp TO designer_id;
+
+
+
+
+6/17 
+ALTER TABLE request ADD username VARCHAR2(200);  --의뢰 아이템 박스에 username표시하기 위해 추가했습니다. 
