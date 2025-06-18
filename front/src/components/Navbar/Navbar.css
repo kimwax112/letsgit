@@ -10,7 +10,7 @@
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
-  position: relative; /* 추가 */
+  position: relative;
 }
 
 /* 메뉴바 */
@@ -40,10 +40,14 @@
 /* 기본 메뉴 */
 .nav-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 5rem !important;
+  margin-top: 1rem;
   letter-spacing: 0.05em;
   align-items: center;
   font-size: 1.1rem;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* 드롭다운 전체 구조 */
