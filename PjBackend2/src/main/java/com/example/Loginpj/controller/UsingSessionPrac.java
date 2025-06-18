@@ -194,7 +194,7 @@ public class UsingSessionPrac {
                     contentType = "application/octet-stream";
                 }
                 return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(contentType))
+                        .contentType(MediaType.parseMediaType(contentType))//미디아파일하고 httpheaders 임포트 잘못됐을수도있따잉
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                         .body(fileContent);
             } else {

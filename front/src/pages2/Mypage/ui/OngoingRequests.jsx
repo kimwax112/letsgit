@@ -25,7 +25,7 @@ export default function OngoingRequests() {
       }
     };
     loadContracts();
-  }, []);
+  }, [selectedContract]);
 
   const filteredContracts = contracts.filter((contract) => {
     if (search && !contract.requestTitle?.includes(search)) return false;
