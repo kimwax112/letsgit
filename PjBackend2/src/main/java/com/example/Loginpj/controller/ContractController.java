@@ -46,7 +46,8 @@ public class ContractController {
 
     @PostMapping("/contract")
     public ResponseEntity<?> createContract(@RequestBody Contract contract) {
-        try {
+    	 System.out.println("받은 계약 객체: " + contract + ", designerId=" + contract.getDesignerId());
+    	try {
             contractService.createContract(contract);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
