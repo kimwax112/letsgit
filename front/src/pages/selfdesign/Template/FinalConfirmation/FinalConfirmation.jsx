@@ -27,11 +27,31 @@ const FinalConfirmation = () => {
   const [selectedFabric, setSelectedFabric] = useState([]);
   const [selectedColors, setSelectedColors] = useState({});
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedRatios, setSelectedRatios] = useState({});
   const [designName, setDesignName] = useState("");
   const [loading, setLoading] = useState(false);
   const [note, setNote] = useState("");
 
   const [username, setUsername] = useState(null);  // 상태로 username 관리
+    
+
+  useEffect(() => {
+  // … username 체크 로직 생략 …
+
+  // 저장된 혼합율 가져오기
+  const storedRatiosJson =
+    sessionStorage.getItem("selectedRatios") ||
+    localStorage.getItem("selectedRatios");
+  if (storedRatiosJson) {
+    try {
+      const parsed = JSON.parse(storedRatiosJson);
+      setSelectedRatios(parsed);
+    } catch (e) {
+      console.error("selectedRatios 파싱 오류:", e);
+    }
+  }
+}, [username]);
+
 
   // 저장할 영역 ref
   const captureRef = useRef(null);
@@ -84,10 +104,11 @@ const FinalConfirmation = () => {
       sessionStorage.getItem("selectedColors") || localStorage.getItem("selectedColors");
     const storedSize =
       sessionStorage.getItem("selectedSize") || localStorage.getItem("selectedSize");
-
+   
     if (storedFabric) setSelectedFabric(JSON.parse(storedFabric) || []);
     if (storedColors) setSelectedColors(JSON.parse(storedColors) || {});
     if (storedSize) setSelectedSize(storedSize);
+
   }, [username]);
 
   const handleSubmit = async () => {
@@ -214,7 +235,12 @@ const FinalConfirmation = () => {
                       <img src={f.imageSrc} alt={f.name} className="fabric-img" />
                       <div className="fabric-info">
                         <div className="fabric-name">{f.name}</div>
-                        <div>혼합율: {f.mixingRatio || 0}%</div>
+                        <div>원단별 혼합율</div>
+                         <div>
+          혼합율: {selectedRatios[f.id] !== undefined 
+            ? `${selectedRatios[f.id]}%` 
+            : "0%"}
+        </div>
                         <div>
                           색상:{" "}
                           <ColorCircle

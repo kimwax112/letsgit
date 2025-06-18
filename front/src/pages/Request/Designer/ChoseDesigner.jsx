@@ -13,32 +13,28 @@ import SearchRequest from "../../../pages2/Request/SearchRequest";
 
 
 // 전체 레이아웃을 감싸는 컨테이너
-const MainContainer = styled.div`
-  display: flex;
-  width: 100%;
-  min-height: 100vh; /* 화면 전체 높이 */
-`;
-
-// Sidebar 스타일
-const Sidebar = styled.div`
-  flex: 0 0 250px; /* Sidebar 너비 고정 */
+export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: #fff; /* Sidebar 배경색 */
-  padding: 20px;
-  border-right: 1px solid #ccc; /* 구분선 */
+  align-items: center;           /* 가운데 정렬 */
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f9faff;     /* 은은한 배경 */
+  padding: 2rem 1rem;            /* 상하 2rem, 좌우 1rem 여백 */
 `;
 
 // Content(App Screen) 스타일
-const Content = styled.div`
-  flex: 1; /* 나머지 공간을 채움 */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  border: 2px solid #799fc4;
-  border-radius: 20px;
-  margin: 15px;
-  padding: 20px;
+export const Content = styled.div`
+  width: 100%;
+  max-width: 1200px;             /* 컨텐츠 최대 너비 */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;                   /* 카드 사이 간격 */
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 `;
 
 export default function ChoseDesigner() {
@@ -115,10 +111,7 @@ console.log("searchTerm:", searchTerm);
       <div style={{display : "flex", alignItems:"center" }}><h1>디자이너찾기 </h1>
       <SearchRequest searchTerm={searchTerm} setSearchTerm={setSearchTerm} children={"디자이너검색"} /></div>
       <MainContainer>
-        <Sidebar>
-          <Search />
-          <SideMenuBar />
-        </Sidebar>
+    
        <Content>
       {filteredItems.length > 0 ? (
         filteredItems.map((post) => (
@@ -133,3 +126,20 @@ console.log("searchTerm:", searchTerm);
   </>
   );
 }
+
+
+
+
+
+
+
+
+// // Sidebar 스타일
+// const Sidebar = styled.div`
+//   flex: 0 0 250px; /* Sidebar 너비 고정 */
+//   display: flex;
+//   flex-direction: column;
+//   background: #fff; /* Sidebar 배경색 */
+//   padding: 20px;
+//   border-right: 1px solid #ccc; /* 구분선 */
+// `;

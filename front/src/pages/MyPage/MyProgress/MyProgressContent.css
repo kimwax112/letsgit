@@ -42,13 +42,47 @@
   flex-direction: column;
   
 }
-
 .status-images {
   display: flex;
-  width: 100%; /* ContractItem 너비와 동일 */
-  align-items: center;
-  
+  width: 100%;               /* 부모 카드 너비에 딱 맞춤 */
+  align-items: center;       /* 세로 중앙 정렬 */
+  gap: 12px;                 /* 이미지 사이 간격 */
+  padding: 8px 0;            /* 위아래 여백 */
+  height : 200px;
 }
+
+/* WebKit 브라우저(Chrome, Safari)용 스크롤바 스타일 */
+.status-images::-webkit-scrollbar {
+  height: 6px;               /* 스크롤바 두께 */
+}
+.status-images::-webkit-scrollbar-track {
+  background: transparent;
+}
+.status-images::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* 스크롤 가능한 영역 양 끝에 그라디언트 페이드 추가 (선택) */
+.status-images::before,
+.status-images::after {
+  content: "";
+  position: sticky;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.status-images::before {
+  left: 0;
+  background: linear-gradient(to right, #f5f8fa 0%, transparent 100%);
+}
+.status-images::after {
+  right: 0;
+  background: linear-gradient(to left, #f5f8fa 0%, transparent 100%);
+}
+
 
 .status-image {
   flex: 1; /* 각 이미지가 동일한 너비 차지 */
@@ -84,4 +118,6 @@
   align-items: center;
   padding: 10px;
   gap: 15px;
+  
 }
+
