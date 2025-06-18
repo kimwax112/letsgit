@@ -58,7 +58,7 @@
 }
 
 .nav-links a {
-  white-space: nowrap; /* ✅ 줄바꿈 방지 */
+  white-space: nowrap;
 }
 
 /* 드롭다운 전체 구조 */
