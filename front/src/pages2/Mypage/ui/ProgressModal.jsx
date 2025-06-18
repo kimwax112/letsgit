@@ -123,10 +123,10 @@ const ConfirmButton = styled.button`
 
 // 작업 단계 리스트
 const steps = [
-  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 0 },
-  { label: "뜨개질하기", image: "/image/Progress/knitting.png", value: 1 },
-  { label: "마감하기", image: "/image/Progress/successful.png", value: 2 },
-  { label: "포장하기", image: "/image/Progress/package.png", value: 3 },
+  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 1 },
+  { label: "뜨개질하기", image: "/image/Progress/knitting.png", value: 2 },
+  { label: "마감하기", image: "/image/Progress/successful.png", value: 3 },
+  { label: "포장하기", image: "/image/Progress/package.png", value: 4 },
 ];
 
 export default function ProgressModal({ onClose, initialStep = 0, contract, onStepUpdated }) {
@@ -142,7 +142,7 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
     setActiveStep(initialStep);
   }, [initialStep]);
 
-  
+  console.log("진행도 현황 ", activeStep);
 
 
   // 버튼 클릭 시 팝업 띄우기 (활성화 가능 단계만)
@@ -158,9 +158,10 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
   //   setConfirmStep(null);
   // };
 
-   const handleConfirm = async () => { //6.9
+   const handleConfirm = async (stepIndex) => { //6.9  //6.15 stepIndex 추가 stepIndex
     setLoading(true);
     setError(null);
+    
     console.log("실제로 전송될 contractId:", contract.contractId);
 
     if (!contract || contract.contractId === undefined || contract.contractId === null) {
@@ -168,13 +169,17 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
       setLoading(false);
       return;
     }
+    
 
     try {
-      await axios.post("http://localhost:8081/api/progress", {
+      await axios.post("http://localhost:8081/api/progress",
+         {
         contractId: contract.contractId,
         status: steps[confirmStep].label,
         step: steps[confirmStep].value,  // 서버에서 step도 받도록 하려면 같이 보냅니다
       });
+      setActiveStep(stepIndex); //6.15
+      onStepUpdated?.(stepIndex);//6.15
 
       setActiveStep(confirmStep);
       setConfirmStep(null);
@@ -236,7 +241,7 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
               </p>
               <ConfirmButtons>
                 {/* <ConfirmButton confirm onClick={handleConfirm}>확인</ConfirmButton> */}
-                <ConfirmButton $isConfirm onClick={handleConfirm} disabled={loading}>
+                <ConfirmButton onClick={() => handleConfirm(confirmStep)} disabled={loading}>
                   {loading ? "처리 중..." : "확인"}
                 </ConfirmButton>
                 <ConfirmButton onClick={handleCancel}>취소</ConfirmButton>

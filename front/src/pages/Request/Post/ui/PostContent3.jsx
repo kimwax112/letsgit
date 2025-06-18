@@ -8,14 +8,27 @@ const Container = styled.div`
 `;
 
 const DetailBox = styled.div`
-  aspect-ratio: 1 / 1;
-  width: auto;
-  background-color: white;
-  border: 2px solid;
-  padding: 10px;
-  font-size: 16px;
-`;
+  flex : 0.8;
+   width: 100%;                   /* 반응형 대응 */
+  max-width: 400px;   
+  height: 200px; 
+  background-color: #ffffff;     /* 깔끔한 흰색 배경 */
+  border: 1px solid #e0e0e0;     /* 연한 회색 테두리 */
+  border-radius: 12px;           /* 둥근 모서리 */
+  /* 폰트 스타일링 */
+  
+  font-weight: 500;              /* 중간 굵기 */
+  font-size: 1.125rem;           /* 18px 정도 */
+  line-height: 1.6;              /* 행간 여유 */
+  letter-spacing: 0.5px;         /* 글자 사이 약간 띄우기 */
+  color: rgb(58, 159, 232);      /* 차분한 텍스트 컬러 */
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05); /* 미묘한 입체감 */
 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 부드러운 그림자 */
+  white-space: pre-wrap;         /* 줄바꿈 유지 */
+  word-break: break-word;        /* 단어가 길어도 줄바꿈 */
+  
+`;
 const TextArea = styled.textarea`
   aspect-ratio: 1 / 1;
   width: 100%;
@@ -25,6 +38,7 @@ const TextArea = styled.textarea`
   padding: 10px;
   font-size: 16px;
   resize: none;
+  
 `;
 
 const ButtonContainer = styled.div`
@@ -48,6 +62,48 @@ const ButtonDetailContainer = styled.button`
   margin-bottom: 10px;
 `;
 
+const Text = styled.div`
+margin : 20px;
+`
+
+
+const ImgItem = styled.img`
+  width: 100%;
+  aspect-ratio: 1 / 1;                   /* 정사각형 */
+  object-fit: cover;                     /* 비율 유지하며 잘라내기 */
+  border-radius: 8px;
+  background: #f0f0f0;
+`;
+
+
+const ImgContainer1 = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  
+  gap: 8px;
+  margin-top: 16px;
+
+  /* 최소 높이와 경계선으로 빈 영역을 시각화 */
+  min-height: 150px;
+  padding: 8px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  position: relative;
+
+  /* 자식이 하나도 없을 때만 placeholder 보여주기 */
+  &:empty::before {
+    content: "이미지를 업로드 해주세요";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888;
+    font-size: 1rem;
+    pointer-events: none;
+  }
+`;
+
+
 export default function PostCotent3({ data = {} }) {
     const {
     requestId="",
@@ -62,6 +118,32 @@ export default function PostCotent3({ data = {} }) {
   const [editedDescription, setEditedDescription] = useState(data?.description || "");
   const [requests, setRequests] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [images, setImages] = useState([]);     // (1) 이미지 상태 추가
+
+  // (2) requestId가 바뀔 때마다 API 호출해서 이미지 URL 배열 추출
+  useEffect(() => {
+    if (!requestId) return;
+
+    axios
+      .get("/mock-requestpostImage.json")
+      // .get("http://localhost:8081/api/requests", { withCredentials: true })
+      .then((res) => {
+        // 예시: 응답 데이터가 [{requestId, image1Url, image2Url, …}, …] 형태라 가정
+        console.log(res.data)
+        const req = res.data.find((r) => r.requestId === requestId);
+        if (req) {
+          const urls = [
+            req.image1Url,
+            req.image2Url,
+            req.image3Url,
+
+          ].filter((u) => u);           // null·undefined·빈문자열 제거
+          setImages(urls.slice(0, 3));    // 최대 3
+        }
+      })
+      .catch((err) => console.error("이미지 로드 실패:", err));
+  }, [requestId]);
+
 
 
   // 디버깅 로그
@@ -183,8 +265,25 @@ export default function PostCotent3({ data = {} }) {
           placeholder="상세설명을 입력하세요"
         />
       ) : (
-        <DetailBox>{data?.description || "수정하기"}</DetailBox>
+        <DetailBox>
+          <Text>{data?.description || "수정하기"}</Text>
+          </DetailBox>
+     
       )}
+      <ImgContainer1>
+  {images.map((src, idx) => (
+    <ImgItem
+      key={idx}
+      src={src}
+      alt={`요청 이미지 ${idx + 1}`}
+      onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+    />
+  ))}
+</ImgContainer1>
+
+      
+
+      
       
     </Container>
   );

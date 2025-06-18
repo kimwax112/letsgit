@@ -55,7 +55,7 @@ const DesignerNavbar = () => {
           <div className="dropdown">
             <a href="#">대화방</a>
             <div className="dropdown-menu">
-              <Link to="/client/chatmain" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/designer/chatmain" onClick={() => setIsMenuOpen(false)}>
                 일반 채팅방
               </Link>
             </div>
