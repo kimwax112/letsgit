@@ -46,6 +46,7 @@
   </select>
 
   <insert id="insert" parameterType="com.example.Loginpj.model.Request" useGeneratedKeys="false">
+<!-- 
 <<<<<<< HEAD
   INSERT INTO request (
     request_id, title, category_tags, style, amount, deadline, description, image1_url, image2_url, image3_url, username
@@ -65,6 +66,7 @@
   )
 </insert>
 =======
+ -->
     INSERT INTO request (
       request_id, title, category_tags, style, amount, deadline, description, image1_url, image2_url, image3_url, username
     )
@@ -75,7 +77,6 @@
       #{username, jdbcType=VARCHAR}
     )
   </insert>
->>>>>>> origin/master
 
 
   <update id="update" parameterType="com.example.Loginpj.model.Request">
