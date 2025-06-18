@@ -7,7 +7,8 @@ public class Contract {
     private int requestId;
     private String designerId;
     private Date dueDate;
-    private int requestFee;
+    private Date createdAt;
+	private int requestFee;
     private String status;
     private String clientId;
     private String contractTitle;
@@ -54,7 +55,15 @@ public class Contract {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+    
+    public Date getCreatedAt() {
+  		return createdAt;
+  	}
 
+  	public void setCreatedAt(Date createdAt) {
+  		this.createdAt = createdAt;
+  	}
+  	
     public int getRequestFee() {
         return requestFee;
     }

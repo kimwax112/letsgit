@@ -11,15 +11,15 @@ import ContractPreview from "../../components/DesignerContractCreate/ContractPre
 
 const deliverableOptions = ["상의", "아우터", "바지", "원피스", "스커트", "스니커즈", "신발", "가방",];
 
-const DesignerContractCreatePage = ({ username, clientId }) => {
+const DesignerContractCreatePage = ({ clientId }) => {
   const [contractData, setContractData] = useState({
     requestId: "",
-    designerId: username || "", // 상위에서 전달받은 사용자 이름
-    startDate: "",
-    endDate: "",
+    designerId: "",
+    dueDate: "",     
+    createdAt: "",   
     requestFee: "",
     status: "미수신",
-    clientId: clientId || "", // 상위에서 전달받음
+    clientId: clientId || "",
     contractTitle: "",
     starredStatus: 0,
     contractContent: "",
@@ -36,32 +36,57 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
   });
 
   const [showSamplePanel, setShowSamplePanel] = useState(false);
-
-  //체크박스시, 작성완료버튼 활성화
   const [agreeToAll, setAgreeToAll] = useState(false);
-
-  // 작업 범위 체크박스 상태
   const [deliverables, setDeliverables] = useState([]);
-
-  // 샘플 문구 카테고리 관리
   const [sampleCategory, setSampleCategory] = useState("");
-
-  // 개인정보 수집 동의 체크박스 상태 추가
-  const [agreePrivacy, setAgreePrivacy] = useState(false);
-
   const navigate = useNavigate();
 
-  // 로컬스토리지에서 작성중인 계약서 자동 불러오기
   useEffect(() => {
+    const fetchDesignerUsername = async () => {
+      try {
+        // 세션 쿠키를 포함하여 요청
+        const response = await fetch("http://localhost:8081/api/user", {
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.username) {
+            console.log("✅ 세션에서 username 획득:", data.username);
+            setContractData(prev => ({
+              ...prev,
+              designerId: data.username,
+            }));
+          } else {
+            console.warn("❗ 세션은 있지만 username 없음");
+            // username이 없을 경우의 처리 (예: 로그인 페이지로 리다이렉트)
+            // navigate("/login");
+          }
+        } else {
+          console.error("Failed to fetch current user session:", response.status);
+          // 세션이 없거나 오류 발생 시
+          // navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error fetching current user session:", error);
+        // 네트워크 오류 등 발생 시
+      }
+    };
+
+    fetchDesignerUsername();
+
     const saved = localStorage.getItem("contractDraft");
     if (saved) {
       const parsed = JSON.parse(saved);
-      setContractData(parsed.contractData || {});
+      setContractData(prev => ({
+        ...prev,
+        ...parsed.contractData,
+        designerId: prev.designerId || parsed.contractData?.designerId || "",
+      }));
       setDeliverables(parsed.deliverables || []);
     }
   }, []);
 
-  // 작성 내용 자동 저장 (contractData, deliverables가 바뀔 때)
   useEffect(() => {
     localStorage.setItem("contractDraft", JSON.stringify({ contractData, deliverables }));
   }, [contractData, deliverables]);
@@ -75,56 +100,77 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
     }));
   };
 
-  // 작성 완료 버튼 클릭 시
-    const handleSubmit = async () => {
-    if (!contractData.contractTitle || !contractData.startDate || !contractData.requestFee) {
-      alert("계약 제목, 마감일, 요청 비용을 모두 입력해주세요.");
+  const handleSubmit = async () => {
+    console.log("계약 제목:", contractData.contractTitle);
+  console.log("마감일:", contractData.dueDate);
+  console.log("요청 비용:", contractData.requestFee);
+  
+    if (!contractData.designerId) {
+      alert("디자이너 정보가 없습니다. 다시 로그인 해주세요.");
       return;
     }
+      
+    if (!contractData.contractTitle || !contractData.dueDate || !contractData.requestFee) {
+    alert("계약 제목, 마감일, 요청 비용을 모두 입력해주세요.");
+    return;
+  }
 
-    const requestFee = Number(contractData.requestFee.replace(/,/g, ""));
-    if (isNaN(requestFee)) {
-      alert("유효한 요청 비용을 입력해주세요.");
-      return;
+  const requestFee = Number(contractData.requestFee.replace(/,/g, ""));
+  if (isNaN(requestFee)) {
+    alert("유효한 요청 비용을 입력해주세요.");
+    return;
+  }
+
+  if (!contractData.signature) {
+    alert("서명을 입력해주세요.");
+    return;
+  }
+
+  const fullContractContent = Object.values(contentBySection)
+  .map(section => {
+    if (typeof section === "string") return section;
+    else if (typeof section === "object" && section !== null) return JSON.stringify(section);
+    else return "";
+  })
+  .filter(Boolean)
+  .join("\n\n");
+
+  console.log("🌟 서버로 전송될 최종 계약 내용 (fullContractContent):", fullContractContent);
+  console.log("🌟 최종 계약 내용의 길이:", fullContractContent.length);
+
+  try {
+    const response = await fetch("http://localhost:8081/client/contract", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...contractData,
+        contractContent: fullContractContent,
+        requestFee,
+        deliverables,
+      }),
+    });
+
+    if (response.ok) {
+      alert("작성 완료! 계약서가 저장되었습니다.");
+      navigate("/designer/DesignerContractManage");
+    } else {
+      alert("작성 실패했습니다. 다시 시도해주세요.");
     }
-
-    if (!contractData.signature) {
-      alert("서명을 입력해주세요.");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:8081/client/contract", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...contractData,
-          requestFee,
-          deliverables,
-        }),
-      });
-
-      if (response.ok) {
-        alert("작성 완료! 계약서가 저장되었습니다.");
-        navigate("/designer/DesignerContractManage");
-      } else {
-        alert("작성 실패했습니다. 다시 시도해주세요.");
-      }
-    } catch (error) {
-      console.error("작성 중 오류 발생:", error);
-      alert("작성 중 오류가 발생했습니다.");
-    }
-  };
+  } catch (error) {
+    console.error("작성 중 오류 발생:", error);
+    alert("작성 중 오류가 발생했습니다.");
+  }
+};
 
   const handleCancel = () => {
     if (window.confirm("정말 작성 취소하시겠습니까?")) {
       setContractData({
         requestId: "",
-        designerId: username || "",
-        startDate: "",
-        endDate: "",
+        designerId: contractData.designerId,
+        dueDate: "",     
+        createdAt: "", 
         requestFee: "",
         status: "미수신",
         clientId: clientId || "",
@@ -134,10 +180,18 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
         signature: "",
       });
       setDeliverables([]);
+      setContentBySection({
+        basic: "",
+        copyright: "",
+        cancellation: "",
+        security: "",
+        dispute: "",
+        etc: "",
+      });
+      localStorage.removeItem("contractDraft");
     }
   };
 
-  // 작업 범위 체크박스 처리
   const handleDeliverableChange = (item) => {
     if (deliverables.includes(item)) {
       setDeliverables(deliverables.filter(d => d !== item));
@@ -160,7 +214,6 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
     }
   };
 
-  // 미리보기용 ref & 핸들러
   const componentRef = useRef();
   const [showPreview, setShowPreview] = useState(false);
   const handlePrint = useReactToPrint({
@@ -171,20 +224,20 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
   return (    
     <div
       style={{
-        padding: "1.875rem", // 30px → 1.875rem
-        maxWidth: "62.5rem", // 1000px → 62.5rem
+        padding: "1.875rem",
+        maxWidth: "62.5rem",
         margin: "0 auto",
-        marginTop: "1.25rem", // 20px → 1.25rem
-        marginBottom: "1.25rem", // 20px → 1.25rem
+        marginTop: "1.25rem",
+        marginBottom: "1.25rem",
         backgroundColor: "#fff",
-        borderRadius: "0.625rem", // 10px → 0.625rem
-        boxShadow: "0 0.25rem 0.5rem rgba(0, 0, 0, 0.1)", // 4px 8px → 0.25rem 0.5rem
+        borderRadius: "0.625rem",
+        boxShadow: "0 0.25rem 0.5rem rgba(0, 0, 0, 0.1)",
       }}
     >
       <h1
         style={{
-          fontSize: "1.75rem", // 28px → 1.75rem
-          marginBottom: "1.875rem", // 30px → 1.875rem
+          fontSize: "1.75rem",
+          marginBottom: "1.875rem",
           color: "#799FC4",
           display: "flex",
           alignItems: "center",
@@ -194,15 +247,13 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
         계약서 작성
       </h1>
 
-      {/* 계약서 기본 정보 입력 섹션 */}
       <DesignerContractInputSection 
         contractData={contractData} 
         setContractData={setContractData} 
-        handleFeeChange={handleFeeChange} // 금액 입력 커스텀 핸들러 전달
+        handleFeeChange={handleFeeChange}
       />
 
       <br/>
-      {/* 작업 범위 체크박스 추가 */}
       <div style={{ margin: "1.5rem 0" }}>
         <hr style={{  border: "0.7px solid #E6E6E6", margin: "1.3rem 0" }} />
         <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}> 카테고리 선택</h2>
@@ -221,25 +272,6 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
 
       <hr style={{ border: "1px solid #E6E6E6", margin: "1.3rem 0" }} />
 
-      {/* 샘플 문구 탭 UI
-      <div>
-        <h2 style={{ fontSize: "1.4375rem", marginBottom: "1.5rem" }}>샘플 문구 삽입</h2>
-        <button
-          onClick={() => setShowSamplePanel(true)}
-          style={{ backgroundColor: "#799FC4", color: "#fff", padding: "0.5rem 1rem", borderRadius: "5px", border: "none" }}
-        >
-          샘플 문구 보기
-        </button>
-        {showSamplePanel && (
-        <SampleClauseSidebar
-          onInsert={handleSampleInsert}
-          onClose={() => setShowSamplePanel(false)}
-          selectedCategory={sampleCategory}
-        />
-      )}
-      </div> */}
-
-      {/* 계약서 본문 에디터 */}
       <DesignerContractEditor
         contractData={contentBySection}
         setContractData={setContentBySection}
@@ -247,12 +279,10 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
 
       <br/><br/>
 
-      {/* 파일 업로드 */}
       <DesignerContractFileUpload />
 
       <br/><br/>
 
-            {/* 서명란 */}
       <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
         <label htmlFor="signature" style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
           서명 (이름 입력)
@@ -275,7 +305,6 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
 
       <hr style={{ border: "1px solid #E6E6E6", marginBottom: "1rem" }} />
 
-      {/* 동의 체크박스 UI*/}
       <div style={{ marginBottom: "1.5rem", fontSize: "0.9rem", color: "#555" }}>
       <input
         type="checkbox"
@@ -287,9 +316,7 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
       </label>
       </div>
 
-      {/* 저장 / 취소 버튼 */}
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem", marginTop: "1.5rem" }}>
-      {/* 미리보기 버튼 */}
       <button
         onClick={() => setShowPreview(true)}
         style={{
@@ -306,7 +333,6 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
         미리보기
       </button>
 
-      {/* 취소 버튼 */}
       <button
         onClick={handleCancel}
         style={{
@@ -323,10 +349,9 @@ const DesignerContractCreatePage = ({ username, clientId }) => {
         취소
       </button>
 
-      {/* 작성 완료 버튼 (동의 체크 여부에 따라 비활성화) */}
       <button
         onClick={handleSubmit}
-        disabled={!agreeToAll} // <- 이 변수에 체크 여부가 담겨 있어야 해
+        disabled={!agreeToAll}
         style={{
           backgroundColor: agreeToAll ? "#799FC4" : "#ccc",
           color: "#fff",
