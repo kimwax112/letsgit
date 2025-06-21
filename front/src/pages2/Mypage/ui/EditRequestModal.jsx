@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-export default function EditRequestModal({ onClose, designerName, requestTitle, onAddRequest }) {
-  const [message, setMessage] = useState("");
-  const [requestText, setRequestText] = useState("");
-
-  const CloseButton = styled.button`
+const CloseButton = styled.button`
   all: unset;
   font-size: 1.8rem;
   cursor: pointer;
@@ -14,6 +10,10 @@ export default function EditRequestModal({ onClose, designerName, requestTitle, 
   right: 1rem;
 `;
 
+export default function EditRequestModal({ onClose, designerName, requestTitle, onAddRequest }) {
+  const [message, setMessage] = useState("");
+  const [requestText, setRequestText] = useState("");
+  
   const handleSend = () => {
     if (!message.trim()) {
       alert("요청사항을 입력해주세요.");
