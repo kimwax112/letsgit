@@ -123,13 +123,13 @@ const ConfirmButton = styled.button`
 
 // 작업 단계 리스트
 const steps = [
-  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 0 },
-  { label: "본뜨기", image: "/image/Progress/knitting.png", value: 1 },
-  { label: "마감하기", image: "/image/Progress/successful.png", value: 2 },
-  { label: "포장하기", image: "/image/Progress/package.png", value: 3 },
+  { label: "디자인하기", image: "/image/Progress/sketch.png", value: 1 },
+  { label: "본뜨기", image: "/image/Progress/knitting.png", value: 2 },
+  { label: "마감하기", image: "/image/Progress/successful.png", value: 3 },
+  { label: "포장하기", image: "/image/Progress/package.png", value: 4 },
 ];
 
-export default function ProgressModal({ onClose, initialStep = 0, contract, onStepUpdated }) {
+export default function ProgressModal({ onClose, initialStep = 1, contract, onStepUpdated }) {
   const [activeStep, setActiveStep] = useState(0); // 현재 활성화된 단계 인덱스
   const [confirmStep, setConfirmStep] = useState(null); // 변경하려는 단계 인덱스 (확인 팝업용)
 
@@ -137,7 +137,8 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
   const [loading, setLoading] = useState(false);// 6.9
   const [error, setError] = useState(null);   // 6.9
 
-  // initialStep 변경 시 activeStep 동기화 6.9
+  // initialStep 변경 시 activeStep 동기화 6.9 
+  //
   useEffect(() => {
     setActiveStep(initialStep);
   }, [initialStep]);
