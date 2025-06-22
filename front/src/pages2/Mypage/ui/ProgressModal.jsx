@@ -142,8 +142,13 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
   
   
   useEffect(() => {
-    setActiveStep(initialStep);
-  }, [initialStep]);
+    const savedStep = localStorage.getItem(`contract-step-${contract.contractId}`);
+    if (savedStep !== null) {
+      setActiveStep(Number(savedStep));
+    } else {
+      setActiveStep(initialStep);
+    }
+  }, [contract.contractId, initialStep]);
 
   console.log("진행도 현황 ", activeStep);
 
@@ -181,6 +186,7 @@ export default function ProgressModal({ onClose, initialStep = 0, contract, onSt
         status: steps[confirmStep].label,
         step: steps[confirmStep].value,  // 서버에서 step도 받도록 하려면 같이 보냅니다
       });
+      localStorage.setItem(`contract-step-${contract.contractId}`, confirmStep);
       onStepUpdated?.(stepIndex);//6.15
 
       setActiveStep(confirmStep);
