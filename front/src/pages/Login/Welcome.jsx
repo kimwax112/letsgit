@@ -74,7 +74,7 @@ export default function Welcome(onSignupClick) {
             </div>
             
             <br/>
-            <button type='submit' style = {{marginTop:'10px', fontSize: '20px', boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.1)'}} className='mainbaroo'>
+            <button type='submit' style = {{marginTop:'7px', fontSize: '20px', boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.1)'}} className='mainbaroo'>
               로그인
             </button>
             </form>
