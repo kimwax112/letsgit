@@ -58,6 +58,7 @@ async function fetchContracts() {
   async function fetchContracts() {
     try {
       const { data } = await axios.get(
+        
         `http://localhost:8081/api/progress/client/contracts/${username}`
       );
       console.log("서버 응답이 배열", data);
@@ -71,8 +72,8 @@ async function fetchContracts() {
       const mapped = data.map((c) => ({
         id: c.contractId,
         title: c.contractTitle,
-        step: c.step != null ? c.step - 1 : 0,
-        status: allStatuses[c.step - 1] || allStatuses[0],
+        step: c.step != null ? c.step : 0,
+        status: allStatuses[c.step] || allStatuses[0],
         date: c.dueDate ? c.dueDate.split("-").join(".") : "",
         starredStatus: c.starredStatus === 1,
         preview: c.contractContent || "",

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DetailList.css';
-import MyEditor from '../../Request/Request/ui/MyEditor';
 import jeans from '../../../assets/jeans.png';
 import NextButtonUI from '../../../components/NextButton/NextButton';
 import styled from 'styled-components';
+import RequestEditor from '../../Request/Request/ui/RequestEditor';
 import { FaStar, FaRegStar } from "react-icons/fa";
 import share from '../../../assets/share.png';  
 import print from '../../../assets/print.png';
@@ -141,14 +141,15 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
   }
 
   const handleSendRequest = async () => {
-    if (!isEditorSent || editorContent.trim() === "") {
-      alert("메시지를 작성하고 작성완료를 눌러주세요.");
-      return;
-    }
 
+    const plainContent = editorContent.replace(/<\/?[^>]+(>|$)/g, '');
+    // If you use contractMessage.content elsewhere, set it to plainContent
+    if (contractMessage) {
+      setSendMessage({ ...contractMessage, content: plainContent });
+    }
     const messagePayload = {
       messageId: contractMessage?.id,
-      content: editorContent,
+      content: plainContent,
       contractId: contractId,
       clientId: contractData?.clientId,
       designerId: contractData?.designerId,
@@ -169,31 +170,12 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
     }
 
     navigate('/client/Chatmain', 
-      { state: { messageText: editorContent, sendMessage : contractMessage,
+      { state: { messageText: plainContent, sendMessage : contractMessage,
         sourcePage: "OtherPage", 
       } });
   };
   
-  const handleEditorSend = (content) => {
-    if (content.trim() !== "") {
-      setEditorContent(content);
-      setIsEditorSent(true);
-      const newMessage = {
-        id: `msg-${Date.now()}`,
-        content: content,
-        time: new Date().toLocaleTimeString(),
-        contract: {...contractData, content : content}
-      };
-      setSendMessage(newMessage);
-      localStorage.setItem(
-        "dratfRequest",
-        JSON.stringify({
-          editorContent: content,
-          contractMessage: newMessage
-        })
-      );
-    }
-  };
+  
 
   return (
     <div className="Detailcontainer">
@@ -247,7 +229,20 @@ export default function DetailList({ contractId, contract, onToggleStar }) {
 
       <div className="Editor">
         <div className="EditorInner">
-          <MyEditor onSendMessage={handleEditorSend}>디자이너에게 요청보내기</MyEditor>
+          <RequestEditor
+            value={editorContent}
+            onChange={(content) => {
+              setEditorContent(content);
+              setIsEditorSent(content.trim() !== "");
+              const newMessage = {
+                id: `msg-${Date.now()}`,
+                content,
+                time: new Date().toLocaleTimeString(),
+                contract: { ...contractData, content }
+              };
+              setSendMessage(newMessage);
+            }}
+          />
         </div>
       </div>
 

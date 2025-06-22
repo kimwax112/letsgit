@@ -156,9 +156,9 @@ useEffect(() => {
                   <StepImage
                     src={step.image}
                     alt={step.label}
-                    grayscale={index !== (contract.step ? contract.step -1 : 0)}  //진행중인 단계만 색깔, 나머지는 흑백
+                    grayscale={index !== (contract.step || 0)}  //진행중인 단계만 색깔, 나머지는 흑백
                   />
-                  <StepLabel active={index === (contract.step ? contract.step -1 : 0) }>
+                  <StepLabel active={index === (contract.step || 0)}>
                     {step.label}
                   </StepLabel>
                 </StepItem>
