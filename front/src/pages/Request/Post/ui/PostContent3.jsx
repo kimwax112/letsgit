@@ -64,6 +64,7 @@ const Text = styled.div`
 
 const ImgItem = styled.img`
   width: 100%;
+  max-height: 245px;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
@@ -71,9 +72,6 @@ const ImgItem = styled.img`
 `;
 
 const ImgContainer1 = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
   margin-top: 16px;
   min-height: 150px;
   padding: 8px;
@@ -81,47 +79,22 @@ const ImgContainer1 = styled.div`
   border-radius: 8px;
   background-color: #fafafa;
   position: relative;
-
-  &:empty::before {
-    content: "이미지를 업로드 해주세요";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #888;
-    font-size: 1rem;
-    pointer-events: none;
-  }
 `;
 
 export default function PostCotent3({ data = {} }) {
-  const { requestId = "", description = "" } = data;
+  const { requestId = "", description = "", image1Url = "" } = data;
 
   const [editMode, setEditMode] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description || "");
   const [isSaving, setIsSaving] = useState(false);
-  const [images, setImages] = useState([]);
 
-  useEffect(() => {
-    if (!requestId) return;
+  // 파일명만 추출하는 함수
+  const getFileNameFromUrl = (url) => url.split("/").pop();
 
-    axios
-      .get("/mock-requestpostImage.json")
-      .then((res) => {
-        const req = res.data.find((r) => r.requestId === requestId);
-        if (req) {
-          const urls = [req.image1Url, req.image2Url, req.image3Url].filter((u) => u);
-          setImages(urls.slice(0, 3));
-        }
-      })
-      .catch((err) => console.error("이미지 로드 실패:", err));
-  }, [requestId]);
-
-  useEffect(() => {
-    console.log("PostCotent3 data:", data);
-    console.log("RequestId:", requestId);
-    console.log("Description:", description);
-  }, [data, requestId, description]);
+  // 이미지 URL 생성
+  const firstImageUrl = image1Url
+    ? `http://localhost:8081/api/requests/files/view/${getFileNameFromUrl(image1Url)}`
+    : null;
 
   const handleEditToggle = () => {
     setEditMode(true);
@@ -133,7 +106,6 @@ export default function PostCotent3({ data = {} }) {
       alert("상세설명을 입력해주세요.");
       return;
     }
-
     if (!requestId) {
       alert("요청 ID가 없습니다.");
       return;
@@ -141,14 +113,7 @@ export default function PostCotent3({ data = {} }) {
 
     setIsSaving(true);
     try {
-      const updatedPost = {
-        description: editedDescription,
-      };
-
-      console.log("Sending PATCH request:", {
-        url: `http://localhost:8081/api/requests/${requestId}/description`,
-        data: updatedPost,
-      });
+      const updatedPost = { description: editedDescription };
 
       const response = await axios.patch(
         `http://localhost:8081/api/requests/${requestId}/description`,
@@ -156,22 +121,12 @@ export default function PostCotent3({ data = {} }) {
         { withCredentials: true }
       );
 
-      console.log("서버 응답:", response.data);
       setEditMode(false);
       setIsSaving(false);
       alert("수정 완료!");
     } catch (error) {
-      console.error("수정 실패:", error);
       setIsSaving(false);
-      if (error.response?.status === 404) {
-        alert("요청을 찾을 수 없습니다. requestId와 엔드포인트를 확인하세요.");
-      } else if (error.response?.status === 500) {
-        alert("서버 내부 오류가 발생했습니다. 서버 로그를 확인하세요.");
-      } else if (error.response?.status === 400) {
-        alert("잘못된 요청입니다. 입력 데이터를 확인하세요.");
-      } else {
-        alert(`수정에 실패했습니다: ${error.message}`);
-      }
+      alert("수정에 실패했습니다.");
     }
   };
 
@@ -195,6 +150,7 @@ export default function PostCotent3({ data = {} }) {
           <ButtonDetailContainer onClick={handleEditToggle}>수정하기</ButtonDetailContainer>
         )}
       </ButtonContainer>
+
       {editMode ? (
         <TextArea
           value={editedDescription}
@@ -206,17 +162,13 @@ export default function PostCotent3({ data = {} }) {
           <Text>{description || "수정하기"}</Text>
         </DetailBox>
       )}
+
       <ImgContainer1>
-        {images.map((src, idx) => (
-          <ImgItem
-            key={idx}
-            src={src}
-            alt={`요청 이미지 ${idx + 1}`}
-            onError={(e) => {
-              e.currentTarget.style.visibility = "hidden";
-            }}
-          />
-        ))}
+        {firstImageUrl ? (
+          <ImgItem src={firstImageUrl} alt="요청 이미지" />
+        ) : (
+          <div>이미지가 없습니다.</div>
+        )}
       </ImgContainer1>
     </Container>
   );

@@ -606,7 +606,7 @@ const FinalConfirmation = () => {
     localStorage.setItem("mockDesigns", JSON.stringify(existingDesigns));
       
     alert("디자인이 성공적으로 저장되었습니다.");
-    navigate("/client/MyDesignsRequests")
+    navigate("/client/cosmain")
     // 성공 시 localStorage에서 이미지 제거 (선택 사항)
     if (category === "상의") {
       localStorage.removeItem("shirtCanvasImage");

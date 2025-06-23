@@ -19,4 +19,6 @@ public interface ContractMapper {
     List<Contract> selectContractsByDesigner(String designerId);
 
     void updateContractStatus(int contractId, String status);
+    
+    List<Contract> getContractsWithLatestProgressByClientId(@Param("clientId") String clientId);
 }

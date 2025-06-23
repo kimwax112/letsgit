@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import designerImage from "../../assets/desiner.png";
 import React, { useState, useEffect } from "react";
+
 // 아이템 박스 컨테이너
 const ItemBoxContainer = styled.div`
   width: 350px;
@@ -20,7 +21,6 @@ const ItemBoxContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   transition: border 0.15s, box-shadow 0.15s; 
   
-  /* 호버 시 테두리 추가 */
   &:hover {
     border-color: #BFD7EE; 
     border-width: 3.5px;
@@ -37,6 +37,10 @@ const InnerBox = styled.div`
   border-radius: 20px;
   margin-top: 10px;
   padding: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DescriptionContainer = styled.div`
@@ -61,17 +65,19 @@ const Tag = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 40px; /* 원 크기 */
+  width: 40px; 
   height: 40px;
-  border-radius: 50%; /* 원형 */
-  overflow: hidden; /* 이미지가 원 넘지 않게 */
+  border-radius: 50%; 
+  overflow: hidden; 
   margin: 5px;
 `;
 
 const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지 비율 유지하면서 크기에 맞게 잘라냄 */
+  object-fit: cover; 
+  border-radius: 50%;
+  background: #f0f0f0;
 `;
 
 const Profile = styled.div`
@@ -111,6 +117,13 @@ const LikeButton = styled.button`
   }
 `;
 
+const InnerBoxImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+`;
 
 export default function DesignerItemBox({ children, data, propUsername }) {
   const navigate = useNavigate();
@@ -127,13 +140,10 @@ export default function DesignerItemBox({ children, data, propUsername }) {
           if (!res.ok) throw new Error("세션 없음");
           const data = await res.json();
           if (data.username) {
-            console.log("✅ 세션에서 username 획득:", data.username);
             setUsername(data.username);
-          } else {
-            console.warn("❗ 세션은 있지만 username 없음");
           }
         } catch (err) {
-          console.warn("⚠️ 세션 정보 없음:", err);
+          console.warn("세션 정보 없음:", err);
         }
       };
       fetchSession();
@@ -149,9 +159,6 @@ export default function DesignerItemBox({ children, data, propUsername }) {
   const handleLike = async (e) => {
     e.stopPropagation();
 
-    console.log("DesignerItemBox - data:", data);
-    console.log("DesignerItemBox - data.requestId:", data?.requestId);
-
     if (!data?.requestId) {
       alert("의뢰 ID를 찾을 수 없습니다. 찜하기 실패.");
       return;
@@ -164,7 +171,7 @@ export default function DesignerItemBox({ children, data, propUsername }) {
         credentials: "include",
         body: JSON.stringify({
           requestId: data.requestId,
-          username, // 필요하다면 username도 같이 보내세요
+          username,
         }),
       });
 
@@ -178,14 +185,40 @@ export default function DesignerItemBox({ children, data, propUsername }) {
         alert(`찜 실패: ${errorText}`);
       }
     } catch (err) {
-      console.error("찜 요청 실패:", err);
       alert("서버 오류가 발생했습니다.");
     }
   };
 
   return (
     <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}>
-      <InnerBox />
+      <InnerBox>
+        {data?.image1Url ? (
+          <img
+            src={`http://localhost:8081/api/requests${data.image1Url}`}
+            alt="요청 이미지"
+            style={{
+              width: '100%',
+              maxHeight: '120px',
+              objectFit: 'cover',
+              borderRadius: '15px',
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#888',
+              fontSize: '14px',
+            }}
+          >
+            이미지 없음
+          </div>
+        )}
+      </InnerBox>
       <DescriptionContainer>
         <TagContainer>
           <Tag>{data?.categoryTags || "태그"}</Tag>
