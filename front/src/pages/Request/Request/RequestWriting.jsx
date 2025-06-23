@@ -185,6 +185,12 @@ const MydesignContainer = styled.div`
   }
 `;
 
+function formatNumberWithCommas(value) {
+  const numericValue = value.replace(/[^0-9]/g, '');
+  if (!numericValue) return '';
+  return Number(numericValue).toLocaleString();
+}
+
 export default function RequestWriting({ username: propUsername }) {
   const [enteredTags, setEnteredTags] = useState([]);
   const options = ["2025-05-01", "2025-06-01", "2025-07-01"];
@@ -199,18 +205,14 @@ export default function RequestWriting({ username: propUsername }) {
   const [description, setDescription] = useState("");
   const [imageUrls, setImageUrls] = useState(["", "", ""]);
   const [username, setUsername] = useState(propUsername);
-    const [designs, setDesigns] = useState([]);
-    const [userFiles, setUserFiles] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('template');
-    const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
+  const [designs, setDesigns] = useState([]);
+  const [userFiles, setUserFiles] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('template');
+  const [selectedItem, setSelectedItem] = useState(null); // 선택된 카드 항목
   const [rawAmount, setRawAmount] = useState("");
   const [loading, setLoading] = useState(true);
-
-    const [amount, setAmount] = useState("");
-
-
-  
-    const navigate = useNavigate();
+  const [amount, setAmount] = useState("");
+  const navigate = useNavigate();
 
   const onImageUpload = (index, url) => {
     setImageUrls(prev => {
@@ -218,6 +220,12 @@ export default function RequestWriting({ username: propUsername }) {
       newUrls[index] = url;
       return newUrls;
     });
+  };
+
+  /* "원하는 금액" 쉼표 */
+  const handleAmountChange = (e) => {
+    const formatted = formatNumberWithCommas(e.target.value);
+    setAmount(formatted);
   };
 
 
@@ -254,12 +262,6 @@ useEffect(() => {
     setFiles(newFiles);
   };
 
-  
-
-  
-
-
-  
 useEffect(() => {
     if (!propUsername) {
       const fetchSession = async () => {
@@ -435,7 +437,7 @@ const filteredDesigns = designs.filter((item) => item.category === selectedCateg
             <RequiredLabel required>원하는 금액</RequiredLabel>
             <TextInputUIManager
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={handleAmountChange}
               placeholder="₩ 가격"
             />
           </Content>
