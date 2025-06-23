@@ -265,31 +265,31 @@ const MyDesignsRequests = ({ username: propUsername }) => {
   const [username, setUsername] = useState(propUsername);
   const [designs, setDesigns] = useState([]);
   const [userFiles, setUserFiles] = useState([]);
-  const [orderItems, setOrderItems] = useState([
+  const [orderItems, setOrderItems] = useState([]);
     
-    { id: 1, client: "홍길동", title: "청바지 전문 디자이너 구해요", category: "바지 > 청바지", style: "캐쥬얼", price: "10만원 이하", deadline: "디자이너와 협의 후 결정", createdAt: "2025/01/01", description: "상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명" },
-    { id: 2, client: "김민지", title: "포스터 디자인 의뢰합니다", category: "그래픽 > 포스터", style: "모던, 깔끔한 느낌", price: "15만원 내외", deadline: "2025/04/30까지", createdAt: "2025/03/25", description: "행사용 포스터 디자인 부탁드립니다. 배경은 어두운 톤, 텍스트 강조해주세요." },
-    { id: 3, client: "이준호", title: "로고 제작 요청", category: "브랜딩 > 로고", style: "심플, 미니멀", price: "20만원 이하", deadline: "디자이너와 조율", createdAt: "2025/02/15", description: "스타트업 브랜드 로고가 필요합니다. 심볼 중심으로 제작되면 좋겠습니다." },
-    { id: 4, client: "박서연", title: "앱 UI 디자인 부탁드려요", category: "UX/UI > 앱 디자인", style: "귀엽고 직관적인 디자인", price: "30만원 이상", deadline: "2025/05/10까지", createdAt: "2025/03/05", description: "건강 관리 앱 메인 화면 위주로 디자인 필요합니다. 컬러 가이드는 전달드릴게요." },
-    { id: 5, client: "정하늘", title: "패키지 디자인 의뢰합니다", category: "제품 디자인 > 패키지", style: "빈티지 스타일", price: "25만원", deadline: "2025/06/01까지", createdAt: "2025/04/01", description: "수제 쿠키 브랜드의 패키지 디자인이 필요합니다. 예쁜 타이포와 따뜻한 색감 부탁드려요." },
-    { id: 6, client: "최유진", title: "유튜브 썸네일 디자이너 구해요", category: "디지털 > 썸네일", style: "눈에 띄는 스타일", price: "1건당 5천원", deadline: "상시", createdAt: "2025/04/05", description: "채널 썸네일 제작하실 분 구해요. 텍스트 강조, 컬러풀하게 해주시면 좋겠어요!" }
-  ]);
-  const designItems = {
-    template: [
-      { id: 1, name: '맨투맨1', description: '맨투맨1 설명', image: '/images/맨투맨1.jpg', date: '2025-04-01', size: 'L', designName: '캐주얼 맨투맨', fabric: '면 100%', color: '회색', clothingType: '맨투맨' },
-      { id: 2, name: '맨투맨2', description: '맨투맨2 설명', image: '/images/맨투맨2.jpg', date: '2025-04-02', size: 'M', designName: '심플 맨투맨', fabric: '면 80%, 폴리 20%', color: '블랙', clothingType: '맨투맨' },
-      { id: 3, name: '맨투맨3', description: '맨투맨3 설명', image: '/images/맨투맨3.jpg', date: '2025-04-03', size: 'XL', designName: '루즈핏 맨투맨', fabric: '면 60%, 폴리 40%', color: '아이보리', clothingType: '맨투맨' },,
-      { id: 7, name: '스커트', description: '가벼운 느낌의 롱 스커트', image: '/images/스커트.jpg', date: '2025-03-18', size: 'L', designName: '플레어 롱 스커트', fabric: '폴리에스터 80%, 스판덱스 20%', color: '블랙', clothingType: '스커트' },
-      { id: 8, name: '니트', description: '부드럽고 따뜻한 니트', image: '/images/니트.jpg', date: '2025-02-22', size: 'M', designName: '터틀넥 니트', fabric: '울 60%, 나일론 40%', color: '그레이', clothingType: '니트' },
-    ],
-    pattern: [
-      { id: 1, name: '자켓', description: '자켓 설명', image: '/images/자켓.jpg', date: '2025-03-20', size: 'M', designName: '클래식 자켓', fabric: '울 50%, 폴리 50%', color: '네이비', clothingType: '자켓' },
-      { id: 2, name: '치마1', description: '치마1 설명', image: '/images/치마1.jpg', date: '2025-03-22', size: 'S', designName: '플레어 스커트', fabric: '면 100%', color: '연핑크', clothingType: '스커트' },
-      { id: 3, name: '치마2', description: '치마2 설명', image: '/images/치마2.jpg', date: '2025-03-25', size: 'M', designName: '에이라인 스커트', fabric: '린넨 100%', color: '아이보리', clothingType: '스커트' },
-      { id: 9, name: '재킷', description: '봄에 입기 좋은 재킷', image: '/images/재킷.jpg', date: '2025-04-05', size: 'S', designName: '카멜 재킷', fabric: '폴리에스터 100%', color: '카멜', clothingType: '자켓' },
-      { id: 10, name: '블라우스', description: '여성스러운 디자인의 블라우스', image: '/images/블라우스.jpg', date: '2025-03-12', size: 'M', designName: '레이스 블라우스', fabric: '면 100%', color: '화이트', clothingType: '블라우스' },
-    ],
-  };
+  //   { id: 1, client: "홍길동", title: "청바지 전문 디자이너 구해요", category: "바지 > 청바지", style: "캐쥬얼", price: "10만원 이하", deadline: "디자이너와 협의 후 결정", createdAt: "2025/01/01", description: "상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명 예시글상세설명" },
+  //   { id: 2, client: "김민지", title: "포스터 디자인 의뢰합니다", category: "그래픽 > 포스터", style: "모던, 깔끔한 느낌", price: "15만원 내외", deadline: "2025/04/30까지", createdAt: "2025/03/25", description: "행사용 포스터 디자인 부탁드립니다. 배경은 어두운 톤, 텍스트 강조해주세요." },
+  //   { id: 3, client: "이준호", title: "로고 제작 요청", category: "브랜딩 > 로고", style: "심플, 미니멀", price: "20만원 이하", deadline: "디자이너와 조율", createdAt: "2025/02/15", description: "스타트업 브랜드 로고가 필요합니다. 심볼 중심으로 제작되면 좋겠습니다." },
+  //   { id: 4, client: "박서연", title: "앱 UI 디자인 부탁드려요", category: "UX/UI > 앱 디자인", style: "귀엽고 직관적인 디자인", price: "30만원 이상", deadline: "2025/05/10까지", createdAt: "2025/03/05", description: "건강 관리 앱 메인 화면 위주로 디자인 필요합니다. 컬러 가이드는 전달드릴게요." },
+  //   { id: 5, client: "정하늘", title: "패키지 디자인 의뢰합니다", category: "제품 디자인 > 패키지", style: "빈티지 스타일", price: "25만원", deadline: "2025/06/01까지", createdAt: "2025/04/01", description: "수제 쿠키 브랜드의 패키지 디자인이 필요합니다. 예쁜 타이포와 따뜻한 색감 부탁드려요." },
+  //   { id: 6, client: "최유진", title: "유튜브 썸네일 디자이너 구해요", category: "디지털 > 썸네일", style: "눈에 띄는 스타일", price: "1건당 5천원", deadline: "상시", createdAt: "2025/04/05", description: "채널 썸네일 제작하실 분 구해요. 텍스트 강조, 컬러풀하게 해주시면 좋겠어요!" }
+  // ]);
+  // const designItems = {
+  //   template: [
+  //     { id: 1, name: '맨투맨1', description: '맨투맨1 설명', image: '/images/맨투맨1.jpg', date: '2025-04-01', size: 'L', designName: '캐주얼 맨투맨', fabric: '면 100%', color: '회색', clothingType: '맨투맨' },
+  //     { id: 2, name: '맨투맨2', description: '맨투맨2 설명', image: '/images/맨투맨2.jpg', date: '2025-04-02', size: 'M', designName: '심플 맨투맨', fabric: '면 80%, 폴리 20%', color: '블랙', clothingType: '맨투맨' },
+  //     { id: 3, name: '맨투맨3', description: '맨투맨3 설명', image: '/images/맨투맨3.jpg', date: '2025-04-03', size: 'XL', designName: '루즈핏 맨투맨', fabric: '면 60%, 폴리 40%', color: '아이보리', clothingType: '맨투맨' },,
+  //     { id: 7, name: '스커트', description: '가벼운 느낌의 롱 스커트', image: '/images/스커트.jpg', date: '2025-03-18', size: 'L', designName: '플레어 롱 스커트', fabric: '폴리에스터 80%, 스판덱스 20%', color: '블랙', clothingType: '스커트' },
+  //     { id: 8, name: '니트', description: '부드럽고 따뜻한 니트', image: '/images/니트.jpg', date: '2025-02-22', size: 'M', designName: '터틀넥 니트', fabric: '울 60%, 나일론 40%', color: '그레이', clothingType: '니트' },
+  //   ],
+  //   pattern: [
+  //     { id: 1, name: '자켓', description: '자켓 설명', image: '/images/자켓.jpg', date: '2025-03-20', size: 'M', designName: '클래식 자켓', fabric: '울 50%, 폴리 50%', color: '네이비', clothingType: '자켓' },
+  //     { id: 2, name: '치마1', description: '치마1 설명', image: '/images/치마1.jpg', date: '2025-03-22', size: 'S', designName: '플레어 스커트', fabric: '면 100%', color: '연핑크', clothingType: '스커트' },
+  //     { id: 3, name: '치마2', description: '치마2 설명', image: '/images/치마2.jpg', date: '2025-03-25', size: 'M', designName: '에이라인 스커트', fabric: '린넨 100%', color: '아이보리', clothingType: '스커트' },
+  //     { id: 9, name: '재킷', description: '봄에 입기 좋은 재킷', image: '/images/재킷.jpg', date: '2025-04-05', size: 'S', designName: '카멜 재킷', fabric: '폴리에스터 100%', color: '카멜', clothingType: '자켓' },
+  //     { id: 10, name: '블라우스', description: '여성스러운 디자인의 블라우스', image: '/images/블라우스.jpg', date: '2025-03-12', size: 'M', designName: '레이스 블라우스', fabric: '면 100%', color: '화이트', clothingType: '블라우스' },
+  //   ],
+  // };
   const colorMap = { "#ff0000": "빨강", "#00ff00": "초록", "#0000ff": "파랑", "#ff9900": "주황", "#0099ff": "하늘" };
 
 useEffect(() => {
@@ -356,6 +356,17 @@ useEffect(() => {
     }
   };
 
+  const fetchUserOrders = () => {
+  if (!username) return;
+  axios.get(`http://localhost:8081/api/requests/user?username=${username}`)
+    .then((res) => {
+      setOrderItems(res.data || []);
+    })
+    .catch((err) => {
+      console.error('의뢰 불러오기 실패:', err);
+    });
+};
+
 
   /* 템플릿으로 디자인하기 저장하면 사이즈조절한옷 마이페이지에 보이는거 프론트에서 되나 테스트하려고 잠깐 주석처리한고 6.10
   */
@@ -388,6 +399,7 @@ useEffect(() => {
       fetchMyDesigns();
       console.log("📂 fetchUserFiles 호출, 현재 username:", username);
       fetchUserFiles();
+      fetchUserOrders();
     }
   }, [username]);
 
@@ -624,15 +636,13 @@ useEffect(() => {
           <div className="modal-content">
             <span className="close-btn" onClick={closeOrderModal}>&times;</span>
             <h2>{selectedOrderItem.title}</h2>
-            <p><strong>고객:</strong> {selectedOrderItem.client}</p>
-            <p><strong>카테고리:</strong> {selectedOrderItem.category}</p>
+            <p><strong>작성자(고객):</strong> {selectedOrderItem.username}</p>
+            <p><strong>카테고리:</strong> {selectedOrderItem.categoryTags}</p>
             <p><strong>스타일:</strong> {selectedOrderItem.style}</p>
-            <p><strong>가격:</strong> {selectedOrderItem.price}</p>
+            <p><strong>예상 금액:</strong> {selectedOrderItem.amount}</p>
             <p><strong>마감일:</strong> {selectedOrderItem.deadline}</p>
-            <p><strong>설명:</strong> {selectedOrderItem.description}</p>
-            <p><strong>작성일:</strong> {selectedOrderItem.createdAt}</p>
-          </div>
-        </div>
+            <p><strong>설명:</strong> {selectedOrderItem.description}</p></div>
+         </div>
       )}
     </div>
   );
