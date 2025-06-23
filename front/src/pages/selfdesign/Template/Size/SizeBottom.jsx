@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { SizeController,SizeControllerRow } from "../../../../components"; // 기존 SizeController (전체 컨트롤러)
 import "./SizeBottom.css"
 import PantsOutlineCanvas from "./ClothesPants/PantsCanvas";
+
 function SizeBottom({ selectedSize, setSelectedSize }) {
   // 상단 헤더에 표시할 사이즈 배열
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
