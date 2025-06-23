@@ -2,9 +2,20 @@ package com.example.Loginpj.controller;
 
 import com.example.Loginpj.model.Request;
 import com.example.Loginpj.service.RequestService;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +24,7 @@ import java.util.Map;
 public class RequestController {
 
     private final RequestService service;
+    private static final String UPLOAD_DIR = System.getProperty("user.home") + "/upload/images/";
 
     public RequestController(RequestService service) {
         this.service = service;
@@ -32,7 +44,12 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Request request) {
-        int result = service.create(request);
+    	System.out.println("image1Url: " + request.getImage1Url());
+        System.out.println("image2Url: " + request.getImage2Url());
+        System.out.println("image3Url: " + request.getImage3Url());
+
+    	
+    	int result = service.create(request);
         if (result == 1) return ResponseEntity.ok("Request created successfully");
         else return ResponseEntity.status(500).body("Failed to create request");
     }
@@ -72,6 +89,69 @@ public class RequestController {
             return ResponseEntity.ok("Description updated successfully");
         } else {
             return ResponseEntity.status(500).body("Failed to update description");
+        }
+    }
+    
+    
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("파일이 없습니다.");
+        }
+
+        try {
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) uploadDir.mkdirs();
+
+            String originalFilename = file.getOriginalFilename();
+            String extension = "";
+
+            int dotIndex = originalFilename.lastIndexOf('.');
+            if (dotIndex >= 0) {
+                extension = originalFilename.substring(dotIndex);
+            }
+
+            String savedFileName = System.currentTimeMillis() + extension;
+            Path filePath = Paths.get(UPLOAD_DIR + savedFileName);
+
+            Files.write(filePath, file.getBytes());
+
+            String imageUrl = "/files/view/" + savedFileName;
+
+            return ResponseEntity.ok(Map.of("imageUrl", imageUrl));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("파일 저장 실패");
+        }
+    }
+    
+    @GetMapping("/files/view/{filename:.+}")
+    public ResponseEntity<Resource> viewImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(UPLOAD_DIR, filename);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 파일의 MIME 타입 추정
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
         }
     }
 }
