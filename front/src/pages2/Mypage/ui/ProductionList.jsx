@@ -95,25 +95,46 @@ const steps = [
   { label: "포장하기", image: "/image/Progress/package.png" },
 ];
 
-export default function ProductionList() {
+export default function ProductionList({ username: propUsername }) { //6.21 username : 세션에서 얻어오기
   const [contracts, setContracts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const [username, setUsername] = useState(propUsername);
 
-  useEffect(() => {
-    const fetchContracts = async () => {
+  
+useEffect(() => {
+  if (!propUsername) {
+    const fetchSession = async () => {
       try {
-        
-        const response = await axios.get("http://localhost:8081/client/contract");
-        console.log("제작 내역 데이터:", response.data);
-        setContracts(response.data);
-      } catch (error) {
-        console.error("제작 내역 불러오기 실패:", error);
+        const res = await fetch("http://localhost:8081/api/user", { credentials: 'include' });
+        if (!res.ok) throw new Error(`세션 요청 실패: ${res.status}`);
+        const data = await res.json();
+        console.log("세션 데이터:", data);
+        if (data.username) setUsername(data.username);
+      } catch (err) {
+        console.warn("세션 정보 없음:", err);
       }
     };
+    fetchSession();
+  }
+}, [propUsername]);
 
-    fetchContracts();
-  }, []);
+useEffect(() => { 
+  const fetchContracts = async () => {
+    if (!username) {
+      console.warn("username이 없습니다. API 호출 생략.");
+      return;
+    }
+    try {
+      const response = await axios.get(`http://localhost:8081/api/progress/designer/contracts/${username}`);
+      console.log("제작 내역 데이터:", response.data);
+      setContracts(response.data);
+    } catch (error) {
+      console.error("제작 내역 불러오기 실패:", error);
+    }
+  };
+  fetchContracts();
+}, [username]);
 
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
@@ -135,9 +156,9 @@ export default function ProductionList() {
                   <StepImage
                     src={step.image}
                     alt={step.label}
-                    grayscale={index !== contract.step}  //진행중인 단계만 색깔, 나머지는 흑백
+                    grayscale={index !== (contract.step || 0)}  //진행중인 단계만 색깔, 나머지는 흑백
                   />
-                  <StepLabel active={index === contract.step}>
+                  <StepLabel active={index === (contract.step || 0)}>
                     {step.label}
                   </StepLabel>
                 </StepItem>

@@ -16,7 +16,6 @@ const Layout = styled.div`
 
 const Left = styled.div`
   width: 400px;
-  background-color: #f4f4f4;
 `;
 
 const Right = styled.div`

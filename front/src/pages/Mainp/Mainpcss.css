@@ -1,3 +1,8 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 ul, li {
     margin: 0;
     padding: 0;
@@ -11,14 +16,17 @@ ul, li {
 
   .divmcover{
     display: flex;
-    flex-direction: column; /* 내부 요소들을 세로 정렬 */
+    flex-direction: column;
     align-items: center;
-    background: linear-gradient(150deg, #FAFAFB, #FAFAFB, #FAFAFB, #9dbbd5);
+    height: 100vh;
 
-    
-    height:100vh;
-    
+    /* 배경 그라데이션 추가 */
+    background: linear-gradient(150deg, #FAFAFB, #FAFAFB, #FAFAFB, #9dbbd5);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover; 
   }
+
   .divm{
     margin:10px;
     border-radius: 25px;
@@ -57,16 +65,14 @@ ul, li {
     height: 55px;
     font-size: 18px;
     box-shadow: 0 10px 40px -25px rgba(0, 0, 0, 1.0);
-
+    white-space: nowrap;
   }
+
   .mainbaro2:hover{
         background-color:black;
 
   }
 
-
-
-  
   .divm-wrapper {
     margin-top: 5px;
     display: flex; 
@@ -75,11 +81,14 @@ ul, li {
 }
 
 .extra-section {
-    width: 50%;
-    text-align: center;
-    padding: 20px;
-    margin:50px;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 40px auto;
+  width: 100%;
+  max-width: 800px;
+  padding: 10px;
 }
 
 .MainLogo{
