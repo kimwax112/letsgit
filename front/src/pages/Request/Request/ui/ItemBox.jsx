@@ -32,12 +32,13 @@ const ItemBoxContainer = styled.div`
 const InnerBox = styled.div`
   background-color: #F6F2F2;
   width: 87%;
-  height: 45%;
+  height: 180px;
   border: 0.5px solid;
   border-color: #EBE5E5;
   border-radius: 20px;
   margin-top: 10px;
   padding: 5px;
+  overflow: hidden;
 `;
 
 const DescriptionContainer = styled.div`
@@ -129,7 +130,34 @@ export default function ItemBox({ children,data = {} }) {
 
   return (
     <ItemBoxContainer style={{ cursor: "pointer" }} onClick={handleClick}> 
-      <InnerBox />
+      <InnerBox>
+        {data?.image1Url ? (
+          <img
+            src={`http://localhost:8081/api/requests${data.image1Url}`}
+            alt="요청 이미지"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '15px'
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#888',
+              fontSize: '14px',
+            }}
+          >
+            이미지 없음
+          </div>
+        )}
+      </InnerBox>
       <DescriptionContainer>
           <TagContainer>
           {safeTags.length > 0 ? (

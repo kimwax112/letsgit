@@ -48,15 +48,37 @@ const RemoveButton = styled.button`
   font-size: 1rem;
 `;
 
-export default function ImageUploader({ className, id, files, setFiles }) {
+export default function ImageUploader({ className, id, files, setFiles, onImageUpload }) {
   const inputRef = useRef();
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const previewUrl = URL.createObjectURL(file);
     setFiles((prev) => ({ ...prev, [id]: { file, preview: previewUrl } }));
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("http://localhost:8081/api/requests/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+
+      const data = await res.json();
+      // 업로드 성공 후 백엔드에서 받은 URL을 부모 컴포넌트에 전달
+      if (onImageUpload) {
+        onImageUpload(parseInt(id.replace("upload", "")) - 1, data.imageUrl);  
+        // 예: id가 upload1이면 index는 0
+      }
+    } catch (err) {
+      alert("이미지 업로드에 실패했습니다.");
+      console.error(err);
+    }
 
     // 파일 선택 후 입력 초기화
     inputRef.current.value = null;
