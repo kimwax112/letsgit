@@ -2,13 +2,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import './PantsCanvas.css'; // 스타일 파일을 추가하세요
 
 export default function PantsOutlineCanvas({
-  waistWidth, setWaistWidth,
-  rise, setRise,
-  length, setLength,
-  thighWidth, setThighWidth,
-  hemWidth, setHemWidth,
+  waistWidth, setWaistWidth, // 허리단면
+  rise, setRise,             // 밑위
+  length, setLength,         // 총장
+  thighWidth, setThighWidth, // 허벅지단면
+  hemWidth, setHemWidth,     // 밑단단면
   resetValues,
-  isPreview = false,
+  isPreview = false,         // FinalConfirmation에서 호출될 때 입력 컨트롤 숨기기
 }) {
   const canvasRef = useRef(null);
 
@@ -23,7 +23,7 @@ export default function PantsOutlineCanvas({
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
 
-    // 팬츠 윤곽 계산
+    // 1) 팬츠 윤곽 계산
     const centerX = 150;
     const waistLeft = centerX - waistWidth / 2 - 10;
     const waistRight = centerX + waistWidth / 2 + 10;
@@ -34,83 +34,74 @@ export default function PantsOutlineCanvas({
     const hemLeftX = thighLeftX - hemWidth / 2 - 20;
     const hemRightX = thighRightX + hemWidth / 2 + 20;
 
-    // 이미지 로드
-    const img = new Image();
-    img.src = '/image/denim-texture.jpg'; // public 폴더 기준 경로
+    // 💙 바지 안쪽 채우기 (하늘색)
+    ctx.beginPath();
+    ctx.moveTo(waistLeft, 50);
+    ctx.lineTo(waistRight, 50);
+    ctx.lineTo(hemRightX, totalLength);
+    ctx.lineTo(thighRightX, totalLength);
+    ctx.lineTo(centerX, crotchY);
+    ctx.lineTo(thighLeftX, totalLength);
+    ctx.lineTo(hemLeftX, totalLength);
+    ctx.closePath();
 
-    img.onload = () => {
-      // 💙 클리핑 패스 설정
-      ctx.save();
+    ctx.fillStyle = '#a3c9f1'; // 하늘색 청바지
+    ctx.fill();
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
+
+    // 💙 스트라이프 패턴 추가
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(waistLeft, 50);
+    ctx.lineTo(waistRight, 50);
+    ctx.lineTo(hemRightX, totalLength);
+    ctx.lineTo(thighRightX, totalLength);
+    ctx.lineTo(centerX, crotchY);
+    ctx.lineTo(thighLeftX, totalLength);
+    ctx.lineTo(hemLeftX, totalLength);
+    ctx.closePath();
+    ctx.clip();
+
+    // 더 선명하고 진한 흰색 스트라이프
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; // 투명도 0.8, 더 선명하게
+    ctx.lineWidth = 2; // 굵기 2픽셀로 증가
+
+    // 간격을 줄여서 더 촘촘하게 (예: 5px 간격)
+    for (let x = hemLeftX; x <= hemRightX; x += 10) {
       ctx.beginPath();
-      ctx.moveTo(waistLeft, 50);
-      ctx.lineTo(waistRight, 50);
-      ctx.lineTo(hemRightX, totalLength);
-      ctx.lineTo(thighRightX, totalLength);
-      ctx.lineTo(centerX, crotchY);
-      ctx.lineTo(thighLeftX, totalLength);
-      ctx.lineTo(hemLeftX, totalLength);
-      ctx.closePath();
-      ctx.clip();
-
-      // 💙 먼저 텍스처 채우기
-      const pattern = ctx.createPattern(img, 'repeat');
-      ctx.fillStyle = pattern;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // 💙 텍스처 위에 스트라이프 얹기!
-      ctx.strokeStyle = 'rgba(255, 255, 255, 1.5)';
-      ctx.lineWidth = 1;
-      for (let x = hemLeftX; x <= hemRightX; x += 10) {
-        ctx.beginPath();
-        ctx.moveTo(x, 50);
-        ctx.lineTo(x, totalLength);
-        ctx.stroke();
-      }
-
-      ctx.restore(); // 클리핑 해제
-
-
-      // 팬츠 윤곽선
-      ctx.beginPath();
-      ctx.moveTo(waistLeft, 50);
-      ctx.lineTo(waistRight, 50);
-      ctx.lineTo(hemRightX, totalLength);
-      ctx.lineTo(thighRightX, totalLength);
-      ctx.lineTo(centerX, crotchY);
-      ctx.lineTo(thighLeftX, totalLength);
-      ctx.lineTo(hemLeftX, totalLength);
-      ctx.closePath();
-
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2;
+      ctx.moveTo(x, 50);
+      ctx.lineTo(x, totalLength);
       ctx.stroke();
+    }
 
-      // 벨트 그리기
-      const beltHeight = 8;
-      const beltY = 50 - beltHeight + 5;
-      ctx.fillStyle = '#555';
-      ctx.fillRect(waistLeft - 5, beltY, (waistRight + 5) - (waistLeft - 5), beltHeight);
+    ctx.restore();
 
-      // 벨트 고리
-      ctx.fillStyle = '#333';
-      const loopWidth = 6;
-      const loopHeight = beltHeight + 2;
-      const loopY = beltY - 1;
-      const numLoops = 3;
-      for (let i = 0; i < numLoops; i++) {
-        const x = waistLeft + (i + 1) * ((waistRight - waistLeft) / (numLoops + 1)) - loopWidth / 2;
-        ctx.fillRect(x, loopY, loopWidth, loopHeight);
+    // 2) 벨트 그리기
+    const beltHeight = 8;
+    const beltY = 50 - beltHeight + 5;
+    ctx.fillStyle = '#555';
+    ctx.fillRect(waistLeft - 5, beltY, (waistRight + 5) - (waistLeft - 5), beltHeight);
+
+    // 벨트 고리
+    ctx.fillStyle = '#333';
+    const loopWidth = 6;
+    const loopHeight = beltHeight + 2;
+    const loopY = beltY - 1;
+    const numLoops = 3;
+    for (let i = 0; i < numLoops; i++) {
+      const x = waistLeft + (i + 1) * ((waistRight - waistLeft) / (numLoops + 1)) - loopWidth / 2;
+      ctx.fillRect(x, loopY, loopWidth, loopHeight);
+    }
+
+    if (!isPreview) {
+      try {
+        const imageData = canvas.toDataURL('image2/png');
+        localStorage.setItem('pantsCanvasImage', imageData);
+      } catch (e) {
+        console.error('localStorage 저장 오류:', e);
       }
-
-      if (!isPreview) {
-        try {
-          const imageData = canvas.toDataURL('image2/png');
-          localStorage.setItem('pantsCanvasImage', imageData);
-        } catch (e) {
-          console.error('localStorage 저장 오류:', e);
-        }
-      }
-    };
+    }
   }, [waistWidth, rise, length, thighWidth, hemWidth, isPreview]);
 
   const handleInputChange = (setter, min, max) => (e) => {
