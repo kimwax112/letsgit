@@ -82,7 +82,6 @@ export default function ClothesTest({
     ctx.lineTo(leftShoulder.x  , leftShoulder.y);
     ctx.lineTo(leftShoulder.x + 20, leftShoulder.y + 15);
 
-    
     ctx.lineTo(100 - chestOffset+82 + offsetX, 50 + topBodyHeight + 30 );
     ctx.lineTo(100 - lowerWidthOffset +90 + offsetX, bodyLength + 130);
     ctx.lineTo(200 + lowerWidthOffset -90 + offsetX, bodyLength + 130);
@@ -95,14 +94,35 @@ export default function ClothesTest({
     ctx.lineTo(170 + neckXOffset-20 + offsetX+20, 40);
     ctx.quadraticCurveTo(150 + offsetX, neckY+82, 130 - neckXOffset + offsetX, 40);
     ctx.lineTo(neckLeftX, 50);
-    
-    
-    
-    
-    
 
     ctx.closePath();
-    ctx.stroke();
+
+    // 셔츠 내부를 빨간색으로 채우기
+    ctx.save();
+    ctx.fillStyle = '#87ceeb';
+    ctx.fill();
+    ctx.restore();
+
+    ctx.stroke(); // 셔츠 외곽선 다시 그리기
+
+    // 셔츠 안에만 땡땡이 무늬를 그리기 위해 클리핑 설정
+    ctx.save();
+    ctx.clip();
+
+    // 땡땡이 무늬 그리기 (원형 반복)
+    const dotSpacing = 20;
+    const dotRadius = 3;
+    ctx.fillStyle = 'black';
+
+    for (let y = 0; y < canvas.height; y += dotSpacing) {
+      for (let x = 0; x < canvas.width; x += dotSpacing) {
+        ctx.beginPath();
+        ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.restore(); // 클리핑 해제
     // 캔버스를 이미지로 변환하여 localStorage에 저장
     if (!isPreview) {
       const imageData = canvas.toDataURL('image/png');
