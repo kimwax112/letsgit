@@ -144,8 +144,8 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0); // 현재 이미�
 const fetchPosts = async () => {
   try {
     const { data } = await axios.get(
-       ("/mock-portpolio.json"),
-      // "http://localhost:8081/api/posts",
+      //  ("/mock-portpolio.json"),
+      "http://localhost:8081/api/posts",
       { withCredentials: true }
     );
     console.log("🚀 서버 응답 데이터:", data);
@@ -242,13 +242,17 @@ const fetchPosts = async () => {
               </PortfolioLeftSection>
             </Portfolio>
           ) : (
-            <Portfolio>
-              <Text style={{ opacity: 0.2 }}>
-                포트폴리오를 등록해 나의 디자인을 노출시켜보세요
-              </Text>
-              <Img src={hoddi} alt="포트폴리오 아이콘" />
-              <Button to="/designer/Portfolio">포트폴리오 등록하기</Button>
-            </Portfolio>
+          <Portfolio>
+            <Text style={{ opacity: 0.2 }}>
+              포트폴리오를 등록해 나의 디자인을 노출시켜보세요
+            </Text>
+            <Img
+              src={hoddi}
+              alt="포트폴리오 아이콘"
+              style={{ width: '50%', height: '50%' }}
+            />
+            <Button to="/designer/Portfolio">등록하기</Button>
+          </Portfolio>
           )}
         </Content>
       </Right>
