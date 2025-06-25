@@ -329,10 +329,11 @@ const handleSubmit = async (e) => {
               onMouseDown={(e) => {
                 e.preventDefault();
                 e.target.blur();
+
               }}
               onClick={handleSubmit}
-            />
-              {editPost ? "수정 완료" : "작성 완료"}
+            >작성완료 </NextButtonUI>
+             
           </Footer>
         </Content>
       </Right>
